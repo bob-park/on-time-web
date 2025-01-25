@@ -25,20 +25,40 @@ export default function QRContents() {
   }, [selectType]);
 
   useEffect(() => {
+    if (!currentCheck) {
+      return;
+    }
+
     async function createQRCode() {
+      if (!currentCheck) {
+        return;
+      }
+
       const canvas = document.getElementById(QR_CANVAS_ID) as HTMLCanvasElement;
 
       if (!canvas) {
         return;
       }
 
-      await QRCode.toCanvas(canvas, 'http://naver.com', {
+      console.log(`${location.origin}/attendance/record/${currentCheck.id}`);
+
+      await QRCode.toCanvas(canvas, `${location.origin}/attendance/record/${currentCheck.id}`, {
         width: 400,
       });
     }
 
     createQRCode();
-  }, [currentCheck]);
+
+    const intervalId = setInterval(() => {
+      if (dayjs(currentCheck.expiredDate).isBefore(dayjs())) {
+        generateCheck({ type: 'QR', attendanceType: selectType });
+      }
+    }, 1_000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [currentCheck, selectType]);
 
   // handle
   const handleChangeSelectType = (type: AttendanceType) => {
@@ -62,6 +82,12 @@ export default function QRContents() {
           퇴근
         </button>
       </div>
+
+      {isLoading && (
+        <div className="mt-10 flex h-56 flex-col items-center justify-center gap-3">
+          <span className="loading loading-infinity loading-lg"></span>
+        </div>
+      )}
 
       {/* QR Code */}
       {!isLoading && currentCheck && (

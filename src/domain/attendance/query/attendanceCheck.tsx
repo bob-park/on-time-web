@@ -7,7 +7,7 @@ export function useGetCurrentCheck() {
   return { currentCheck: data, isLoading };
 }
 
-export function useGenerateCurrentCheck() {
+export function useGenerateCurrentCheck(onSuccess?: () => void) {
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
@@ -15,6 +15,8 @@ export function useGenerateCurrentCheck() {
     mutationFn: (req: CurrentAttendanceCheckRequest) => currentCheck(req),
     onSuccess: async (data) => {
       queryClient.setQueryData(['current', 'attendance', 'check'], data);
+
+      onSuccess && onSuccess();
     },
   });
 
