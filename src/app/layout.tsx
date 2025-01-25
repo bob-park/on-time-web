@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
+import Header from '@/app/_component/Header';
 import RQProvider from '@/app/_component/RQProvider';
 
 import './globals.css';
@@ -21,7 +22,7 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
 
-  const apiResponse = await fetch(`${WEB_SERVICE_HOST}/users/me`, {
+  const userResponse = await fetch(`${WEB_SERVICE_HOST}/users/me`, {
     method: 'get',
     headers: {
       Cookie: `JSESSIONID=${cookieStore.get('JSESSIONID')?.value || ''}`,
@@ -29,9 +30,11 @@ export default async function RootLayout({
     credentials: 'include',
   });
 
-  if (!apiResponse.ok) {
+  if (!userResponse.ok) {
     redirect('/api/oauth2/authorization/keyflow-auth');
   }
+
+  const user = await userResponse.json().then((res: User) => res);
 
   return (
     <html lang="en">
@@ -41,6 +44,7 @@ export default async function RootLayout({
         </head>
       )}
       <body className="">
+        <Header user={user} />
         <RQProvider>{children}</RQProvider>
       </body>
     </html>
