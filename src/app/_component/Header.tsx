@@ -12,7 +12,7 @@ interface HeaderProps {
 
 export default function Header({ user }: HeaderProps) {
   return (
-    <header className="flex size-full flex-row items-center justify-between gap-3 p-3">
+    <header className="flex size-full flex-row items-center justify-between gap-3 p-3 shadow-lg">
       {/* content */}
       <div className="">
         <div className="flex flex-row items-center justify-between gap-1">
@@ -31,10 +31,13 @@ export default function Header({ user }: HeaderProps) {
       <div className="flex flex-row items-center justify-center gap-3 pr-10">
         {/* team + position */}
         <div className="select-none text-lg">
-          <span className="font-semibold">{user.team.name}</span>
-          {user.team?.teamUsers && user.team.teamUsers[0].isLeader && <span>(팀장)</span>}
-          <span> - </span>
-          <span> {user.position.name} </span>
+          <span className="text-gray-600">
+            <span className="font-semibold">{user.team.name}</span>
+            {user.team?.teamUsers && user.team.teamUsers[0].isLeader && <span>(팀장)</span>}
+            <span> - </span>
+            <span> {user.position.name} </span>
+          </span>
+          <span className="font-bold">{user.username}</span>
         </div>
 
         {/* avatar */}

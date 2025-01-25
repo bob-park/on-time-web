@@ -45,7 +45,9 @@ export default async function RootLayout({
       )}
       <body className="min-w-[660px]">
         <Header user={user} />
-        <RQProvider>{children}</RQProvider>
+        <div className="p-6">
+          <RQProvider>{children}</RQProvider>
+        </div>
       </body>
     </html>
   );
