@@ -43,7 +43,7 @@ export default async function RootLayout({
           <script src="https://unpkg.com/react-scan/dist/auto.global.js" />
         </head>
       )}
-      <body className="">
+      <body className="min-w-[660px]">
         <Header user={user} />
         <RQProvider>{children}</RQProvider>
       </body>

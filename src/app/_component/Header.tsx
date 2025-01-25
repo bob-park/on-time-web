@@ -29,6 +29,14 @@ export default function Header({ user }: HeaderProps) {
       </div>
 
       <div className="flex flex-row items-center justify-center gap-3 pr-10">
+        {/* team + position */}
+        <div className="select-none text-lg">
+          <span className="font-semibold">{user.team.name}</span>
+          {user.team?.teamUsers && user.team.teamUsers[0].isLeader && <span>(팀장)</span>}
+          <span> - </span>
+          <span> {user.position.name} </span>
+        </div>
+
         {/* avatar */}
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="m-1">
