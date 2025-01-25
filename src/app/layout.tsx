@@ -3,9 +3,9 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-import Header from '@/app/_component/Header';
-import NavMenu from '@/app/_component/NavMenu';
-import RQProvider from '@/app/_component/RQProvider';
+import Header from '@/app/_components/Header';
+import NavMenu from '@/app/_components/NavMenu';
+import RQProvider from '@/app/_components/RQProvider';
 
 import './globals.css';
 
@@ -56,7 +56,7 @@ export default async function RootLayout({
           </div>
 
           {/* content */}
-          <div className="m-3 size-full p-3">
+          <div className="mx-3 mt-6 size-full p-3">
             <RQProvider>{children}</RQProvider>
           </div>
         </div>
