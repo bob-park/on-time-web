@@ -1,5 +1,6 @@
 'use client';
 
+import { IoQrCode } from 'react-icons/io5';
 import { RiDashboardFill } from 'react-icons/ri';
 
 import Link from 'next/link';
@@ -29,7 +30,7 @@ export default function NavMenu() {
   const segments = useSelectedLayoutSegments();
 
   return (
-    <div className="sticky flex h-[calc(100vh-80px)] select-none gap-2 bg-blue-900 p-6 text-white shadow-lg">
+    <div className="sticky flex h-[calc(100vh-80px)] select-none gap-2 bg-blue-900 p-6 text-white shadow-2xl">
       {/* menu list */}
       <MenuList>
         {/* general */}
@@ -44,6 +45,7 @@ export default function NavMenu() {
         </div>
 
         <MenuItem href="/qr" active={segments.includes('qr')}>
+          <IoQrCode className="inline-block h-6 w-6" />
           QR 코드 생성
         </MenuItem>
       </MenuList>

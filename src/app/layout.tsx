@@ -55,7 +55,7 @@ export default async function RootLayout({
           </div>
 
           {/* content */}
-          <div className="p-6">
+          <div className="m-3 size-full p-3">
             <RQProvider>{children}</RQProvider>
           </div>
         </div>
