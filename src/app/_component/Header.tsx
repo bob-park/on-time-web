@@ -12,7 +12,7 @@ interface HeaderProps {
 
 export default function Header({ user }: HeaderProps) {
   return (
-    <header className="flex size-full flex-row items-center justify-between gap-3 p-3 shadow-lg">
+    <header className="sticky flex size-full flex-row items-center justify-between gap-3 p-3 shadow-lg">
       {/* content */}
       <div className="">
         <div className="flex flex-row items-center justify-between gap-1">

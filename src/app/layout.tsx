@@ -10,6 +10,7 @@ import RQProvider from '@/app/_component/RQProvider';
 import './globals.css';
 
 const { WEB_SERVICE_HOST } = process.env;
+const ALLOW_ROLES = ['ROLE_ADMIN', 'ROLE_MANAGER'];
 
 export const metadata: Metadata = {
   title: 'On Time ',
@@ -51,7 +52,7 @@ export default async function RootLayout({
         <div className="flex">
           {/* nav menu*/}
           <div className="relative w-52 flex-none">
-            <NavMenu />
+            <NavMenu isManager={ALLOW_ROLES.includes(user.role.type)} />
           </div>
 
           {/* content */}

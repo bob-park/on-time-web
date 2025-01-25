@@ -26,7 +26,7 @@ function MenuItem({ children, href, active }: MenuItemProps) {
   );
 }
 
-export default function NavMenu() {
+export default function NavMenu({ isManager }: { isManager: boolean }) {
   const segments = useSelectedLayoutSegments();
 
   return (
@@ -40,14 +40,18 @@ export default function NavMenu() {
         </MenuItem>
 
         {/* admin */}
-        <div className="mt-10">
-          <span className="text-sm font-normal text-gray-400">관리자</span>
-        </div>
+        {isManager && (
+          <>
+            <div className="mt-10">
+              <span className="text-sm font-normal text-gray-400">관리자</span>
+            </div>
 
-        <MenuItem href="/qr" active={segments.includes('qr')}>
-          <IoQrCode className="inline-block h-6 w-6" />
-          QR 코드 생성
-        </MenuItem>
+            <MenuItem href="/qr" active={segments.includes('qr')}>
+              <IoQrCode className="inline-block h-6 w-6" />
+              QR 코드 생성
+            </MenuItem>
+          </>
+        )}
       </MenuList>
     </div>
   );
