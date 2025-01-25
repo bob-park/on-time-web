@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import Header from '@/app/_component/Header';
+import NavMenu from '@/app/_component/NavMenu';
 import RQProvider from '@/app/_component/RQProvider';
 
 import './globals.css';
@@ -44,9 +45,19 @@ export default async function RootLayout({
         </head>
       )}
       <body className="min-w-[660px]">
+        {/* header */}
         <Header user={user} />
-        <div className="p-6">
-          <RQProvider>{children}</RQProvider>
+
+        <div className="flex">
+          {/* nav menu*/}
+          <div className="relative w-52 flex-none">
+            <NavMenu />
+          </div>
+
+          {/* content */}
+          <div className="p-6">
+            <RQProvider>{children}</RQProvider>
+          </div>
         </div>
       </body>
     </html>
