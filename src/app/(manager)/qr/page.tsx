@@ -1,4 +1,4 @@
-import QRContents from '@/app/(manager)/qr/_components/QRContents';
+import QRContents from './_components/QRContents';
 
 export default function QRPage() {
   return (

@@ -1,8 +1,14 @@
+'use client';
+
+import { useEffect } from 'react';
+
 import { CgProfile } from 'react-icons/cg';
 import { FiMenu } from 'react-icons/fi';
 import { IoLogOutOutline } from 'react-icons/io5';
 
 import Link from 'next/link';
+
+import { useStore } from '@/shared/rootStore';
 
 import UserAvatar from '@/domain/user/components/UserAvatar';
 
@@ -11,6 +17,18 @@ interface HeaderProps {
 }
 
 export default function Header({ user }: HeaderProps) {
+  // store
+  const updateCurrentUser = useStore((state) => state.updateCurrentUser);
+
+  // useEffect
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    updateCurrentUser(user);
+  }, [user]);
+
   return (
     <header className="sticky flex size-full flex-row items-center justify-between gap-3 p-3 shadow-lg">
       {/* content */}
