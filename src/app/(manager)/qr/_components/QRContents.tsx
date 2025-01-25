@@ -1,12 +1,44 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { getDaysOfWeek } from '@/utils/parse';
+
+import { useGenerateCurrentCheck, useGetCurrentCheck } from '@/domain/attendance/query/attendanceCheck';
 import cx from 'classnames';
+import dayjs from 'dayjs';
+import QRCode from 'qrcode';
+
+const QR_CANVAS_ID = 'qr_canvas';
 
 export default function QRContents() {
   // state
   const [selectType, setSelectType] = useState<AttendanceType>('CLOCK_IN');
+
+  // query
+  const { currentCheck } = useGetCurrentCheck();
+  const { generateCheck, isLoading } = useGenerateCurrentCheck();
+
+  // useEffect
+  useEffect(() => {
+    generateCheck({ type: 'QR', attendanceType: selectType });
+  }, [selectType]);
+
+  useEffect(() => {
+    async function createQRCode() {
+      const canvas = document.getElementById(QR_CANVAS_ID) as HTMLCanvasElement;
+
+      if (!canvas) {
+        return;
+      }
+
+      await QRCode.toCanvas(canvas, 'http://naver.com', {
+        width: 400,
+      });
+    }
+
+    createQRCode();
+  }, [currentCheck]);
 
   // handle
   const handleChangeSelectType = (type: AttendanceType) => {
@@ -30,6 +62,31 @@ export default function QRContents() {
           퇴근
         </button>
       </div>
+
+      {/* QR Code */}
+      {!isLoading && currentCheck && (
+        <div className="mt-10 flex flex-col items-center justify-center gap-3">
+          <div className="flex flex-col items-center justify-start gap-1">
+            <div className="flex items-center justify-start gap-3">
+              <div className="flex-none text-right">근무일 : </div>
+              <div className="text-left">
+                <span>{dayjs(currentCheck.workingDate).format('YYYY년 MM월 DD일')}</span>
+                <span className="ml-1">({getDaysOfWeek(dayjs(currentCheck.workingDate).day())})</span>
+              </div>
+            </div>
+            <div className="flex items-center justify-start gap-3">
+              <div className="flex-none text-right">생성일 : </div>
+              <div className="text-left">{dayjs(currentCheck.createdDate).format('YYYY-MM-DD HH:mm:ss')}</div>
+            </div>
+            <div className="flex items-center justify-start gap-3">
+              <div className="flex-none text-right">만료일 : </div>
+              <div className="text-left">{dayjs(currentCheck.expiredDate).format('YYYY-MM-DD HH:mm:ss')}</div>
+            </div>
+          </div>
+
+          <canvas id={QR_CANVAS_ID} className="mt-5 w-full" />
+        </div>
+      )}
     </div>
   );
 }
