@@ -1,11 +1,25 @@
 import { record } from '@/domain/attendance/api/attendanceRecord';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+export function useGetResultAttendanceRecord({ checkId, userUniqueId }: { checkId: string; userUniqueId: string }) {
+  const { data, isLoading } = useQuery<AttendanceRecord>({
+    queryKey: ['record', 'attendance', checkId, userUniqueId],
+  });
+
+  return { result: data, isLoading };
+}
 
 export function useRecordAttendance() {
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationKey: ['record', 'attendance'],
     mutationFn: (req: RecordAttendanceRequest) => record(req),
-    onSuccess: () => {},
+    onSuccess: (data, { checkId, userUniqueId }) => {
+      console.log(data);
+
+      queryClient.setQueryData(['record', 'attendance', checkId, userUniqueId], data);
+    },
   });
 
   return { record: mutate, isLoading: isPending };
