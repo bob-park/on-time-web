@@ -69,8 +69,13 @@ export default function WorkingTimeView() {
 
       {/* working time date */}
       <div className="flex flex-row items-center justify-center gap-3 font-semibold">
+        {/* 오늘 */}
+        <button className="btn btn-neutral" onClick={handleTodayClick}>
+          오늘
+        </button>
+
         {/* 저번주 */}
-        <button className="btn" onClick={handlePrevWeekClick}>
+        <button className="btn btn-neutral" onClick={handlePrevWeekClick}>
           <IoIosArrowBack className="26 h-6" />
           저번주
         </button>
@@ -83,14 +88,9 @@ export default function WorkingTimeView() {
         </div>
 
         {/* 다음주 */}
-        <button className="btn" onClick={handleNextWeekClick}>
+        <button className="btn btn-neutral" onClick={handleNextWeekClick}>
           다음주
           <IoIosArrowForward className="26 h-6" />
-        </button>
-
-        {/* 오늘 */}
-        <button className="btn" onClick={handleTodayClick}>
-          오늘
         </button>
       </div>
     </div>

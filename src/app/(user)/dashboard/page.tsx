@@ -14,9 +14,11 @@ export default function DashboardPage() {
 
       <div className="mt-10 w-full">
         <WorkingTimeProvider>
-          <div className="flex w-full flex-col items-center justify-center gap-1">
+          <div className="flex w-full max-w-[860px] flex-col items-center justify-center gap-1">
             <WorkingTimeView />
-            <WorkingRecordContents />
+            <div className="w-full">
+              <WorkingRecordContents />
+            </div>
           </div>
         </WorkingTimeProvider>
       </div>

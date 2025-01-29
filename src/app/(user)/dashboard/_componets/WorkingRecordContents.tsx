@@ -50,6 +50,8 @@ function WorkingRecordItems({
   status,
   dayOffType,
 }: WorkingRecordItemsProps) {
+  const workDurations = clockInTime && clockOutTime && getDuration(clockInTime, clockOutTime);
+
   return (
     <div className="flex h-14 w-full flex-row items-center justify-center gap-1 rounded-xl text-center duration-150 hover:bg-base-200">
       <span className="w-8 flex-none">
@@ -71,9 +73,7 @@ function WorkingRecordItems({
       <span className="w-12 flex-none">1시간</span>
       <span className="w-16 flex-none">0분</span>
       <span className="w-28 flex-none">
-        {clockInTime &&
-          clockOutTime &&
-          parseTimeFormat(getDuration(clockInTime, clockOutTime) - (dayOffType ? 0 : ONE_HOUR))}
+        {workDurations && parseTimeFormat(workDurations - (workDurations > ONE_HOUR * 4 ? ONE_HOUR : 0))}
       </span>
     </div>
   );
@@ -125,7 +125,7 @@ export default function WorkingRecordContents() {
   const dataList = getDates(selectDate, attendanceRecords);
 
   return (
-    <div className="mt-5 flex w-full max-w-[860px] flex-col items-center justify-center gap-1">
+    <div className="mt-5 flex w-full flex-col items-center justify-center gap-1">
       {/* header */}
       <WorkingRecordHeaders />
 
