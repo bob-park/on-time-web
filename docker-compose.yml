@@ -1,0 +1,14 @@
+services:
+  web:
+    container_name: on-time-web
+    image: ghcr.io/bob-park/on-time-web
+    privileged: true
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+      args:
+        - GITHUB_NPM_AUTH_TOKEN=${GITHUB_NPM_AUTH_TOKEN}
+      x-bake:
+        platforms:
+          - linux/amd64
+          - linux/arm64

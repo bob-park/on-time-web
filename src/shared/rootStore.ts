@@ -1,4 +1,4 @@
-import createCounterSlice from '@/domain/counter/store/slice';
+import createUserSlice from '@/domain/user/store/slice';
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
@@ -7,7 +7,7 @@ export const useStore = create<BoundState>()(
   devtools(
     persist(
       immer((...a) => ({
-        ...createCounterSlice(...a),
+        ...createUserSlice(...a),
       })),
       {
         name: 'on-time-web',
@@ -17,4 +17,4 @@ export const useStore = create<BoundState>()(
   ),
 );
 
-export type BoundState = CounterState;
+export type BoundState = UserState;
