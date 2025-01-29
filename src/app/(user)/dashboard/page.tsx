@@ -1,5 +1,6 @@
-import WorkingTimeProvider from '@/app/(user)/dashboard/_componets/WorkingTimeProvider';
-import WorkingTimeView from '@/app/(user)/dashboard/_componets/WorkingTimeView';
+import WorkingRecordContents from './_componets/WorkingRecordContents';
+import WorkingTimeProvider from './_componets/WorkingTimeProvider';
+import WorkingTimeView from './_componets/WorkingTimeView';
 
 export default function DashboardPage() {
   return (
@@ -10,9 +11,13 @@ export default function DashboardPage() {
       </div>
 
       {/* contents */}
+
       <div className="mt-10 w-full">
         <WorkingTimeProvider>
-          <WorkingTimeView />
+          <div className="flex w-full flex-col items-center justify-center gap-1">
+            <WorkingTimeView />
+            <WorkingRecordContents />
+          </div>
         </WorkingTimeProvider>
       </div>
     </div>

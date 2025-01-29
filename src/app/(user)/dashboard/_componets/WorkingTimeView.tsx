@@ -4,11 +4,11 @@ import { useContext } from 'react';
 
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
-import { WorkingTimeContext, WorkingTimeViewType } from '@/app/(user)/dashboard/_componets/WorkingTimeProvider';
-
 import { getDaysOfWeek, getWeekStartDate } from '@/utils/parse';
 
 import dayjs from 'dayjs';
+
+import { WorkingTimeContext, WorkingTimeViewType } from './WorkingTimeProvider';
 
 export default function WorkingTimeView() {
   // context
@@ -36,7 +36,7 @@ export default function WorkingTimeView() {
   };
 
   return (
-    <div className="flex flex-row items-center justify-between gap-3">
+    <div className="flex w-full flex-row items-center justify-between gap-3">
       {/* working time view */}
       <div className="">
         <div className="join join-horizontal">
@@ -77,9 +77,9 @@ export default function WorkingTimeView() {
 
         {/* date */}
         <div className="flex flex-row items-center justify-between gap-1">
-          <span className="">{`${dayjs(selectDate.startDate).format('YYYY.MM.DD')}(${getDaysOfWeek(dayjs(selectDate.startDate).day())})`}</span>
+          <span className="">{`${dayjs(selectDate.startDate).format('YYYY.MM.DD')} (${getDaysOfWeek(dayjs(selectDate.startDate).day())})`}</span>
           <span className=""> - </span>
-          <span className="">{`${dayjs(selectDate.endDate).format('YYYY.MM.DD')}(${getDaysOfWeek(dayjs(selectDate.endDate).day())})`}</span>
+          <span className="">{`${dayjs(selectDate.endDate).format('YYYY.MM.DD')} (${getDaysOfWeek(dayjs(selectDate.endDate).day())})`}</span>
         </div>
 
         {/* 다음주 */}

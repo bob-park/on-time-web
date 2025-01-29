@@ -1,4 +1,4 @@
-import { record } from '@/domain/attendance/api/attendanceRecord';
+import { getAllRecords, record } from '@/domain/attendance/api/attendanceRecord';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export function useGetResultAttendanceRecord({ checkId, userUniqueId }: { checkId: string; userUniqueId: string }) {
@@ -23,4 +23,13 @@ export function useRecordAttendance() {
   });
 
   return { record: mutate, isLoading: isPending };
+}
+
+export function useGetAttendanceRecord(req: GetAttendanceRecordRequest) {
+  const { data, isLoading } = useQuery<AttendanceRecord[]>({
+    queryKey: ['record', 'attendance', req],
+    queryFn: () => getAllRecords(req),
+  });
+
+  return { attendanceRecords: data || [], isLoading };
 }

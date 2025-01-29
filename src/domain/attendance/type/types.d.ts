@@ -1,7 +1,7 @@
 type AttendanceType = 'CLOCK_IN' | 'CLOCK_OUT'
 type AttendanceCheckType = 'QR' | 'GPS' | 'WIFI';
 type AttendanceStatus = 'WAITING' | 'SUCCESS' | 'WARNING';
-type DayOffType = 'DAY_OFF' | 'HALF_DAY_OFF';
+type DayOffType = 'DAY_OFF' | 'AM_HALF_DAY_OFF' | PM_HALF_DAY_OFF;
 
 /*
  * attendance check
@@ -46,4 +46,10 @@ interface AttendanceRecord {
   createdBy: string;
   lastModifiedDate?: Date;
   lastModifiedBy?: string;
+}
+
+type GetAttendanceRecordRequest = {
+  startDate: string;
+  endDate: string;
+  userUniqueId: string;
 }
