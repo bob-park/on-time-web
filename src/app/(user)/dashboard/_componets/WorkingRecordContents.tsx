@@ -2,7 +2,7 @@
 
 import { useContext } from 'react';
 
-import { FaCheckCircle, FaThumbsUp } from 'react-icons/fa';
+import { FaCheckCircle } from 'react-icons/fa';
 import { RiErrorWarningFill } from 'react-icons/ri';
 
 import { useStore } from '@/shared/rootStore';
