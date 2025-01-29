@@ -34,7 +34,7 @@ export default function NavMenu({ isManager }: { isManager: boolean }) {
       {/* menu list */}
       <MenuList>
         {/* general */}
-        <MenuItem href="/" active={segments.length === 0}>
+        <MenuItem href="/dashboard" active={segments.includes('dashboard')}>
           <RiDashboardFill className="inline-block h-6 w-6" />
           대시보드
         </MenuItem>
