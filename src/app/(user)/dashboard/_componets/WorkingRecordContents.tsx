@@ -7,15 +7,23 @@ import { RiErrorWarningFill } from 'react-icons/ri';
 
 import { useStore } from '@/shared/rootStore';
 
-import { getDaysOfWeek, getDuration, parseTimeFormat } from '@/utils/parse';
+import { getDaysOfWeek, getDuration } from '@/utils/parse';
 
 import { useGetAttendanceRecord } from '@/domain/attendance/query/AttendanceRecord';
 import cx from 'classnames';
 import dayjs from 'dayjs';
+import { padStart } from 'lodash';
 
 import { WorkingTimeContext } from './WorkingTimeProvider';
 
 const ONE_HOUR = 3_600;
+
+function parseTimeFormat(seconds: number): string {
+  const min = Math.floor((seconds / 60) % 60);
+  const hours = Math.floor(seconds / 3_600);
+
+  return `${hours}시간 ${padStart(min + '', 2, '0')}분`;
+}
 
 function WorkingRecordHeaders() {
   return (
@@ -67,13 +75,13 @@ const WorkingRecordItems = ({
         {`${dayjs(date).format('YYYY.MM.DD')} (${getDaysOfWeek(dayjs(date).day())})`}
       </span>
       <span className="w-12 flex-none font-semibold">{[0, 6].includes(dayjs(date).day()) ? '휴일' : '업무'}</span>
-      <span className="w-28 flex-none">{clockInTime && dayjs(clockInTime).format('HH:mm:ss')}</span>
-      <span className="w-28 flex-none">{leaveWorkAt && dayjs(leaveWorkAt).format('HH:mm:ss')}</span>
-      <span className="w-28 flex-none">{clockOutTime && dayjs(clockOutTime).format('HH:mm:ss')}</span>
-      <span className="w-12 flex-none">1시간</span>
+      <span className="w-28 flex-none">{clockInTime && dayjs(clockInTime).format('HH:mm')}</span>
+      <span className="w-28 flex-none">{leaveWorkAt && dayjs(leaveWorkAt).format('HH:mm')}</span>
+      <span className="w-28 flex-none">{clockOutTime && dayjs(clockOutTime).format('HH:mm')}</span>
+      <span className="w-12 flex-none">{workDurations && workDurations > ONE_HOUR * 8 ? 1 : 0}시간</span>
       <span className="w-16 flex-none">0분</span>
       <span className="w-28 flex-none">
-        {workDurations && parseTimeFormat(workDurations - (workDurations > ONE_HOUR * 4 ? ONE_HOUR : 0))}
+        {workDurations && parseTimeFormat(workDurations - (workDurations > ONE_HOUR * 8 ? ONE_HOUR : 0))}
       </span>
     </div>
   );
@@ -123,7 +131,7 @@ const WorkTimeBarChart = ({ totalHours, currentHours, color = 'gray', textBlur =
         style={{ backgroundColor: color, width: `${(currentHours / totalHours) * 100}%` }}
       ></div>
 
-      <div className={cx('flex-none font-bold', textBlur && 'text-gray-500')}>{currentHours} 시간</div>
+      <div className={cx('flex-none font-bold', textBlur && 'text-gray-500')}>{currentHours}시간</div>
     </div>
   );
 };
@@ -148,34 +156,36 @@ export default function WorkingRecordContents() {
     <div className="mt-5 flex w-full flex-col items-center justify-center gap-1">
       {/* 근로 시간 */}
       <div className="my-6 w-full">
-        <div className="flex flex-col items-center justify-start gap-1">
+        <div className="flex flex-col items-center justify-start">
           <div className="w-full">
             <h3 className="text-lg font-semibold">근로 시간</h3>
           </div>
 
-          <div className="flex h-16 w-full flex-row items-center justify-start gap-2">
+          <div className="flex h-14 w-full flex-row items-center justify-start gap-2">
             <div className="w-24 flex-none text-right font-semibold">누적 근로 시간</div>
-            <div className="w-1/2">
+            <div className="w-1/2 border-l-[1px] pl-2">
               <WorkTimeBarChart
                 color="dodgerblue"
                 textBlur={false}
                 totalHours={40}
                 currentHours={Math.floor(
                   attendanceRecords
-                    .map(
-                      (item) =>
+                    .map((item) => {
+                      const duration =
                         (item.clockInTime && item.clockOutTime && getDuration(item.clockInTime, item.clockOutTime)) ||
-                        0,
-                    )
+                        0;
+
+                      return duration - (duration > ONE_HOUR * 8 ? ONE_HOUR : 0);
+                    })
                     .reduce((sum, value) => sum + value, 0) / 3_600,
                 )}
               />
             </div>
           </div>
 
-          <div className="flex h-16 w-full flex-row items-center justify-start gap-2">
+          <div className="flex h-14 w-full flex-row items-center justify-start gap-2">
             <div className="w-24 flex-none text-right font-semibold">예상 근로 시간</div>
-            <div className="w-1/2">
+            <div className="w-1/2 border-l-[1px] pl-2">
               <WorkTimeBarChart totalHours={40} currentHours={40} />
             </div>
           </div>
