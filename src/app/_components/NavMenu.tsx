@@ -30,7 +30,7 @@ export default function NavMenu({ isManager }: { isManager: boolean }) {
   const segments = useSelectedLayoutSegments();
 
   return (
-    <div className="sticky flex h-[calc(100vh-80px)] select-none gap-2 bg-blue-900 p-6 text-white shadow-2xl">
+    <div className="sticky top-[80px] flex h-[calc(100vh-80px)] select-none gap-2 bg-blue-900 p-6 text-white shadow-2xl">
       {/* menu list */}
       <MenuList>
         {/* general */}

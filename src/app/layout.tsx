@@ -45,13 +45,13 @@ export default async function RootLayout({
           <script src="https://unpkg.com/react-scan/dist/auto.global.js" />
         </head>
       )}
-      <body className="min-w-[660px]">
+      <body className="min-w-[1060px]">
         {/* header */}
         <Header user={user} />
 
         <div className="flex">
           {/* nav menu*/}
-          <div className="relative w-52 flex-none">
+          <div className="w-52 flex-none">
             <NavMenu isManager={ALLOW_ROLES.includes(user.role.type)} />
           </div>
 
