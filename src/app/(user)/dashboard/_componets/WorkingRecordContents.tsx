@@ -42,14 +42,14 @@ interface WorkingRecordItemsProps {
   dayOffType?: DayOffType;
 }
 
-function WorkingRecordItems({
+const WorkingRecordItems = ({
   date,
   clockInTime,
   leaveWorkAt,
   clockOutTime,
   status,
   dayOffType,
-}: WorkingRecordItemsProps) {
+}: WorkingRecordItemsProps) => {
   const workDurations = clockInTime && clockOutTime && getDuration(clockInTime, clockOutTime);
 
   return (
@@ -77,7 +77,7 @@ function WorkingRecordItems({
       </span>
     </div>
   );
-}
+};
 
 function getDates(selectDate: { startDate: Date; endDate: Date }, attendanceRecords: AttendanceRecord[]) {
   const result = new Array<WorkingRecordItemsProps>();
@@ -108,6 +108,26 @@ function getDates(selectDate: { startDate: Date; endDate: Date }, attendanceReco
   return result;
 }
 
+interface WorkTimeBarCharProps {
+  totalHours: number;
+  currentHours: number;
+  color?: string;
+  textBlur?: boolean;
+}
+
+const WorkTimeBarChart = ({ totalHours, currentHours, color = 'gray', textBlur = true }: WorkTimeBarCharProps) => {
+  return (
+    <div className="flex flex-row items-center justify-start gap-2">
+      <div
+        className={cx('h-8 flex-none rounded-2xl')}
+        style={{ backgroundColor: color, width: `${(currentHours / totalHours) * 100}%` }}
+      ></div>
+
+      <div className={cx('flex-none font-bold', textBlur && 'text-gray-500')}>{currentHours} 시간</div>
+    </div>
+  );
+};
+
 export default function WorkingRecordContents() {
   // context
   const { selectDate } = useContext(WorkingTimeContext);
@@ -126,6 +146,42 @@ export default function WorkingRecordContents() {
 
   return (
     <div className="mt-5 flex w-full flex-col items-center justify-center gap-1">
+      {/* 근로 시간 */}
+      <div className="my-6 w-full">
+        <div className="flex flex-col items-center justify-start gap-1">
+          <div className="w-full">
+            <h3 className="text-lg font-semibold">근로 시간</h3>
+          </div>
+
+          <div className="flex h-16 w-full flex-row items-center justify-start gap-2">
+            <div className="w-24 flex-none text-right font-semibold">누적 근로 시간</div>
+            <div className="w-1/2">
+              <WorkTimeBarChart
+                color="dodgerblue"
+                textBlur={false}
+                totalHours={40}
+                currentHours={Math.floor(
+                  attendanceRecords
+                    .map(
+                      (item) =>
+                        (item.clockInTime && item.clockOutTime && getDuration(item.clockInTime, item.clockOutTime)) ||
+                        0,
+                    )
+                    .reduce((sum, value) => sum + value, 0) / 3_600,
+                )}
+              />
+            </div>
+          </div>
+
+          <div className="flex h-16 w-full flex-row items-center justify-start gap-2">
+            <div className="w-24 flex-none text-right font-semibold">예상 근로 시간</div>
+            <div className="w-1/2">
+              <WorkTimeBarChart totalHours={40} currentHours={40} />
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* header */}
       <WorkingRecordHeaders />
 

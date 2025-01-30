@@ -30,7 +30,7 @@ export default function Header({ user }: HeaderProps) {
   }, [user]);
 
   return (
-    <header className="sticky top-0 flex size-full flex-row items-center justify-between gap-3 border-b-[1px] bg-white bg-opacity-90 p-3 shadow-lg backdrop-blur">
+    <header className="sticky top-0 z-50 flex size-full flex-row items-center justify-between gap-3 border-b-[1px] bg-white bg-opacity-90 p-3 shadow-lg backdrop-blur">
       {/* content */}
       <div className="">
         <div className="flex flex-row items-center justify-between gap-1">
