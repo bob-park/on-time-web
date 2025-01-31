@@ -1,9 +1,12 @@
-import RedirectLastPageContents from './_components/RedirectLastPageContents';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
-export default function Home() {
-  return (
-    <div className="">
-      <RedirectLastPageContents />
-    </div>
-  );
+export default async function Home() {
+  const cookieStore = await cookies();
+
+  const lastPage = cookieStore.get('lastPage');
+
+  redirect(lastPage ? lastPage.value : '/dashboard');
+
+  return <div className=""></div>;
 }

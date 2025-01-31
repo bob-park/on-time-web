@@ -62,15 +62,11 @@ export default function QRContents() {
   }, [selectType]);
 
   useEffect(() => {
-    console.log(qrCanvasRef.current);
-
     if (!qrCanvasRef.current) {
       return;
     }
 
     qrCode?.append(qrCanvasRef.current);
-
-    console.log('created qr');
   }, [qrCode]);
 
   useEffect(() => {
