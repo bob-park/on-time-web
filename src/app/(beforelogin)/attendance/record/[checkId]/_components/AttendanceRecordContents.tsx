@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
+import { useResetLastPage, useSaveLastPage } from '@/app/_components/lastPage';
+
 import { useStore } from '@/shared/rootStore';
 
 import { getDaysOfWeek } from '@/utils/parse';
@@ -98,11 +100,23 @@ export default function AttendanceRecordContents({ checkId }: AttendanceRecordCo
   // store
   const currentUser = useStore((state) => state.currentUser);
 
+  // hooks
+  const saveLastPage = useSaveLastPage();
+  const resetLastPage = useResetLastPage();
+
   // query
   const { result } = useGetResultAttendanceRecord({ checkId, userUniqueId: currentUser?.uniqueId || '' });
   const { record, isLoading } = useRecordAttendance();
 
   // useEffect
+  useEffect(() => {
+    saveLastPage();
+
+    return () => {
+      resetLastPage();
+    };
+  }, []);
+
   useEffect(() => {
     if (!currentUser) {
       return;

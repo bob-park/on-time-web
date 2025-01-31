@@ -13,7 +13,7 @@ import { useStore } from '@/shared/rootStore';
 import UserAvatar from '@/domain/user/components/UserAvatar';
 
 interface HeaderProps {
-  user: User;
+  user?: User;
 }
 
 export default function Header({ user }: HeaderProps) {
@@ -40,7 +40,7 @@ export default function Header({ user }: HeaderProps) {
           </button>
 
           {/* logo */}
-          <Link className="btn btn-ghost" href="/dashboard">
+          <Link className="btn btn-ghost" href="/">
             <h2 className="select-none text-2xl font-bold text-sky-600 [text-shadow:_0_2px_4px_rgb(99_102_241_/_0.8)]">
               OnTime
             </h2>
@@ -52,18 +52,18 @@ export default function Header({ user }: HeaderProps) {
         {/* team + position */}
         <div className="select-none text-lg">
           <span className="text-gray-600">
-            <span className="font-semibold">{user.team.name}</span>
-            {user.team?.teamUsers && user.team.teamUsers[0].isLeader && <span>(팀장)</span>}
+            <span className="font-semibold">{user?.team.name}</span>
+            {user?.team?.teamUsers && user?.team.teamUsers[0].isLeader && <span>(팀장)</span>}
             <span> - </span>
-            <span> {user.position.name} </span>
+            <span> {user?.position.name} </span>
           </span>
-          <span className="font-bold">{user.username}</span>
+          <span className="font-bold">{user?.username}</span>
         </div>
 
         {/* avatar */}
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="m-1">
-            <UserAvatar alt={user.username} />
+            <UserAvatar alt={user?.username || 'username'} />
           </div>
           <ul tabIndex={0} className="menu dropdown-content z-[1] w-32 rounded-box bg-base-100 p-2 shadow">
             <li>
