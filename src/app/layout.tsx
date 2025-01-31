@@ -45,7 +45,7 @@ export default async function RootLayout({
           <script src="https://unpkg.com/react-scan/dist/auto.global.js" />
         </head>
       )}
-      <body className="min-w-[1060px]">
+      <body className="min-w-max">
         {/* header */}
         <Header user={user} />
 

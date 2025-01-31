@@ -24,7 +24,7 @@ export default async function AfterLoginLayout({ children }: { children: Readonl
   const user = await userResponse.json().then((res: User) => res);
 
   return (
-    <div className="flex">
+    <div className="flex min-w-[1060px]">
       {/* nav menu*/}
       <div className="w-52 flex-none">
         <NavMenu isManager={ALLOW_ROLES.includes(user.role.type)} />
