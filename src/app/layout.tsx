@@ -31,7 +31,9 @@ export default async function RootLayout({
       credentials: 'include',
     });
 
-    user = await userResponse.json().then((res: User) => res);
+    if (userResponse.ok) {
+      user = await userResponse.json().then((res: User) => res);
+    }
   } catch (err) {
     console.error(err);
   }

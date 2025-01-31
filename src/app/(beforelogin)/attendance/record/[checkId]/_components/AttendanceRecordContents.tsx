@@ -118,11 +118,7 @@ export default function AttendanceRecordContents({ checkId }: AttendanceRecordCo
   }, []);
 
   useEffect(() => {
-    if (!currentUser) {
-      return;
-    }
-
-    record({ checkId, userUniqueId: currentUser.uniqueId });
+    record({ checkId, userUniqueId: currentUser?.uniqueId || '' });
   }, [currentUser]);
 
   return (
