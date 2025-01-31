@@ -18,7 +18,7 @@ export default async function AfterLoginLayout({ children }: { children: Readonl
   });
 
   if (!userResponse.ok) {
-    redirect('/api/oauth2/authorization/keyflow-auth');
+    redirect(`${WEB_SERVICE_HOST}/oauth2/authorization/keyflow-auth`);
   }
 
   const user = await userResponse.json().then((res: User) => res);
