@@ -3,10 +3,10 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-import Header from '@/app/_components/Header';
-import NavMenu from '@/app/_components/NavMenu';
-import RQProvider from '@/app/_components/RQProvider';
-
+import Header from './_components/Header';
+import LastPageRecord from './_components/LastPageRecord';
+import NavMenu from './_components/NavMenu';
+import RQProvider from './_components/RQProvider';
 import './globals.css';
 
 const { WEB_SERVICE_HOST } = process.env;
@@ -46,6 +46,8 @@ export default async function RootLayout({
         </head>
       )}
       <body className="min-w-[1060px]">
+        <LastPageRecord />
+
         {/* header */}
         <Header user={user} />
 

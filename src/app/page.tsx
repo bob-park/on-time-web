@@ -1,7 +1,24 @@
-import { redirect } from 'next/navigation';
+'use client';
+
+import { useEffect } from 'react';
+
+import { useRouter } from 'next/navigation';
+
+import RedirectLastPageContents from './_components/RedirectLastPageContents';
 
 export default function Home() {
-  redirect('/dashboard');
+  // router
+  const router = useRouter();
 
-  return <div className="">main page 이다</div>;
+  // useEffect
+  useEffect(() => {
+    // router.push('/dashboard');
+  }, []);
+
+  return (
+    <div className="">
+      main page 이다
+      <RedirectLastPageContents />
+    </div>
+  );
 }

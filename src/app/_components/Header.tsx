@@ -40,7 +40,7 @@ export default function Header({ user }: HeaderProps) {
           </button>
 
           {/* logo */}
-          <Link className="btn btn-ghost" href="/">
+          <Link className="btn btn-ghost" href="/dashboard">
             <h2 className="select-none text-2xl font-bold text-sky-600 [text-shadow:_0_2px_4px_rgb(99_102_241_/_0.8)]">
               OnTime
             </h2>
