@@ -1,17 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { getDaysOfWeek } from '@/utils/parse';
 
 import { useGenerateCurrentCheck, useGetCurrentCheck } from '@/domain/attendance/query/attendanceCheck';
 import cx from 'classnames';
 import dayjs from 'dayjs';
-import QRCode from 'qrcode';
+import QRCodeStyling from 'qr-code-styling';
 
 const QR_CANVAS_ID = 'qr_canvas';
 
 export default function QRContents() {
+  // ref
+  const qrCanvasRef = useRef<HTMLDivElement>(null);
+
   // state
   const [selectType, setSelectType] = useState<AttendanceType>('CLOCK_IN');
 
@@ -20,6 +23,7 @@ export default function QRContents() {
   const { generateCheck, isLoading } = useGenerateCurrentCheck();
 
   // useEffect
+
   useEffect(() => {
     generateCheck({ type: 'QR', attendanceType: selectType });
   }, [selectType]);
@@ -29,25 +33,13 @@ export default function QRContents() {
       return;
     }
 
-    async function createQRCode() {
-      if (!currentCheck) {
-        return;
-      }
+    generateQrCode(currentCheck.id);
+  }, [currentCheck]);
 
-      const canvas = document.getElementById(QR_CANVAS_ID) as HTMLCanvasElement;
-
-      if (!canvas) {
-        return;
-      }
-
-      console.log(`${location.origin}/attendance/record/${currentCheck.id}`);
-
-      await QRCode.toCanvas(canvas, `${location.origin}/attendance/record/${currentCheck.id}`, {
-        width: 400,
-      });
+  useEffect(() => {
+    if (!currentCheck) {
+      return;
     }
-
-    createQRCode();
 
     const intervalId = setInterval(() => {
       if (dayjs(currentCheck.expiredDate).isBefore(dayjs())) {
@@ -63,6 +55,32 @@ export default function QRContents() {
   // handle
   const handleChangeSelectType = (type: AttendanceType) => {
     setSelectType(type);
+  };
+
+  const generateQrCode = (checkId: string) => {
+    if (!qrCanvasRef.current) {
+      return;
+    }
+
+    const url = `${location.origin}/attendance/record/${checkId}`;
+
+    const qrCode = new QRCodeStyling({
+      width: 300,
+      height: 300,
+      data: url,
+      image: '/malgn_logo.png',
+      dotsOptions: {
+        color: '#4267b2',
+        type: 'rounded',
+      },
+      imageOptions: {
+        crossOrigin: 'anonymous',
+      },
+    });
+
+    qrCode.append(qrCanvasRef.current);
+
+    console.log(url);
   };
 
   return (
@@ -110,7 +128,7 @@ export default function QRContents() {
             </div>
           </div>
 
-          <canvas id={QR_CANVAS_ID} className="mt-5 w-full" />
+          <div id={QR_CANVAS_ID} ref={qrCanvasRef} className="" />
         </div>
       )}
     </div>
