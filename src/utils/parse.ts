@@ -20,3 +20,9 @@ export function getWeekStartDate(date: Date): Date {
 export function getDuration(startDate: Date, endDate: Date): number {
   return Math.abs(dayjs(endDate).unix() - dayjs(startDate).unix());
 }
+
+export function round(value: number, loc: number): number {
+  const pow = Math.pow(10, loc);
+
+  return Math.round(value * pow) / pow;
+}

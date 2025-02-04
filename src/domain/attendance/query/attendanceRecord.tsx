@@ -12,7 +12,7 @@ export function useGetResultAttendanceRecord({ checkId, userUniqueId }: { checkI
 export function useRecordAttendance() {
   const queryClient = useQueryClient();
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, error } = useMutation({
     mutationKey: ['record', 'attendance'],
     mutationFn: (req: RecordAttendanceRequest) => record(req),
     onSuccess: (data, { checkId, userUniqueId }) => {
@@ -22,7 +22,7 @@ export function useRecordAttendance() {
     },
   });
 
-  return { record: mutate, isLoading: isPending };
+  return { record: mutate, isLoading: isPending, error };
 }
 
 export function useGetAttendanceRecord(req: GetAttendanceRecordRequest) {

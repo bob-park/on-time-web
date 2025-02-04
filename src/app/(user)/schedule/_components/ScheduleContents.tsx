@@ -8,7 +8,7 @@ import { IoIosTime } from 'react-icons/io';
 import { getDaysOfWeek } from '@/utils/parse';
 
 import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
-import { useGetAttendanceRecord } from '@/domain/attendance/query/AttendanceRecord';
+import { useGetAttendanceRecord } from '@/domain/attendance/query/attendanceRecord';
 import { useGetCurrentUser } from '@/domain/user/query/user';
 import cx from 'classnames';
 import dayjs from 'dayjs';

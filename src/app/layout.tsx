@@ -57,7 +57,7 @@ export default async function RootLayout({
 
             <div className="flex">
               {/* nav menu*/}
-              <div className="w-52 flex-none">
+              <div className="w-60 flex-none">
                 <NavMenu />
               </div>
 

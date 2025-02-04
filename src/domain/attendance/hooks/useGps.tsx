@@ -7,8 +7,8 @@ interface PositionAttribute {
   longitude: number;
 }
 
-export default function useGPS() {
-  const isSupport = !!navigator.geolocation;
+export default function useGps() {
+  const isSupport = typeof window !== 'undefined' && !!navigator.geolocation;
 
   const [position, setPosition] = useState<PositionAttribute>();
 

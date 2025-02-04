@@ -119,7 +119,6 @@ export default function QRContents() {
       )}
 
       {/* QR Code */}
-
       <div className="mt-10 flex flex-col items-center justify-center gap-3">
         <div className="flex flex-col items-center justify-start gap-1">
           {!isLoading && currentCheck && (

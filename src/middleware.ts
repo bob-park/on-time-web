@@ -12,8 +12,6 @@ export async function middleware(req: NextRequest) {
 
   const res = NextResponse.next();
 
-  console.log(isLogin);
-
   if (!isLogin) {
     res.cookies.set('lastPage', pathname);
   } else {

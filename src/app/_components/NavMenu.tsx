@@ -2,6 +2,7 @@
 
 import { IoQrCode } from 'react-icons/io5';
 import { RiCalendarScheduleFill, RiDashboardFill } from 'react-icons/ri';
+import { TbSubtask } from 'react-icons/tb';
 
 import Link from 'next/link';
 import { useSelectedLayoutSegments } from 'next/navigation';
@@ -10,6 +11,10 @@ import { useGetCurrentUser } from '@/domain/user/query/user';
 import cx from 'classnames';
 
 const ALLOW_ROLES = ['ROLE_ADMIN', 'ROLE_MANAGER'];
+
+function isActive(sources: string[], targets: string[]): boolean {
+  return targets.every((target) => sources.includes(target));
+}
 
 function MenuList({ children }: { children?: React.ReactNode }) {
   return <div className="flex w-full flex-col items-start justify-start gap-3 font-semibold">{children}</div>;
@@ -40,15 +45,19 @@ export default function NavMenu() {
       {/* menu list */}
       <MenuList>
         {/* general */}
-        <MenuItem href="/dashboard" active={segments.includes('dashboard')}>
+        <MenuItem href="/dashboard" active={isActive(segments, ['dashboard'])}>
           <RiDashboardFill className="inline-block h-6 w-6" />
           대시보드
         </MenuItem>
 
-        {/* general */}
-        <MenuItem href="/schedule" active={segments.includes('schedule')}>
+        <MenuItem href="/schedule" active={isActive(segments, ['schedule'])}>
           <RiCalendarScheduleFill className="inline-block h-6 w-6" />
           근무 일정
+        </MenuItem>
+
+        <MenuItem href="/attendance/record/gps" active={isActive(segments, ['attendance', 'record', 'gps'])}>
+          <TbSubtask className="inline-block h-6 w-6" />
+          근태 처리 (GPS)
         </MenuItem>
 
         {/* admin */}
@@ -58,7 +67,7 @@ export default function NavMenu() {
               <span className="text-sm font-normal text-gray-400">관리자</span>
             </div>
 
-            <MenuItem href="/qr" active={segments.includes('qr')}>
+            <MenuItem href="/qr" active={isActive(segments, ['qr'])}>
               <IoQrCode className="inline-block h-6 w-6" />
               QR 코드 생성
             </MenuItem>

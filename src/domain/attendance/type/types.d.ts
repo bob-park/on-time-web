@@ -25,7 +25,7 @@ interface CurrentAttendanceCheckRequest {
 
 
 /*
-* attendance record
+ * attendance record
  */
 interface RecordAttendanceRequest {
   checkId: string;
@@ -52,4 +52,19 @@ type GetAttendanceRecordRequest = {
   startDate: string;
   endDate: string;
   userUniqueId: string;
+}
+
+/*
+ * attendance gps
+ */
+interface AttendanceGps {
+  id: number;
+  name: string;
+  description?: string;
+  latitude: number;
+  longitude: number;
+  createdDate: Date;
+  createdBy: string;
+  lastModifiedDate?: Date;
+  lastModifiedBy?: string;
 }
