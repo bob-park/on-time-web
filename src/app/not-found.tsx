@@ -1,56 +1,22 @@
-'use client';
-
-import { useState } from 'react';
-
 import { TbArrowBack } from 'react-icons/tb';
 
 import Link from 'next/link';
 
-import cx from 'classnames';
-
-interface NotFoundTextProps {
-  children: React.ReactNode;
-  placeholder?: string;
-}
-
-function NotFoundItem({ children, placeholder }: NotFoundTextProps) {
-  const [hover, setHover] = useState<boolean>(false);
-
-  return (
-    <div
-      className="relative flex cursor-default select-none flex-col items-center justify-center text-9xl font-bold text-gray-400"
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-    >
-      <div
-        className={cx('rounded-2xl bg-white p-5 transition-all duration-500', {
-          '-translate-y-20 scale-110 text-black shadow-2xl': hover,
-        })}
-      >
-        {children}
-      </div>
-      {placeholder && (
-        <div className={cx('absolute bottom-0 -z-10')}>
-          <span className="text-lg">{placeholder}</span>
-        </div>
-      )}
-    </div>
-  );
-}
+import CardPageTitle from '@/app/_components/CardPageTitle';
 
 export default function NotFound() {
   return (
     <div className="flex size-full flex-col items-center justify-center gap-2">
       <div className="mt-36 flex cursor-default select-none flex-row items-center justify-center gap-4 text-9xl font-bold text-gray-400">
-        <NotFoundItem placeholder="Oops">
+        <CardPageTitle placeholder="Oops">
           <span>4</span>
-        </NotFoundItem>
-        <NotFoundItem placeholder="Not Here...">
+        </CardPageTitle>
+        <CardPageTitle placeholder="Not Here">
           <span>0</span>
-        </NotFoundItem>
-        <NotFoundItem placeholder="Sorry!!">
+        </CardPageTitle>
+        <CardPageTitle placeholder="Sorry">
           <span>4</span>
-        </NotFoundItem>
+        </CardPageTitle>
       </div>
 
       <div className="mt-5">

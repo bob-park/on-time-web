@@ -25,25 +25,18 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
 
-  const getCurrentUser = async () => {
-    const response = await fetch(`${WEB_SERVICE_HOST}/users/me`, {
-      method: 'get',
-      headers: {
-        Cookie: `JSESSIONID=${cookieStore.get('JSESSIONID')?.value || ''}`,
-      },
-      credentials: 'include',
-    });
-
-    if (!response.ok) {
-      redirect('/api/oauth2/authorization/keyflow-auth');
-    }
-
-    return response.json().then((res: User) => res);
-  };
-
-  const user = await getCurrentUser();
-
   const queryClient = new QueryClient();
+
+  const user = await fetch(`${WEB_SERVICE_HOST}/users/me`, {
+    method: 'get',
+    headers: {
+      Cookie: `JSESSIONID=${cookieStore.get('JSESSIONID')?.value || ''}`,
+    },
+    credentials: 'include',
+  })
+    .then((res) => res.json())
+    .then((res: User) => res)
+    .catch((err) => redirect('/api/oauth2/authorization/keyflow-auth'));
 
   queryClient.setQueryData<User>(['user', 'me'], user);
 
