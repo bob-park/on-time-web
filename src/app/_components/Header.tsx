@@ -24,7 +24,7 @@ export default function Header() {
   }, [currentUser]);
 
   return (
-    <header className="sticky top-0 z-50 flex size-full flex-row items-center justify-between gap-3 border-b-[1px] bg-white bg-opacity-90 p-3 shadow-lg backdrop-blur">
+    <header className="sticky left-0 top-0 z-50 flex w-screen flex-row items-center justify-between gap-3 border-b-[1px] bg-white bg-opacity-90 p-3 shadow-lg backdrop-blur">
       {/* content */}
       <div className="">
         <div className="flex flex-row items-center justify-between">
@@ -42,7 +42,7 @@ export default function Header() {
 
       <div className="flex flex-row items-center justify-center gap-3 pr-10">
         {/* team + position */}
-        <div className="select-none text-lg">
+        <div className="hidden select-none text-lg md:block">
           <span className="text-gray-600">
             <span className="font-semibold">{currentUser?.team.name}</span>
             {currentUser?.team.teamUsers && currentUser?.team.teamUsers[0].isLeader && <span>(팀장)</span>}

@@ -49,13 +49,13 @@ export default async function RootLayout({
           <script src="https://unpkg.com/react-scan/dist/auto.global.js" />
         </head>
       )}
-      <body className="min-w-max">
+      <body className="relative min-w-max">
         <RQProvider>
           <HydrationBoundary state={dehydratedState}>
             {/* header */}
             <Header />
 
-            <div className="flex min-w-[1060px]">
+            <div className="flex">
               {/* nav menu*/}
               <div className="w-52 flex-none">
                 <NavMenu />
