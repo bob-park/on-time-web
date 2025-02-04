@@ -26,7 +26,7 @@ export default function AttendanceRecordGpsContents() {
   const { gpsResult } = useGetAttendanceGps();
   const { currentCheck } = useGetCurrentCheck();
   const { generateCheck, isLoading } = useGenerateCurrentCheck();
-  const { record, isLoading: isRecording, error } = useRecordAttendance();
+  const { record, isLoading: isRecording } = useRecordAttendance();
 
   const { currentUser } = useGetCurrentUser();
   const { result } = useGetResultAttendanceRecord({

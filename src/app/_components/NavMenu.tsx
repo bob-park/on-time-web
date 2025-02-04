@@ -1,16 +1,12 @@
 'use client';
 
-import { IoQrCode } from 'react-icons/io5';
 import { RiCalendarScheduleFill, RiDashboardFill } from 'react-icons/ri';
 import { TbSubtask } from 'react-icons/tb';
 
 import Link from 'next/link';
 import { useSelectedLayoutSegments } from 'next/navigation';
 
-import { useGetCurrentUser } from '@/domain/user/query/user';
 import cx from 'classnames';
-
-const ALLOW_ROLES = ['ROLE_ADMIN', 'ROLE_MANAGER'];
 
 function isActive(sources: string[], targets: string[]): boolean {
   return targets.every((target) => sources.includes(target));
@@ -38,7 +34,6 @@ export default function NavMenu() {
   const segments = useSelectedLayoutSegments();
 
   // query
-  const { currentUser } = useGetCurrentUser();
 
   return (
     <div className="sticky top-[80px] flex h-[calc(100vh-80px)] select-none gap-2 bg-blue-900 p-6 text-white shadow-2xl">
@@ -61,18 +56,6 @@ export default function NavMenu() {
         </MenuItem>
 
         {/* admin */}
-        {ALLOW_ROLES.includes(currentUser?.role.type || '') && (
-          <>
-            <div className="mt-10">
-              <span className="text-sm font-normal text-gray-400">관리자</span>
-            </div>
-
-            <MenuItem href="/qr" active={isActive(segments, ['qr'])}>
-              <IoQrCode className="inline-block h-6 w-6" />
-              QR 코드 생성
-            </MenuItem>
-          </>
-        )}
       </MenuList>
     </div>
   );
