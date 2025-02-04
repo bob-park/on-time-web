@@ -6,7 +6,10 @@ import { RiDashboardFill } from 'react-icons/ri';
 import Link from 'next/link';
 import { useSelectedLayoutSegments } from 'next/navigation';
 
+import { useGetCurrentUser } from '@/domain/user/query/user';
 import cx from 'classnames';
+
+const ALLOW_ROLES = ['ROLE_ADMIN', 'ROLE_MANAGER'];
 
 function MenuList({ children }: { children?: React.ReactNode }) {
   return <div className="flex w-full flex-col items-start justify-start gap-3 font-semibold">{children}</div>;
@@ -26,8 +29,11 @@ function MenuItem({ children, href, active }: MenuItemProps) {
   );
 }
 
-export default function NavMenu({ isManager }: { isManager: boolean }) {
+export default function NavMenu() {
   const segments = useSelectedLayoutSegments();
+
+  // query
+  const { currentUser } = useGetCurrentUser();
 
   return (
     <div className="sticky top-[80px] flex h-[calc(100vh-80px)] select-none gap-2 bg-blue-900 p-6 text-white shadow-2xl">
@@ -40,7 +46,7 @@ export default function NavMenu({ isManager }: { isManager: boolean }) {
         </MenuItem>
 
         {/* admin */}
-        {isManager && (
+        {ALLOW_ROLES.includes(currentUser?.role.type || '') && (
           <>
             <div className="mt-10">
               <span className="text-sm font-normal text-gray-400">관리자</span>

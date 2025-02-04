@@ -4,11 +4,10 @@ import { useEffect } from 'react';
 
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
-import { useStore } from '@/shared/rootStore';
-
 import { getDaysOfWeek } from '@/utils/parse';
 
 import { useGetResultAttendanceRecord, useRecordAttendance } from '@/domain/attendance/query/AttendanceRecord';
+import { useGetCurrentUser } from '@/domain/user/query/user';
 import cx from 'classnames';
 import dayjs from 'dayjs';
 
@@ -95,10 +94,8 @@ interface AttendanceRecordContentsProps {
 }
 
 export default function AttendanceRecordContents({ checkId }: AttendanceRecordContentsProps) {
-  // store
-  const currentUser = useStore((state) => state.currentUser);
-
   // query
+  const { currentUser } = useGetCurrentUser();
   const { result } = useGetResultAttendanceRecord({ checkId, userUniqueId: currentUser?.uniqueId || '' });
   const { record, isLoading } = useRecordAttendance();
 
