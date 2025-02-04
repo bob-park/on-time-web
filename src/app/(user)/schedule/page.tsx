@@ -14,8 +14,18 @@ export default function SchedulePage() {
       {/* contents */}
       <div className="mt-10 w-full">
         <WorkingTimeProvider>
-          <WorkingTimeView />
-          <ScheduleContents />
+          <div className="flex size-full flex-row items-center justify-between gap-2">
+            <div className="">
+              <WorkingTimeView />
+            </div>
+
+            <div className="">
+              <button className="btn btn-primary">추가</button>
+            </div>
+          </div>
+          <div className="mt-10">
+            <ScheduleContents />
+          </div>
         </WorkingTimeProvider>
       </div>
     </div>

@@ -8,7 +8,7 @@ export default function DashboardPage() {
     <div className="flex size-full flex-col items-center justify-start gap-3">
       {/* title */}
       <div className="w-full">
-        <h2 className="text-2xl font-bold">대시 보드</h2>
+        <h2 className="text-2xl font-bold">근로 시간</h2>
       </div>
 
       {/* contents */}

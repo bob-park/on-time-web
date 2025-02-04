@@ -3,19 +3,21 @@
 import { useContext } from 'react';
 
 import { FaCheckCircle } from 'react-icons/fa';
+import { IoIosTime } from 'react-icons/io';
 import { RiErrorWarningFill } from 'react-icons/ri';
-
-import { useStore } from '@/shared/rootStore';
 
 import { getDaysOfWeek, getDuration } from '@/utils/parse';
 
 import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
 import { useGetAttendanceRecord } from '@/domain/attendance/query/AttendanceRecord';
+import { useGetCurrentUser } from '@/domain/user/query/user';
 import cx from 'classnames';
 import dayjs from 'dayjs';
 import { padStart } from 'lodash';
 
 const ONE_HOUR = 3_600;
+
+const DEFAULT_WEEKENDS = [0, 6];
 
 function parseTimeFormat(seconds: number): string {
   const min = Math.floor((seconds / 60) % 60);
@@ -62,6 +64,9 @@ const WorkingRecordItems = ({
   return (
     <div className="flex h-14 w-full flex-row items-center justify-center gap-1 rounded-xl text-center duration-150 hover:bg-base-200">
       <span className="w-8 flex-none">
+        {!DEFAULT_WEEKENDS.includes(dayjs(date).day()) && (!status || status === 'WAITING') && (
+          <IoIosTime className="size-6 text-sky-600" />
+        )}
         {status && <>{status === 'SUCCESS' && <FaCheckCircle className="h-6 w-6 text-green-600" />}</>}
         {status && <>{status === 'WARNING' && <RiErrorWarningFill className="h-6 w-6 text-red-600" />}</>}
       </span>
@@ -139,10 +144,8 @@ export default function WorkingRecordContents() {
   // context
   const { selectDate } = useContext(WorkingTimeContext);
 
-  // store
-  const currentUser = useStore((state) => state.currentUser);
-
   // query
+  const { currentUser } = useGetCurrentUser();
   const { attendanceRecords } = useGetAttendanceRecord({
     userUniqueId: currentUser?.uniqueId || '',
     startDate: dayjs(selectDate.startDate).format('YYYY-MM-DD'),
