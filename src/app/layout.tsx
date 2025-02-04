@@ -34,23 +34,20 @@ export default async function RootLayout({
       credentials: 'include',
     });
 
+    if (!response.ok) {
+      redirect('/api/oauth2/authorization/keyflow-auth');
+    }
+
     return response.json().then((res: User) => res);
   };
 
+  const user = await getCurrentUser();
+
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery<User>({
-    queryKey: ['user', 'me'],
-    queryFn: getCurrentUser,
-  });
+  queryClient.setQueryData<User>(['user', 'me'], user);
 
   const dehydratedState = dehydrate(queryClient);
-
-  const state = queryClient.getQueryState(['user', 'accessToken']);
-
-  if (state?.error) {
-    redirect('/api/oauth2/authorization/keyflow-auth');
-  }
 
   return (
     <html lang="en">
