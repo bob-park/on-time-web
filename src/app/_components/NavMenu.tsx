@@ -1,7 +1,7 @@
 'use client';
 
 import { IoQrCode } from 'react-icons/io5';
-import { RiDashboardFill } from 'react-icons/ri';
+import { RiCalendarScheduleFill, RiDashboardFill } from 'react-icons/ri';
 
 import Link from 'next/link';
 import { useSelectedLayoutSegments } from 'next/navigation';
@@ -43,6 +43,12 @@ export default function NavMenu() {
         <MenuItem href="/dashboard" active={segments.includes('dashboard')}>
           <RiDashboardFill className="inline-block h-6 w-6" />
           대시보드
+        </MenuItem>
+
+        {/* general */}
+        <MenuItem href="/schedule" active={segments.includes('schedule')}>
+          <RiCalendarScheduleFill className="inline-block h-6 w-6" />
+          근무 일정
         </MenuItem>
 
         {/* admin */}
