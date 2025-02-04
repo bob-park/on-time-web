@@ -8,8 +8,6 @@ import { IoLogOutOutline } from 'react-icons/io5';
 
 import Link from 'next/link';
 
-import { useStore } from '@/shared/rootStore';
-
 import UserAvatar from '@/domain/user/components/UserAvatar';
 import { useGetCurrentUser } from '@/domain/user/query/user';
 
@@ -18,16 +16,11 @@ export default function Header() {
 
   const { currentUser } = useGetCurrentUser();
 
-  // store
-  const updateCurrentUser = useStore((state) => state.updateCurrentUser);
-
   // useEffect
   useEffect(() => {
     if (!currentUser) {
       return;
     }
-
-    updateCurrentUser(currentUser);
   }, [currentUser]);
 
   return (
