@@ -1,7 +1,7 @@
 import WorkingTimeProvider from '@/domain/attendance/components/WorkingTimeProvider';
+import WorkingTimeView from '@/domain/attendance/components/WorkingTimeView';
 
 import WorkingRecordContents from './_componets/WorkingRecordContents';
-import WorkingTimeView from './_componets/WorkingTimeView';
 
 export default function DashboardPage() {
   return (
