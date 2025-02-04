@@ -35,9 +35,7 @@ export default function Header() {
 
           {/* logo */}
           <Link className="btn btn-ghost" href="/">
-            <h2 className="select-none text-2xl font-bold text-sky-600 [text-shadow:_0_2px_4px_rgb(99_102_241_/_0.8)]">
-              OnTime
-            </h2>
+            <h2 className="select-none text-2xl font-bold text-sky-600">OnTime</h2>
           </Link>
         </div>
       </div>

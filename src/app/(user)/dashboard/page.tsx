@@ -1,5 +1,6 @@
+import WorkingTimeProvider from '@/domain/attendance/components/WorkingTimeProvider';
+
 import WorkingRecordContents from './_componets/WorkingRecordContents';
-import WorkingTimeProvider from './_componets/WorkingTimeProvider';
 import WorkingTimeView from './_componets/WorkingTimeView';
 
 export default function DashboardPage() {
@@ -11,7 +12,6 @@ export default function DashboardPage() {
       </div>
 
       {/* contents */}
-
       <div className="mt-10 w-full">
         <WorkingTimeProvider>
           <div className="flex w-full max-w-[860px] flex-col items-center justify-center gap-1">

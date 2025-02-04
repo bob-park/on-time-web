@@ -6,9 +6,8 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 import { getDaysOfWeek, getWeekStartDate } from '@/utils/parse';
 
+import { WorkingTimeContext, WorkingTimeViewType } from '@/domain/attendance/components/WorkingTimeProvider';
 import dayjs from 'dayjs';
-
-import { WorkingTimeContext, WorkingTimeViewType } from './WorkingTimeProvider';
 
 export default function WorkingTimeView() {
   // context

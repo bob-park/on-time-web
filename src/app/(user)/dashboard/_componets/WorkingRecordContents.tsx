@@ -9,12 +9,11 @@ import { useStore } from '@/shared/rootStore';
 
 import { getDaysOfWeek, getDuration } from '@/utils/parse';
 
+import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
 import { useGetAttendanceRecord } from '@/domain/attendance/query/AttendanceRecord';
 import cx from 'classnames';
 import dayjs from 'dayjs';
 import { padStart } from 'lodash';
-
-import { WorkingTimeContext } from './WorkingTimeProvider';
 
 const ONE_HOUR = 3_600;
 
