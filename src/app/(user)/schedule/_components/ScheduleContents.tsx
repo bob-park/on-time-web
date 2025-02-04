@@ -140,7 +140,7 @@ const WorkingScheduleItem = ({ date, dayOffType, status, clockInTime, clockOutTi
   return (
     <div
       className={cx({ tooltip: clockIn && clockOut })}
-      data-tip={`${clockIn && dayjs(clockIn).format('HH:mm')} - ${clockOut && dayjs(clockOut).format('HH:mm')} ${(status === 'WAITING' && '(근무 예정)') || ''} `}
+      data-tip={`${clockIn && dayjs(clockIn).format('HH:mm')} - ${clockOut && dayjs(clockOut).format('HH:mm')} ${((!status || status === 'WAITING') && '(근무 예정)') || ''} `}
     >
       <div className="flex h-16 flex-row rounded-xl duration-150 hover:bg-base-200">
         {/* working dates */}
