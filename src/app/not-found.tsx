@@ -60,9 +60,9 @@ export default function NotFound() {
       <div className="mt-5">
         <p className="text-xl font-medium">
           아마도 페이지가
-          <span className="px-1 text-2xl font-bold text-gray-500">공중분해</span>
-          되었거나,
-          <span className="px-1 text-2xl font-bold text-gray-500">폭파</span>
+          <span className="px-1 text-2xl font-bold text-gray-500">💥부서지</span>
+          거나,
+          <span className="px-1 text-2xl font-bold text-gray-500">💣폭파</span>
           되었어요!!
         </p>
       </div>
