@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { FaCheckCircle } from 'react-icons/fa';
 
+import { isSameMarginOfError } from '@/utils/dataUtils';
 import { getDaysOfWeek, round } from '@/utils/parse';
 
 import useGps from '@/domain/attendance/hooks/useGps';
@@ -194,7 +195,10 @@ function isDiffLocation(gps?: AttendanceGps, current?: { latitude: number; longi
     longitude: round(current.longitude, 3),
   };
 
-  return location.latitude !== calculateCurrent.latitude || location.longitude !== calculateCurrent.longitude;
+  return (
+    !isSameMarginOfError(location.latitude, calculateCurrent.latitude, 0.001) ||
+    !isSameMarginOfError(location.longitude, calculateCurrent.longitude, 0.001)
+  );
 }
 
 interface AttendanceRecordResultProps {

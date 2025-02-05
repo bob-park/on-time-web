@@ -55,6 +55,7 @@ export default function ScheduleContents() {
           status={item.status}
           dayOffType={item.dayOffType}
           clockInTime={item.clockInTime}
+          leaveWorkAt={item.leaveWorkAt}
           clockOutTime={item.clockOutTime}
         />
       ))}
@@ -115,6 +116,7 @@ function getDates(selectDate: { startDate: Date; endDate: Date }, attendanceReco
         status: attendanceRecord.status,
         dayOffType: attendanceRecord.dayOffType,
         clockInTime: attendanceRecord.clockInTime,
+        leaveWorkAt: attendanceRecord.leaveWorkAt,
         clockOutTime: attendanceRecord.clockOutTime,
       });
     }
@@ -130,12 +132,21 @@ interface WorkingScheduleItemProps {
   dayOffType?: DayOffType;
   status?: AttendanceStatus;
   clockInTime?: Date;
+  leaveWorkAt?: Date;
   clockOutTime?: Date;
 }
 
-const WorkingScheduleItem = ({ date, dayOffType, status, clockInTime, clockOutTime }: WorkingScheduleItemProps) => {
+const WorkingScheduleItem = ({
+  date,
+  dayOffType,
+  status,
+  clockInTime,
+  leaveWorkAt,
+  clockOutTime,
+}: WorkingScheduleItemProps) => {
   const clockIn = clockInTime || (!DEFAULT_WEEKENDS.includes(dayjs(date).day()) && getTimelineTime(date, 9));
-  const clockOut = clockOutTime || (!DEFAULT_WEEKENDS.includes(dayjs(date).day()) && getTimelineTime(date, 18));
+  const clockOut =
+    clockOutTime || leaveWorkAt || (!DEFAULT_WEEKENDS.includes(dayjs(date).day()) && getTimelineTime(date, 18));
 
   return (
     <div
