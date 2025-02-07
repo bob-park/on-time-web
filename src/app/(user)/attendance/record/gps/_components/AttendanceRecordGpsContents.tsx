@@ -11,7 +11,6 @@ import useGps from '@/domain/attendance/hooks/useGps';
 import { useGenerateCurrentCheck, useGetCurrentCheck } from '@/domain/attendance/query/attendanceCheck';
 import { useGetAttendanceGps } from '@/domain/attendance/query/attendanceGps';
 import { useGetResultAttendanceRecord, useRecordAttendance } from '@/domain/attendance/query/attendanceRecord';
-import { useGetCurrentUser } from '@/domain/user/query/user';
 import cx from 'classnames';
 import dayjs from 'dayjs';
 
@@ -29,10 +28,8 @@ export default function AttendanceRecordGpsContents() {
   const { generateCheck, isLoading } = useGenerateCurrentCheck();
   const { record, isLoading: isRecording } = useRecordAttendance();
 
-  const { currentUser } = useGetCurrentUser();
   const { result } = useGetResultAttendanceRecord({
     checkId: currentCheck?.id || '',
-    userUniqueId: currentUser?.uniqueId || '',
   });
 
   // useEffect
@@ -63,7 +60,7 @@ export default function AttendanceRecordGpsContents() {
 
   // handle
   const handleRecord = () => {
-    record({ checkId: currentCheck?.id || '', userUniqueId: currentUser?.uniqueId || '' });
+    currentCheck && record({ checkId: currentCheck.id });
   };
 
   return (

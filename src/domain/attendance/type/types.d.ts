@@ -29,7 +29,6 @@ interface CurrentAttendanceCheckRequest {
  */
 interface RecordAttendanceRequest {
   checkId: string;
-  userUniqueId: string;
 }
 
 interface AttendanceRecord {
