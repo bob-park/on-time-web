@@ -96,12 +96,12 @@ interface AttendanceRecordContentsProps {
 export default function AttendanceRecordContents({ checkId }: AttendanceRecordContentsProps) {
   // query
   const { currentUser } = useGetCurrentUser();
-  const { result } = useGetResultAttendanceRecord({ checkId, userUniqueId: currentUser?.uniqueId || '' });
+  const { result } = useGetResultAttendanceRecord({ checkId });
   const { record, isLoading } = useRecordAttendance();
 
   // useEffect
   useEffect(() => {
-    record({ checkId, userUniqueId: currentUser?.uniqueId || '' });
+    record({ checkId });
   }, [currentUser]);
 
   return (

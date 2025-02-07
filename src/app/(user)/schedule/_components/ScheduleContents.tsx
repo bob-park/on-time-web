@@ -2,6 +2,7 @@
 
 import { useContext } from 'react';
 
+import { FaCheckCircle } from 'react-icons/fa';
 import { GiNightSleep } from 'react-icons/gi';
 import { IoIosWarning } from 'react-icons/io';
 import { IoIosTime } from 'react-icons/io';
@@ -169,6 +170,7 @@ const WorkingScheduleItem = ({
               dayOffType !== 'DAY_OFF' &&
               (!status || status === 'WAITING') && <IoIosTime className="size-6 text-sky-600" />}
             {status === 'WARNING' && <IoIosWarning className="size-6 text-yellow-400" />}
+            {status === 'SUCCESS' && <FaCheckCircle className="size-6 text-green-400" />}
           </div>
           <div
             className={cx('w-32 flex-none font-semibold', {
