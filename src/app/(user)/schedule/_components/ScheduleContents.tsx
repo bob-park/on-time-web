@@ -182,7 +182,7 @@ const WorkingScheduleItem = ({
       </div>
 
       {/* working times */}
-      <div className={cx('w-full', dayOffType === 'DAY_OFF' && 'invisible')}>
+      <div className={cx('w-[960px]', dayOffType === 'DAY_OFF' && 'invisible')}>
         <WorkingTimeItems date={date} status={status} clockIn={clockIn} clockOut={clockOut} />
       </div>
     </div>
