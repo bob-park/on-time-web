@@ -2,6 +2,7 @@
 
 import { useContext } from 'react';
 
+import { GiNightSleep } from 'react-icons/gi';
 import { IoIosWarning } from 'react-icons/io';
 import { IoIosTime } from 'react-icons/io';
 
@@ -12,10 +13,14 @@ import { useGetAttendanceRecord } from '@/domain/attendance/query/attendanceReco
 import { useGetCurrentUser } from '@/domain/user/query/user';
 import cx from 'classnames';
 import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
 import { padStart } from 'lodash';
+
+dayjs.extend(duration);
 
 const DEFAULT_TIMES_LIST = new Array(12).fill('*');
 const DEFAULT_WEEKENDS = [0, 6];
+const DEFAULT_FAMILY_DAY_WEEKS = [0, 2];
 
 export default function ScheduleContents() {
   const { selectDate } = useContext(WorkingTimeContext);
@@ -144,9 +149,14 @@ const WorkingScheduleItem = ({
   leaveWorkAt,
   clockOutTime,
 }: WorkingScheduleItemProps) => {
-  const clockIn = clockInTime || (!DEFAULT_WEEKENDS.includes(dayjs(date).day()) && getTimelineTime(date, 9));
+  const clockIn =
+    clockInTime ||
+    (!DEFAULT_WEEKENDS.includes(dayjs(date).day()) && getTimelineTime(date, dayOffType === 'AM_HALF_DAY_OFF' ? 14 : 9));
   const clockOut =
-    clockOutTime || leaveWorkAt || (!DEFAULT_WEEKENDS.includes(dayjs(date).day()) && getTimelineTime(date, 18));
+    clockOutTime ||
+    leaveWorkAt ||
+    (!DEFAULT_WEEKENDS.includes(dayjs(date).day()) &&
+      getTimelineTime(date, dayOffType === 'PM_HALF_DAY_OFF' || isFamilyDay(date) ? 14 : 18));
 
   return (
     <div className="flex h-16 w-full flex-row rounded-xl duration-150 hover:bg-base-200">
@@ -154,9 +164,10 @@ const WorkingScheduleItem = ({
       <div className="w-48 flex-none">
         <div className="flex size-full flex-row items-center justify-center border-r-[1px]">
           <div className="w-8 flex-none">
-            {!DEFAULT_WEEKENDS.includes(dayjs(date).day()) && (!status || status === 'WAITING') && (
-              <IoIosTime className="size-6 text-sky-600" />
-            )}
+            {dayOffType === 'DAY_OFF' && <GiNightSleep className="size-6 text-gray-500" />}
+            {!DEFAULT_WEEKENDS.includes(dayjs(date).day()) &&
+              dayOffType !== 'DAY_OFF' &&
+              (!status || status === 'WAITING') && <IoIosTime className="size-6 text-sky-600" />}
             {status === 'WARNING' && <IoIosWarning className="size-6 text-yellow-400" />}
           </div>
           <div
@@ -169,7 +180,7 @@ const WorkingScheduleItem = ({
       </div>
 
       {/* working times */}
-      <div className="w-full">
+      <div className={cx('w-full', dayOffType === 'DAY_OFF' && 'invisible')}>
         <WorkingTimeItems date={date} status={status} clockIn={clockIn} clockOut={clockOut} />
       </div>
     </div>
@@ -211,14 +222,6 @@ function getTimelineTime(date: Date, hours: number, minutes: number = 0): Date {
     .toDate();
 }
 
-function isActive({ clockIn, clockOut }: { clockIn?: Date | false; clockOut?: Date | false }, time: Date): boolean {
-  if (!clockIn || !clockOut) {
-    return false;
-  }
-
-  return dayjs(time).isAfter(clockIn) && dayjs(time).isBefore(clockOut);
-}
-
 function calculateTimeRatio(date: Date) {
   const total = 24 * 3_600;
   const current = dayjs(date);
@@ -226,4 +229,12 @@ function calculateTimeRatio(date: Date) {
   const seconds = current.hour() * 3_600 + current.minute() * 60;
 
   return Math.round((seconds / total) * 100);
+}
+
+function isFamilyDay(date: Date) {
+  const weeksOfMonth = dayjs.duration(dayjs(date).diff(dayjs(date).startOf('month'))).weeks();
+
+  console.log(weeksOfMonth);
+
+  return DEFAULT_FAMILY_DAY_WEEKS.includes(weeksOfMonth) && dayjs(date).day() === 5;
 }
