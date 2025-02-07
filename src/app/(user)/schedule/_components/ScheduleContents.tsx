@@ -149,33 +149,28 @@ const WorkingScheduleItem = ({
     clockOutTime || leaveWorkAt || (!DEFAULT_WEEKENDS.includes(dayjs(date).day()) && getTimelineTime(date, 18));
 
   return (
-    <div
-      className={cx({ tooltip: clockIn && clockOut })}
-      data-tip={`${clockIn && dayjs(clockIn).format('HH:mm')} - ${clockOut && dayjs(clockOut).format('HH:mm')} ${((!status || status === 'WAITING') && '(근무 예정)') || ''} `}
-    >
-      <div className="flex h-16 flex-row rounded-xl duration-150 hover:bg-base-200">
-        {/* working dates */}
-        <div className="w-48 flex-none">
-          <div className="flex size-full flex-row items-center justify-center border-r-[1px]">
-            <div className="w-8 flex-none">
-              {!DEFAULT_WEEKENDS.includes(dayjs(date).day()) && (!status || status === 'WAITING') && (
-                <IoIosTime className="size-6 text-sky-600" />
-              )}
-              {status === 'WARNING' && <IoIosWarning className="size-6 text-yellow-400" />}
-            </div>
-            <div
-              className={cx('w-32 flex-none font-semibold', {
-                'text-blue-600': dayjs(date).day() === 6,
-                'text-red-600': dayjs(date).day() === 0,
-              })}
-            >{`${dayjs(date).format('YYYY-MM-DD')} (${getDaysOfWeek(dayjs(date).day())})`}</div>
+    <div className="flex h-16 w-full flex-row rounded-xl duration-150 hover:bg-base-200">
+      {/* working dates */}
+      <div className="w-48 flex-none">
+        <div className="flex size-full flex-row items-center justify-center border-r-[1px]">
+          <div className="w-8 flex-none">
+            {!DEFAULT_WEEKENDS.includes(dayjs(date).day()) && (!status || status === 'WAITING') && (
+              <IoIosTime className="size-6 text-sky-600" />
+            )}
+            {status === 'WARNING' && <IoIosWarning className="size-6 text-yellow-400" />}
           </div>
+          <div
+            className={cx('w-32 flex-none font-semibold', {
+              'text-blue-600': dayjs(date).day() === 6,
+              'text-red-600': dayjs(date).day() === 0,
+            })}
+          >{`${dayjs(date).format('YYYY-MM-DD')} (${getDaysOfWeek(dayjs(date).day())})`}</div>
         </div>
+      </div>
 
-        {/* working times */}
-        <div className="">
-          <WorkingTimeItems date={date} status={status} clockIn={clockIn} clockOut={clockOut} />
-        </div>
+      {/* working times */}
+      <div className="w-full">
+        <WorkingTimeItems date={date} status={status} clockIn={clockIn} clockOut={clockOut} />
       </div>
     </div>
   );
@@ -190,18 +185,20 @@ interface WorkingTimeItemsProps {
 
 const WorkingTimeItems = ({ date, status, clockIn, clockOut }: WorkingTimeItemsProps) => {
   return (
-    <div className="flex size-full flex-row items-center">
-      <div className="flex size-full flex-col items-center">
-        <div className="flex size-full flex-row items-center justify-center">
-          {new Array(120).fill(' ').map((item, index) => (
-            <div key={`schedule-working-time-am-${index}`} className={cx('h-8 w-2')}>
-              {isActive({ clockIn, clockOut }, getTimelineTime(date, index / 5, (index % 5) * 10)) && (
-                <p className={cx('size-full', 'bg-blue-400')}></p>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
+    <div className="relative flex size-full flex-row items-center">
+      {(!DEFAULT_WEEKENDS.includes(dayjs(date).day()) || (!!status && status !== 'WAITING')) && (
+        <div
+          className={cx({ tooltip: clockIn && clockOut }, 'absolute top-1/4 h-8 w-32 rounded-xl', {
+            'bg-blue-300': status !== 'WARNING',
+            'bg-yellow-300': status === 'WARNING',
+          })}
+          data-tip={`${clockIn && dayjs(clockIn).format('HH:mm')} - ${clockOut && dayjs(clockOut).format('HH:mm')} ${((!status || status === 'WAITING') && '(근무 예정)') || ''} `}
+          style={{
+            left: `${calculateTimeRatio(clockIn || dayjs().hour(9).toDate())}%`,
+            width: `${calculateTimeRatio(clockOut || dayjs().hour(18).toDate()) - calculateTimeRatio(clockIn || dayjs().hour(9).toDate())}%`,
+          }}
+        ></div>
+      )}
     </div>
   );
 };
@@ -220,4 +217,13 @@ function isActive({ clockIn, clockOut }: { clockIn?: Date | false; clockOut?: Da
   }
 
   return dayjs(time).isAfter(clockIn) && dayjs(time).isBefore(clockOut);
+}
+
+function calculateTimeRatio(date: Date) {
+  const total = 24 * 3_600;
+  const current = dayjs(date);
+
+  const seconds = current.hour() * 3_600 + current.minute() * 60;
+
+  return Math.round((seconds / total) * 100);
 }
