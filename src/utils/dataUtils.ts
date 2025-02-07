@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 export function isSameMarginOfError(source: number, target: number, margin: number) {
   let pow = 0;
   let marginInt = margin;
@@ -13,4 +15,8 @@ export function isSameMarginOfError(source: number, target: number, margin: numb
   const targetInt = Math.round(target * Math.pow(10, pow));
 
   return targetInt >= sourceInt - marginInt && targetInt <= sourceInt + marginInt;
+}
+
+export function isIncludeTime({ from, to }: { from: Date; to: Date }, target: Date) {
+  return dayjs(from).isBefore(target) && dayjs(to).isAfter(target);
 }

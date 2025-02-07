@@ -6,6 +6,7 @@ import { FaCheckCircle } from 'react-icons/fa';
 import { IoIosTime } from 'react-icons/io';
 import { RiErrorWarningFill } from 'react-icons/ri';
 
+import { isIncludeTime } from '@/utils/dataUtils';
 import { getDaysOfWeek, getDuration } from '@/utils/parse';
 
 import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
@@ -82,10 +83,32 @@ const WorkingRecordItems = ({
       <span className="w-28 flex-none">{clockInTime && dayjs(clockInTime).format('HH:mm')}</span>
       <span className="w-28 flex-none">{leaveWorkAt && dayjs(leaveWorkAt).format('HH:mm')}</span>
       <span className="w-28 flex-none">{clockOutTime && dayjs(clockOutTime).format('HH:mm')}</span>
-      <span className="w-12 flex-none">{workDurations && workDurations > ONE_HOUR * 8 ? 1 : 0}시간</span>
+      <span className="w-12 flex-none">
+        {(workDurations && workDurations > ONE_HOUR * 8) ||
+        isIncludeTime(
+          { from: clockInTime || dayjs(date).hour(0).toDate(), to: clockOutTime || dayjs(date).hour(0).toDate() },
+          dayjs(date).hour(12).toDate(),
+        )
+          ? 1
+          : 0}
+        시간
+      </span>
       <span className="w-16 flex-none">0분</span>
       <span className="w-28 flex-none">
-        {workDurations && parseTimeFormat(workDurations - (workDurations > ONE_HOUR * 8 ? ONE_HOUR : 0))}
+        {workDurations &&
+          parseTimeFormat(
+            workDurations -
+              (workDurations > ONE_HOUR * 8 ||
+              isIncludeTime(
+                {
+                  from: clockInTime || dayjs(date).hour(0).toDate(),
+                  to: clockOutTime || dayjs(date).hour(0).toDate(),
+                },
+                dayjs(date).hour(12).toDate(),
+              )
+                ? ONE_HOUR
+                : 0),
+          )}
       </span>
     </div>
   );
@@ -177,7 +200,19 @@ export default function WorkingRecordContents() {
                         (item.clockInTime && item.clockOutTime && getDuration(item.clockInTime, item.clockOutTime)) ||
                         0;
 
-                      return duration - (duration > ONE_HOUR * 8 ? ONE_HOUR : 0);
+                      return (
+                        duration -
+                        (duration > ONE_HOUR * 8 ||
+                        isIncludeTime(
+                          {
+                            from: item.clockInTime || dayjs(item.workingDate).hour(0).toDate(),
+                            to: item.clockOutTime || dayjs(item.workingDate).hour(0).toDate(),
+                          },
+                          dayjs(item.workingDate).hour(12).toDate(),
+                        )
+                          ? ONE_HOUR
+                          : 0)
+                      );
                     })
                     .reduce((sum, value) => sum + value, 0) / 3_600,
                 )}
