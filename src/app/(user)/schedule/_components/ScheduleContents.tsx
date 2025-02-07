@@ -234,7 +234,5 @@ function calculateTimeRatio(date: Date) {
 function isFamilyDay(date: Date) {
   const weeksOfMonth = dayjs.duration(dayjs(date).diff(dayjs(date).startOf('month'))).weeks();
 
-  console.log(weeksOfMonth);
-
   return DEFAULT_FAMILY_DAY_WEEKS.includes(weeksOfMonth) && dayjs(date).day() === 5;
 }
