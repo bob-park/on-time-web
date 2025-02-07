@@ -76,7 +76,7 @@ const WorkingTimeHeaders = () => {
         </div>
         <div className="flex size-full flex-row">
           {DEFAULT_TIMES_LIST.map((item, index) => (
-            <div key={`schedule-working-time-am-${index}`} className="w-12 border-r-[1px] text-center">
+            <div key={`schedule-working-time-am-${index}`} className="w-10 border-r-[1px] text-center">
               <span>{padWorkingTime(index === 0 ? 12 : index)}</span>
             </div>
           ))}
@@ -88,7 +88,7 @@ const WorkingTimeHeaders = () => {
         </div>
         <div className="flex size-full flex-row">
           {DEFAULT_TIMES_LIST.map((item, index) => (
-            <div key={`schedule-working-time-pm-${index}`} className="w-12 border-r-[1px] text-center">
+            <div key={`schedule-working-time-pm-${index}`} className="w-10 border-r-[1px] text-center">
               <span>{padWorkingTime(index === 0 ? 12 : index)}</span>
             </div>
           ))}
@@ -193,41 +193,12 @@ const WorkingTimeItems = ({ date, status, clockIn, clockOut }: WorkingTimeItemsP
     <div className="flex size-full flex-row items-center">
       <div className="flex size-full flex-col items-center">
         <div className="flex size-full flex-row items-center justify-center">
-          {DEFAULT_TIMES_LIST.map((item, index) => (
-            <p
-              key={`schedule-working-time-am-${index}`}
-              className={cx(
-                'h-8 w-12',
-                {
-                  'bg-blue-400':
-                    status !== 'WARNING' && isActive({ clockIn, clockOut }, getTimelineTime(date, index + 1)),
-                },
-                {
-                  'bg-yellow-400':
-                    status === 'WARNING' && isActive({ clockIn, clockOut }, getTimelineTime(date, index + 1)),
-                },
+          {new Array(120).fill(' ').map((item, index) => (
+            <div key={`schedule-working-time-am-${index}`} className={cx('h-8 w-2')}>
+              {isActive({ clockIn, clockOut }, getTimelineTime(date, index / 5, (index % 5) * 10)) && (
+                <p className={cx('size-full', 'bg-blue-400')}></p>
               )}
-            ></p>
-          ))}
-        </div>
-      </div>
-      <div className="justify-cente flex size-full flex-col">
-        <div className="flex size-full flex-row items-center justify-center">
-          {DEFAULT_TIMES_LIST.map((item, index) => (
-            <p
-              key={`schedule-working-time-pm-${index}`}
-              className={cx(
-                'h-8 w-12',
-                {
-                  'bg-blue-400':
-                    status !== 'WARNING' && isActive({ clockIn, clockOut }, getTimelineTime(date, index + 12)),
-                },
-                {
-                  'bg-yellow-400':
-                    status === 'WARNING' && isActive({ clockIn, clockOut }, getTimelineTime(date, index + 12)),
-                },
-              )}
-            ></p>
+            </div>
           ))}
         </div>
       </div>
