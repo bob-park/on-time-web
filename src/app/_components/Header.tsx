@@ -24,7 +24,7 @@ export default function Header() {
   }, [currentUser]);
 
   return (
-    <header className="m-2 flex w-[95%] flex-row items-center justify-between gap-3 rounded-2xl bg-white bg-opacity-90 p-3 shadow-2xl backdrop-blur">
+    <header className="m-2 flex w-full flex-row items-center justify-between gap-3 rounded-2xl bg-white bg-opacity-90 p-3 shadow-lg backdrop-blur">
       {/* content */}
       <div className="">
         <div className="flex flex-row items-center justify-between">
@@ -40,7 +40,7 @@ export default function Header() {
         </div>
       </div>
 
-      <div className="flex flex-row items-center justify-center gap-3 pr-10">
+      <div className="flex flex-row items-center justify-center gap-3 border pr-10">
         {/* team + position */}
         <div className="hidden select-none text-lg md:block">
           <span className="text-gray-600">

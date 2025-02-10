@@ -53,18 +53,18 @@ export default async function RootLayout({
         <RQProvider>
           <HydrationBoundary state={dehydratedState}>
             {/* header */}
-            <div className="sticky left-0 top-1 z-50 flex w-full flex-row items-center justify-center">
+            <div className="sticky left-0 top-1 z-50 mx-5 flex w-full flex-row items-center justify-center">
               <Header />
             </div>
 
             <div className="flex">
               {/* nav menu*/}
-              <div className="w-60 flex-none">
+              <div className="sticky top-[120px] m-7 h-[calc(100vh-160px)] w-60 flex-none">
                 <NavMenu />
               </div>
 
               {/* content */}
-              <div className="mx-3 mt-6 size-full p-3">{children}</div>
+              <div className="mx-3 my-7 size-full p-3">{children}</div>
             </div>
           </HydrationBoundary>
         </RQProvider>

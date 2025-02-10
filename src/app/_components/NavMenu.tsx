@@ -24,7 +24,13 @@ interface MenuItemProps {
 
 function MenuItem({ children, href, active }: MenuItemProps) {
   return (
-    <Link className={cx('w-full rounded-xl p-3 duration-150 hover:bg-blue-950', { 'bg-blue-950': active })} href={href}>
+    <Link
+      className={cx('w-full rounded-xl p-3 duration-150 hover:bg-blue-950 hover:text-white', {
+        'bg-blue-950 text-white': active,
+        'text-black': active,
+      })}
+      href={href}
+    >
       <div className={cx('flex w-full flex-row items-center justify-start gap-2')}>{children}</div>
     </Link>
   );
@@ -36,7 +42,7 @@ export default function NavMenu() {
   // query
 
   return (
-    <div className="sticky top-[80px] flex h-[calc(100vh-80px)] select-none gap-2 bg-blue-900 p-6 text-white shadow-2xl">
+    <div className="flex size-full select-none gap-2 rounded-2xl border bg-white p-6 shadow-xl">
       {/* menu list */}
       <MenuList>
         {/* general */}
