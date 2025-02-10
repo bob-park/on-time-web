@@ -37,7 +37,7 @@ export default function ScheduleContents() {
   const dataList = getDates(selectDate, attendanceRecords);
 
   return (
-    <div className="flex select-none flex-col items-start justify-center gap-1 border-gray-300">
+    <div className="flex w-full select-none flex-col items-start justify-center gap-1 border-gray-300">
       {/* headers */}
       <div className="flex h-16 flex-row">
         {/* working dates */}
@@ -162,7 +162,7 @@ const WorkingScheduleItem = ({
 
   return (
     <div
-      className={cx('flex h-16 w-[1152px] flex-row rounded-xl duration-150 hover:bg-base-200', {
+      className={cx('flex h-16 w-full flex-row rounded-xl duration-150 hover:bg-base-200', {
         'bg-base-200': now.isSame(date),
       })}
     >

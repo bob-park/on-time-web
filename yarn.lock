@@ -4876,6 +4876,7 @@ __metadata:
     react-dom: "npm:^19.0.0"
     react-icons: "npm:^5.2.1"
     react-scan: "npm:^0.0.34"
+    react-tailwindcss-datepicker: "npm:^2.0.0"
     sharp: "npm:^0.33.4"
     tailwindcss: "npm:^3.4.1"
     timeago-react: "npm:^3.0.6"
@@ -5464,6 +5465,16 @@ __metadata:
   bin:
     react-scan: bin/cli.js
   checksum: 10c0/a94ceb370e356b1347708511403b0b0164343ad1a9b508ab7d3ee6edab2a3cc9327f17e7cbfb984340d465dfa6f698133263ffa4b796628a1f2d0be2a4121160
+  languageName: node
+  linkType: hard
+
+"react-tailwindcss-datepicker@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "react-tailwindcss-datepicker@npm:2.0.0"
+  peerDependencies:
+    dayjs: ^1.11.12
+    react: ^17.0.2 || ^18.2.0 || ^19.0.0
+  checksum: 10c0/6c8d0a8873d878677c7706bf89174a740fc0ba25b440159b06ca89efc2776a21767d961ee6133086e413e73978f1befc5534b70482b0acce5efa4ac981bb9a90
   languageName: node
   linkType: hard
 
