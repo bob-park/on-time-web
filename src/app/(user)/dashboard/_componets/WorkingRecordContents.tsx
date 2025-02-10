@@ -75,9 +75,9 @@ const WorkingRecordItems = ({
     >
       <span className="w-8 flex-none">
         {dayOffType === 'DAY_OFF' && <GiNightSleep className="size-6 text-gray-500" />}
-        {!DEFAULT_WEEKENDS.includes(dayjs(date).day()) && (!status || status === 'WAITING') && (
-          <IoIosTime className="size-6 text-sky-600" />
-        )}
+        {!DEFAULT_WEEKENDS.includes(dayjs(date).day()) &&
+          (!status || status === 'WAITING') &&
+          dayOffType !== 'DAY_OFF' && <IoIosTime className="size-6 text-sky-600" />}
         {status && <>{status === 'SUCCESS' && <FaCheckCircle className="h-6 w-6 text-green-500" />}</>}
         {status && <>{status === 'WARNING' && <RiErrorWarningFill className="h-6 w-6 text-red-500" />}</>}
       </span>
