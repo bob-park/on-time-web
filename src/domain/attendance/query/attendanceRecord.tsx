@@ -9,14 +9,16 @@ export function useGetResultAttendanceRecord({ checkId }: { checkId: string }) {
   return { result: data, isLoading };
 }
 
-export function useRecordAttendance() {
+export function useRecordAttendance(onSuccess?: () => void) {
   const queryClient = useQueryClient();
 
   const { mutate, isPending, error } = useMutation({
     mutationKey: ['record', 'attendance'],
     mutationFn: (req: RecordAttendanceRequest) => record(req),
     onSuccess: (data, { checkId }) => {
-      queryClient.setQueryData(['record', 'attendance', checkId], data);
+      queryClient.invalidateQueries({ queryKey: ['record', 'attendance'] });
+
+      onSuccess && onSuccess();
     },
   });
 
@@ -24,10 +26,10 @@ export function useRecordAttendance() {
 }
 
 export function useGetAttendanceRecord(req: GetAttendanceRecordRequest) {
-  const { data, isLoading } = useQuery<AttendanceRecord[]>({
+  const { data, isLoading, refetch } = useQuery<AttendanceRecord[]>({
     queryKey: ['record', 'attendance', req],
     queryFn: () => getAllRecords(req),
   });
 
-  return { attendanceRecords: data || [], isLoading };
+  return { attendanceRecords: data || [], isLoading, reloadRecord: refetch };
 }

@@ -10,9 +10,5 @@ export async function record(req: RecordAttendanceRequest) {
   return result;
 }
 export async function getAllRecords(req: GetAttendanceRecordRequest) {
-  const result = await api.get('/api/attendance/records', { searchParams: req }).json<AttendanceRecord[]>();
-
-  await delay(1_000);
-
-  return result;
+  return api.get('/api/attendance/records', { searchParams: req }).json<AttendanceRecord[]>();
 }

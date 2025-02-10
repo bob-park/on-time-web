@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { FaCheckCircle } from 'react-icons/fa';
+import { GiNightSleep } from 'react-icons/gi';
 
 import { isSameMarginOfError } from '@/utils/dataUtils';
 import { getDaysOfWeek, round } from '@/utils/parse';
@@ -30,8 +31,14 @@ export default function AttendanceRecordGpsContents() {
   const { gpsResult } = useGetAttendanceGps();
   const { currentCheck } = useGetCurrentCheck();
   const { generateCheck, isLoading } = useGenerateCurrentCheck();
-  const { record, error: recordErr } = useRecordAttendance();
-  const { attendanceRecords, isLoading: isRecording } = useGetAttendanceRecord({
+  const { record, error: recordErr } = useRecordAttendance(() => {
+    reloadRecord();
+  });
+  const {
+    attendanceRecords,
+    isLoading: isRecording,
+    reloadRecord,
+  } = useGetAttendanceRecord({
     userUniqueId: currentUser?.uniqueId || '',
     startDate: now.format('YYYY-MM-DD'),
     endDate: now.format('YYYY-MM-DD'),
@@ -217,7 +224,10 @@ function AttendanceRecordResult({ result, isError }: AttendanceRecordResultProps
           'text-red-600': isError,
         })}
       >
-        {(result || isError) && <FaCheckCircle className="h-24 w-24" />}
+        {result && !result.clockInTime && !isError && <GiNightSleep className="size-24 text-black" />}
+        {((result && (result.clockInTime || result.clockOutTime)) || isError) && (
+          <FaCheckCircle className="h-24 w-24" />
+        )}
         {isError && (
           <div className="mt-3">
             <h3 className="text-lg font-bold">무언가 잘못되었는디?</h3>
@@ -227,7 +237,7 @@ function AttendanceRecordResult({ result, isError }: AttendanceRecordResultProps
 
       {/* contents */}
       <div className="w-full">
-        {result && (
+        {result && result.clockInTime && (
           <div className="flex w-full flex-col items-center justify-start gap-2">
             {/* 출근 / 퇴근 */}
             <div className="">
