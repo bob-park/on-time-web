@@ -78,8 +78,8 @@ const WorkingRecordItems = ({
         {!DEFAULT_WEEKENDS.includes(dayjs(date).day()) && (!status || status === 'WAITING') && (
           <IoIosTime className="size-6 text-sky-600" />
         )}
-        {status && <>{status === 'SUCCESS' && <FaCheckCircle className="h-6 w-6 text-green-600" />}</>}
-        {status && <>{status === 'WARNING' && <RiErrorWarningFill className="h-6 w-6 text-red-600" />}</>}
+        {status && <>{status === 'SUCCESS' && <FaCheckCircle className="h-6 w-6 text-green-500" />}</>}
+        {status && <>{status === 'WARNING' && <RiErrorWarningFill className="h-6 w-6 text-red-500" />}</>}
       </span>
       <span
         className={cx('w-32 flex-none font-semibold', {

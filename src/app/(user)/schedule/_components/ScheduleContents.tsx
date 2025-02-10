@@ -174,8 +174,8 @@ const WorkingScheduleItem = ({
             {!DEFAULT_WEEKENDS.includes(dayjs(date).day()) &&
               dayOffType !== 'DAY_OFF' &&
               (!status || status === 'WAITING') && <IoIosTime className="size-6 text-sky-600" />}
-            {status === 'WARNING' && <IoIosWarning className="size-6 text-yellow-400" />}
-            {status === 'SUCCESS' && <FaCheckCircle className="size-6 text-green-400" />}
+            {status === 'WARNING' && <IoIosWarning className="size-6 text-yellow-500" />}
+            {status === 'SUCCESS' && <FaCheckCircle className="size-6 text-green-500" />}
           </div>
           <div
             className={cx('w-32 flex-none font-semibold', {
