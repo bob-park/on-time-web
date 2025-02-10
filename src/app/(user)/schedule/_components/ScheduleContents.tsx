@@ -80,7 +80,7 @@ const WorkingTimeHeaders = () => {
         <div className="size-full border-b-[1px] border-r-[1px] border-t-[1px] text-center">
           <span>AM</span>
         </div>
-        <div className="flex size-full flex-row">
+        <div className="flex size-full flex-row items-center justify-center">
           {DEFAULT_TIMES_LIST.map((item, index) => (
             <div key={`schedule-working-time-am-${index}`} className="w-10 border-r-[1px] text-center">
               <span>{padWorkingTime(index === 0 ? 12 : index)}</span>
@@ -88,11 +88,11 @@ const WorkingTimeHeaders = () => {
           ))}
         </div>
       </div>
-      <div className="justify-cente flex size-full flex-col items-center">
+      <div className="flex size-full flex-col items-center justify-center">
         <div className="size-full w-full border-b-[1px] border-r-[1px] border-t-[1px] text-center">
           <span>PM</span>
         </div>
-        <div className="flex size-full flex-row">
+        <div className="flex size-full flex-row items-center justify-center">
           {DEFAULT_TIMES_LIST.map((item, index) => (
             <div key={`schedule-working-time-pm-${index}`} className="w-10 border-r-[1px] text-center">
               <span>{padWorkingTime(index === 0 ? 12 : index)}</span>
@@ -107,7 +107,7 @@ const WorkingTimeHeaders = () => {
 function getDates(selectDate: { startDate: Date; endDate: Date }, attendanceRecords: AttendanceRecord[]) {
   const result = new Array<WorkingScheduleItemProps>();
 
-  let currentDate = dayjs(selectDate.startDate).clone().toDate();
+  let currentDate = dayjs(selectDate.startDate).hour(0).minute(0).second(0).millisecond(0).toDate();
 
   while (currentDate <= selectDate.endDate) {
     const attendanceRecord = attendanceRecords.find(
@@ -150,6 +150,7 @@ const WorkingScheduleItem = ({
   leaveWorkAt,
   clockOutTime,
 }: WorkingScheduleItemProps) => {
+  const now = dayjs().hour(0).minute(0).second(0).millisecond(0);
   const clockIn =
     clockInTime ||
     (!DEFAULT_WEEKENDS.includes(dayjs(date).day()) && getTimelineTime(date, dayOffType === 'AM_HALF_DAY_OFF' ? 14 : 9));
@@ -160,7 +161,11 @@ const WorkingScheduleItem = ({
       getTimelineTime(date, dayOffType === 'PM_HALF_DAY_OFF' || isFamilyDay(date) ? 14 : 18));
 
   return (
-    <div className="flex h-16 w-full flex-row rounded-xl duration-150 hover:bg-base-200">
+    <div
+      className={cx('flex h-16 w-full flex-row rounded-xl duration-150 hover:bg-base-200', {
+        'bg-base-200': now.isSame(date),
+      })}
+    >
       {/* working dates */}
       <div className="w-48 flex-none">
         <div className="flex size-full flex-row items-center justify-center border-r-[1px]">

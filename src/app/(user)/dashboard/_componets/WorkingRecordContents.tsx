@@ -3,6 +3,7 @@
 import { useContext } from 'react';
 
 import { FaCheckCircle } from 'react-icons/fa';
+import { GiNightSleep } from 'react-icons/gi';
 import { IoIosTime } from 'react-icons/io';
 import { RiErrorWarningFill } from 'react-icons/ri';
 
@@ -60,11 +61,20 @@ const WorkingRecordItems = ({
   status,
   dayOffType,
 }: WorkingRecordItemsProps) => {
+  const now = dayjs().hour(0).minute(0).second(0).millisecond(0);
   const workDurations = clockInTime && clockOutTime && getDuration(clockInTime, clockOutTime);
 
   return (
-    <div className="flex h-14 w-full flex-row items-center justify-center gap-1 rounded-xl text-center duration-150 hover:bg-base-200">
+    <div
+      className={cx(
+        'flex h-14 w-full flex-row items-center justify-center gap-1 rounded-xl text-center duration-150 hover:bg-base-200',
+        {
+          'bg-base-200': now.isSame(date),
+        },
+      )}
+    >
       <span className="w-8 flex-none">
+        {dayOffType === 'DAY_OFF' && <GiNightSleep className="size-6 text-gray-500" />}
         {!DEFAULT_WEEKENDS.includes(dayjs(date).day()) && (!status || status === 'WAITING') && (
           <IoIosTime className="size-6 text-sky-600" />
         )}
@@ -117,7 +127,7 @@ const WorkingRecordItems = ({
 function getDates(selectDate: { startDate: Date; endDate: Date }, attendanceRecords: AttendanceRecord[]) {
   const result = new Array<WorkingRecordItemsProps>();
 
-  let currentDate = dayjs(selectDate.startDate).clone().toDate();
+  let currentDate = dayjs(selectDate.startDate).hour(0).minute(0).second(0).millisecond(0).toDate();
 
   while (currentDate <= selectDate.endDate) {
     const attendanceRecord = attendanceRecords.find(
