@@ -162,7 +162,7 @@ const WorkingScheduleItem = ({
 
   return (
     <div
-      className={cx('flex h-16 w-full flex-row rounded-xl duration-150 hover:bg-base-200', {
+      className={cx('flex h-16 w-[1152px] flex-row rounded-xl duration-150 hover:bg-base-200', {
         'bg-base-200': now.isSame(date),
       })}
     >
