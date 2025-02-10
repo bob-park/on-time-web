@@ -67,3 +67,12 @@ interface AttendanceGps {
   lastModifiedDate?: Date;
   lastModifiedBy?: string;
 }
+
+
+/*
+* add attendance schedule
+ */
+interface AddAttendanceScheduleRequest {
+  workingDate: string;
+  dayOffType: DayOffType | null;
+}

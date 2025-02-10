@@ -12,3 +12,11 @@ export async function record(req: RecordAttendanceRequest) {
 export async function getAllRecords(req: GetAttendanceRecordRequest) {
   return api.get('/api/attendance/records', { searchParams: req }).json<AttendanceRecord[]>();
 }
+
+export async function addSchedule(req: AddAttendanceScheduleRequest) {
+  const result = await api.post('/api/attendance/schedules', { json: req }).json<AttendanceRecord>();
+
+  await delay(1_000);
+
+  return result;
+}

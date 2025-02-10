@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 
 import { useStore } from '@/shared/rootStore';
 
+import { useAddAttendanceSchedule } from '@/domain/attendance/query/attendanceRecord';
 import cx from 'classnames';
 import dayjs from 'dayjs';
 import Datepicker from 'react-tailwindcss-datepicker';
@@ -44,6 +45,11 @@ export default function AddScheduleModal() {
   const show = useStore((state) => state.showModal);
   const updateShow = useStore((state) => state.updateShowModal);
 
+  // query
+  const { addSchedule, isLoading } = useAddAttendanceSchedule(() => {
+    handleBackdrop();
+  });
+
   // useEffect
   useEffect(() => {
     if (!dialogRef.current) {
@@ -72,8 +78,7 @@ export default function AddScheduleModal() {
 
   const handleAddSchedule = () => {
     // TODO add schedule
-
-    handleBackdrop();
+    addSchedule({ workingDate: dayjs(selectDate.startDate).format('YYYY-MM-DD'), dayOffType: selectedDayOffType });
   };
 
   const handleChangeDayOffType = (dayOffType: DayOffType | null) => {
@@ -157,13 +162,22 @@ export default function AddScheduleModal() {
 
         {/* action */}
         <div className="modal-action">
-          <button className="btn" onClick={handleBackdrop}>
+          <button className="btn w-24" onClick={handleBackdrop}>
             <GiCancel className="size-6" />
             취소
           </button>
-          <button className="btn btn-neutral" onClick={handleAddSchedule}>
-            <RiCalendarScheduleLine className="size-6" />
-            추가
+          <button className="btn btn-neutral w-24" disabled={isLoading} onClick={handleAddSchedule}>
+            {isLoading ? (
+              <>
+                <span className="loading loading-spinner loading-xs" />
+                추가중
+              </>
+            ) : (
+              <>
+                <RiCalendarScheduleLine className="size-6" />
+                추가
+              </>
+            )}
           </button>
         </div>
       </div>

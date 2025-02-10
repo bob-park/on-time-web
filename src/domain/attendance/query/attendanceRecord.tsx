@@ -1,4 +1,4 @@
-import { getAllRecords, record } from '@/domain/attendance/api/attendanceRecord';
+import { addSchedule, getAllRecords, record } from '@/domain/attendance/api/attendanceRecord';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export function useGetResultAttendanceRecord({ checkId }: { checkId: string }) {
@@ -32,4 +32,20 @@ export function useGetAttendanceRecord(req: GetAttendanceRecordRequest) {
   });
 
   return { attendanceRecords: data || [], isLoading, reloadRecord: refetch };
+}
+
+export function useAddAttendanceSchedule(onSuccess?: () => void) {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ['attendance', 'schedule', 'add'],
+    mutationFn: (req: AddAttendanceScheduleRequest) => addSchedule(req),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['record', 'attendance'] });
+
+      onSuccess && onSuccess();
+    },
+  });
+
+  return { addSchedule: mutate, isLoading: isPending };
 }
