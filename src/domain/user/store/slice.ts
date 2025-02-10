@@ -1,5 +1,7 @@
 import { SlicePattern } from 'zustand';
 
-const createUserSlice: SlicePattern<UserState> = (set) => ({});
+const createUserSlice: SlicePattern<UserState> = (set) => ({
+  currentUser: undefined,
+});
 
 export default createUserSlice;

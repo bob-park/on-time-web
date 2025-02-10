@@ -1,6 +1,8 @@
+import { BoundState } from '@/shared/rootStore';
+
 import { SlicePattern } from 'zustand';
 
-const createCounterSlice: SlicePattern<CounterState> = (set) => ({
+const createCounterSlice: SlicePattern<CounterState, BoundState> = (set) => ({
   count: 0,
   increment: () =>
     set(
