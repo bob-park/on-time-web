@@ -1,3 +1,7 @@
+import { IoAddCircle } from 'react-icons/io5';
+
+import Link from 'next/link';
+
 import WorkingTimeProvider from '@/domain/attendance/components/WorkingTimeProvider';
 import WorkingTimeView from '@/domain/attendance/components/WorkingTimeView';
 
@@ -19,9 +23,10 @@ export default function SchedulePage() {
               <WorkingTimeView />
             </div>
 
-            <div className="">
-              <button className="btn btn-primary">추가</button>
-            </div>
+            <Link className="btn btn-primary" href="/schedule/add" scroll={false}>
+              <IoAddCircle className="size-6" />
+              추가
+            </Link>
           </div>
           <div className="mt-10">
             <ScheduleContents />
