@@ -10,27 +10,34 @@ import { getDaysOfWeek, round } from '@/utils/parse';
 import useGps from '@/domain/attendance/hooks/useGps';
 import { useGenerateCurrentCheck, useGetCurrentCheck } from '@/domain/attendance/query/attendanceCheck';
 import { useGetAttendanceGps } from '@/domain/attendance/query/attendanceGps';
-import { useGetResultAttendanceRecord, useRecordAttendance } from '@/domain/attendance/query/attendanceRecord';
+import { useGetAttendanceRecord, useRecordAttendance } from '@/domain/attendance/query/attendanceRecord';
+import { useGetCurrentUser } from '@/domain/user/query/user';
 import cx from 'classnames';
 import dayjs from 'dayjs';
 
 export default function AttendanceRecordGpsContents() {
+  const now = dayjs();
+
   // state
   const [selectGpsId, setSelectGpsId] = useState<number>();
   const [selectType, setSelectType] = useState<AttendanceType>('CLOCK_IN');
 
   // hooks
-  const { position } = useGps();
+  const { isSupport, position } = useGps();
 
   // query
+  const { currentUser } = useGetCurrentUser();
   const { gpsResult } = useGetAttendanceGps();
   const { currentCheck } = useGetCurrentCheck();
   const { generateCheck, isLoading } = useGenerateCurrentCheck();
-  const { record, isLoading: isRecording } = useRecordAttendance();
-
-  const { result } = useGetResultAttendanceRecord({
-    checkId: currentCheck?.id || '',
+  const { record, error: recordErr } = useRecordAttendance();
+  const { attendanceRecords, isLoading: isRecording } = useGetAttendanceRecord({
+    userUniqueId: currentUser?.uniqueId || '',
+    startDate: now.format('YYYY-MM-DD'),
+    endDate: now.format('YYYY-MM-DD'),
   });
+
+  const attendanceResult = attendanceRecords[0];
 
   // useEffect
   useEffect(() => {
@@ -100,7 +107,7 @@ export default function AttendanceRecordGpsContents() {
 
         {/* 정보 */}
         {isLoading && (
-          <div className="mt-10 flex h-56 flex-col items-center justify-center gap-3">
+          <div className="mt-10 flex h-28 flex-col items-center justify-center gap-3">
             <span className="loading loading-infinity loading-lg"></span>
           </div>
         )}
@@ -128,16 +135,19 @@ export default function AttendanceRecordGpsContents() {
                 <div className="mt-5 flex items-center justify-start gap-3">
                   <div
                     className={cx({
-                      tooltip: isDiffLocation(
-                        gpsResult.find((item) => item.id === selectGpsId),
-                        position,
-                      ),
+                      tooltip:
+                        isDiffLocation(
+                          gpsResult.find((item) => item.id === selectGpsId),
+                          position,
+                        ) || !isSupport,
                     })}
-                    data-tip="현재 위치에서 처리할 수 없음"
+                    data-tip="현재 위치에서 처리할 수 없지만, 너굴맨이 처리함"
                   >
                     <button
                       className="btn btn-neutral"
                       disabled={
+                        (attendanceResult && selectType === 'CLOCK_IN' && !!attendanceResult.clockInTime) ||
+                        (attendanceResult && selectType === 'CLOCK_OUT' && !!attendanceResult.clockOutTime) ||
                         isRecording ||
                         isDiffLocation(
                           gpsResult.find((item) => item.id === selectGpsId),
@@ -163,13 +173,7 @@ export default function AttendanceRecordGpsContents() {
 
           <div className="mt-6">
             {/* 처리 결과 표시 */}
-            {isRecording && !result && (
-              <div className="mt-10 flex h-56 flex-col items-center justify-center gap-3">
-                <span className="loading loading-infinity loading-lg"></span>
-              </div>
-            )}
-
-            {!isRecording && <AttendanceRecordResult result={result} />}
+            <AttendanceRecordResult result={attendanceResult} isError={!!recordErr} />
           </div>
         </div>
       </div>
@@ -200,14 +204,25 @@ function isDiffLocation(gps?: AttendanceGps, current?: { latitude: number; longi
 
 interface AttendanceRecordResultProps {
   result?: AttendanceRecord;
+  isError?: boolean;
 }
 
-function AttendanceRecordResult({ result }: AttendanceRecordResultProps) {
+function AttendanceRecordResult({ result, isError }: AttendanceRecordResultProps) {
   return (
     <div className="flex flex-col items-center justify-center gap-3">
       {/* icon */}
-      <div className={cx(result ? 'text-green-600' : 'text-red-600')}>
-        {result && <FaCheckCircle className="h-24 w-24" />}
+      <div
+        className={cx('flex flex-col items-center justify-center', {
+          'text-green-600': !!result,
+          'text-red-600': isError,
+        })}
+      >
+        {(result || isError) && <FaCheckCircle className="h-24 w-24" />}
+        {isError && (
+          <div className="mt-3">
+            <h3 className="text-lg font-bold">무언가 잘못되었는디?</h3>
+          </div>
+        )}
       </div>
 
       {/* contents */}

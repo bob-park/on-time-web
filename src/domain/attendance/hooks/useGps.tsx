@@ -8,12 +8,15 @@ interface PositionAttribute {
 }
 
 export default function useGps() {
-  const isSupport = typeof window !== 'undefined' && !!navigator.geolocation;
-
+  const [isSupport, setIsSupport] = useState<boolean>(false);
   const [position, setPosition] = useState<PositionAttribute>();
 
   // useEffect
   useEffect(() => {
+    const tempIsSupport = typeof window !== 'undefined' && !!navigator.geolocation;
+
+    setIsSupport(tempIsSupport);
+
     if (isSupport) {
       navigator.geolocation.getCurrentPosition(
         ({ coords }) => {
@@ -24,6 +27,7 @@ export default function useGps() {
         },
         (err) => {
           console.error(err);
+          setIsSupport(false);
         },
         { enableHighAccuracy: true, timeout: 1_000 * 60, maximumAge: 1_000 * 3_600 * 24 },
       );
