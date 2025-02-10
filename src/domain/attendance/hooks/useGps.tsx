@@ -17,7 +17,7 @@ export default function useGps() {
 
     setIsSupport(tempIsSupport);
 
-    if (isSupport) {
+    if (tempIsSupport) {
       navigator.geolocation.getCurrentPosition(
         ({ coords }) => {
           setPosition({
@@ -32,7 +32,7 @@ export default function useGps() {
         { enableHighAccuracy: true, timeout: 1_000 * 60, maximumAge: 1_000 * 3_600 * 24 },
       );
     }
-  }, [isSupport]);
+  }, []);
 
   return { isSupport, position };
 }
