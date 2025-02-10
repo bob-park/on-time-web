@@ -24,7 +24,7 @@ export default function Header() {
   }, [currentUser]);
 
   return (
-    <header className="sticky left-0 top-0 z-50 flex w-screen flex-row items-center justify-between gap-3 border-b-[1px] bg-white bg-opacity-90 p-3 shadow-lg backdrop-blur">
+    <header className="m-2 flex w-[95%] flex-row items-center justify-between gap-3 rounded-2xl bg-white bg-opacity-90 p-3 shadow-2xl backdrop-blur">
       {/* content */}
       <div className="">
         <div className="flex flex-row items-center justify-between">
