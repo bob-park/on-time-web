@@ -11,7 +11,9 @@ export default async function AttendanceRecordPage({ params }: { params: Promise
       </div>
 
       {/* content */}
-      <AttendanceRecordContents checkId={checkId} />
+      <div className="">
+        <AttendanceRecordContents checkId={checkId} />
+      </div>
     </div>
   );
 }

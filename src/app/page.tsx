@@ -1,7 +1,12 @@
+import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-export default function Home() {
-  redirect('/dashboard');
+export default async function Home() {
+  const cookieStore = await cookies();
 
-  return <div className="">main page 이다</div>;
+  const lastPage = cookieStore.get('lastPage');
+
+  redirect(lastPage ? lastPage.value : '/dashboard');
+
+  return <div className=""></div>;
 }

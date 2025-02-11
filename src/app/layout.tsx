@@ -3,14 +3,15 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-import Header from '@/app/_components/Header';
 import NavMenu from '@/app/_components/NavMenu';
-import RQProvider from '@/app/_components/RQProvider';
 
+import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
+
+import Header from './_components/Header';
+import RQProvider from './_components/RQProvider';
 import './globals.css';
 
 const { WEB_SERVICE_HOST } = process.env;
-const ALLOW_ROLES = ['ROLE_ADMIN', 'ROLE_MANAGER'];
 
 export const metadata: Metadata = {
   title: 'On Time ',
@@ -24,19 +25,22 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
 
-  const userResponse = await fetch(`${WEB_SERVICE_HOST}/users/me`, {
+  const queryClient = new QueryClient();
+
+  const user = await fetch(`${WEB_SERVICE_HOST}/users/me`, {
     method: 'get',
     headers: {
       Cookie: `JSESSIONID=${cookieStore.get('JSESSIONID')?.value || ''}`,
     },
     credentials: 'include',
-  });
+  })
+    .then((res) => res.json())
+    .then((res: User) => res)
+    .catch((err) => redirect('/api/oauth2/authorization/keyflow-auth'));
 
-  if (!userResponse.ok) {
-    redirect('/api/oauth2/authorization/keyflow-auth');
-  }
+  queryClient.setQueryData<User>(['user', 'me'], user);
 
-  const user = await userResponse.json().then((res: User) => res);
+  const dehydratedState = dehydrate(queryClient);
 
   return (
     <html lang="en">
@@ -45,21 +49,25 @@ export default async function RootLayout({
           <script src="https://unpkg.com/react-scan/dist/auto.global.js" />
         </head>
       )}
-      <body className="min-w-[660px]">
-        {/* header */}
-        <Header user={user} />
+      <body className="relative min-w-max">
+        <RQProvider>
+          <HydrationBoundary state={dehydratedState}>
+            {/* header */}
+            <div className="sticky left-0 top-1 z-50 flex w-full flex-row items-center justify-center px-5">
+              <Header />
+            </div>
 
-        <div className="flex">
-          {/* nav menu*/}
-          <div className="relative w-52 flex-none">
-            <NavMenu isManager={ALLOW_ROLES.includes(user.role.type)} />
-          </div>
+            <div className="flex">
+              {/* nav menu*/}
+              <div className="sticky top-[120px] m-7 h-[calc(100vh-160px)] w-60 flex-none">
+                <NavMenu />
+              </div>
 
-          {/* content */}
-          <div className="mx-3 mt-6 size-full p-3">
-            <RQProvider>{children}</RQProvider>
-          </div>
-        </div>
+              {/* content */}
+              <div className="mx-3 my-7 size-full p-3">{children}</div>
+            </div>
+          </HydrationBoundary>
+        </RQProvider>
       </body>
     </html>
   );
