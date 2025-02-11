@@ -1,43 +1,38 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-/*
- * api prefix
- */
-const API_PREFIX = '/api';
-
-const MOCK_SERVICE_HOST = process.env.MOCK_SERVER_HOST;
+const { WEB_SERVICE_HOST } = process.env;
 
 export async function middleware(req: NextRequest) {
-  const { nextUrl, body, method, headers } = req;
+  const { nextUrl, cookies } = req;
   const { pathname } = nextUrl;
 
-  const requestUrl = pathname.substring(API_PREFIX.length);
+  const sessionId = cookies.get('JSESSIONID');
 
-  const params = nextUrl.searchParams;
+  const isLogin = await checkAuth(sessionId?.value || '');
 
-  const result = await apiCall(requestUrl, method, headers, params, body);
+  const res = NextResponse.next();
 
-  return result;
+  if (!isLogin) {
+    res.cookies.set('lastPage', pathname);
+  } else {
+    res.cookies.delete('lastPage');
+  }
+
+  return res;
 }
 
-async function apiCall(
-  url: string,
-  method: string,
-  headers: Headers,
-  params?: URLSearchParams,
-  body?: BodyInit | null,
-) {
-  const result = await fetch(`${MOCK_SERVICE_HOST}${url}${params ? `?${params}` : ''}`, {
-    method,
+async function checkAuth(sessionId: string) {
+  const result = await fetch(`${WEB_SERVICE_HOST}/users/me`, {
+    method: 'GET',
     headers: {
-      'Content-Type': headers.get('Content-Type') || '',
+      Cookie: `JSESSIONID=${sessionId}`,
     },
-    body,
+    credentials: 'include',
   });
 
-  return result;
+  return result.ok;
 }
 
 export const config = {
-  matcher: [],
+  matcher: ['/attendance/record/:checkId*'],
 };

@@ -13,6 +13,7 @@ export function useGenerateCurrentCheck(onSuccess?: () => void) {
   const { mutate, isPending } = useMutation({
     mutationKey: ['current', 'attendance', 'check'],
     mutationFn: (req: CurrentAttendanceCheckRequest) => currentCheck(req),
+
     onSuccess: async (data) => {
       queryClient.setQueryData(['current', 'attendance', 'check'], data);
 

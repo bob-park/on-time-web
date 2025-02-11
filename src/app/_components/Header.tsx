@@ -8,32 +8,26 @@ import { IoLogOutOutline } from 'react-icons/io5';
 
 import Link from 'next/link';
 
-import { useStore } from '@/shared/rootStore';
-
 import UserAvatar from '@/domain/user/components/UserAvatar';
+import { useGetCurrentUser } from '@/domain/user/query/user';
 
-interface HeaderProps {
-  user: User;
-}
+export default function Header() {
+  // query
 
-export default function Header({ user }: HeaderProps) {
-  // store
-  const updateCurrentUser = useStore((state) => state.updateCurrentUser);
+  const { currentUser } = useGetCurrentUser();
 
   // useEffect
   useEffect(() => {
-    if (!user) {
+    if (!currentUser) {
       return;
     }
-
-    updateCurrentUser(user);
-  }, [user]);
+  }, [currentUser]);
 
   return (
-    <header className="sticky flex size-full flex-row items-center justify-between gap-3 p-3 shadow-lg">
+    <header className="m-2 flex w-full flex-row items-center justify-between gap-3 rounded-2xl border bg-white bg-opacity-90 p-3 shadow-lg backdrop-blur">
       {/* content */}
       <div className="">
-        <div className="flex flex-row items-center justify-between gap-1">
+        <div className="flex flex-row items-center justify-between">
           {/* menu button */}
           <button className="btn btn-circle btn-ghost">
             <FiMenu className="h-6 w-6" />
@@ -41,29 +35,27 @@ export default function Header({ user }: HeaderProps) {
 
           {/* logo */}
           <Link className="btn btn-ghost" href="/">
-            <h2 className="select-none text-2xl font-bold text-sky-600 [text-shadow:_0_2px_4px_rgb(99_102_241_/_0.8)]">
-              OnTime
-            </h2>
+            <h2 className="select-none text-2xl font-bold text-sky-600">OnTime</h2>
           </Link>
         </div>
       </div>
 
       <div className="flex flex-row items-center justify-center gap-3 pr-10">
         {/* team + position */}
-        <div className="select-none text-lg">
+        <div className="hidden select-none text-lg md:block">
           <span className="text-gray-600">
-            <span className="font-semibold">{user.team.name}</span>
-            {user.team?.teamUsers && user.team.teamUsers[0].isLeader && <span>(팀장)</span>}
+            <span className="font-semibold">{currentUser?.team.name}</span>
+            {currentUser?.team.teamUsers && currentUser?.team.teamUsers[0].isLeader && <span>(팀장)</span>}
             <span> - </span>
-            <span> {user.position.name} </span>
+            <span> {currentUser?.position.name} </span>
           </span>
-          <span className="font-bold">{user.username}</span>
+          <span className="font-bold">{currentUser?.username}</span>
         </div>
 
         {/* avatar */}
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="m-1">
-            <UserAvatar alt={user.username} />
+            <UserAvatar alt={currentUser?.username || 'username'} />
           </div>
           <ul tabIndex={0} className="menu dropdown-content z-[1] w-32 rounded-box bg-base-100 p-2 shadow">
             <li>

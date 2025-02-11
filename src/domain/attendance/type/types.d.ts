@@ -1,7 +1,7 @@
 type AttendanceType = 'CLOCK_IN' | 'CLOCK_OUT'
 type AttendanceCheckType = 'QR' | 'GPS' | 'WIFI';
 type AttendanceStatus = 'WAITING' | 'SUCCESS' | 'WARNING';
-type DayOffType = 'DAY_OFF' | 'AM_HALF_DAY_OFF' | PM_HALF_DAY_OFF;
+type DayOffType = 'DAY_OFF' | 'AM_HALF_DAY_OFF' | 'PM_HALF_DAY_OFF';
 
 /*
  * attendance check
@@ -25,11 +25,10 @@ interface CurrentAttendanceCheckRequest {
 
 
 /*
-* attendance record
+ * attendance record
  */
 interface RecordAttendanceRequest {
   checkId: string;
-  userUniqueId: string;
 }
 
 interface AttendanceRecord {
@@ -52,4 +51,28 @@ type GetAttendanceRecordRequest = {
   startDate: string;
   endDate: string;
   userUniqueId: string;
+}
+
+/*
+ * attendance gps
+ */
+interface AttendanceGps {
+  id: number;
+  name: string;
+  description?: string;
+  latitude: number;
+  longitude: number;
+  createdDate: Date;
+  createdBy: string;
+  lastModifiedDate?: Date;
+  lastModifiedBy?: string;
+}
+
+
+/*
+* add attendance schedule
+ */
+interface AddAttendanceScheduleRequest {
+  workingDate: string;
+  dayOffType: DayOffType | null;
 }
