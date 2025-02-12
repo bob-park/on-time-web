@@ -1,4 +1,5 @@
 import { getUsers } from '@/domain/user/api/users';
+
 import { InfiniteData, QueryKey, useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
 export function useGetCurrentUser() {

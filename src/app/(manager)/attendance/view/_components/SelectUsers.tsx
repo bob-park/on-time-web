@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 
-import Dropdown, { DropdownItem } from '@/shared/components/Dropdown';
-
 import { useGetUsers } from '@/domain/user/query/user';
+
+import Dropdown, { DropdownItem } from '@/shared/components/Dropdown';
 
 function mergePageUsers(pages: User[][]) {
   const users: User[] = [];

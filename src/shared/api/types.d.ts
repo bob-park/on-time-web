@@ -1,8 +1,7 @@
-
 type SearchPageParams = {
   page: number;
   size: number;
-}
+};
 
 interface Pageable {
   pageNumber: number;
