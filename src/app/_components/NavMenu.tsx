@@ -80,7 +80,7 @@ export default function NavMenu() {
 
             <MenuItem href="/attendance/view" active={isActive(segments, ['attendance', 'view'])}>
               <FaUsersViewfinder className="inline-block size-6" />
-              임직원 근태 보기
+              임직원 근무 현황
             </MenuItem>
 
             <MenuItem

@@ -3,16 +3,15 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { GiCancel } from 'react-icons/gi';
-import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { RiCalendarScheduleLine } from 'react-icons/ri';
 
 import { useRouter } from 'next/navigation';
 
 import { useAddAttendanceSchedule } from '@/domain/attendance/query/attendanceRecord';
 
+import Dropdown, { DropdownItem } from '@/shared/components/Dropdown';
 import { useStore } from '@/shared/rootStore';
 
-import cx from 'classnames';
 import dayjs from 'dayjs';
 import Datepicker from 'react-tailwindcss-datepicker';
 
@@ -39,8 +38,7 @@ export default function AddScheduleModal() {
     startDate: dayjs().toDate(),
     endDate: dayjs().toDate(),
   });
-  const [showDayOffType, setShowDayOffType] = useState<boolean>(false);
-  const [selectedDayOffType, setSelectedDayOffType] = useState<DayOffType | null>(null);
+  const [selectedDayOffType, setSelectedDayOffType] = useState<DayOffType | undefined>();
 
   // store
   const show = useStore((state) => state.showModal);
@@ -78,13 +76,10 @@ export default function AddScheduleModal() {
   };
 
   const handleAddSchedule = () => {
-    // TODO add schedule
-    addSchedule({ workingDate: dayjs(selectDate.startDate).format('YYYY-MM-DD'), dayOffType: selectedDayOffType });
-  };
-
-  const handleChangeDayOffType = (dayOffType: DayOffType | null) => {
-    setShowDayOffType(false);
-    setSelectedDayOffType(dayOffType);
+    addSchedule({
+      workingDate: dayjs(selectDate.startDate).format('YYYY-MM-DD'),
+      dayOffType: selectedDayOffType || null,
+    });
   };
 
   return (
@@ -103,37 +98,25 @@ export default function AddScheduleModal() {
               <div className="w-24 flex-none text-right">
                 <h4 className="text-base font-semibold">구분 :</h4>
               </div>
-              <div className="w-full">
-                <div className={cx('dropdown w-[252px]', showDayOffType && 'dropdown-open')}>
-                  <div
-                    className="relative flex h-12 w-full flex-row items-center justify-center gap-2 rounded-lg border px-3 py-2"
-                    onClick={() => setShowDayOffType(!showDayOffType)}
-                  >
-                    <div className="">
-                      <span className="">
-                        {SELECT_OPTIONS_ATTENDANCE.find((item) => item.id === selectedDayOffType)?.text || '없음'}
-                      </span>
-                    </div>
-                    <div className="absolute right-4">{showDayOffType ? <IoIosArrowUp /> : <IoIosArrowDown />}</div>
-                  </div>
-                  <ul className="menu dropdown-content z-[1] w-full rounded-box bg-base-100 p-2 shadow">
-                    <li
-                      className={cx(selectedDayOffType === null && 'rounded-lg bg-neutral text-white')}
-                      onClick={() => handleChangeDayOffType(null)}
-                    >
-                      <div>없음</div>
-                    </li>
-                    {SELECT_OPTIONS_ATTENDANCE.map((item) => (
-                      <li
-                        key={`select-dropdown-item-${item.id}`}
-                        className={cx(selectedDayOffType === item.id && 'rounded-lg bg-neutral text-white')}
-                        onClick={() => handleChangeDayOffType(item.id)}
-                      >
-                        <div>{item.text}</div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              <div className="w-[252px]">
+                {/* dropdown */}
+                <Dropdown
+                  text={SELECT_OPTIONS_ATTENDANCE.find((item) => item.id === selectedDayOffType)?.text || '없음'}
+                  onChange={(value) => setSelectedDayOffType(value as DayOffType)}
+                >
+                  {/* default item */}
+                  <DropdownItem text="없음" active={!selectedDayOffType} />
+
+                  {/* items */}
+                  {SELECT_OPTIONS_ATTENDANCE.map((item) => (
+                    <DropdownItem
+                      key={`select-dropdown-item-${item.id}`}
+                      value={item.id.toString()}
+                      text={item.text}
+                      active={selectedDayOffType === item.id}
+                    />
+                  ))}
+                </Dropdown>
               </div>
             </div>
 
