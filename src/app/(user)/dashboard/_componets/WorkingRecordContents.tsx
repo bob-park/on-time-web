@@ -7,13 +7,12 @@ import { GiNightSleep } from 'react-icons/gi';
 import { IoIosTime } from 'react-icons/io';
 import { RiErrorWarningFill } from 'react-icons/ri';
 
-import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
-import { useGetAttendanceRecord } from '@/domain/attendance/query/attendanceRecord';
-import { useGetCurrentUser } from '@/domain/user/query/user';
-
 import { isIncludeTime } from '@/utils/dataUtils';
 import { getDaysOfWeek, getDuration } from '@/utils/parse';
 
+import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
+import { useGetAttendanceRecord } from '@/domain/attendance/query/attendanceRecord';
+import { useGetCurrentUser } from '@/domain/user/query/user';
 import cx from 'classnames';
 import dayjs from 'dayjs';
 import { padStart } from 'lodash';
@@ -68,7 +67,7 @@ const WorkingRecordItems = ({
   return (
     <div
       className={cx(
-        'flex h-14 w-full flex-row items-center justify-center gap-1 rounded-xl text-center duration-150 hover:bg-base-200',
+        'flex h-14 w-full flex-row items-center justify-center gap-1 rounded-xl px-4 text-center duration-150 hover:bg-base-200',
         {
           'bg-base-200': now.isSame(date),
         },
@@ -193,10 +192,6 @@ export default function WorkingRecordContents() {
       {/* 근로 시간 */}
       <div className="my-6 w-full">
         <div className="flex flex-col items-center justify-start">
-          <div className="w-full">
-            <h3 className="text-lg font-semibold">근로 시간</h3>
-          </div>
-
           <div className="flex h-14 w-full flex-row items-center justify-start gap-2">
             <div className="w-24 flex-none text-right font-semibold">누적 근로 시간</div>
             <div className="w-1/2 border-l-[1px] pl-2">
