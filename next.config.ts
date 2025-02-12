@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
   reactStrictMode: false,
   experimental: {
     authInterrupts: true,
+    staleTimes:{
+      static: 0,
+      dynamic: 0
+    }
   },
   async headers() {
     return [
