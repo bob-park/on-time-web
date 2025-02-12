@@ -27,18 +27,22 @@ export default async function RootLayout({
 
   const queryClient = new QueryClient();
 
-  const user = await fetch(`${WEB_SERVICE_HOST}/users/me`, {
-    method: 'get',
-    headers: {
-      Cookie: `JSESSIONID=${cookieStore.get('JSESSIONID')?.value || ''}`,
-    },
-    credentials: 'include',
-  })
-    .then((res) => res.json())
-    .then((res: User) => res)
-    .catch((err) => redirect('/api/oauth2/authorization/keyflow-auth'));
+  try {
+    const res = await fetch(`${WEB_SERVICE_HOST}/users/me`, {
+      method: 'get',
+      headers: {
+        Cookie: `JSESSIONID=${cookieStore.get('JSESSIONID')?.value || ''}`,
+      },
+      credentials: 'include',
+    });
 
-  queryClient.setQueryData<User>(['user', 'me'], user);
+    const user = (await res.json()) as User;
+
+    queryClient.setQueryData<User>(['user', 'me'], user);
+  } catch (err) {
+    console.error(err);
+    redirect('/api/oauth2/authorization/keyflow-auth');
+  }
 
   const dehydratedState = dehydrate(queryClient);
 
