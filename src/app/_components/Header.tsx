@@ -58,12 +58,12 @@ export default function Header() {
           <div tabIndex={0} role="button" className="m-1">
             <UserAvatar alt={currentUser?.username || 'username'} />
           </div>
-          <ul tabIndex={0} className="menu dropdown-content z-[1] w-32 rounded-box bg-base-100 p-2 shadow">
+          <ul tabIndex={0} className="menu dropdown-content z-[1] w-40 rounded-box bg-base-100 p-2 shadow">
             <li>
-              <span>
+              <Link href="/profile">
                 <CgProfile className="h-3 w-3" />
                 프로필
-              </span>
+              </Link>
             </li>
             <li>
               <a href="/logout">
