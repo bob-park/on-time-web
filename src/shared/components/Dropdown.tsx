@@ -53,9 +53,9 @@ export default function Dropdown({ text, placeholder, children, onChange }: Drop
 
   return (
     <DropdownContext.Provider value={contextValue}>
-      <div className={cx('dropdown w-full', show && 'dropdown-open')}>
+      <div className={cx('dropdown w-full select-none', show && 'dropdown-open')}>
         <div
-          className="relative flex h-12 w-full flex-row items-center gap-2 rounded-lg border px-3 py-2"
+          className="relative flex h-12 w-full cursor-pointer flex-row items-center gap-2 rounded-lg border px-3 py-2"
           onClick={() => setShow(!show)}
         >
           <div className="w-full text-center">

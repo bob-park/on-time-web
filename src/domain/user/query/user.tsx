@@ -46,7 +46,7 @@ export function useGetUsers(params: SearchPageParams) {
   });
 
   return {
-    pages: data?.pages || [],
+    pages: data?.pages || ([] as Page<User>[]),
     isLoading,
     fetchNextPage,
     reload: refetch,
