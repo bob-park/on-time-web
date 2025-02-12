@@ -1,4 +1,3 @@
 interface UserState {
   currentUser?: User;
 }
-

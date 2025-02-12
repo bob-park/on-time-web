@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@bob-park/eslint-config-bobpark": "0.1.2-rc-006",
-    "@bob-park/prettier-config-bobpark": "0.0.9",
+    "@bob-park/prettier-config-bobpark": "0.1.0-RC1-2024-0212",
     "@eslint/eslintrc": "^3",
     "@faker-js/faker": "^8.4.1",
     "@mswjs/http-middleware": "^0.10.1",

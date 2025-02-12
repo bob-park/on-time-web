@@ -7,11 +7,12 @@ import { GiNightSleep } from 'react-icons/gi';
 import { IoIosWarning } from 'react-icons/io';
 import { IoIosTime } from 'react-icons/io';
 
-import { getDaysOfWeek } from '@/utils/parse';
-
 import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
 import { useGetAttendanceRecord } from '@/domain/attendance/query/attendanceRecord';
 import { useGetCurrentUser } from '@/domain/user/query/user';
+
+import { getDaysOfWeek } from '@/utils/parse';
+
 import cx from 'classnames';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';

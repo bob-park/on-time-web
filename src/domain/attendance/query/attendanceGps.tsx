@@ -1,4 +1,5 @@
 import { getAll } from '@/domain/attendance/api/attendanceGps';
+
 import { useQuery } from '@tanstack/react-query';
 
 export function useGetAttendanceGps() {

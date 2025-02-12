@@ -59,7 +59,7 @@ export default async function RootLayout({
 
             <div className="flex">
               {/* nav menu*/}
-              <div className="sticky top-[120px] m-7 h-[calc(100vh-160px)] w-60 flex-none">
+              <div className="sticky top-[120px] m-7 h-[calc(100vh-160px)] w-72 flex-none">
                 <NavMenu />
               </div>
 

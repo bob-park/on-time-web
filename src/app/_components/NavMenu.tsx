@@ -1,12 +1,18 @@
 'use client';
 
+import { AiOutlineSchedule } from 'react-icons/ai';
+import { FaUsersViewfinder } from 'react-icons/fa6';
+import { PiGpsFixBold } from 'react-icons/pi';
 import { RiCalendarScheduleFill, RiDashboardFill } from 'react-icons/ri';
-import { TbSubtask } from 'react-icons/tb';
 
 import Link from 'next/link';
 import { useSelectedLayoutSegments } from 'next/navigation';
 
+import { useGetCurrentUser } from '@/domain/user/query/user';
+
 import cx from 'classnames';
+
+const DEFAULT_MANAGER_ROLES = ['ROLE_ADMIN', 'ROLE_MANAGER'];
 
 function isActive(sources: string[], targets: string[]): boolean {
   return targets.every((target) => sources.includes(target));
@@ -37,12 +43,16 @@ function MenuItem({ children, href, active }: MenuItemProps) {
 }
 
 export default function NavMenu() {
+  // segments
   const segments = useSelectedLayoutSegments();
 
   // query
+  const { currentUser } = useGetCurrentUser();
+
+  const isManager = DEFAULT_MANAGER_ROLES.includes(currentUser?.role.type || 'ROLE_USER');
 
   return (
-    <div className="flex size-full select-none gap-2 rounded-2xl border bg-white p-6 shadow-xl">
+    <div className="flex size-full select-none gap-2 overflow-auto rounded-2xl border bg-white p-6 shadow-xl">
       {/* menu list */}
       <MenuList>
         {/* general */}
@@ -57,11 +67,31 @@ export default function NavMenu() {
         </MenuItem>
 
         <MenuItem href="/attendance/record/gps" active={isActive(segments, ['attendance', 'record', 'gps'])}>
-          <TbSubtask className="inline-block h-6 w-6" />
+          <PiGpsFixBold className="inline-block h-6 w-6" />
           근태 처리 (GPS)
         </MenuItem>
 
         {/* admin */}
+        {isManager && (
+          <>
+            <div className="mt-5">
+              <span className="text-sm font-normal text-gray-400">관리자</span>
+            </div>
+
+            <MenuItem href="/attendance/view" active={isActive(segments, ['attendance', 'view'])}>
+              <FaUsersViewfinder className="inline-block size-6" />
+              임직원 근태 보기
+            </MenuItem>
+
+            <MenuItem
+              href="/attendance/people/schedules"
+              active={isActive(segments, ['attendance', 'people', 'schedules'])}
+            >
+              <AiOutlineSchedule className="inline-block size-6" />
+              임직원 근무 일정 등록
+            </MenuItem>
+          </>
+        )}
       </MenuList>
     </div>
   );

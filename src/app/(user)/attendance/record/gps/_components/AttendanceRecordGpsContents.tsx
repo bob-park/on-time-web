@@ -5,14 +5,15 @@ import { useEffect, useState } from 'react';
 import { FaCheckCircle } from 'react-icons/fa';
 import { GiNightSleep } from 'react-icons/gi';
 
-import { isSameMarginOfError } from '@/utils/dataUtils';
-import { getDaysOfWeek, round } from '@/utils/parse';
-
 import useGps from '@/domain/attendance/hooks/useGps';
 import { useGenerateCurrentCheck, useGetCurrentCheck } from '@/domain/attendance/query/attendanceCheck';
 import { useGetAttendanceGps } from '@/domain/attendance/query/attendanceGps';
 import { useGetAttendanceRecord, useRecordAttendance } from '@/domain/attendance/query/attendanceRecord';
 import { useGetCurrentUser } from '@/domain/user/query/user';
+
+import { isSameMarginOfError } from '@/utils/dataUtils';
+import { getDaysOfWeek, round } from '@/utils/parse';
+
 import cx from 'classnames';
 import dayjs from 'dayjs';
 

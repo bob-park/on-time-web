@@ -16,7 +16,7 @@ interface User {
   role: Role;
   position: Position;
   team: Team;
-  createdDate: Date,
+  createdDate: Date;
   createdBy: string;
   lastModifiedDate?: Date;
   lastModifiedBy?: string;
