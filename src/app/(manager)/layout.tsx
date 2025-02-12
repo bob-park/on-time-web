@@ -1,8 +1,6 @@
 import { cookies } from 'next/headers';
 import { forbidden, redirect } from 'next/navigation';
 
-import { QueryClient } from '@tanstack/react-query';
-
 const { WEB_SERVICE_HOST } = process.env;
 
 const ALLOW_ROLES = ['ROLE_ADMIN', 'ROLE_MANAGER'];
