@@ -5,5 +5,5 @@ export async function logout() {
 }
 
 export async function currentUser() {
-  return api.get('/api/user/me').json<User>();
+  return api.get('/api/users/me').json<User>();
 }

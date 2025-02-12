@@ -9,12 +9,13 @@ import { IoLogOutOutline } from 'react-icons/io5';
 import Link from 'next/link';
 
 import UserAvatar from '@/domain/user/components/UserAvatar';
+import { useSession } from '@/domain/user/query/session';
 import { useGetCurrentUser } from '@/domain/user/query/user';
 
 export default function Header() {
   // query
-
   const { currentUser } = useGetCurrentUser();
+  const {} = useSession();
 
   // useEffect
   useEffect(() => {
