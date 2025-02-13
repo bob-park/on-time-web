@@ -1,4 +1,4 @@
-import { BoundState } from '@/shared/rootStore';
+import { BoundState } from '@/shared/store/rootStore';
 
 import { SlicePattern } from 'zustand';
 

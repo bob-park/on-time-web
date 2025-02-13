@@ -1,6 +1,6 @@
 import ky from 'ky';
 
-const api = ky.extend({
+const index = ky.extend({
   hooks: {
     afterResponse: [
       (request, options, response) => {
@@ -13,4 +13,4 @@ const api = ky.extend({
   },
 });
 
-export default api;
+export default index;

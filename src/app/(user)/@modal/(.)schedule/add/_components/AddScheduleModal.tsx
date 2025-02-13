@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useAddAttendanceSchedule } from '@/domain/attendance/query/attendanceRecord';
 
 import Dropdown, { DropdownItem } from '@/shared/components/Dropdown';
-import { useStore } from '@/shared/rootStore';
+import { useStore } from '@/shared/store/rootStore';
 
 import dayjs from 'dayjs';
 import Datepicker from 'react-tailwindcss-datepicker';
