@@ -49,7 +49,7 @@ interface AttendanceRecord {
 type GetAttendanceRecordRequest = {
   startDate: string;
   endDate: string;
-  userUniqueId: string;
+  userUniqueId?: string;
 };
 
 /*

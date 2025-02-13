@@ -36,9 +36,11 @@ export default async function RootLayout({
       credentials: 'include',
     });
 
-    const user = (await res.json()) as User;
+    if (res.ok) {
+      const user = (await res.json()) as User;
 
-    queryClient.setQueryData<User>(['user', 'me'], user);
+      queryClient.setQueryData<User>(['user', 'me'], user);
+    }
   } catch (err) {
     console.error(err);
     redirect('/api/oauth2/authorization/keyflow-auth');

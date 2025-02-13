@@ -1,5 +1,7 @@
 import { TbDownload } from 'react-icons/tb';
 
+import WorkingUserContents from '@/app/(manager)/attendance/view/_components/WorkingUserContents';
+
 import WorkingTimeProvider from '@/domain/attendance/components/WorkingTimeProvider';
 import WorkingTimeView from '@/domain/attendance/components/WorkingTimeView';
 
@@ -17,7 +19,7 @@ export default function AttendanceViewPage() {
 
       <SelectUserContextProvider>
         <WorkingTimeProvider>
-          <div className="mt-10 w-full">
+          <div className="mt-10 max-w-max">
             {/* user select */}
             <div className="flex flex-row items-center justify-start gap-2">
               <div className="w-32 flex-none text-right">임직원 :</div>
@@ -42,7 +44,9 @@ export default function AttendanceViewPage() {
             </div>
 
             {/* data contents */}
-            <div className="mt-5"></div>
+            <div className="mt-10">
+              <WorkingUserContents />
+            </div>
           </div>
         </WorkingTimeProvider>
       </SelectUserContextProvider>
