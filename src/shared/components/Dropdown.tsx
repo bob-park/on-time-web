@@ -7,7 +7,7 @@ import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import cx from 'classnames';
 
 interface DropdownProps {
-  text?: string;
+  text?: React.ReactNode;
   placeholder?: string;
   children?: React.ReactNode;
   onChange?: (value?: string) => void;
@@ -15,7 +15,7 @@ interface DropdownProps {
 
 interface DropdownItemProps {
   value?: string;
-  text: string;
+  text?: React.ReactNode;
   active: boolean;
 }
 

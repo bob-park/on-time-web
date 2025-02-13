@@ -17,7 +17,7 @@ export default async function ManagerLayout({ children }: Readonly<{ children: R
       credentials: 'include',
     });
 
-    const user = await res.json().then((data: User) => data as User);
+    const user = (await res.json()) as User;
 
     if (!ALLOW_ROLES.includes(user?.role.type || '')) {
       forbidden();
