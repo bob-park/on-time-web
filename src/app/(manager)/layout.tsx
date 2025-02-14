@@ -17,10 +17,12 @@ export default async function ManagerLayout({ children }: Readonly<{ children: R
       credentials: 'include',
     });
 
-    const user = (await res.json()) as User;
+    if (res.ok) {
+      const user = (await res.json()) as User;
 
-    if (!ALLOW_ROLES.includes(user?.role.type || '')) {
-      forbidden();
+      if (!ALLOW_ROLES.includes(user?.role.type || '')) {
+        forbidden();
+      }
     }
   } catch (err) {
     console.error(err);
