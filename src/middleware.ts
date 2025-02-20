@@ -34,5 +34,5 @@ async function checkAuth(sessionId: string) {
 }
 
 export const config = {
-  matcher: ['/attendance/record/:checkId*'],
+  matcher: [],
 };
