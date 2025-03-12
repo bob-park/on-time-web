@@ -83,7 +83,7 @@ export default function NavMenu() {
           연(월)차 신청
         </MenuItem>
 
-        <MenuItem href="/dayoff/history" active={isActive(segments, ['dayoff', 'history'])}>
+        <MenuItem href="/dayoff/used" active={isActive(segments, ['dayoff', 'used'])}>
           <LuHistory className="inline-block size-6" />
           연(월)차 사용 내역
         </MenuItem>
@@ -91,6 +91,11 @@ export default function NavMenu() {
         <MenuItem href="/overtime/requests" active={isActive(segments, ['overtime', 'requests'])}>
           <HiDocumentPlus className="inline-block size-6" />
           휴일근무보고서 신청
+        </MenuItem>
+
+        <MenuItem href="/expense/reports/requests" active={isActive(segments, ['expense', 'reports', 'requests'])}>
+          <HiDocumentPlus className="inline-block size-6" />
+          지출결의서 신청
         </MenuItem>
 
         <MenuItem href="/approvals" active={isActive(segments, ['approvals'])}>
