@@ -2,6 +2,9 @@
 
 import { AiOutlineSchedule } from 'react-icons/ai';
 import { FaUsersViewfinder } from 'react-icons/fa6';
+import { HiDocumentPlus } from 'react-icons/hi2';
+import { LuHistory } from 'react-icons/lu';
+import { MdOutlineApproval } from 'react-icons/md';
 import { PiGpsFixBold } from 'react-icons/pi';
 import { RiCalendarScheduleFill, RiDashboardFill } from 'react-icons/ri';
 
@@ -69,6 +72,30 @@ export default function NavMenu() {
         <MenuItem href="/attendance/record/gps" active={isActive(segments, ['attendance', 'record', 'gps'])}>
           <PiGpsFixBold className="inline-block h-6 w-6" />
           근태 처리 (GPS)
+        </MenuItem>
+
+        <div className="mt-5">
+          <span className="text-sm font-normal text-gray-400">전자 결재</span>
+        </div>
+
+        <MenuItem href="/dayoff/requests" active={isActive(segments, ['dayoff', 'requests'])}>
+          <HiDocumentPlus className="inline-block size-6" />
+          연(월)차 신청
+        </MenuItem>
+
+        <MenuItem href="/dayoff/history" active={isActive(segments, ['dayoff', 'history'])}>
+          <LuHistory className="inline-block size-6" />
+          연(월)차 사용 내역
+        </MenuItem>
+
+        <MenuItem href="/overtime/requests" active={isActive(segments, ['overtime', 'requests'])}>
+          <HiDocumentPlus className="inline-block size-6" />
+          휴일근무보고서 신청
+        </MenuItem>
+
+        <MenuItem href="/approvals" active={isActive(segments, ['approvals'])}>
+          <MdOutlineApproval className="inline-block size-6" />
+          결재 신청 목록
         </MenuItem>
 
         {/* admin */}
