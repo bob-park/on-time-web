@@ -7,7 +7,7 @@ import CardPageTitle from './_components/CardPageTitle';
 export default function Forbidden() {
   return (
     <div className="flex size-full flex-col items-center justify-center gap-2">
-      <div className="mt-36 flex cursor-default select-none flex-row items-center justify-center gap-4 text-9xl font-bold text-gray-400">
+      <div className="mt-36 flex cursor-default flex-row items-center justify-center gap-4 text-9xl font-bold text-gray-400 select-none">
         <CardPageTitle placeholder="Wow">
           <span>4</span>
         </CardPageTitle>

@@ -68,7 +68,7 @@ const WorkingRecordItems = ({
   return (
     <div
       className={cx(
-        'flex h-14 w-full flex-row items-center justify-center gap-1 rounded-xl px-4 text-center duration-150 hover:bg-base-200',
+        'hover:bg-base-200 flex h-14 w-full flex-row items-center justify-center gap-1 rounded-xl px-4 text-center duration-150',
         {
           'bg-base-200': now.isSame(date),
         },

@@ -95,7 +95,7 @@ const WorkingUserItem = ({ date, status, clockIn, leaveWorkAt, clockOut, dayOffT
   return (
     <div
       className={cx(
-        'flex h-16 w-full flex-row items-center gap-1 rounded-2xl px-2 text-center transition-all duration-150 hover:bg-base-200',
+        'hover:bg-base-200 flex h-16 w-full flex-row items-center gap-1 rounded-2xl px-2 text-center transition-all duration-150',
         {
           'bg-base-200': now.isSame(date),
         },

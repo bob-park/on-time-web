@@ -2,7 +2,7 @@ import CardPageTitle from './CardPageTitle';
 
 export default function Preparing() {
   return (
-    <div className="mt-36 flex cursor-default select-none flex-row items-center justify-center gap-4 text-9xl font-bold text-gray-400">
+    <div className="mt-36 flex cursor-default flex-row items-center justify-center gap-4 text-9xl font-bold text-gray-400 select-none">
       <CardPageTitle placeholder="열심히">
         <span>준</span>
       </CardPageTitle>
