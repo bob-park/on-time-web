@@ -52,7 +52,7 @@ export default function NavMenu() {
   const isManager = DEFAULT_MANAGER_ROLES.includes(currentUser?.role.type || 'ROLE_USER');
 
   return (
-    <div className="flex size-full select-none gap-2 overflow-auto rounded-2xl border bg-white p-6 shadow-xl">
+    <div className="flex size-full gap-2 overflow-auto rounded-2xl border border-gray-300 bg-white p-6 shadow-xl select-none">
       {/* menu list */}
       <MenuList>
         {/* general */}

@@ -25,7 +25,7 @@ export default function Header() {
   }, [currentUser]);
 
   return (
-    <header className="m-2 flex w-full flex-row items-center justify-between gap-3 rounded-2xl border bg-white bg-opacity-90 p-3 shadow-lg backdrop-blur">
+    <header className="bg-opacity-90 m-2 flex w-full flex-row items-center justify-between gap-3 rounded-2xl border border-gray-300 bg-white p-3 shadow-lg backdrop-blur">
       {/* content */}
       <div className="">
         <div className="flex flex-row items-center justify-between">
@@ -36,14 +36,14 @@ export default function Header() {
 
           {/* logo */}
           <Link className="btn btn-ghost" href="/">
-            <h2 className="select-none text-2xl font-bold text-sky-600">OnTime</h2>
+            <h2 className="text-2xl font-bold text-sky-600 select-none">OnTime</h2>
           </Link>
         </div>
       </div>
 
       <div className="flex flex-row items-center justify-center gap-3 pr-10">
         {/* team + position */}
-        <div className="hidden select-none text-lg md:block">
+        <div className="hidden text-lg select-none md:block">
           <span className="text-gray-600">
             <span className="font-semibold">{currentUser?.team.name}</span>
             {currentUser?.team.teamUsers && currentUser?.team.teamUsers[0].isLeader && <span>(팀장)</span>}
@@ -58,7 +58,7 @@ export default function Header() {
           <div tabIndex={0} role="button" className="m-1">
             <UserAvatar alt={currentUser?.username || 'username'} />
           </div>
-          <ul tabIndex={0} className="menu dropdown-content z-[1] w-40 rounded-box bg-base-100 p-2 shadow">
+          <ul tabIndex={0} className="menu dropdown-content rounded-box bg-base-100 z-[1] w-40 p-2 shadow">
             <li>
               <Link href="/profile">
                 <CgProfile className="h-3 w-3" />
