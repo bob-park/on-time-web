@@ -12,7 +12,6 @@ import { useAddAttendanceSchedule } from '@/domain/attendance/query/attendanceRe
 import Dropdown, { DropdownItem } from '@/shared/components/Dropdown';
 import { useStore } from '@/shared/store/rootStore';
 
-import { format } from 'date-fns';
 import dayjs from 'dayjs';
 import { DayPicker } from 'react-day-picker';
 import { ko } from 'react-day-picker/locale';
