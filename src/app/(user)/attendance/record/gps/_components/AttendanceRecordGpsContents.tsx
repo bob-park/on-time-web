@@ -32,14 +32,14 @@ export default function AttendanceRecordGpsContents() {
   const { gpsResult } = useGetAttendanceGps();
   const { currentCheck } = useGetCurrentCheck();
   const { generateCheck, isLoading } = useGenerateCurrentCheck();
-  const { record, error: recordErr } = useRecordAttendance(() => {
+  const {
+    record,
+    isLoading: isRecording,
+    error: recordErr,
+  } = useRecordAttendance(() => {
     reloadRecord();
   });
-  const {
-    attendanceRecords,
-    isLoading: isRecording,
-    reloadRecord,
-  } = useGetAttendanceRecord({
+  const { attendanceRecords, reloadRecord } = useGetAttendanceRecord({
     userUniqueId: currentUser?.uniqueId || '',
     startDate: now.format('YYYY-MM-DD'),
     endDate: now.format('YYYY-MM-DD'),
@@ -156,11 +156,7 @@ export default function AttendanceRecordGpsContents() {
                       disabled={
                         (attendanceResult && selectType === 'CLOCK_IN' && !!attendanceResult.clockInTime) ||
                         (attendanceResult && selectType === 'CLOCK_OUT' && !!attendanceResult.clockOutTime) ||
-                        isRecording ||
-                        isDiffLocation(
-                          gpsResult.find((item) => item.id === selectGpsId),
-                          position,
-                        )
+                        isRecording
                       }
                       onClick={handleRecord}
                     >
