@@ -369,6 +369,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@date-fns/tz@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@date-fns/tz@npm:1.2.0"
+  checksum: 10c0/411e9d4303b10951f6fd0189d18fb845f0d934a575df2176bc10daf664282c765fb6b057a977e446bbb1229151d89e7788978600a019f1fc24b5c75276d496bd
+  languageName: node
+  linkType: hard
+
 "@emnapi/runtime@npm:^1.2.0":
   version: 1.3.1
   resolution: "@emnapi/runtime@npm:1.3.1"
@@ -2827,6 +2834,20 @@ __metadata:
     es-errors: "npm:^1.3.0"
     is-data-view: "npm:^1.0.1"
   checksum: 10c0/fa7aa40078025b7810dcffc16df02c480573b7b53ef1205aa6a61533011005c1890e5ba17018c692ce7c900212b547262d33279fde801ad9843edc0863bf78c4
+  languageName: node
+  linkType: hard
+
+"date-fns-jalali@npm:^4.1.0-0":
+  version: 4.1.0-0
+  resolution: "date-fns-jalali@npm:4.1.0-0"
+  checksum: 10c0/f9ad98d9f7e8e5abe0d070dc806b0c8baded2b1208626c42e92cbd2605b5171f5714d6b79b20cc2666267d821699244c9d0b5e93274106cf57d6232da77596ed
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "date-fns@npm:4.1.0"
+  checksum: 10c0/b79ff32830e6b7faa009590af6ae0fb8c3fd9ffad46d930548fbb5acf473773b4712ae887e156ba91a7b3dc30591ce0f517d69fd83bd9c38650fdc03b4e0bac8
   languageName: node
   linkType: hard
 
@@ -5721,10 +5742,10 @@ __metadata:
     qr-code-styling: "npm:^1.9.1"
     qrcode: "npm:^1.5.4"
     react: "npm:^19.0.0"
+    react-day-picker: "npm:^9.6.1"
     react-dom: "npm:^19.0.0"
     react-icons: "npm:^5.2.1"
     react-scan: "npm:^0.2.14"
-    react-tailwindcss-datepicker: "npm:^2.0.0"
     sharp: "npm:^0.33.4"
     tailwindcss: "npm:^4.0.13"
     timeago-react: "npm:^3.0.6"
@@ -6222,6 +6243,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-day-picker@npm:^9.6.1":
+  version: 9.6.1
+  resolution: "react-day-picker@npm:9.6.1"
+  dependencies:
+    "@date-fns/tz": "npm:^1.2.0"
+    date-fns: "npm:^4.1.0"
+    date-fns-jalali: "npm:^4.1.0-0"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 10c0/ff89264134258850795961a3e15b8bc141118cd6045133014f6ec261cd53eb7e2a9e92d25d6ae25ec89851e91c549f9471ec08e52c85ac35c2fb49028d42d89a
+  languageName: node
+  linkType: hard
+
 "react-dom@npm:^19.0.0":
   version: 19.0.0
   resolution: "react-dom@npm:19.0.0"
@@ -6293,16 +6327,6 @@ __metadata:
   bin:
     react-scan: bin/cli.js
   checksum: 10c0/07a693d486b9effcc61b9b8e97a1de3c8ca61921ab234fc20d73f366b85a5fe32910e62e1d291e626f24af095d404e98d9e4f9628aee535f57e7752d1571bfad
-  languageName: node
-  linkType: hard
-
-"react-tailwindcss-datepicker@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "react-tailwindcss-datepicker@npm:2.0.0"
-  peerDependencies:
-    dayjs: ^1.11.12
-    react: ^17.0.2 || ^18.2.0 || ^19.0.0
-  checksum: 10c0/6c8d0a8873d878677c7706bf89174a740fc0ba25b440159b06ca89efc2776a21767d961ee6133086e413e73978f1befc5534b70482b0acce5efa4ac981bb9a90
   languageName: node
   linkType: hard
 

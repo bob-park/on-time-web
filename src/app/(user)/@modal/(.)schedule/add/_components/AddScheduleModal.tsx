@@ -12,8 +12,11 @@ import { useAddAttendanceSchedule } from '@/domain/attendance/query/attendanceRe
 import Dropdown, { DropdownItem } from '@/shared/components/Dropdown';
 import { useStore } from '@/shared/store/rootStore';
 
+import { format } from 'date-fns';
 import dayjs from 'dayjs';
-import Datepicker from 'react-tailwindcss-datepicker';
+import { DayPicker } from 'react-day-picker';
+import { ko } from 'react-day-picker/locale';
+import 'react-day-picker/style.css';
 
 interface AttendanceOption {
   id: DayOffType;
@@ -32,13 +35,12 @@ export default function AddScheduleModal() {
 
   // ref
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const selectDatePickerRef = useRef<HTMLDialogElement>(null);
 
   // state
-  const [selectDate, setSelectDate] = useState<{ startDate: Date; endDate: Date }>({
-    startDate: dayjs().toDate(),
-    endDate: dayjs().toDate(),
-  });
+  const [selectDate, setSelectDate] = useState<Date>(dayjs().toDate());
   const [selectedDayOffType, setSelectedDayOffType] = useState<DayOffType | undefined>();
+  const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
 
   // store
   const show = useStore((state) => state.showModal);
@@ -62,6 +64,14 @@ export default function AddScheduleModal() {
     }
   }, [show]);
 
+  useEffect(() => {
+    if (!selectDatePickerRef.current) {
+      return;
+    }
+
+    showDatePicker ? selectDatePickerRef.current.showModal() : selectDatePickerRef.current.close();
+  }, [showDatePicker]);
+
   // handle
   const handleBackdrop = () => {
     updateShow(false);
@@ -77,9 +87,18 @@ export default function AddScheduleModal() {
 
   const handleAddSchedule = () => {
     addSchedule({
-      workingDate: dayjs(selectDate.startDate).format('YYYY-MM-DD'),
+      workingDate: dayjs(selectDate).format('YYYY-MM-DD'),
       dayOffType: selectedDayOffType || null,
     });
+  };
+
+  const handleChangeDate = (date: Date | undefined) => {
+    if (!date) {
+      return;
+    }
+
+    setSelectDate(date);
+    setShowDatePicker(false);
   };
 
   return (
@@ -125,20 +144,23 @@ export default function AddScheduleModal() {
               <div className="w-24 flex-none text-right">
                 <h4 className="text-base font-semibold">일자 :</h4>
               </div>
-              <div className="">
-                <Datepicker
-                  i18n="ko"
-                  useRange={false}
-                  asSingle
-                  inputClassName="input input-bordered w-full"
-                  value={selectDate}
-                  onChange={(value) =>
-                    setSelectDate({
-                      startDate: value?.startDate || dayjs().toDate(),
-                      endDate: value?.endDate || dayjs().toDate(),
-                    })
-                  }
-                />
+              <div className="relative">
+                <button className="input input-border w-[252px]" onClick={() => setShowDatePicker(true)}>
+                  <div className="w-full text-center text-base font-semibold">
+                    {dayjs(selectDate).format('YYYY-MM-DD')}
+                  </div>
+                </button>
+                <dialog ref={selectDatePickerRef} className="modal">
+                  <DayPicker
+                    className="react-day-picker"
+                    animate
+                    locale={ko}
+                    mode="single"
+                    captionLayout="dropdown-years"
+                    selected={selectDate}
+                    onSelect={handleChangeDate}
+                  />
+                </dialog>
               </div>
             </div>
           </div>
@@ -150,7 +172,11 @@ export default function AddScheduleModal() {
             <GiCancel className="size-6" />
             취소
           </button>
-          <button className="btn btn-neutral w-24" disabled={isLoading} onClick={handleAddSchedule}>
+          <button
+            className="btn btn-neutral w-24"
+            disabled={isLoading || !selectedDayOffType}
+            onClick={handleAddSchedule}
+          >
             {isLoading ? (
               <>
                 <span className="loading loading-spinner loading-xs" />
