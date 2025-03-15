@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+import { useGenerateCurrentCheck, useGetCurrentCheck } from '@/domain/attendance/query/attendanceCheck';
+
 import { getDaysOfWeek } from '@/utils/parse';
 
-import { useGenerateCurrentCheck, useGetCurrentCheck } from '@/domain/attendance/query/attendanceCheck';
 import cx from 'classnames';
 import dayjs from 'dayjs';
 import QRCodeStyling, { Options } from 'qr-code-styling';

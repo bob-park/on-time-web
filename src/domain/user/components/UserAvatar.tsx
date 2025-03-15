@@ -9,8 +9,8 @@ interface UserAvatarProps {
 
 export default function UserAvatar({ avatar, alt }: UserAvatarProps) {
   return (
-    <div className={cx('avatar', 'online', !avatar && 'placeholder')}>
-      <div className="w-12 rounded-full bg-neutral text-neutral-content">
+    <div className={cx('avatar', 'avatar-online', !avatar && 'avatar-placeholder')}>
+      <div className="bg-neutral text-neutral-content w-12 rounded-full">
         {avatar ? (
           <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" alt={alt} />
         ) : (

@@ -5,14 +5,15 @@ import { useEffect, useState } from 'react';
 import { FaCheckCircle } from 'react-icons/fa';
 import { GiNightSleep } from 'react-icons/gi';
 
-import { isSameMarginOfError } from '@/utils/dataUtils';
-import { getDaysOfWeek, round } from '@/utils/parse';
-
 import useGps from '@/domain/attendance/hooks/useGps';
 import { useGenerateCurrentCheck, useGetCurrentCheck } from '@/domain/attendance/query/attendanceCheck';
 import { useGetAttendanceGps } from '@/domain/attendance/query/attendanceGps';
 import { useGetAttendanceRecord, useRecordAttendance } from '@/domain/attendance/query/attendanceRecord';
 import { useGetCurrentUser } from '@/domain/user/query/user';
+
+import { isSameMarginOfError } from '@/utils/dataUtils';
+import { getDaysOfWeek, round } from '@/utils/parse';
+
 import cx from 'classnames';
 import dayjs from 'dayjs';
 
@@ -31,14 +32,14 @@ export default function AttendanceRecordGpsContents() {
   const { gpsResult } = useGetAttendanceGps();
   const { currentCheck } = useGetCurrentCheck();
   const { generateCheck, isLoading } = useGenerateCurrentCheck();
-  const { record, error: recordErr } = useRecordAttendance(() => {
+  const {
+    record,
+    isLoading: isRecording,
+    error: recordErr,
+  } = useRecordAttendance(() => {
     reloadRecord();
   });
-  const {
-    attendanceRecords,
-    isLoading: isRecording,
-    reloadRecord,
-  } = useGetAttendanceRecord({
+  const { attendanceRecords, reloadRecord } = useGetAttendanceRecord({
     userUniqueId: currentUser?.uniqueId || '',
     startDate: now.format('YYYY-MM-DD'),
     endDate: now.format('YYYY-MM-DD'),
@@ -155,11 +156,7 @@ export default function AttendanceRecordGpsContents() {
                       disabled={
                         (attendanceResult && selectType === 'CLOCK_IN' && !!attendanceResult.clockInTime) ||
                         (attendanceResult && selectType === 'CLOCK_OUT' && !!attendanceResult.clockOutTime) ||
-                        isRecording ||
-                        isDiffLocation(
-                          gpsResult.find((item) => item.id === selectGpsId),
-                          position,
-                        )
+                        isRecording
                       }
                       onClick={handleRecord}
                     >

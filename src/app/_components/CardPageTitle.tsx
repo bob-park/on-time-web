@@ -14,7 +14,7 @@ export default function CardPageTitle({ children, placeholder }: CardPageTitlePr
 
   return (
     <div
-      className="relative flex cursor-default select-none flex-col items-center justify-center text-9xl font-bold text-gray-400"
+      className="relative flex cursor-default flex-col items-center justify-center text-9xl font-bold text-gray-400 select-none"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >

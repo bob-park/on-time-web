@@ -4,7 +4,7 @@ import { IoAddCircle } from 'react-icons/io5';
 
 import { useRouter } from 'next/navigation';
 
-import { useStore } from '@/shared/rootStore';
+import { useStore } from '@/shared/store/rootStore';
 
 export default function AddScheduleButton() {
   // router

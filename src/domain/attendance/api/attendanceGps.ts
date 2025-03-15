@@ -1,5 +1,5 @@
-import api from '@/shared/api';
+import index from '@/shared/api';
 
 export async function getAll() {
-  return api.get('/api/attendance/gps').json<AttendanceGps[]>();
+  return index.get('/api/attendance/gps').json<AttendanceGps[]>();
 }

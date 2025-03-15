@@ -1,12 +1,21 @@
 'use client';
 
+import { AiOutlineSchedule } from 'react-icons/ai';
+import { FaUsersViewfinder } from 'react-icons/fa6';
+import { HiDocumentPlus } from 'react-icons/hi2';
+import { LuHistory } from 'react-icons/lu';
+import { MdOutlineApproval } from 'react-icons/md';
+import { PiGpsFixBold } from 'react-icons/pi';
 import { RiCalendarScheduleFill, RiDashboardFill } from 'react-icons/ri';
-import { TbSubtask } from 'react-icons/tb';
 
 import Link from 'next/link';
 import { useSelectedLayoutSegments } from 'next/navigation';
 
+import { useGetCurrentUser } from '@/domain/user/query/user';
+
 import cx from 'classnames';
+
+const DEFAULT_MANAGER_ROLES = ['ROLE_ADMIN', 'ROLE_MANAGER'];
 
 function isActive(sources: string[], targets: string[]): boolean {
   return targets.every((target) => sources.includes(target));
@@ -37,12 +46,16 @@ function MenuItem({ children, href, active }: MenuItemProps) {
 }
 
 export default function NavMenu() {
+  // segments
   const segments = useSelectedLayoutSegments();
 
   // query
+  const { currentUser } = useGetCurrentUser();
+
+  const isManager = DEFAULT_MANAGER_ROLES.includes(currentUser?.role.type || 'ROLE_USER');
 
   return (
-    <div className="flex size-full select-none gap-2 rounded-2xl border bg-white p-6 shadow-xl">
+    <div className="flex size-full gap-2 overflow-auto rounded-2xl border border-gray-300 bg-white p-6 shadow-xl select-none">
       {/* menu list */}
       <MenuList>
         {/* general */}
@@ -57,11 +70,60 @@ export default function NavMenu() {
         </MenuItem>
 
         <MenuItem href="/attendance/record/gps" active={isActive(segments, ['attendance', 'record', 'gps'])}>
-          <TbSubtask className="inline-block h-6 w-6" />
+          <PiGpsFixBold className="inline-block h-6 w-6" />
           근태 처리 (GPS)
         </MenuItem>
 
+        <div className="mt-5">
+          <span className="text-sm font-normal text-gray-400">전자 결재</span>
+        </div>
+
+        <MenuItem href="/dayoff/requests" active={isActive(segments, ['dayoff', 'requests'])}>
+          <HiDocumentPlus className="inline-block size-6" />
+          연(월)차 신청
+        </MenuItem>
+
+        <MenuItem href="/dayoff/used" active={isActive(segments, ['dayoff', 'used'])}>
+          <LuHistory className="inline-block size-6" />
+          연(월)차 사용 내역
+        </MenuItem>
+
+        <MenuItem href="/overtime/requests" active={isActive(segments, ['overtime', 'requests'])}>
+          <HiDocumentPlus className="inline-block size-6" />
+          휴일근무보고서 신청
+        </MenuItem>
+
+        <MenuItem href="/expense/reports/requests" active={isActive(segments, ['expense', 'reports', 'requests'])}>
+          <HiDocumentPlus className="inline-block size-6" />
+          지출결의서 신청
+        </MenuItem>
+
+        <MenuItem href="/approvals" active={isActive(segments, ['approvals'])}>
+          <MdOutlineApproval className="inline-block size-6" />
+          결재 신청 목록
+        </MenuItem>
+
         {/* admin */}
+        {isManager && (
+          <>
+            <div className="mt-5">
+              <span className="text-sm font-normal text-gray-400">관리자</span>
+            </div>
+
+            <MenuItem href="/attendance/view" active={isActive(segments, ['attendance', 'view'])}>
+              <FaUsersViewfinder className="inline-block size-6" />
+              임직원 근무 현황
+            </MenuItem>
+
+            <MenuItem
+              href="/attendance/people/schedules"
+              active={isActive(segments, ['attendance', 'people', 'schedules'])}
+            >
+              <AiOutlineSchedule className="inline-block size-6" />
+              임직원 근무 일정 등록
+            </MenuItem>
+          </>
+        )}
       </MenuList>
     </div>
   );

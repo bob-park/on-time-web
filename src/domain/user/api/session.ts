@@ -1,9 +1,9 @@
-import api from '@/shared/api';
+import index from '@/shared/api';
 
 export async function logout() {
-  await api.get('/api/logout');
+  await index.get('/api/logout');
 }
 
 export async function currentUser() {
-  return api.get('/api/user/me').json<User>();
+  return index.get('/api/users/me').json<User>();
 }

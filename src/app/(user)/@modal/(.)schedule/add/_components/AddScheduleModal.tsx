@@ -3,17 +3,19 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { GiCancel } from 'react-icons/gi';
-import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { RiCalendarScheduleLine } from 'react-icons/ri';
 
 import { useRouter } from 'next/navigation';
 
-import { useStore } from '@/shared/rootStore';
-
 import { useAddAttendanceSchedule } from '@/domain/attendance/query/attendanceRecord';
-import cx from 'classnames';
+
+import Dropdown, { DropdownItem } from '@/shared/components/Dropdown';
+import { useStore } from '@/shared/store/rootStore';
+
 import dayjs from 'dayjs';
-import Datepicker from 'react-tailwindcss-datepicker';
+import { DayPicker } from 'react-day-picker';
+import { ko } from 'react-day-picker/locale';
+import 'react-day-picker/style.css';
 
 interface AttendanceOption {
   id: DayOffType;
@@ -32,14 +34,12 @@ export default function AddScheduleModal() {
 
   // ref
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const selectDatePickerRef = useRef<HTMLDialogElement>(null);
 
   // state
-  const [selectDate, setSelectDate] = useState<{ startDate: Date; endDate: Date }>({
-    startDate: dayjs().toDate(),
-    endDate: dayjs().toDate(),
-  });
-  const [showDayOffType, setShowDayOffType] = useState<boolean>(false);
-  const [selectedDayOffType, setSelectedDayOffType] = useState<DayOffType | null>(null);
+  const [selectDate, setSelectDate] = useState<Date>(dayjs().toDate());
+  const [selectedDayOffType, setSelectedDayOffType] = useState<DayOffType | undefined>();
+  const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
 
   // store
   const show = useStore((state) => state.showModal);
@@ -63,6 +63,14 @@ export default function AddScheduleModal() {
     }
   }, [show]);
 
+  useEffect(() => {
+    if (!selectDatePickerRef.current) {
+      return;
+    }
+
+    showDatePicker ? selectDatePickerRef.current.showModal() : selectDatePickerRef.current.close();
+  }, [showDatePicker]);
+
   // handle
   const handleBackdrop = () => {
     updateShow(false);
@@ -77,13 +85,19 @@ export default function AddScheduleModal() {
   };
 
   const handleAddSchedule = () => {
-    // TODO add schedule
-    addSchedule({ workingDate: dayjs(selectDate.startDate).format('YYYY-MM-DD'), dayOffType: selectedDayOffType });
+    addSchedule({
+      workingDate: dayjs(selectDate).format('YYYY-MM-DD'),
+      dayOffType: selectedDayOffType || null,
+    });
   };
 
-  const handleChangeDayOffType = (dayOffType: DayOffType | null) => {
-    setShowDayOffType(false);
-    setSelectedDayOffType(dayOffType);
+  const handleChangeDate = (date: Date | undefined) => {
+    if (!date) {
+      return;
+    }
+
+    setSelectDate(date);
+    setShowDatePicker(false);
   };
 
   return (
@@ -102,37 +116,25 @@ export default function AddScheduleModal() {
               <div className="w-24 flex-none text-right">
                 <h4 className="text-base font-semibold">구분 :</h4>
               </div>
-              <div className="w-full">
-                <div className={cx('dropdown w-[252px]', showDayOffType && 'dropdown-open')}>
-                  <div
-                    className="relative flex h-12 w-full flex-row items-center justify-center gap-2 rounded-lg border px-3 py-2"
-                    onClick={() => setShowDayOffType(!showDayOffType)}
-                  >
-                    <div className="">
-                      <span className="">
-                        {SELECT_OPTIONS_ATTENDANCE.find((item) => item.id === selectedDayOffType)?.text || '없음'}
-                      </span>
-                    </div>
-                    <div className="absolute right-4">{showDayOffType ? <IoIosArrowUp /> : <IoIosArrowDown />}</div>
-                  </div>
-                  <ul className="menu dropdown-content z-[1] w-full rounded-box bg-base-100 p-2 shadow">
-                    <li
-                      className={cx(selectedDayOffType === null && 'rounded-lg bg-neutral text-white')}
-                      onClick={() => handleChangeDayOffType(null)}
-                    >
-                      <div>없음</div>
-                    </li>
-                    {SELECT_OPTIONS_ATTENDANCE.map((item) => (
-                      <li
-                        key={`select-dropdown-item-${item.id}`}
-                        className={cx(selectedDayOffType === item.id && 'rounded-lg bg-neutral text-white')}
-                        onClick={() => handleChangeDayOffType(item.id)}
-                      >
-                        <div>{item.text}</div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              <div className="w-[252px]">
+                {/* dropdown */}
+                <Dropdown
+                  text={SELECT_OPTIONS_ATTENDANCE.find((item) => item.id === selectedDayOffType)?.text || '없음'}
+                  onChange={(value) => setSelectedDayOffType(value as DayOffType)}
+                >
+                  {/* default item */}
+                  <DropdownItem text="없음" active={!selectedDayOffType} />
+
+                  {/* items */}
+                  {SELECT_OPTIONS_ATTENDANCE.map((item) => (
+                    <DropdownItem
+                      key={`select-dropdown-item-${item.id}`}
+                      value={item.id.toString()}
+                      text={item.text}
+                      active={selectedDayOffType === item.id}
+                    />
+                  ))}
+                </Dropdown>
               </div>
             </div>
 
@@ -141,20 +143,23 @@ export default function AddScheduleModal() {
               <div className="w-24 flex-none text-right">
                 <h4 className="text-base font-semibold">일자 :</h4>
               </div>
-              <div className="">
-                <Datepicker
-                  i18n="ko"
-                  useRange={false}
-                  asSingle
-                  inputClassName="input input-bordered w-full"
-                  value={selectDate}
-                  onChange={(value) =>
-                    setSelectDate({
-                      startDate: value?.startDate || dayjs().toDate(),
-                      endDate: value?.endDate || dayjs().toDate(),
-                    })
-                  }
-                />
+              <div className="relative">
+                <button className="input input-border w-[252px]" onClick={() => setShowDatePicker(true)}>
+                  <div className="w-full text-center text-base font-semibold">
+                    {dayjs(selectDate).format('YYYY-MM-DD')}
+                  </div>
+                </button>
+                <dialog ref={selectDatePickerRef} className="modal">
+                  <DayPicker
+                    className="react-day-picker"
+                    animate
+                    locale={ko}
+                    mode="single"
+                    captionLayout="dropdown-years"
+                    selected={selectDate}
+                    onSelect={handleChangeDate}
+                  />
+                </dialog>
               </div>
             </div>
           </div>
@@ -166,7 +171,11 @@ export default function AddScheduleModal() {
             <GiCancel className="size-6" />
             취소
           </button>
-          <button className="btn btn-neutral w-24" disabled={isLoading} onClick={handleAddSchedule}>
+          <button
+            className="btn btn-neutral w-24"
+            disabled={isLoading || !selectedDayOffType}
+            onClick={handleAddSchedule}
+          >
             {isLoading ? (
               <>
                 <span className="loading loading-spinner loading-xs" />

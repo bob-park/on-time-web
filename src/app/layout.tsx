@@ -27,16 +27,19 @@ export default async function RootLayout({
 
   const queryClient = new QueryClient();
 
-  const user = await fetch(`${WEB_SERVICE_HOST}/users/me`, {
+  const res = await fetch(`${WEB_SERVICE_HOST}/users/me`, {
     method: 'get',
     headers: {
       Cookie: `JSESSIONID=${cookieStore.get('JSESSIONID')?.value || ''}`,
     },
     credentials: 'include',
-  })
-    .then((res) => res.json())
-    .then((res: User) => res)
-    .catch((err) => redirect('/api/oauth2/authorization/keyflow-auth'));
+  });
+
+  if (!res.ok) {
+    redirect('/api/oauth2/authorization/keyflow-auth');
+  }
+
+  const user = (await res.json()) as User;
 
   queryClient.setQueryData<User>(['user', 'me'], user);
 
@@ -53,13 +56,13 @@ export default async function RootLayout({
         <RQProvider>
           <HydrationBoundary state={dehydratedState}>
             {/* header */}
-            <div className="sticky left-0 top-1 z-50 flex w-full flex-row items-center justify-center px-5">
+            <div className="sticky top-1 left-0 z-50 flex w-full flex-row items-center justify-center px-5">
               <Header />
             </div>
 
             <div className="flex">
               {/* nav menu*/}
-              <div className="sticky top-[120px] m-7 h-[calc(100vh-160px)] w-60 flex-none">
+              <div className="sticky top-[120px] m-7 h-[calc(100vh-160px)] w-72 flex-none">
                 <NavMenu />
               </div>
 
