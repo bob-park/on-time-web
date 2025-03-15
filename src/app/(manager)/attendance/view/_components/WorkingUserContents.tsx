@@ -3,6 +3,7 @@
 import { useContext } from 'react';
 
 import { FaCheckCircle } from 'react-icons/fa';
+import { GiNightSleep } from 'react-icons/gi';
 import { IoIosTime } from 'react-icons/io';
 import { RiErrorWarningFill } from 'react-icons/ri';
 
@@ -28,7 +29,16 @@ function parseTimeFormat(seconds: number): string {
   return `${hours}시간 ${padStart(min + '', 2, '0')}분`;
 }
 
-const DisplayStatus = ({ status }: { status?: AttendanceStatus }) => {
+const DisplayStatus = ({ status, dayOffType }: { status?: AttendanceStatus; dayOffType?: DayOffType }) => {
+  if (dayOffType === 'DAY_OFF') {
+    return (
+      <span className="font-semibold">
+        <GiNightSleep className="inline-block size-6 pl-1 text-gray-600" />
+        휴가
+      </span>
+    );
+  }
+
   if (!status) {
     return (
       <span className="font-semibold">
@@ -65,9 +75,9 @@ const DisplayStatus = ({ status }: { status?: AttendanceStatus }) => {
 
 const WorkingUserHeaders = () => {
   return (
-    <div className="flex h-16 w-full flex-row items-center gap-1 border-y-2 px-2 text-center font-semibold">
+    <div className="flex h-16 w-full flex-row items-center gap-1 border-y-2 border-gray-300 px-2 text-center font-semibold">
       <span className="w-32 flex-none">근무일</span>
-      <span className="w-12 flex-none">구분</span>
+      <span className="w-16 flex-none">구분</span>
       <span className="w-28 flex-none">출근 시간</span>
       <span className="w-28 flex-none">퇴근 예정 시간</span>
       <span className="w-28 flex-none">퇴근 시간</span>
@@ -113,9 +123,9 @@ const WorkingUserItem = ({ date, status, clockIn, leaveWorkAt, clockOut, dayOffT
           (<span>{getDaysOfWeek(dayjs(date).day())}</span>)
         </span>
       </div>
-      <div className="w-12 flex-none font-semibold">
+      <div className="w-16 flex-none font-semibold">
         <span className="">
-          {DEFAULT_WEEK_ENDS.includes(dayjs(date).day()) ? '휴일' : dayOffType === 'DAY_OFF' ? '연(월)차' : '업무'}
+          {DEFAULT_WEEK_ENDS.includes(dayjs(date).day()) ? '휴일' : dayOffType === 'DAY_OFF' ? '휴가' : '업무'}
         </span>
       </div>
       <div className="w-28 flex-none">
@@ -159,7 +169,7 @@ const WorkingUserItem = ({ date, status, clockIn, leaveWorkAt, clockOut, dayOffT
         </span>
       </div>
       <div className="w-28 flex-none">
-        <DisplayStatus status={status} />
+        <DisplayStatus status={status} dayOffType={dayOffType} />
       </div>
     </div>
   );

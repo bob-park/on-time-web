@@ -90,7 +90,9 @@ const WorkingRecordItems = ({
       >
         {`${dayjs(date).format('YYYY.MM.DD')} (${getDaysOfWeek(dayjs(date).day())})`}
       </span>
-      <span className="w-12 flex-none font-semibold">{[0, 6].includes(dayjs(date).day()) ? '휴일' : '업무'}</span>
+      <span className="w-12 flex-none font-semibold">
+        {dayOffType === 'DAY_OFF' ? '연차' : [0, 6].includes(dayjs(date).day()) ? '휴일' : '업무'}
+      </span>
       <span className="w-28 flex-none">{clockInTime && dayjs(clockInTime).format('HH:mm')}</span>
       <span className="w-28 flex-none">{leaveWorkAt && dayjs(leaveWorkAt).format('HH:mm')}</span>
       <span className="w-28 flex-none">{clockOutTime && dayjs(clockOutTime).format('HH:mm')}</span>
