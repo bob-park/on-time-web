@@ -38,18 +38,18 @@ export default function ScheduleContents() {
   const dataList = getDates(selectDate, attendanceRecords);
 
   return (
-    <div className="flex w-full flex-col items-start justify-center gap-1 border-gray-300 select-none">
+    <div className="flex w-full flex-col items-start justify-center gap-1 select-none">
       {/* headers */}
-      <div className="flex h-16 flex-row">
+      <div className="flex h-16 flex-row border-b-2 border-gray-300">
         {/* working dates */}
-        <div className="w-48 flex-none border-[1px]">
+        <div className="w-48 flex-none">
           <div className="flex size-full items-center justify-center">
-            <span className="">근무일</span>
+            <span className="font-bold">근무일</span>
           </div>
         </div>
 
         {/* working times */}
-        <div className="border-b-[1px]">
+        <div className="">
           <WorkingTimeHeaders />
         </div>
       </div>
@@ -76,27 +76,21 @@ function padWorkingTime(value: number): string {
 
 const WorkingTimeHeaders = () => {
   return (
-    <div className="flex size-full flex-row items-center justify-center">
+    <div className="flex size-full flex-row items-center justify-center font-bold">
       <div className="flex size-full flex-col items-center justify-center">
-        <div className="size-full border-t-[1px] border-r-[1px] border-b-[1px] text-center">
-          <span>AM</span>
-        </div>
-        <div className="flex size-full flex-row items-center justify-center border-r-[1px]">
+        <div className="flex size-full flex-row items-center justify-center">
           {DEFAULT_TIMES_LIST.map((item, index) => (
             <div key={`schedule-working-time-am-${index}`} className="w-10 text-center">
-              <span>{padWorkingTime(index === 0 ? 12 : index)}</span>
+              <span>{padWorkingTime(index)}</span>
             </div>
           ))}
         </div>
       </div>
       <div className="flex size-full flex-col items-center justify-center">
-        <div className="size-full w-full border-t-[1px] border-r-[1px] border-b-[1px] text-center">
-          <span>PM</span>
-        </div>
-        <div className="flex size-full flex-row items-center justify-center border-r-[1px]">
+        <div className="flex size-full flex-row items-center justify-center">
           {DEFAULT_TIMES_LIST.map((item, index) => (
             <div key={`schedule-working-time-pm-${index}`} className="w-10 text-center">
-              <span>{padWorkingTime(index === 0 ? 12 : index)}</span>
+              <span>{padWorkingTime(index + 12)}</span>
             </div>
           ))}
         </div>
@@ -168,7 +162,7 @@ const WorkingScheduleItem = ({
       })}
     >
       {/* working dates */}
-      <div className="w-48 flex-none border-r-[1px]">
+      <div className="w-48 flex-none">
         <div className="flex size-full flex-row items-center justify-center">
           <div className="w-8 flex-none">
             {dayOffType === 'DAY_OFF' && <GiNightSleep className="size-6 text-gray-500" />}
@@ -207,7 +201,7 @@ const WorkingTimeItems = ({ date, status, clockIn, clockOut }: WorkingTimeItemsP
     <div className="relative flex size-full flex-row items-center">
       {(!DEFAULT_WEEKENDS.includes(dayjs(date).day()) || (!!status && status !== 'WAITING')) && (
         <div
-          className={cx({ tooltip: clockIn && clockOut }, 'absolute top-1/4 h-8 w-32 rounded-xl', {
+          className={cx({ tooltip: clockIn && clockOut }, 'absolute top-1/4 h-8 w-32 rounded-lg', {
             'bg-blue-300': status !== 'WARNING',
             'bg-yellow-300': status === 'WARNING',
           })}
