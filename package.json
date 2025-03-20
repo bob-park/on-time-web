@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "scan": "next dev & npx react-scan@latest 127.0.0.1:3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -54,7 +53,6 @@
     "msw": "^2.3.1",
     "postcss": "^8",
     "react-icons": "^5.2.1",
-    "react-scan": "^0.2.14",
     "tailwindcss": "^4.0.13",
     "typescript": "^5"
   },
