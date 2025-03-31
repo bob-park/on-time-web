@@ -21,24 +21,32 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
 
       {/* title */}
       <div className="mt-[270px]">
-        <h1 className="text-5xl font-bold tracking-[60px]">휴가계</h1>
+        <span className="mr-[50px] text-5xl font-bold">휴</span>
+        <span className="mr-[50px] text-5xl font-bold">가</span>
+        <span className="mr-[50px] text-5xl font-bold">계</span>
       </div>
 
       {/* 성명 */}
       <div className="mt-28 flex w-full flex-row items-center gap-3">
         <div className="w-72 flex-none text-right text-2xl">
-          <span className="tracking-[60px]">성명</span>
+          <span className="mr-5">
+            <span className="mr-[80px]">성</span>
+            <span>명</span>
+          </span>
           <span>:</span>
         </div>
         <div className="">
-          <span className="ml-16 text-2xl font-bold tracking-[30px]">{document.user.username}</span>
+          <span className="ml-16 text-2xl font-bold tracking-widest">{document.user.username}</span>
         </div>
       </div>
 
       {/* 부서 */}
       <div className="mt-6 flex w-full flex-row items-center gap-3">
         <div className="w-72 flex-none text-right text-2xl">
-          <span className="tracking-[60px]">부서</span>
+          <span className="mr-5">
+            <span className="mr-[80px]">부</span>
+            <span>서</span>
+          </span>
           <span>:</span>
         </div>
         <div className="">
@@ -49,18 +57,26 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
       {/* 직위 */}
       <div className="mt-6 flex w-full flex-row items-center gap-3">
         <div className="w-72 flex-none text-right text-2xl">
-          <span className="tracking-[60px]">직위</span>
+          <span className="mr-5">
+            <span className="mr-[80px]">직</span>
+            <span>위</span>
+          </span>
           <span>:</span>
         </div>
         <div className="">
-          <span className="ml-16 text-2xl font-bold tracking-[80px]">{document.user.position.name}</span>
+          <span className="ml-16 text-2xl font-bold tracking-widest">{document.user.position.name}</span>
         </div>
       </div>
 
       {/* 휴가 기간 */}
       <div className="mt-6 flex w-full flex-row items-center gap-3">
         <div className="w-72 flex-none text-right text-2xl">
-          <span className="mr-7 tracking-[5px]">휴가기간</span>
+          <span className="mr-5">
+            <span className="mr-[13px]">휴</span>
+            <span className="mr-[13px]">가</span>
+            <span className="mr-[13px]">기</span>
+            <span>간</span>
+          </span>
           <span>:</span>
         </div>
         <div className="">
@@ -73,7 +89,12 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
       {/* 휴가 구분 */}
       <div className="mt-6 flex w-full flex-row items-center gap-3">
         <div className="w-72 flex-none text-right text-2xl">
-          <span className="mr-7 tracking-[5px]">휴가구분</span>
+          <span className="mr-5">
+            <span className="mr-[13px]">휴</span>
+            <span className="mr-[13px]">가</span>
+            <span className="mr-[13px]">구</span>
+            <span>분</span>
+          </span>
           <span>:</span>
         </div>
         <div className="">
@@ -84,7 +105,10 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
       {/* 사유 */}
       <div className="mt-6 flex w-full flex-row items-center gap-3">
         <div className="w-72 flex-none text-right text-2xl">
-          <span className="tracking-[60px]">사유</span>
+          <span className="mr-5">
+            <span className="mr-[80px]">사</span>
+            <span>유</span>
+          </span>
           <span>:</span>
         </div>
         <div className="">
@@ -100,7 +124,7 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
       {/* 신청자 정보 */}
       <div className="mt-32 flex w-full flex-col items-center gap-3">
         <div className="flex w-full flex-row items-center justify-end gap-3">
-          <div className="w-72 flex-none text-right text-xl tracking-[10px]">
+          <div className="w-72 flex-none text-right text-xl tracking-widest">
             <span>신청일</span>
             <span>:</span>
           </div>
@@ -112,13 +136,13 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
         </div>
 
         <div className="mt-10 flex w-full flex-row items-center justify-end gap-3">
-          <div className="w-72 flex-none text-right text-xl tracking-[10px]">
+          <div className="w-72 flex-none text-right text-xl tracking-widest">
             <span>신청자</span>
             <span>:</span>
           </div>
           <div className="">
             <p className="mr-20 ml-10 text-xl">
-              <span className="text-2xl font-bold tracking-[20px]">{document.user.username}</span>
+              <span className="text-2xl font-bold tracking-widest">{document.user.username}</span>
               <span className="ml-5">(인)</span>
             </p>
           </div>
@@ -169,24 +193,24 @@ interface VacationTypeItemProps {
 function VacationTypeItem({ type, subType }: VacationTypeItemProps) {
   return (
     <div className="">
-      {type === 'GENERAL' && !subType && <span className="ml-16 text-2xl font-bold tracking-[80px]">연차</span>}
+      {type === 'GENERAL' && !subType && <span className="ml-16 text-2xl font-bold tracking-widest">연차</span>}
       {type === 'GENERAL' && subType === 'AM_HALF_DAY_OFF' && (
-        <span className="ml-16 text-2xl font-bold tracking-[10px]">오전반차</span>
+        <span className="ml-16 text-2xl font-bold tracking-widest">오전반차</span>
       )}
       {type === 'GENERAL' && subType === 'PM_HALF_DAY_OFF' && (
-        <span className="ml-16 text-2xl font-bold tracking-[10px]">오후반차</span>
+        <span className="ml-16 text-2xl font-bold tracking-widest">오후반차</span>
       )}
       {type === 'OFFICIAL' && (
         <div className="ml-16">
-          <span className="text-2xl font-bold tracking-[80px]">공가</span>
-          {subType === 'AM_HALF_DAY_OFF' && <span className="-ml-5 text-xl">(오전)</span>}
-          {subType === 'PM_HALF_DAY_OFF' && <span className="-ml-5 text-xl">(오후)</span>}
+          <span className="text-2xl font-bold tracking-widest">공가</span>
+          {subType === 'AM_HALF_DAY_OFF' && <span className="ml-2 text-xl">(오전)</span>}
+          {subType === 'PM_HALF_DAY_OFF' && <span className="ml-2 text-xl">(오후)</span>}
         </div>
       )}
       {type === 'COMPENSATORY' && (
         <div className="ml-16">
           <div className="">
-            <span className="text-2xl font-bold tracking-[10px]">대체휴가</span>
+            <span className="text-2xl font-bold tracking-widest">대체휴가</span>
             {subType === 'AM_HALF_DAY_OFF' && <span className="ml-2 text-xl">(오전)</span>}
             {subType === 'PM_HALF_DAY_OFF' && <span className="ml-2 text-xl">(오후)</span>}
           </div>

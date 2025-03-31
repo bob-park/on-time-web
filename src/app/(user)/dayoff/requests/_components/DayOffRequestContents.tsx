@@ -194,7 +194,7 @@ export default function DayOffRequestContent() {
         </div>
 
         {/* action button */}
-        <div className="mt-10 flex flex-row gap-4">
+        <div className="my-10 flex flex-row gap-4">
           <button type="button" className="btn w-36">
             취소
           </button>

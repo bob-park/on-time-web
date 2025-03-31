@@ -1,11 +1,17 @@
 'use client';
 
+import { useState } from 'react';
+
 import { FaFilePdf } from 'react-icons/fa';
 import { GiCancel } from 'react-icons/gi';
 
 import ApprovalLines from '@/domain/approval/components/ApprovalLines';
 import VacationDocument from '@/domain/document/components/VacationDocument';
 import { useVacationDocument } from '@/domain/document/query/vacation';
+
+import dayjs from 'dayjs';
+import html2canvas from 'html2canvas-pro';
+import jsPDF from 'jspdf';
 
 interface DayOffDetailContentsProps {
   id: number;
@@ -14,8 +20,33 @@ interface DayOffDetailContentsProps {
 const DEFAULT_VACATION_DOCUMENT_TAG_ID = 'vacation_document_id';
 
 export default function DayOffDetailContents({ id }: DayOffDetailContentsProps) {
+  // state
+  const [isPdfLoading, setIsPdfLoading] = useState<boolean>(false);
+
   // query
   const { vacationDocument } = useVacationDocument(id);
+
+  // handle
+  const handlePdfDownloadClick = () => {
+    if (!vacationDocument) {
+      return;
+    }
+
+    const docElement = document.getElementById(DEFAULT_VACATION_DOCUMENT_TAG_ID);
+    if (!docElement) {
+      return;
+    }
+
+    setIsPdfLoading(true);
+
+    html2canvas(docElement).then((canvas) => {
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      pdf.addImage(canvas, 'JPEG', 0, 0, 210, 297);
+      pdf.save(`휴가계_${vacationDocument.user.username}_${dayjs(vacationDocument.startDate).format('YYYYMMDD')}.pdf`);
+
+      setIsPdfLoading(false);
+    });
+  };
 
   return (
     <div className="flex size-full flex-col items-center justify-center gap-4">
@@ -51,9 +82,23 @@ export default function DayOffDetailContents({ id }: DayOffDetailContentsProps) 
                 <GiCancel className="size-6" />
                 취소
               </button>
-              <button type="button" className="btn btn-neutral w-full flex-1">
-                <FaFilePdf className="size-6" />
-                PDF 다운로드
+              <button
+                type="button"
+                className="btn btn-neutral w-full flex-1"
+                disabled={isPdfLoading}
+                onClick={handlePdfDownloadClick}
+              >
+                {isPdfLoading ? (
+                  <>
+                    <span className="loading loading-spinner" />
+                    생성중
+                  </>
+                ) : (
+                  <>
+                    <FaFilePdf className="size-6" />
+                    PDF 다운로드
+                  </>
+                )}
               </button>
             </div>
           </div>
