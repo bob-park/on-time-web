@@ -167,16 +167,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bob-park/eslint-config-bobpark@npm:0.1.2-rc-006":
-  version: 0.1.2-rc-006
-  resolution: "@bob-park/eslint-config-bobpark@npm:0.1.2-rc-006::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40bob-park%2Feslint-config-bobpark%2F0.1.2-rc-006%2Fba709563c87a99f95e31dd08f1b6bec965bcd269"
+"@bob-park/eslint-config-bobpark@npm:0.1.3-RC1-2024-0325":
+  version: 0.1.3-RC1-2024-0325
+  resolution: "@bob-park/eslint-config-bobpark@npm:0.1.3-RC1-2024-0325::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40bob-park%2Feslint-config-bobpark%2F0.1.3-RC1-2024-0325%2F99ef313b440ac5064ef9837060cdb2d381d87037"
   dependencies:
     "@rushstack/eslint-config": "npm:3.6.8"
     "@rushstack/eslint-patch": "npm:1.10.1"
     "@tanstack/eslint-plugin-query": "npm:^5.62.1"
     "@typescript-eslint/eslint-plugin": "npm:^8.0.1"
     "@typescript-eslint/parser": "npm:^8.0.1"
-    eslint: "npm:^8.57.0"
+    eslint: "npm:^8.57.1"
     eslint-config-airbnb: "npm:^19.0.4"
     eslint-config-airbnb-base: "npm:^15.0.0"
     eslint-config-airbnb-typescript: "npm:^18.0.0"
@@ -192,7 +192,7 @@ __metadata:
   peerDependencies:
     "@typescript-eslint/eslint-plugin": ^8.0.1
     "@typescript-eslint/parser": ^8.0.1
-    eslint: ">= 8"
+    eslint: ">= 8 < 9"
     eslint-config-airbnb: ^19.0.4
     eslint-config-airbnb-base: ^15.0.0
     eslint-config-airbnb-typescript: ^18.0.0
@@ -201,22 +201,22 @@ __metadata:
     eslint-plugin-react: ^7.35.0
     eslint-plugin-react-hooks: ^4.6.2
     typescript: ">= 5"
-  checksum: 10c0/4ff677958496bd54b2c2bec997046a4dc905fb2f55c82085d732eb6e9e0b0a1cf4f5a60cb8f731c014af1cfe0a1425d888d309b2c228f43167198b6bd7942533
+  checksum: 10c0/36dfffd2052a68f2058f8ce4ad389c8af2d79bf3d93083ee758ff52fac79a13f10103a943908b55b55f670d0e59bee3b22b35c58184a71388dd19c9a7a62d99e
   languageName: node
   linkType: hard
 
-"@bob-park/prettier-config-bobpark@npm:0.1.0-RC1-2024-0212":
-  version: 0.1.0-RC1-2024-0212
-  resolution: "@bob-park/prettier-config-bobpark@npm:0.1.0-RC1-2024-0212::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40bob-park%2Fprettier-config-bobpark%2F0.1.0-RC1-2024-0212%2F495c15b6c0c6c87b38563a377367e25eb2fff2f1"
+"@bob-park/prettier-config-bobpark@npm:0.1.0-RC1-2024-0325":
+  version: 0.1.0-RC1-2024-0325
+  resolution: "@bob-park/prettier-config-bobpark@npm:0.1.0-RC1-2024-0325::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40bob-park%2Fprettier-config-bobpark%2F0.1.0-RC1-2024-0325%2Fb5f0d90c159ecd1b8bf8bdd24321034332cdc1e0"
   dependencies:
     "@trivago/prettier-plugin-sort-imports": "npm:^4.3.0"
     eslint-plugin-prettier: "npm:^5.2.1"
     prettier: "npm:^3.3.3"
     prettier-plugin-tailwindcss: "npm:^0.6.6"
   peerDependencies:
-    eslint: ">= 8"
+    eslint: ">= 8 < 9"
     typescript: ">= 5"
-  checksum: 10c0/015c81300c1bcabf76bd1f1e111a52ba8de953cd68311b9768410c9d8022742345d5813a15ea80ba736163b4616cc73c25040189d01479ba08c3d107bbbbc4f4
+  checksum: 10c0/30bdcfb170be4eb22502ad6f1ec42e9342708111d690cf2798ec9711f44b8a496024f34dcb78d72b21bcaee53904afd75e8942fd1957c5f3f15126ef0e6fda6a
   languageName: node
   linkType: hard
 
@@ -3143,7 +3143,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.57.0":
+"eslint@npm:^8.57.1":
   version: 8.57.1
   resolution: "eslint@npm:8.57.1"
   dependencies:
@@ -4857,8 +4857,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "on-time-web@workspace:."
   dependencies:
-    "@bob-park/eslint-config-bobpark": "npm:0.1.2-rc-006"
-    "@bob-park/prettier-config-bobpark": "npm:0.1.0-RC1-2024-0212"
+    "@bob-park/eslint-config-bobpark": "npm:0.1.3-RC1-2024-0325"
+    "@bob-park/prettier-config-bobpark": "npm:0.1.0-RC1-2024-0325"
     "@eslint/eslintrc": "npm:^3"
     "@faker-js/faker": "npm:^8.4.1"
     "@mswjs/http-middleware": "npm:^0.10.1"
