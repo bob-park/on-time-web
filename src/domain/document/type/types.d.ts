@@ -9,6 +9,7 @@ interface Document {
   type: DocumentType;
   status: DocumentStatus;
   user: User;
+  approvalHistories: ApprovalHistory[];
   createdDate: Date;
   createdBy?: string;
   lastModifiedDate?: Date;

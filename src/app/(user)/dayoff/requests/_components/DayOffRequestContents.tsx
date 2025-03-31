@@ -30,9 +30,9 @@ export default function DayOffRequestContent() {
   const { push } = useToast();
 
   // query
-  const { createVacation, isLoading } = useCreateVacation(() => {
+  const { createVacation, isLoading } = useCreateVacation((data) => {
     push('휴가 신청이 완료되었습니다.', 'info');
-    router.push('/dayoff/used');
+    router.push(`/dayoff/${data.id}`);
   });
 
   // handle

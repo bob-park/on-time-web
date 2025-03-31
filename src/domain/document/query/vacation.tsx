@@ -1,15 +1,24 @@
-import { createVacation } from '@/domain/document/api/vacation';
+import { createVacation, getVacationDocument } from '@/domain/document/api/vacation';
 
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
-export function useCreateVacation(onSuccess?: () => void) {
+export function useCreateVacation(onSuccess?: (data: VacationDocument) => void) {
   const { mutate, isPending } = useMutation({
     mutationKey: ['create', 'document', 'vacation'],
     mutationFn: (req: CreateVacationDocumentRequest) => createVacation(req),
     onSuccess: (data) => {
-      onSuccess && onSuccess();
+      onSuccess && onSuccess(data);
     },
   });
 
   return { createVacation: mutate, isLoading: isPending };
+}
+
+export function useVacationDocument(id: number) {
+  const { data, isLoading } = useQuery<VacationDocument>({
+    queryKey: ['documents', 'vacations', id],
+    queryFn: () => getVacationDocument(id),
+  });
+
+  return { vacationDocument: data, isLoading };
 }
