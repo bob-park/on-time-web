@@ -98,7 +98,7 @@ export default function NavMenu() {
           지출결의서 신청
         </MenuItem>
 
-        <MenuItem href="/approvals" active={isActive(segments, ['documents'])}>
+        <MenuItem href="/documents" active={isActive(segments, ['documents'])}>
           <MdOutlineApproval className="inline-block size-6" />
           결재 신청 목록
         </MenuItem>
