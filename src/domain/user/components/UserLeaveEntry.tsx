@@ -56,7 +56,7 @@ export default function UserLeaveEntry({
           >
             {usedLeaveDays}
           </div>
-          <div className="stat-desc">Yolo 머 그런건가?</div>
+          <div className="stat-desc">버그 아님</div>
         </div>
         <div className="stat w-48">
           <div className="stat-figure text-secondary">
