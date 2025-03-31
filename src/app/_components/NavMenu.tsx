@@ -80,12 +80,12 @@ export default function NavMenu() {
 
         <MenuItem href="/dayoff/requests" active={isActive(segments, ['dayoff', 'requests'])}>
           <HiDocumentPlus className="inline-block size-6" />
-          연(월)차 신청
+          휴가 신청
         </MenuItem>
 
         <MenuItem href="/dayoff/used" active={isActive(segments, ['dayoff', 'used'])}>
           <LuHistory className="inline-block size-6" />
-          연(월)차 사용 내역
+          휴가 사용 내역
         </MenuItem>
 
         <MenuItem href="/overtime/requests" active={isActive(segments, ['overtime', 'requests'])}>

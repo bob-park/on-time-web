@@ -5,6 +5,8 @@ import { redirect } from 'next/navigation';
 
 import NavMenu from '@/app/_components/NavMenu';
 
+import ToastProvider from '@/shared/components/toast/ToastProvider';
+
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
 
 import Header from './_components/Header';
@@ -55,20 +57,22 @@ export default async function RootLayout({
       <body className="relative min-w-max">
         <RQProvider>
           <HydrationBoundary state={dehydratedState}>
-            {/* header */}
-            <div className="sticky top-1 left-0 z-50 flex w-full flex-row items-center justify-center px-5">
-              <Header />
-            </div>
-
-            <div className="flex">
-              {/* nav menu*/}
-              <div className="sticky top-[120px] m-7 h-[calc(100vh-160px)] w-72 flex-none">
-                <NavMenu />
+            <ToastProvider limit={5} timeout={5}>
+              {/* header */}
+              <div className="sticky top-1 left-0 z-50 flex w-full flex-row items-center justify-center px-5">
+                <Header />
               </div>
 
-              {/* content */}
-              <div className="mx-3 my-7 size-full p-3">{children}</div>
-            </div>
+              <div className="flex">
+                {/* nav menu*/}
+                <div className="sticky top-[120px] m-7 h-[calc(100vh-160px)] w-72 flex-none">
+                  <NavMenu />
+                </div>
+
+                {/* content */}
+                <div className="mx-3 my-7 size-full p-3">{children}</div>
+              </div>
+            </ToastProvider>
           </HydrationBoundary>
         </RQProvider>
       </body>
