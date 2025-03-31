@@ -33,8 +33,8 @@ interface VacationDocument extends Document {
 interface CreateVacationDocumentRequest {
   vacationType: VacationType;
   vacationSubType?: VacationSubType;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   reason: string;
   compLeaveEntryIds?: number[];
 }
