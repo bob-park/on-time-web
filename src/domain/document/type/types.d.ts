@@ -2,7 +2,7 @@
  * document
  */
 type DocumentType = 'VACATION';
-type DocumentStatus = 'WAITING' | 'APPROVED' | 'REJECTED'
+type DocumentStatus = 'WAITING' | 'APPROVED' | 'REJECTED';
 
 interface Document {
   id: number;
