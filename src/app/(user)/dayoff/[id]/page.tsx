@@ -11,7 +11,7 @@ export default async function DayOffDetailPage({ params }: { params: Promise<{ i
       </div>
 
       {/* contents */}
-      <div className="mt-5 w-full">
+      <div className="mt-5 max-w-[1200px]">
         <DayOffDetailContents id={id} />
       </div>
     </div>

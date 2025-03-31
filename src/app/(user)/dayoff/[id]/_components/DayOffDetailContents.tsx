@@ -9,6 +9,8 @@ import ApprovalLines from '@/domain/approval/components/ApprovalLines';
 import VacationDocument from '@/domain/document/components/VacationDocument';
 import { useVacationDocument } from '@/domain/document/query/vacation';
 
+import delay from '@/utils/delay';
+
 import dayjs from 'dayjs';
 import html2canvas from 'html2canvas-pro';
 import jsPDF from 'jspdf';
@@ -39,10 +41,12 @@ export default function DayOffDetailContents({ id }: DayOffDetailContentsProps) 
 
     setIsPdfLoading(true);
 
-    html2canvas(docElement).then((canvas) => {
+    html2canvas(docElement).then(async (canvas) => {
       const pdf = new jsPDF('p', 'mm', 'a4');
       pdf.addImage(canvas, 'JPEG', 0, 0, 210, 297);
       pdf.save(`휴가계_${vacationDocument.user.username}_${dayjs(vacationDocument.startDate).format('YYYYMMDD')}.pdf`);
+
+      await delay(1_000);
 
       setIsPdfLoading(false);
     });
