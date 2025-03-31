@@ -49,11 +49,11 @@ export default async function RootLayout({
 
   return (
     <html lang="ko">
-      {/*{process.env.NODE_ENV !== 'production' && (*/}
-      {/*  <head>*/}
-      {/*    <script crossOrigin="anonymous" src="//unpkg.com/react-scan/dist/auto.global.js" />*/}
-      {/*  </head>*/}
-      {/*)}*/}
+      {process.env.NODE_ENV !== 'production' && (
+        <head>
+          <script crossOrigin="anonymous" src="//unpkg.com/react-scan/dist/auto.global.js" />
+        </head>
+      )}
       <body className="relative min-w-max">
         <RQProvider>
           <HydrationBoundary state={dehydratedState}>
