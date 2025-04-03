@@ -4,7 +4,7 @@ import cx from 'classnames';
 
 interface ApprovalLine {
   contents: string;
-  status: DocumentStatus;
+  status: DocumentStatus | 'NOT_YET';
   reason?: string;
 }
 
@@ -12,10 +12,10 @@ interface ApprovalLinesProps {
   lines: ApprovalLine[];
 }
 
-function parseLineIcon(status: DocumentStatus) {
+function ApprovalLineIcon({ status }: { status: DocumentStatus | 'NOT_YET' }) {
   switch (status) {
     case 'WAITING':
-      return '';
+      return <span className="loading loading-ring loading-md"></span>;
     case 'APPROVED':
       return '✓';
     case 'REJECTED':
@@ -32,11 +32,13 @@ export default function ApprovalLines({ lines }: ApprovalLinesProps) {
         <li
           key={`approval-lines-item-${index}`}
           className={cx('step', {
-            'step-neutral': line.status === 'APPROVED',
+            'step-primary': line.status === 'APPROVED',
             'step-error': line.status === 'REJECTED',
           })}
-          data-content={parseLineIcon(line.status)}
         >
+          <span className="step-icon">
+            <ApprovalLineIcon status={line.status} />
+          </span>
           <div className="flex flex-col items-center justify-center gap-2">
             <span>{line.contents}</span>
             {line.status === 'REJECTED' && (

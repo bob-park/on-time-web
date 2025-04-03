@@ -67,7 +67,7 @@ export default function DayOffDetailContents({ id }: DayOffDetailContentsProps) 
                 lines={
                   vacationDocument?.approvalHistories.map((item) => ({
                     contents: item.approvalLine.contents,
-                    status: item.status || 'WAITING',
+                    status: item.status || 'NOT_YET',
                     reason: item.reason,
                   })) || []
                 }

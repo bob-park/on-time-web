@@ -15,12 +15,12 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
   return (
     <div id={id} className="relative flex size-full flex-col items-center gap-3">
       {/* 결재 정보 */}
-      <div className="absolute top-[60px] right-[60px]">
+      <div className="mt-16 mr-32 flex w-full flex-row items-center justify-end gap-2">
         <DocumentApprovalLine />
       </div>
 
       {/* title */}
-      <div className="mt-[270px]">
+      <div className="mt-[100px]">
         <span className="mr-[50px] text-5xl font-bold">휴</span>
         <span className="mr-[50px] text-5xl font-bold">가</span>
         <span className="mr-[50px] text-5xl font-bold">계</span>
@@ -122,31 +122,23 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
       </div>
 
       {/* 신청자 정보 */}
-      <div className="mt-32 flex w-full flex-col items-center gap-3">
-        <div className="flex w-full flex-row items-center justify-end gap-3">
-          <div className="w-72 flex-none text-right text-xl tracking-widest">
-            <span>신청일</span>
-            <span>:</span>
-          </div>
-          <div className="">
-            <p className="mr-20 ml-10 text-xl tracking-widest">
-              {dayjs(document.createdDate).format('YYYY 년 MM 월 DD 일')}
-            </p>
-          </div>
+      <div className="mt-32 mr-40 flex w-full flex-row items-center justify-end gap-3">
+        <div className="w-72 flex-none text-right text-xl tracking-widest">
+          <span>신청일</span>
+          <span>:</span>
         </div>
+        <p className="ml-10 text-xl tracking-widest">{dayjs(document.createdDate).format('YYYY 년 MM 월 DD 일')}</p>
+      </div>
 
-        <div className="mt-10 flex w-full flex-row items-center justify-end gap-3">
-          <div className="w-72 flex-none text-right text-xl tracking-widest">
-            <span>신청자</span>
-            <span>:</span>
-          </div>
-          <div className="">
-            <p className="mr-20 ml-10 text-xl">
-              <span className="text-2xl font-bold tracking-widest">{document.user.username}</span>
-              <span className="ml-5">(인)</span>
-            </p>
-          </div>
+      <div className="mt-5 mr-40 flex w-full flex-row items-center justify-end gap-3">
+        <div className="w-72 flex-none text-right text-xl tracking-widest">
+          <span>신청자</span>
+          <span>:</span>
         </div>
+        <p className="ml-10 text-xl">
+          <span className="text-2xl font-bold tracking-widest">{document.user.username}</span>
+          <span className="ml-16">(인)</span>
+        </p>
       </div>
     </div>
   );
