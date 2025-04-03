@@ -8,6 +8,8 @@ import { useDocuments } from '@/domain/document/query/documents';
 
 import _ from 'lodash';
 
+import DocumentResult from './DocumentResult';
+
 interface DocumentListContentsProps {
   params: SearchDocumentRequest;
 }
@@ -20,7 +22,12 @@ export default function DocumentListContents({ params }: DocumentListContentsPro
   const [searchParams, setSearchParams] = useState<SearchDocumentRequest>(() => params);
 
   // query
-  const { page, isLoading } = useDocuments(params);
+  const { page } = useDocuments(params);
+  let currentItemCount = page ? (page.pageable.pageNumber + 1) * page.pageable.pageSize : 0;
+
+  if (currentItemCount > (page?.total || 0)) {
+    currentItemCount = page?.total || 0;
+  }
 
   // useEffect
   useEffect(() => {
@@ -42,7 +49,7 @@ export default function DocumentListContents({ params }: DocumentListContentsPro
     <div className="flex size-full flex-col gap-3">
       {/* search form */}
       <div className="w-full max-w-[800px]">
-        <div className="card bg-base-100 m-3 flex size-full flex-col items-center justify-center gap-10 p-3 shadow-sm">
+        <div className="card bg-base-100 m-3 flex size-full flex-col items-center justify-center gap-5 p-3 shadow-sm">
           {/* body */}
           <div className="card-body w-full">
             {/* type */}
@@ -119,19 +126,30 @@ export default function DocumentListContents({ params }: DocumentListContentsPro
       </div>
 
       {/* result */}
-      <div className="h-[calc(100vh-420px)] min-h-[500px] w-full max-w-[800px]">
-        <div className="card bg-base-100 m-3 flex size-full flex-col items-center justify-center gap-10 p-3 shadow-sm">
+      <div className="min-h-[600px] w-full max-w-[800px]">
+        <div className="card bg-base-100 m-3 flex size-full flex-col items-center justify-center gap-5 p-3 shadow-sm">
+          <div className="w-full">
+            <p className="mx-8">
+              <span>총</span>
+              <span className="mx-2 font-semibold">{(page?.total || 0).toLocaleString()} 개</span>
+              <span>중</span>
+              <span className="mx-2">{currentItemCount.toLocaleString()} 개</span>
+            </p>
+          </div>
+
           {/* body */}
-          <div className="card-body size-full-full overflow-auto">
-            <div className="flex size-full flex-col items-center justify-center gap-3"></div>
+          <div className="card-body size-full">
+            <div className="flex size-full flex-col items-center justify-center gap-3">
+              <DocumentResult documents={page?.content || []} />
+            </div>
           </div>
 
           {/* action button */}
-          <div className="my-5 flex flex-row gap-4">
+          <div className="m-5 flex flex-row gap-4">
             <div className="join">
               <button
                 className="join-item btn"
-                disabled={!page || Math.ceil(page.total / page.pageable.pageSize) > searchParams.page + 1}
+                disabled={!page || page.pageable.pageNumber === 0}
                 onClick={() => setSearchParams({ ...searchParams, page: searchParams.page - 1 })}
               >
                 «

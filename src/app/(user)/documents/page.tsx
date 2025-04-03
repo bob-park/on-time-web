@@ -9,7 +9,7 @@ export default async function DocumentListPage({
 
   const params: SearchDocumentRequest = {
     page: parseInt(page || '0', 0),
-    size: 5,
+    size: 10,
     type: type as DocumentsType,
     status: status as DocumentStatus,
   };
@@ -22,7 +22,7 @@ export default async function DocumentListPage({
       </div>
 
       {/* content */}
-      <div className="size-full min-w-[800px]">
+      <div className="size-full min-w-[600px]">
         <DocumentListContents params={params} />
       </div>
     </div>
