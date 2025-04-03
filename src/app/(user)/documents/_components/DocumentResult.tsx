@@ -1,5 +1,7 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import cx from 'classnames';
 import TimeAgo from 'timeago-react';
 import * as timeago from 'timeago.js';
@@ -31,8 +33,30 @@ export default function DocumentResult({ documents }: DocumentResultProps) {
 }
 
 function DocumentItem({ document }: { document: Document }) {
+  // hooks
+  const router = useRouter();
+
+  // handle
+  const handleClick = () => {
+    switch (document.type) {
+      case 'VACATION': {
+        router.push(`/dayoff/${document.id}`);
+        break;
+      }
+      case 'OVERTIME_WORK': {
+        router.push(`/overtime/${document.id}`);
+        break;
+      }
+      default:
+        break;
+    }
+  };
+
   return (
-    <div className="hover:bg-base-300 mx-2 my-1 flex h-12 flex-row items-center justify-center gap-4 rounded-2xl text-center text-base font-semibold transition-all duration-150">
+    <div
+      className="hover:bg-base-300 mx-2 my-1 flex h-12 cursor-pointer flex-row items-center justify-center gap-4 rounded-2xl text-center text-base font-semibold transition-all duration-150"
+      onClick={handleClick}
+    >
       <div className="w-24 flex-none">{document.id}</div>
       <div className="w-32 flex-none">
         <DocumentsTypeBadge type={document.type} />
