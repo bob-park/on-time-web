@@ -21,6 +21,8 @@ interface User {
   createdBy: string;
   lastModifiedDate?: Date;
   lastModifiedBy?: string;
+  isLeader?: boolean;
+  teamUserDescription?: boolean;
 }
 
 interface UserLeaveEntry {
