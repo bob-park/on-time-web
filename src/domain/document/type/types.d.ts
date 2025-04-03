@@ -1,12 +1,12 @@
 /*
  * document
  */
-type DocumentType = 'VACATION';
+type DocumentsType = 'VACATION' | 'OVERTIME_WORK';
 type DocumentStatus = 'WAITING' | 'APPROVED' | 'REJECTED';
 
 interface Document {
   id: number;
-  type: DocumentType;
+  type: DocumentsType;
   status: DocumentStatus;
   user: User;
   approvalHistories: ApprovalHistory[];
@@ -15,6 +15,11 @@ interface Document {
   lastModifiedDate?: Date;
   lastModifiedBy?: string;
 }
+
+type SearchDocumentRequest = {
+  type?: DocumentsType;
+  status?: DocumentStatus;
+} & SearchPageParams;
 
 /*
  * vacation
