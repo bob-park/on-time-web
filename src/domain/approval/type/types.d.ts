@@ -1,6 +1,6 @@
 interface ApprovalLine {
   id: number;
-  documentType: DocumentType;
+  documentType: DocumentsType;
   children?: ApprovalLine[];
   userUniqueId: string;
   contents: string;
@@ -10,6 +10,7 @@ interface ApprovalLine {
 
 interface ApprovalHistory {
   id?: number;
+  document: Document;
   approvalLine: ApprovalLine;
   status?: DocumentStatus;
   reason?: string;
@@ -18,3 +19,11 @@ interface ApprovalHistory {
   lastModifiedDate?: Date;
   lastModifiedBy?: string;
 }
+
+
+type SearchDocumentApprovalHistoryRequest = {
+  status?: DocumentStatus;
+  type?: DocumentsType;
+  createdDateFrom?: string;
+  createdDateTo?: string;
+} & SearchPageParams;

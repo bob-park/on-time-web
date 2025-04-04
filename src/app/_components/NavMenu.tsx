@@ -105,7 +105,7 @@ export default function NavMenu() {
 
         <MenuItem href="/approvals" active={isActive(segments, ['approvals'])}>
           <MdOutlineApproval className="inline-block size-6" />
-          결재 대기 목록
+          결재 처리 대기 목록
         </MenuItem>
 
         {/* admin */}
