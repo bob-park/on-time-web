@@ -3,6 +3,7 @@
 import cx from 'classnames';
 
 interface ApprovalLine {
+  id: number;
   contents: string;
   status: DocumentStatus | 'NOT_YET';
   reason?: string;
@@ -10,6 +11,7 @@ interface ApprovalLine {
 
 interface ApprovalLinesProps {
   lines: ApprovalLine[];
+  currentId?: number;
 }
 
 function ApprovalLineIcon({ status }: { status: DocumentStatus | 'NOT_YET' }) {
@@ -25,7 +27,7 @@ function ApprovalLineIcon({ status }: { status: DocumentStatus | 'NOT_YET' }) {
   }
 }
 
-export default function ApprovalLines({ lines }: ApprovalLinesProps) {
+export default function ApprovalLines({ lines, currentId }: ApprovalLinesProps) {
   return (
     <ul className="steps w-full">
       {lines.map((line, index) => (
@@ -40,7 +42,8 @@ export default function ApprovalLines({ lines }: ApprovalLinesProps) {
             <ApprovalLineIcon status={line.status} />
           </span>
           <div className="flex flex-col items-center justify-center gap-2">
-            <span>{line.contents}</span>
+            <p className="">{line.contents}</p>
+            {currentId && currentId === line.id && <div className="badge badge-soft badge-secondary w-20">현재</div>}
             {line.status === 'REJECTED' && (
               <div className="">
                 <span className="text-red-400">{line.reason}</span>

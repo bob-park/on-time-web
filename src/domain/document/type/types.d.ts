@@ -21,6 +21,10 @@ type SearchDocumentRequest = {
   status?: DocumentStatus;
 } & SearchPageParams;
 
+interface RejectDocumentRequest {
+  reason: string;
+}
+
 /*
  * vacation
  */

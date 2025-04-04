@@ -66,6 +66,7 @@ export default function DayOffDetailContents({ id }: DayOffDetailContentsProps) 
               <ApprovalLines
                 lines={
                   vacationDocument?.approvalHistories.map((item) => ({
+                    id: item.approvalLine.id,
                     contents: item.approvalLine.contents,
                     status: item.status || 'NOT_YET',
                     reason: item.reason,

@@ -32,7 +32,7 @@ export default async function ApprovalDetailPage({ params }: { params: Promise<{
       <div className="mt-5 flex w-full max-w-[1200px] flex-col items-center justify-center gap-3">
         {/* proceed buttons */}
         <div className="w-full">
-          <ApprovalProceedContents id={id} histories={res.document.approvalHistories} />
+          <ApprovalProceedContents id={id} currentId={res.approvalLine.id} />
         </div>
 
         {/* document info */}
