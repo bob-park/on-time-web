@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
-import { useApproveDocument } from '@/domain/document/query/documents';
+import { useRejectDocument } from '@/domain/document/query/documents';
 
 import useToast from '@/shared/hooks/useToast';
 
@@ -14,16 +14,19 @@ interface ApproveModalProps {
   onClose?: () => void;
 }
 
-export default function ApproveModal({ show, id, onClose }: ApproveModalProps) {
+export default function RejectModal({ show, id, onClose }: ApproveModalProps) {
   // ref
   const ref = useRef<HTMLDialogElement>(null);
 
   // hooks
   const { push } = useToast();
 
+  // state
+  const [reason, setReason] = useState<string>('');
+
   // query
-  const { approve, isLoading } = useApproveDocument(() => {
-    push('문서가 승인되었습니다.', 'info');
+  const { reject, isLoading } = useRejectDocument(() => {
+    push('문서가 반려되었습니다.', 'info');
     handleClose();
   });
 
@@ -47,8 +50,8 @@ export default function ApproveModal({ show, id, onClose }: ApproveModalProps) {
     }
   };
 
-  const handleApprove = () => {
-    approve({ id });
+  const handleReject = () => {
+    reject({ id, req: { reason } });
   };
 
   return (
@@ -57,13 +60,23 @@ export default function ApproveModal({ show, id, onClose }: ApproveModalProps) {
         <div className="flex w-full flex-col items-start justify-start gap-3">
           {/* header */}
           <div className="">
-            <h3 className="text-lg font-bold">결재 승인</h3>
+            <h3 className="text-lg font-bold">결재 반려</h3>
           </div>
         </div>
 
         {/* content */}
         <div className="m-3 flex flex-col items-start justify-center gap-4">
-          <p className="text-base">이것은 다시 확인하는 것이여</p>
+          <label className="input mt-5 w-full">
+            <span className="label">사유</span>
+            <input
+              type="text"
+              className="grow"
+              placeholder=""
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+            />
+            <span className="badge badge-neutral badge-xs">필수</span>
+          </label>
         </div>
 
         {/* action */}
@@ -72,11 +85,11 @@ export default function ApproveModal({ show, id, onClose }: ApproveModalProps) {
             <FaTimes className="size-6" />
             안할까?
           </button>
-          <button className="btn btn-primary w-32" disabled={isLoading} onClick={handleApprove}>
+          <button className="btn btn-primary w-32" disabled={isLoading || !reason} onClick={handleReject}>
             {isLoading ? (
               <>
                 <span className="loading loading-spinner loading-xs" />
-                승인중
+                반려중
               </>
             ) : (
               <>

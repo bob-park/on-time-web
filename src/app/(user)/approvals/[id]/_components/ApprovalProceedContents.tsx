@@ -4,10 +4,11 @@ import { useState } from 'react';
 
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
-import ApproveModal from '@/app/(user)/approvals/[id]/_components/ApproveModal';
-
 import ApprovalLines from '@/domain/approval/components/ApprovalLines';
 import { useApprovalDocument } from '@/domain/document/query/documents';
+
+import ApproveModal from './ApproveModal';
+import RejectModal from './RejectModal';
 
 interface ApprovalProceedContentsProps {
   id: number;
@@ -17,6 +18,7 @@ interface ApprovalProceedContentsProps {
 export default function ApprovalProceedContents({ id, currentId }: ApprovalProceedContentsProps) {
   // state
   const [showApprove, setShowApprove] = useState<boolean>(false);
+  const [showReject, setShowReject] = useState<boolean>(false);
 
   // query
   const { approvalHistory } = useApprovalDocument(id);
@@ -32,7 +34,7 @@ export default function ApprovalProceedContents({ id, currentId }: ApprovalProce
               <div className="">
                 <h3 className="text-lg font-medium">현재 결재 상태</h3>
               </div>
-              <div className="h-24 w-full">
+              <div className="h-32 w-full">
                 <ApprovalLines
                   lines={
                     approvalHistory?.document.approvalHistories.map((item) => ({
@@ -55,6 +57,7 @@ export default function ApprovalProceedContents({ id, currentId }: ApprovalProce
             type="button"
             className="btn btn-secondary w-full flex-1"
             disabled={approvalHistory?.status !== 'WAITING'}
+            onClick={() => setShowReject(true)}
           >
             <FaTimes className="size-5" />
             반려
@@ -62,8 +65,8 @@ export default function ApprovalProceedContents({ id, currentId }: ApprovalProce
           <button
             type="button"
             className="btn btn-primary w-full flex-1"
-            onClick={() => setShowApprove(true)}
             disabled={approvalHistory?.status !== 'WAITING'}
+            onClick={() => setShowApprove(true)}
           >
             <FaCheck className="size-5" />
             승인
@@ -71,6 +74,7 @@ export default function ApprovalProceedContents({ id, currentId }: ApprovalProce
         </div>
       </div>
       <ApproveModal show={showApprove} id={id} onClose={() => setShowApprove(false)} />
+      <RejectModal show={showReject} id={id} onClose={() => setShowReject(false)} />
     </>
   );
 }

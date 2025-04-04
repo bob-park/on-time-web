@@ -42,10 +42,13 @@ export function useApproveDocument(onSuccess?: () => void) {
 }
 
 export function useRejectDocument(onSuccess?: () => void) {
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationKey: ['documents', 'reject'],
     mutationFn: ({ id, req }: { id: number; req: RejectDocumentRequest }) => rejectDocument(id, req),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries({ queryKey: ['documents', 'approval', data.id + ''] });
       onSuccess && onSuccess();
     },
   });
