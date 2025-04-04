@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import DocumentStatusBadge from '@/domain/document/components/DocumentStatusBadge';
 import DocumentsTypeBadge from '@/domain/document/components/DocumentTypeBadge';
 
+import dayjs from 'dayjs';
 import TimeAgo from 'timeago-react';
 import * as timeago from 'timeago.js';
 import ko from 'timeago.js/lib/lang/ko';
@@ -67,7 +68,9 @@ function DocumentItem({ document }: { document: Document }) {
         <DocumentStatusBadge status={document.status} />
       </div>
       <div className="w-48 flex-none font-normal">
-        <TimeAgo locale="ko" datetime={document.createdDate} />
+        <div className="tooltip" data-tip={dayjs(document.createdDate).format('YYYY-MM-DD HH:mm:ss')}>
+          <TimeAgo locale="ko" datetime={document.createdDate} />
+        </div>
       </div>
     </div>
   );

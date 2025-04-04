@@ -1,8 +1,11 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import DocumentStatusBadge from '@/domain/document/components/DocumentStatusBadge';
 import DocumentsTypeBadge from '@/domain/document/components/DocumentTypeBadge';
 
+import dayjs from 'dayjs';
 import TimeAgo from 'timeago-react';
 import * as timeago from 'timeago.js';
 import ko from 'timeago.js/lib/lang/ko';
@@ -34,8 +37,13 @@ export default function DocumentApprovalResult({ items }: DocumentApprovalResult
 }
 
 function DocumentApprovalItem({ item }: { item: ApprovalHistory }) {
+  // hooks
+  const router = useRouter();
+
   // handle
-  const handleClick = () => {};
+  const handleClick = () => {
+    router.push(`/approvals/${item.id}`);
+  };
 
   return (
     <div
@@ -56,7 +64,9 @@ function DocumentApprovalItem({ item }: { item: ApprovalHistory }) {
         </p>
       </div>
       <div className="w-48 flex-none font-normal">
-        <TimeAgo locale="ko" datetime={item.createdDate || new Date()} />
+        <div className="tooltip" data-tip={dayjs(item.createdDate).format('YYYY-MM-DD HH:mm:ss')}>
+          <TimeAgo locale="ko" datetime={item.createdDate || new Date()} />
+        </div>
       </div>
     </div>
   );
