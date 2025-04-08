@@ -23,7 +23,7 @@ export function useGetUsers(params: SearchPageParams) {
     queryKey: ['users', params],
     queryFn: async ({ pageParam }) => getUsers(pageParam),
     initialPageParam: {
-      size: 10,
+      size: 100,
       page: 0,
     },
     getNextPageParam: (lastPage, allPages) => {
