@@ -87,7 +87,7 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
       </div>
 
       {/* 휴가 구분 */}
-      <div className="mt-6 flex w-full flex-row items-center gap-3">
+      <div className="mt-6 flex w-full flex-row items-start gap-3">
         <div className="w-72 flex-none text-right text-2xl">
           <span className="mr-5">
             <span className="mr-[13px]">휴</span>
@@ -100,6 +100,19 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
         <div className="">
           <VacationTypeItem type={document.vacationType} subType={document.vacationSubType} />
         </div>
+        {document.vacationType === 'COMPENSATORY' && (
+          <div className="w-full flex-1">
+            <div className="mt-1 ml-10">
+              {document.usedCompLeaveEntries?.map((usedCompLeaveEntry) => (
+                <div key={`used-comp-leave-entry-${usedCompLeaveEntry.id}`} className="text-lg">
+                  <span>{dayjs(usedCompLeaveEntry.compLeaveEntry.effectiveDate).format('YYYY-MM-DD')}</span>
+                  <span> - </span>
+                  <span>{usedCompLeaveEntry.compLeaveEntry.contents}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* 사유 */}

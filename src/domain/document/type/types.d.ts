@@ -38,6 +38,7 @@ interface VacationDocument extends Document {
   endDate: Date;
   usedDays: number;
   reason: string;
+  usedCompLeaveEntries?: UsedCompLeaveEntry[];
 }
 
 interface CreateVacationDocumentRequest {
@@ -46,5 +47,16 @@ interface CreateVacationDocumentRequest {
   startDate: string;
   endDate: string;
   reason: string;
-  compLeaveEntryIds?: number[];
+  compLeaveEntries?: UsedCompLeaveEntryRequest[];
+}
+
+interface UsedCompLeaveEntryRequest {
+  compLeaveEntryId: number;
+  usedDays: number;
+}
+
+interface UsedCompLeaveEntry {
+  id: number;
+  compLeaveEntry: UserCompLeaveEntry;
+  usedDays: number;
 }
