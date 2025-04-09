@@ -20,7 +20,6 @@ interface ApprovalHistory {
   lastModifiedBy?: string;
 }
 
-
 type SearchDocumentApprovalHistoryRequest = {
   status?: DocumentStatus;
   type?: DocumentsType;
