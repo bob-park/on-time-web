@@ -75,7 +75,7 @@ export default function DayOffHistoryContents() {
             <div className="w-24 flex-none">구분</div>
             <div className="w-36 flex-none">사용일</div>
             <div className="w-24 flex-none">사용일수</div>
-            <div className="w-72 flex-none">비고</div>
+            <div className="w-96 flex-none">비고</div>
           </div>
 
           {/* contents */}
@@ -84,7 +84,7 @@ export default function DayOffHistoryContents() {
             .map((vacationDocument, index) => (
               <div
                 key={`vacation-document-item-${vacationDocument.id}`}
-                className="hover:bg-base-300 flex h-16 flex-row items-center justify-center gap-2 rounded-xl text-center transition-all duration-150"
+                className="hover:bg-base-300 flex min-h-16 flex-row items-center justify-center gap-2 rounded-xl text-center transition-all duration-150"
               >
                 <div className="w-24 flex-none">{index + 1}</div>
                 <div className="w-24 flex-none">
@@ -108,7 +108,8 @@ export default function DayOffHistoryContents() {
                 <div className="w-24 flex-none">{vacationDocument.usedDays}</div>
                 <div className="w-96 flex-none">
                   {vacationDocument.usedCompLeaveEntries?.map((item) => (
-                    <div key={`vacation-document-used-comp-leave-entry-${item.id}`} className="my-1 text-start">
+                    <div key={`vacation-document-used-comp-leave-entry-${item.id}`} className="my-2 text-start">
+                      <span>{dayjs(item.compLeaveEntry.effectiveDate).format('YYYY-MM-DD')}</span>
                       <span className="mx-1">-</span>
                       <span>{item.compLeaveEntry.contents}</span>
                     </div>

@@ -9,7 +9,7 @@ export default function DayOffHistoryPage() {
       </div>
 
       {/* contents */}
-      <div className="flex max-w-[800px] flex-col items-center justify-center gap-3">
+      <div className="flex max-w-[900px] flex-col items-center justify-center gap-3">
         <div className="w-full">
           <DayOffHistoryContents />
         </div>
