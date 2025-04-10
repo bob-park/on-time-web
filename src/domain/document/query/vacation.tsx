@@ -1,4 +1,4 @@
-import { createVacation, getVacationDocument } from '@/domain/document/api/vacation';
+import { createVacation, getVacationDocument, searchVacationDocuments } from '@/domain/document/api/vacation';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 
@@ -24,4 +24,13 @@ export function useVacationDocument(id: number) {
   });
 
   return { vacationDocument: data, isLoading };
+}
+
+export function useVacationDocuments(req: SearchVacationDocumentRequest) {
+  const { data, isLoading } = useQuery<Page<VacationDocument>>({
+    queryKey: ['documents', 'vacations', req],
+    queryFn: () => searchVacationDocuments(req),
+  });
+
+  return { vacationDocuments: data?.content || [], isLoading };
 }

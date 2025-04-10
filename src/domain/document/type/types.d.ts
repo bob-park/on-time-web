@@ -60,3 +60,10 @@ interface UsedCompLeaveEntry {
   compLeaveEntry: UserCompLeaveEntry;
   usedDays: number;
 }
+
+type SearchVacationDocumentRequest = {
+  status?: DocumentStatus;
+  vacationType?: VacationType;
+  startDateFrom?: string;
+  startDateTo?: string;
+} & SearchPageParams;

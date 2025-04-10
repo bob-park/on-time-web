@@ -47,3 +47,4 @@ interface UserCompLeaveEntry {
   lastModifiedDate?: Date;
   lastModifiedBy?: string;
 }
+

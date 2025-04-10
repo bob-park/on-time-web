@@ -19,3 +19,7 @@ export async function createVacation(req: CreateVacationDocumentRequest) {
 export async function getVacationDocument(id: number) {
   return api.get(`/api/documents/vacations/${id}`).json<VacationDocument>();
 }
+
+export async function searchVacationDocuments(req: SearchVacationDocumentRequest) {
+  return api.get('/api/documents/vacations', { searchParams: req }).json<Page<VacationDocument>>();
+}
