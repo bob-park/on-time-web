@@ -75,7 +75,7 @@ export default function DayOffHistoryContents() {
             <div className="w-24 flex-none">구분</div>
             <div className="w-36 flex-none">사용일</div>
             <div className="w-24 flex-none">사용일수</div>
-            <div className="w-64 flex-none">비고</div>
+            <div className="w-72 flex-none">비고</div>
           </div>
 
           {/* contents */}
@@ -106,10 +106,11 @@ export default function DayOffHistoryContents() {
                   )}
                 </div>
                 <div className="w-24 flex-none">{vacationDocument.usedDays}</div>
-                <div className="w-64 flex-none">
+                <div className="w-96 flex-none">
                   {vacationDocument.usedCompLeaveEntries?.map((item) => (
-                    <div key={`vacation-document-used-comp-leave-entry-${item.id}`} className="text-start">
-                      {item.compLeaveEntry.contents}
+                    <div key={`vacation-document-used-comp-leave-entry-${item.id}`} className="my-1 text-start">
+                      <span className="mx-1">-</span>
+                      <span>{item.compLeaveEntry.contents}</span>
                     </div>
                   ))}
                 </div>
