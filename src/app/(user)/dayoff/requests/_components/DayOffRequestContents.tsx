@@ -99,7 +99,7 @@ export default function DayOffRequestContent() {
                       className={cx('btn', { 'btn-neutral': selectedVacationType === 'COMPENSATORY' })}
                       type="radio"
                       name="vacationTypes"
-                      aria-label="대체 휴가"
+                      aria-label="보상 휴가"
                       onClick={() => setSelectedVacationType('COMPENSATORY')}
                     />
 

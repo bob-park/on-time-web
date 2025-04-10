@@ -83,7 +83,7 @@ export default function UserLeaveEntry({
           <div className="stat-figure text-secondary">
             <IoInformationCircleOutline className="size-8" />
           </div>
-          <div className="stat-title">전체 대체 휴가 개수</div>
+          <div className="stat-title">전체 보상 휴가 개수</div>
           <div
             className={cx('stat-value', {
               'text-red-400': totalCompLeaveDays === 0,
