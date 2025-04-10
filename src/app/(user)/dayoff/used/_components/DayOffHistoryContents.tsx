@@ -23,7 +23,7 @@ export default function DayOffHistoryContents() {
   const [selectedYear, setSelectedYear] = useState<number>(dayjs().year());
 
   // query
-  const { vacationDocuments, isLoading } = useVacationDocuments({
+  const { vacationDocuments } = useVacationDocuments({
     ...DEFAULT_SEARCH_PARAMS,
     startDateFrom: `${selectedYear}-01-01`,
     startDateTo: `${selectedYear}-12-31`,
