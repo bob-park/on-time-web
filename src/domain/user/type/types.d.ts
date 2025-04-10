@@ -23,6 +23,7 @@ interface User {
   lastModifiedBy?: string;
   isLeader?: boolean;
   teamUserDescription?: boolean;
+  proceedingDocumentsCount?: number;
 }
 
 interface UserLeaveEntry {
