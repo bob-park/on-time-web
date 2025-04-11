@@ -13,3 +13,23 @@ export async function updateUserPassword(req: UpdateUserPasswordRequest) {
 
   return result;
 }
+
+export async function updateUserAvatar(avatar: File) {
+  const formData = new FormData();
+
+  formData.append('avatar', avatar);
+
+  const result = await api.post('/api/users/avatar', { body: formData }).json<User>();
+
+  await delay(1_000);
+
+  return result;
+}
+
+export async function resetUserAvatar() {
+  const result = await api.post('/api/users/avatar/reset').json<User>();
+
+  await delay(1_000);
+
+  return result;
+}

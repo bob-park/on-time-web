@@ -1,5 +1,5 @@
 import { currentUser } from '@/domain/user/api/session';
-import { getUsers, updateUserPassword } from '@/domain/user/api/users';
+import { getUsers, resetUserAvatar, updateUserAvatar, updateUserPassword } from '@/domain/user/api/users';
 
 import { InfiniteData, QueryKey, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
@@ -63,4 +63,34 @@ export function useUpdateUserPassword() {
   });
 
   return { updatePassword: mutate, isLoading: isPending };
+}
+
+export function useUpdateUserAvatar(onSuccess?: () => void, onError?: () => void) {
+  const { mutate, isPending } = useMutation({
+    mutationKey: ['update', 'user', 'avatar'],
+    mutationFn: (avatar: File) => updateUserAvatar(avatar),
+    onSuccess: () => {
+      onSuccess && onSuccess();
+    },
+    onError: () => {
+      onError && onError();
+    },
+  });
+
+  return { updateAvatar: mutate, isLoading: isPending };
+}
+
+export function useResetUserAvatar(onSuccess?: () => void, onError?: () => void) {
+  const { mutate, isPending } = useMutation({
+    mutationKey: ['reset', 'user', 'avatar'],
+    mutationFn: () => resetUserAvatar(),
+    onSuccess: () => {
+      onSuccess && onSuccess();
+    },
+    onError: () => {
+      onError && onError();
+    },
+  });
+
+  return { resetAvatar: mutate, isLoading: isPending };
 }
