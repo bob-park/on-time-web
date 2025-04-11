@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { FaFilePdf } from 'react-icons/fa';
 import { GiCancel } from 'react-icons/gi';
+import { IoNotifications } from 'react-icons/io5';
 
 import ApprovalLines from '@/domain/approval/components/ApprovalLines';
 import VacationDocument from '@/domain/document/components/VacationDocument';
@@ -86,6 +87,10 @@ export default function DayOffDetailContents({ id }: DayOffDetailContentsProps) 
               <button type="button" className="btn btn-secondary w-full flex-1">
                 <GiCancel className="size-6" />
                 취소
+              </button>
+              <button type="button" className="btn btn-soft btn-warning w-full flex-1">
+                <IoNotifications className="size-6" />
+                결재 재촉하기
               </button>
               <button
                 type="button"
