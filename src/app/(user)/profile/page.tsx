@@ -1,3 +1,5 @@
+import UpdatePasswordContents from '@/app/(user)/profile/_components/UpdatePasswordContents';
+
 import PersonalInfoContents from './_components/PersonalInfoContents';
 
 export default function ProfilePage() {
@@ -15,8 +17,10 @@ export default function ProfilePage() {
           <PersonalInfoContents />
         </div>
 
-        {/* update avatar contents */}
-        <div className="w-full"></div>
+        {/* update password */}
+        <div className="w-full">
+          <UpdatePasswordContents />
+        </div>
 
         {/* update avatar contents */}
         <div className="w-full"></div>

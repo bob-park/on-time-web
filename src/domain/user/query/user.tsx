@@ -56,10 +56,16 @@ export function useGetUsers(params: SearchPageParams) {
   };
 }
 
-export function useUpdateUserPassword() {
+export function useUpdateUserPassword(onSuccess?: () => void, onError?: () => void) {
   const { mutate, isPending } = useMutation({
     mutationKey: ['update', 'user', 'password'],
     mutationFn: (req: UpdateUserPasswordRequest) => updateUserPassword(req),
+    onSuccess: () => {
+      onSuccess && onSuccess();
+    },
+    onError: () => {
+      onError && onError();
+    },
   });
 
   return { updatePassword: mutate, isLoading: isPending };
