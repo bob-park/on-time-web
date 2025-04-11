@@ -60,7 +60,7 @@ export default function SelectUsers() {
   // state
   // const [selectedUser, setSelectedUser] = useState<User>();
 
-  const [pageParams] = useState<SearchPageParams>({ page: 0, size: 20 });
+  const [pageParams] = useState<SearchPageParams>({ page: 0, size: 100 });
 
   // query
   const { pages } = useGetUsers(pageParams);

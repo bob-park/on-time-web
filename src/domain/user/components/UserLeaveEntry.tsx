@@ -56,7 +56,7 @@ export default function UserLeaveEntry({
           >
             {usedLeaveDays}
           </div>
-          <div className="stat-desc">Yolo 머 그런건가?</div>
+          <div className="stat-desc">버그 아님</div>
         </div>
         <div className="stat w-48">
           <div className="stat-figure text-secondary">
@@ -83,7 +83,7 @@ export default function UserLeaveEntry({
           <div className="stat-figure text-secondary">
             <IoInformationCircleOutline className="size-8" />
           </div>
-          <div className="stat-title">전체 대체 휴가 개수</div>
+          <div className="stat-title">전체 보상 휴가 개수</div>
           <div
             className={cx('stat-value', {
               'text-red-400': totalCompLeaveDays === 0,

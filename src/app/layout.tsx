@@ -48,10 +48,10 @@ export default async function RootLayout({
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <html lang="ko">
+    <html lang="ko" data-theme="light">
       {process.env.NODE_ENV !== 'production' && (
         <head>
-          <script src="https://unpkg.com/react-scan/dist/auto.global.js" />
+          <script crossOrigin="anonymous" src="//unpkg.com/react-scan/dist/auto.global.js" />
         </head>
       )}
       <body className="relative min-w-max">
@@ -59,7 +59,7 @@ export default async function RootLayout({
           <HydrationBoundary state={dehydratedState}>
             <ToastProvider limit={5} timeout={5}>
               {/* header */}
-              <div className="sticky top-1 left-0 z-50 flex w-full flex-row items-center justify-center px-5">
+              <div className="bg-base-100 sticky top-0 left-0 z-50 flex w-full flex-row items-center justify-center px-5">
                 <Header />
               </div>
 

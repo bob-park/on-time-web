@@ -1,18 +1,28 @@
 /*
  * document
  */
-type DocumentType = 'VACATION';
-type DocumentStatus = 'WAITING' | 'APPROVED' | 'REJECTED'
+type DocumentsType = 'VACATION' | 'OVERTIME_WORK';
+type DocumentStatus = 'WAITING' | 'APPROVED' | 'REJECTED';
 
 interface Document {
   id: number;
-  type: DocumentType;
+  type: DocumentsType;
   status: DocumentStatus;
   user: User;
+  approvalHistories: ApprovalHistory[];
   createdDate: Date;
   createdBy?: string;
   lastModifiedDate?: Date;
   lastModifiedBy?: string;
+}
+
+type SearchDocumentRequest = {
+  type?: DocumentsType;
+  status?: DocumentStatus;
+} & SearchPageParams;
+
+interface RejectDocumentRequest {
+  reason: string;
 }
 
 /*
@@ -28,13 +38,32 @@ interface VacationDocument extends Document {
   endDate: Date;
   usedDays: number;
   reason: string;
+  usedCompLeaveEntries?: UsedCompLeaveEntry[];
 }
 
 interface CreateVacationDocumentRequest {
   vacationType: VacationType;
   vacationSubType?: VacationSubType;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   reason: string;
-  compLeaveEntryIds?: number[];
+  compLeaveEntries?: UsedCompLeaveEntryRequest[];
 }
+
+interface UsedCompLeaveEntryRequest {
+  compLeaveEntryId: number;
+  usedDays: number;
+}
+
+interface UsedCompLeaveEntry {
+  id: number;
+  compLeaveEntry: UserCompLeaveEntry;
+  usedDays: number;
+}
+
+type SearchVacationDocumentRequest = {
+  status?: DocumentStatus;
+  vacationType?: VacationType;
+  startDateFrom?: string;
+  startDateTo?: string;
+} & SearchPageParams;

@@ -1,3 +1,4 @@
+import { currentUser } from '@/domain/user/api/session';
 import { getUsers } from '@/domain/user/api/users';
 
 import { InfiniteData, QueryKey, useInfiniteQuery, useQuery } from '@tanstack/react-query';
@@ -5,6 +6,7 @@ import { InfiniteData, QueryKey, useInfiniteQuery, useQuery } from '@tanstack/re
 export function useGetCurrentUser() {
   const { data, isLoading } = useQuery<User>({
     queryKey: ['user', 'me'],
+    queryFn: () => currentUser(),
   });
 
   return { currentUser: data, isLoading };
@@ -21,7 +23,7 @@ export function useGetUsers(params: SearchPageParams) {
     queryKey: ['users', params],
     queryFn: async ({ pageParam }) => getUsers(pageParam),
     initialPageParam: {
-      size: 10,
+      size: 100,
       page: 0,
     },
     getNextPageParam: (lastPage, allPages) => {

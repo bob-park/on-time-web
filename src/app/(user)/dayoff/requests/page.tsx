@@ -10,7 +10,7 @@ export default function DayOffRequestsPage() {
       </div>
 
       {/* content */}
-      <div className="flex w-full flex-col items-center justify-center gap-3">
+      <div className="flex max-w-[800px] flex-col items-center justify-center gap-3">
         <div className="w-full">
           <UserLeaveEntryContents />
         </div>
