@@ -1,6 +1,6 @@
-import UpdatePasswordContents from '@/app/(user)/profile/_components/UpdatePasswordContents';
-
 import PersonalInfoContents from './_components/PersonalInfoContents';
+import UpdatePasswordContents from './_components/UpdatePasswordContents';
+import UpdateUserSignatureContents from './_components/UpdateUserSignatureContents';
 
 export default function ProfilePage() {
   return (
@@ -22,8 +22,10 @@ export default function ProfilePage() {
           <UpdatePasswordContents />
         </div>
 
-        {/* update avatar contents */}
-        <div className="w-full"></div>
+        {/* update user signature */}
+        <div className="w-full">
+          <UpdateUserSignatureContents />
+        </div>
       </div>
     </div>
   );

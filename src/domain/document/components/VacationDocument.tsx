@@ -161,13 +161,13 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
           <span>신청자</span>
           <span>:</span>
         </div>
-        <p className="relative ml-10 text-xl">
+        <div className="relative ml-10 text-xl">
           <span className="text-2xl font-bold tracking-widest">{document.user.username}</span>
           <span className="ml-16">(인)</span>
           <div className="absolute top-0 -right-5">
             <UserSignature userUniqueId={document.user.uniqueId} />
           </div>
-        </p>
+        </div>
       </div>
     </div>
   );

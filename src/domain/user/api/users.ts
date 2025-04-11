@@ -33,3 +33,15 @@ export async function resetUserAvatar() {
 
   return result;
 }
+
+export async function updateUserSignature(signature: File) {
+  const formData = new FormData();
+
+  formData.append('signature', signature);
+
+  const result = await api.post('/api/users/signature', { body: formData }).json<User>();
+
+  await delay(1_000);
+
+  return result;
+}

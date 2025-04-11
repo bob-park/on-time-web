@@ -1,5 +1,11 @@
 import { currentUser } from '@/domain/user/api/session';
-import { getUsers, resetUserAvatar, updateUserAvatar, updateUserPassword } from '@/domain/user/api/users';
+import {
+  getUsers,
+  resetUserAvatar,
+  updateUserAvatar,
+  updateUserPassword,
+  updateUserSignature,
+} from '@/domain/user/api/users';
 
 import { InfiniteData, QueryKey, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
@@ -99,4 +105,19 @@ export function useResetUserAvatar(onSuccess?: () => void, onError?: () => void)
   });
 
   return { resetAvatar: mutate, isLoading: isPending };
+}
+
+export function useUpdateUserSignature(onSuccess?: () => void, onError?: () => void) {
+  const { mutate, isPending } = useMutation({
+    mutationKey: ['update', 'user', 'signature'],
+    mutationFn: (signature: File) => updateUserSignature(signature),
+    onSuccess: () => {
+      onSuccess && onSuccess();
+    },
+    onError: () => {
+      onError && onError();
+    },
+  });
+
+  return { updateSignature: mutate, isLoading: isPending };
 }
