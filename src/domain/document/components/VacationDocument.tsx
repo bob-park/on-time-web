@@ -102,7 +102,7 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
         </div>
         {document.vacationType === 'COMPENSATORY' && (
           <div className="w-full flex-1">
-            <div className="mt-1 ml-10">
+            <div className="mt-1 ml-10 pr-10">
               {document.usedCompLeaveEntries?.map((usedCompLeaveEntry) => (
                 <div key={`used-comp-leave-entry-${usedCompLeaveEntry.id}`} className="text-lg">
                   <span>{dayjs(usedCompLeaveEntry.compLeaveEntry.effectiveDate).format('YYYY-MM-DD')}</span>
