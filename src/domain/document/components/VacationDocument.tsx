@@ -1,5 +1,7 @@
 'use client';
 
+import UserSignature from '@/domain/user/components/UserSignature';
+
 import { getDaysOfWeek } from '@/utils/parse';
 
 import dayjs from 'dayjs';
@@ -12,11 +14,22 @@ interface VacationDocumentProps {
 }
 
 export default function VacationDocument({ id, document }: VacationDocumentProps) {
+  const lines: ApprovalLine[] = [
+    {
+      id: document.id,
+      documentType: 'VACATION',
+      userUniqueId: document.user.uniqueId,
+      contents: '담당',
+      createdDate: new Date(),
+    },
+    ...document.approvalHistories.map((item) => item.approvalLine),
+  ];
+
   return (
     <div id={id} className="relative flex size-full flex-col items-center gap-3">
       {/* 결재 정보 */}
       <div className="mt-16 mr-32 flex w-full flex-row items-center justify-end gap-2">
-        <DocumentApprovalLine />
+        <DocumentApprovalLine lines={lines} />
       </div>
 
       {/* title */}
@@ -148,9 +161,12 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
           <span>신청자</span>
           <span>:</span>
         </div>
-        <p className="ml-10 text-xl">
+        <p className="relative ml-10 text-xl">
           <span className="text-2xl font-bold tracking-widest">{document.user.username}</span>
           <span className="ml-16">(인)</span>
+          <div className="absolute top-0 -right-5">
+            <UserSignature userUniqueId={document.user.uniqueId} />
+          </div>
         </p>
       </div>
     </div>

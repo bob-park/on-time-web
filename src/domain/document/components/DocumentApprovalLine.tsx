@@ -1,6 +1,12 @@
 'use client';
 
-export default function DocumentApprovalLine() {
+import UserSignature from '@/domain/user/components/UserSignature';
+
+interface DocumentApprovalLineProps {
+  lines: ApprovalLine[];
+}
+
+export default function DocumentApprovalLine({ lines }: DocumentApprovalLineProps) {
   return (
     <div
       className="mt-3 flex h-[120px] flex-row items-center justify-end border font-semibold"
@@ -20,7 +26,9 @@ export default function DocumentApprovalLine() {
         <div className="border-b py-1 text-center" style={{ borderColor: '#000' }}>
           담당
         </div>
-        <div className="h-[90px]"></div>
+        <div className="h-[90px]">
+          <UserSignature userUniqueId={lines[0].userUniqueId} />
+        </div>
       </div>
 
       {/* 부서장 */}
@@ -28,7 +36,9 @@ export default function DocumentApprovalLine() {
         <div className="border-b py-1 text-center" style={{ borderColor: '#000' }}>
           부서장
         </div>
-        <div className="h-[90px]"></div>
+        <div className="h-[90px]">
+          <UserSignature userUniqueId={lines[1].userUniqueId} />
+        </div>
       </div>
 
       <div
