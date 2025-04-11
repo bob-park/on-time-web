@@ -1,7 +1,7 @@
 import { currentUser } from '@/domain/user/api/session';
-import { getUsers } from '@/domain/user/api/users';
+import { getUsers, updateUserPassword } from '@/domain/user/api/users';
 
-import { InfiniteData, QueryKey, useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { InfiniteData, QueryKey, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 export function useGetCurrentUser() {
   const { data, isLoading } = useQuery<User>({
@@ -54,4 +54,13 @@ export function useGetUsers(params: SearchPageParams) {
     fetchNextPage,
     reload: refetch,
   };
+}
+
+export function useUpdateUserPassword() {
+  const { mutate, isPending } = useMutation({
+    mutationKey: ['update', 'user', 'password'],
+    mutationFn: (req: UpdateUserPasswordRequest) => updateUserPassword(req),
+  });
+
+  return { updatePassword: mutate, isLoading: isPending };
 }

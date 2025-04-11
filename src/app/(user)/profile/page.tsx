@@ -1,9 +1,26 @@
-import Preparing from '@/app/_components/Preparing';
+import PersonalInfoContents from './_components/PersonalInfoContents';
 
 export default function ProfilePage() {
   return (
-    <div className="flex size-full flex-col items-center justify-center gap-2">
-      <Preparing />
+    <div className="flex size-full flex-col gap-3">
+      {/* title */}
+      <div className="">
+        <h2 className="text-2xl font-bold">프로필</h2>
+      </div>
+
+      {/* contents */}
+      <div className="flex max-w-[900px] flex-col items-center justify-center gap-3 p-10">
+        {/* personal info  */}
+        <div className="w-full">
+          <PersonalInfoContents />
+        </div>
+
+        {/* update avatar contents */}
+        <div className="w-full"></div>
+
+        {/* update avatar contents */}
+        <div className="w-full"></div>
+      </div>
     </div>
   );
 }

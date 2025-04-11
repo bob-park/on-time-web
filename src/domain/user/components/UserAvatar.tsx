@@ -7,17 +7,26 @@ import Image from 'next/image';
 import cx from 'classnames';
 
 interface UserAvatarProps {
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   avatar?: string;
   alt: string;
+  isOnline?: boolean;
 }
 
-export default function UserAvatar({ avatar, alt }: UserAvatarProps) {
+export default function UserAvatar({ size = 'sm', avatar, alt, isOnline = true }: UserAvatarProps) {
   // useState
   const [isError, setIsError] = useState<boolean>(!avatar);
 
   return (
-    <div className={cx('avatar', 'avatar-online', !avatar && 'avatar-placeholder')}>
-      <div className="bg-neutral text-neutral-content w-12 rounded-full">
+    <div className={cx('avatar', isOnline && 'avatar-online', !avatar && 'avatar-placeholder')}>
+      <div
+        className={cx('bg-neutral text-neutral-content rounded-full', {
+          'w-12': size === 'sm',
+          'w-36': size === 'md',
+          'w-48': size === 'lg',
+          'w-72': size === 'xl',
+        })}
+      >
         {isError ? (
           <div className="flex size-full items-center justify-center select-none">
             <span className="text-3xl">{alt.substring(0, 1).toUpperCase()}</span>

@@ -49,3 +49,7 @@ interface UserCompLeaveEntry {
   lastModifiedBy?: string;
 }
 
+
+interface UpdateUserPasswordRequest {
+  updatePassword: string;
+}
