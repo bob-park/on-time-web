@@ -45,7 +45,7 @@ export default function UpdateUserSignatureContents() {
                 )}
                 <div
                   className={cx(
-                    'absolute top-0 left-0 flex h-[200] w-[400] items-center justify-center p-5 transition-all duration-300 hover:cursor-pointer hover:bg-gray-500/50',
+                    'absolute top-0 left-0 flex h-[198] w-[398] items-center justify-center rounded-md p-5 transition-all duration-300 hover:cursor-pointer hover:bg-gray-500/50',
                   )}
                 >
                   <MdEdit className={cx('size-24 text-gray-200', { invisible: !isHover })} />
