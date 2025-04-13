@@ -4,6 +4,7 @@ interface ApprovalLine {
   children?: ApprovalLine[];
   userUniqueId: string;
   contents: string;
+  status?: DocumentStatus;
   createdDate: Date;
   lastModifiedDate?: Date;
 }

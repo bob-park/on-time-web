@@ -37,7 +37,7 @@ export default function DocumentApprovalLine({ lines }: DocumentApprovalLineProp
           부서장
         </div>
         <div className="h-[90px]">
-          <UserSignature userUniqueId={lines[1].userUniqueId} />
+          {lines[1].status === 'APPROVED' && <UserSignature userUniqueId={lines[1].userUniqueId} />}
         </div>
       </div>
 

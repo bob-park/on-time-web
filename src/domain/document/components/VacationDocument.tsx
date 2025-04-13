@@ -22,7 +22,10 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
       contents: '담당',
       createdDate: new Date(),
     },
-    ...document.approvalHistories.map((item) => item.approvalLine),
+    ...document.approvalHistories.map((item) => ({
+      ...item.approvalLine,
+      status: item.status,
+    })),
   ];
 
   return (
