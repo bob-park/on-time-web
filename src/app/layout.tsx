@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
+import CustomerSupport from '@/app/_components/CustomerSupport';
 import NavMenu from '@/app/_components/NavMenu';
 
 import ToastProvider from '@/shared/components/toast/ToastProvider';
@@ -13,7 +14,7 @@ import Header from './_components/Header';
 import RQProvider from './_components/RQProvider';
 import './globals.css';
 
-const { WEB_SERVICE_HOST } = process.env;
+const { WEB_SERVICE_HOST, WS_HOST } = process.env;
 
 export const metadata: Metadata = {
   title: 'On Time ',
@@ -72,6 +73,8 @@ export default async function RootLayout({
                 {/* content */}
                 <div className="mx-3 my-7 size-full p-3">{children}</div>
               </div>
+
+              <CustomerSupport wsHost={WS_HOST || 'http://localhost:8080/ws'} />
             </ToastProvider>
           </HydrationBoundary>
         </RQProvider>

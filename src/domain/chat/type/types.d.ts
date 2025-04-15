@@ -4,3 +4,11 @@ interface ChatMessageRequest {
   type: ChatMessageType;
   message: string;
 }
+
+interface ChatMessageResponse {
+  id: string;
+  type: ChatMessageType;
+  message: string;
+  user: User;
+  createdDate: Date;
+}
