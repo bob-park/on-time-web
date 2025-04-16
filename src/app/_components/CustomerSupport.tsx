@@ -107,7 +107,7 @@ export default function CustomerSupport({ wsHost }: { wsHost: string }) {
               avatar: `/api/users/${message.user.uniqueId}/avatar`,
               message: message.message,
               name: message.user.username,
-              displayName: `${message.user.team.name} ${message.user.username} ${message.user.position.name}`,
+              displayName: `${message.user.team?.name} ${message.user.username} ${message.user.position?.name}`,
               createdDate: message.createdDate,
             }))}
             onSend={handleSendMessage}

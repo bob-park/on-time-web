@@ -16,7 +16,6 @@ export default function AttendanceViewPage() {
       </div>
 
       {/* contents */}
-
       <SelectUserContextProvider>
         <WorkingTimeProvider>
           <div className="mt-10 max-w-max">

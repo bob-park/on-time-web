@@ -3,6 +3,7 @@
 import { AiOutlineSchedule } from 'react-icons/ai';
 import { FaUsersViewfinder } from 'react-icons/fa6';
 import { HiDocumentPlus } from 'react-icons/hi2';
+import { IoChatbox } from 'react-icons/io5';
 import { LuHistory } from 'react-icons/lu';
 import { MdOutlineApproval } from 'react-icons/md';
 import { PiGpsFixBold } from 'react-icons/pi';
@@ -129,6 +130,11 @@ export default function NavMenu() {
             >
               <AiOutlineSchedule className="inline-block size-6" />
               임직원 근무 일정 등록
+            </MenuItem>
+
+            <MenuItem href="/chat/users" active={isActive(segments, ['chat'])}>
+              <IoChatbox className="inline-block size-6" />
+              임직원과의 소통
             </MenuItem>
           </>
         )}

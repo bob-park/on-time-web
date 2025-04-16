@@ -37,7 +37,7 @@ export default function ChatChannel({ loading = false, messages, onSend }: ChatC
   const handleSend = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    onSend && onSend(message);
+    message && onSend && onSend(message);
     setMessage('');
   };
 
@@ -54,7 +54,7 @@ export default function ChatChannel({ loading = false, messages, onSend }: ChatC
         onSubmit={handleSend}
       >
         <div className="w-20 flex-none">
-          <button className="btn btn-neutral w-full text-xs" type="submit" disabled={loading}>
+          <button className="btn btn-neutral w-full text-xs" type="submit" disabled={loading || !message}>
             {loading ? <span className="loading loading-spinner loading-xs" /> : <IoSend className="size-4" />}
             전송
           </button>
