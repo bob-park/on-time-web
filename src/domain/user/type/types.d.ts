@@ -1,4 +1,4 @@
-type RoleType = 'ROLE_ADMIN' | 'ROLE_MANAGER' | 'ROLE_USEr';
+type RoleType = 'ROLE_ADMIN' | 'ROLE_MANAGER' | 'ROLE_USER';
 
 interface Role {
   id: number;

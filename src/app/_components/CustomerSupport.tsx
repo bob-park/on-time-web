@@ -7,7 +7,8 @@ import { IoClose } from 'react-icons/io5';
 import Image from 'next/image';
 
 import ChatChannel from '@/domain/chat/components/ChatChannel';
-import { useGetCurrentUser } from '@/domain/user/query/user';
+import { useGetCurrentUser, useGetUsers } from '@/domain/user/query/user';
+import { useUserNotification } from '@/domain/user/query/userNotification';
 
 import useWebSocket from '@/shared/hooks/ws/useWebSocket';
 
@@ -20,6 +21,12 @@ export default function CustomerSupport({ wsHost }: { wsHost: string }) {
 
   // query
   const { currentUser } = useGetCurrentUser();
+  const { sendMessage } = useUserNotification();
+
+  // query
+  const { pages } = useGetUsers({ page: 0, size: 100 });
+
+  const admins = mergePageUsers(pages.map((page) => page.content)).filter((item) => item.role.type === 'ROLE_ADMIN');
 
   // hooks
   const { publish } = useWebSocket({
@@ -43,7 +50,26 @@ export default function CustomerSupport({ wsHost }: { wsHost: string }) {
 
   // handle
   const handleSendMessage = (message: string) => {
-    currentUser && publish({ type: 'MESSAGE', message, userUniqueId: currentUser.uniqueId });
+    if (!currentUser) {
+      return;
+    }
+
+    publish({ type: 'MESSAGE', message, userUniqueId: currentUser.uniqueId });
+
+    for (const admin of admins) {
+      sendMessage({
+        userUniqueId: admin.uniqueId,
+        body: {
+          displayMessage: `${currentUser.team?.name || ''} ${currentUser.username} ${currentUser.position?.name || ''} 이(가) 불편한 메세지를 보냈습니다.`,
+          fields: [
+            {
+              field: '내용',
+              text: message,
+            },
+          ],
+        },
+      });
+    }
   };
 
   return (
@@ -116,4 +142,16 @@ export default function CustomerSupport({ wsHost }: { wsHost: string }) {
       </div>
     </div>
   );
+}
+
+function mergePageUsers(pages: User[][]) {
+  const users: User[] = [];
+
+  for (const page of pages) {
+    for (const user of page) {
+      users.push(user);
+    }
+  }
+
+  return users;
 }
