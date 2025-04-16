@@ -15,6 +15,7 @@ export interface ChatMessageProps {
   me?: boolean;
   avatar?: string;
   message: string;
+  userUniqueId: string;
   name: string;
   displayName: string;
   createdDate: Date;

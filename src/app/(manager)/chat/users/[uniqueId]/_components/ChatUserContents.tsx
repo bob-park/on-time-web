@@ -24,6 +24,9 @@ export default function ChatUserContents({ wsHost, user }: ChatUserContentsProps
   // hooks
   const { publish } = useWebSocket({
     host: wsHost,
+    auth: {
+      userUniqueId: currentUser?.uniqueId || '',
+    },
     subscribe: `/sub/users/${user.uniqueId}/chat`,
     publish: `/pub/users/${user.uniqueId}/chat`,
     onConnect: () => {},
@@ -61,9 +64,10 @@ export default function ChatUserContents({ wsHost, user }: ChatUserContentsProps
               type: message.type,
               me: message.user?.uniqueId === currentUser?.uniqueId,
               avatar: `/api/users/${message.user?.uniqueId}/avatar`,
+              userUniqueId: message.user.uniqueId,
               message: message.message,
-              name: message.user?.username || '',
-              displayName: `${message.user?.team?.name || ''} ${message.user?.username || ''} ${message.user?.position?.name || ''}`,
+              name: message.user.username,
+              displayName: `${message.user.team?.name || ''} ${message.user.username || ''} ${message.user.position?.name || ''}`,
               createdDate: message.createdDate,
             }))}
             onSend={handleSendMessage}

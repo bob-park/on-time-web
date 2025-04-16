@@ -10,6 +10,6 @@ interface ChatMessageResponse {
   id: string;
   type: ChatMessageType;
   message: string;
-  user?: User;
+  user: User;
   createdDate: Date;
 }

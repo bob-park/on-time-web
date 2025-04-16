@@ -31,12 +31,17 @@ export default function CustomerSupport({ wsHost }: { wsHost: string }) {
   // hooks
   const { publish } = useWebSocket({
     host: wsHost,
+    auth: {
+      userUniqueId: currentUser?.uniqueId || '',
+    },
     subscribe: `/sub/users/${currentUser?.uniqueId}/chat`,
     publish: `/pub/users/${currentUser?.uniqueId}/chat`,
     onConnect: () => {},
     onClose: () => {},
     onSubscribe: (data) => {
       const res = JSON.parse(data) as ChatMessageResponse;
+
+      console.log(res);
 
       setMessages((prev) => {
         const newMessages = prev.slice();
@@ -131,11 +136,12 @@ export default function CustomerSupport({ wsHost }: { wsHost: string }) {
             messages={messages.map((message) => ({
               id: message.id,
               type: message.type,
-              me: message.user?.uniqueId === currentUser?.uniqueId,
+              me: message.user.uniqueId === currentUser?.uniqueId,
               avatar: `/api/users/${message.user?.uniqueId}/avatar`,
+              userUniqueId: message.user.uniqueId,
               message: message.message,
-              name: message.user?.username || '',
-              displayName: `${message.user?.team?.name || ''} ${message.user?.username || ''} ${message.user?.position?.name || ''}`,
+              name: message.user.username,
+              displayName: `${message.user.team?.name || ''} ${message.user.username || ''} ${message.user.position?.name || ''}`,
               createdDate: message.createdDate,
             }))}
             onSend={handleSendMessage}

@@ -4,6 +4,8 @@ import { memo, useEffect, useRef, useState } from 'react';
 
 import { IoSend } from 'react-icons/io5';
 
+import { useGetCurrentUser } from '@/domain/user/query/user';
+
 import ChatMessage, { ChatMessageProps } from './ChatMessage';
 
 interface ChatChannelProps {
@@ -71,20 +73,32 @@ export default function ChatChannel({ loading = false, messages, onSend }: ChatC
 }
 
 function ChatMessages({ messages }: { messages: ChatMessageProps[] }) {
-  const connectedMessages = messages.filter((item) => item.type === 'ENTER');
-  const showConnectedMessage = connectedMessages.length > 1;
-  const lastConnectedMessage = connectedMessages[connectedMessages.length - 1];
+  // query
+  const { currentUser } = useGetCurrentUser();
 
   return (
     <>
       {messages.map((message, index) => (
         <div key={`chat_message_${message.id}`}>
-          {showConnectedMessage && message.type === 'ENTER' && message.id === lastConnectedMessage.id && (
+          {message.type === 'ENTER' && (
             <div className="flex flex-row items-center justify-center">
-              <div className="badge badge-ghost">담당자와 연결되었습니다.</div>
+              <div className="badge badge-ghost">
+                {message.userUniqueId === currentUser?.uniqueId
+                  ? '고객지원에 연결되었습니다.'
+                  : '담당자와 연결되었습니다.'}
+              </div>
             </div>
           )}
           {message.type === 'MESSAGE' && <ChatMessage {...message} />}
+          {message.type === 'LEAVE' && (
+            <div className="flex flex-row items-center justify-center">
+              <div className="badge badge-ghost">
+                {message.userUniqueId === currentUser?.uniqueId
+                  ? '고객지원에 연결 해제되었습니다.'
+                  : '담당자가 나가부렀습니다.'}
+              </div>
+            </div>
+          )}
         </div>
       ))}
     </>

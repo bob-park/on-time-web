@@ -2,11 +2,14 @@
 
 import { useEffect, useState } from 'react';
 
-import { Client } from '@stomp/stompjs';
+import { Client, StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
 interface WebSocketProps {
   host: string;
+  auth?: {
+    userUniqueId: string;
+  };
   publish?: string;
   subscribe?: string;
   onConnect?: () => void;
@@ -15,28 +18,41 @@ interface WebSocketProps {
   onClose?: () => void;
 }
 
-export default function useWebSocket({ host, publish, subscribe, onConnect, onSubscribe, onClose }: WebSocketProps) {
+export default function useWebSocket({
+  host,
+  auth,
+  publish,
+  subscribe,
+  onConnect,
+  onSubscribe,
+  onClose,
+}: WebSocketProps) {
   // state
   const [client, setClient] = useState<Client>();
 
   // useEffect
   useEffect(() => {
+    let subscription: StompSubscription | null = null;
+
     const wsClient = new Client({
       webSocketFactory: () => new SockJS(host),
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
       onConnect: () => {
-        console.log('connected...');
-
-        subscribe &&
-          wsClient.subscribe(subscribe, (message) => {
-            onSubscribe && onSubscribe(message.body);
-          });
+        if (subscribe) {
+          subscription = wsClient.subscribe(
+            subscribe,
+            (message) => {
+              onSubscribe && onSubscribe(message.body);
+            },
+            {
+              userUniqueId: auth?.userUniqueId || '',
+            },
+          );
+        }
       },
-      onDisconnect: () => {
-        console.log('disconnected...');
-      },
+      onDisconnect: () => {},
     });
 
     setClient(wsClient);
@@ -45,6 +61,9 @@ export default function useWebSocket({ host, publish, subscribe, onConnect, onSu
     onConnect && onConnect();
 
     return () => {
+      subscription &&
+        subscription.unsubscribe({ destination: subscribe || '', userUniqueId: auth?.userUniqueId || '' });
+
       onClose && onClose();
 
       wsClient.deactivate();
