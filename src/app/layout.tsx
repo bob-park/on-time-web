@@ -74,7 +74,7 @@ export default async function RootLayout({
                 <div className="mx-3 my-7 size-full p-3">{children}</div>
               </div>
 
-              <CustomerSupport wsHost={WS_HOST || 'http://localhost:8080/ws'} />
+              <CustomerSupport wsHost={WS_HOST || '/api/ws'} />
             </ToastProvider>
           </HydrationBoundary>
         </RQProvider>

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 import ChatChannel from '@/domain/chat/components/ChatChannel';
+import { useGetCurrentUser } from '@/domain/user/query/user';
 
 import useWebSocket from '@/shared/hooks/ws/useWebSocket';
 
@@ -16,6 +17,9 @@ interface ChatUserContentsProps {
 export default function ChatUserContents({ wsHost, user }: ChatUserContentsProps) {
   // state
   const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
+
+  // query
+  const { currentUser } = useGetCurrentUser();
 
   // hooks
   const { publish } = useWebSocket({
@@ -39,7 +43,7 @@ export default function ChatUserContents({ wsHost, user }: ChatUserContentsProps
 
   // handle
   const handleSendMessage = (message: string) => {
-    publish({ type: 'MESSAGE', message });
+    currentUser && publish({ type: 'MESSAGE', message, userUniqueId: currentUser.uniqueId });
   };
 
   return (
@@ -53,11 +57,11 @@ export default function ChatUserContents({ wsHost, user }: ChatUserContentsProps
         <div className="size-full p-2">
           <ChatChannel
             messages={messages.map((message) => ({
-              me: message.user.uniqueId === user?.uniqueId,
+              me: message.user.uniqueId === currentUser?.uniqueId,
               avatar: `/api/users/${message.user.uniqueId}/avatar`,
               message: message.message,
               name: message.user.username,
-              displayName: `${message.user.team.name} ${message.user.username} ${message.user.position.name}`,
+              displayName: `${message.user.team?.name || ''} ${message.user.username} ${message.user.position?.name || ''}`,
               createdDate: message.createdDate,
             }))}
             onSend={handleSendMessage}

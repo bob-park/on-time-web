@@ -32,7 +32,7 @@ export default async function ChatUserPage({ params }: { params: Promise<{ uniqu
 
       {/* contents */}
       <div className="mt-5">
-        <ChatUserContents wsHost={WS_HOST || 'http://localhost/ws'} user={user} />
+        <ChatUserContents wsHost={WS_HOST || '/api/ws'} user={user} />
       </div>
     </div>
   );
