@@ -4,8 +4,6 @@ import { memo, useEffect, useRef, useState } from 'react';
 
 import { IoSend } from 'react-icons/io5';
 
-import dayjs from 'dayjs';
-
 import ChatMessage, { ChatMessageProps } from './ChatMessage';
 
 interface ChatChannelProps {
@@ -73,14 +71,15 @@ export default function ChatChannel({ loading = false, messages, onSend }: ChatC
 }
 
 function ChatMessages({ messages }: { messages: ChatMessageProps[] }) {
-  // state
-  const connectCount = messages.filter((item) => item.type === 'ENTER').length;
+  const connectedMessages = messages.filter((item) => item.type === 'ENTER');
+  const showConnectedMessage = connectedMessages.length > 1;
+  const lastConnectedMessage = connectedMessages[connectedMessages.length - 1];
 
   return (
     <>
-      {messages?.map((message, index) => (
-        <div key={`chat_message_${dayjs(message.createdDate).valueOf()}_${index}`}>
-          {connectCount > 1 && message.type === 'ENTER' && (
+      {messages.map((message, index) => (
+        <div key={`chat_message_${message.id}`}>
+          {showConnectedMessage && message.type === 'ENTER' && message.id === lastConnectedMessage.id && (
             <div className="flex flex-row items-center justify-center">
               <div className="badge badge-ghost">담당자와 연결되었습니다.</div>
             </div>

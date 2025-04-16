@@ -57,6 +57,7 @@ export default function ChatUserContents({ wsHost, user }: ChatUserContentsProps
         <div className="size-full p-2">
           <ChatChannel
             messages={messages.map((message) => ({
+              id: message.id,
               type: message.type,
               me: message.user?.uniqueId === currentUser?.uniqueId,
               avatar: `/api/users/${message.user?.uniqueId}/avatar`,

@@ -10,6 +10,7 @@ import ko from 'timeago.js/lib/lang/ko';
 timeago.register('ko', ko);
 
 export interface ChatMessageProps {
+  id: string;
   type: ChatMessageType;
   me?: boolean;
   avatar?: string;

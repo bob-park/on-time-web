@@ -129,6 +129,7 @@ export default function CustomerSupport({ wsHost }: { wsHost: string }) {
         <div className="h-[500px] w-full">
           <ChatChannel
             messages={messages.map((message) => ({
+              id: message.id,
               type: message.type,
               me: message.user?.uniqueId === currentUser?.uniqueId,
               avatar: `/api/users/${message.user?.uniqueId}/avatar`,
