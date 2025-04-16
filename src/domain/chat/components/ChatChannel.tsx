@@ -73,11 +73,19 @@ export default function ChatChannel({ loading = false, messages, onSend }: ChatC
 }
 
 function ChatMessages({ messages }: { messages: ChatMessageProps[] }) {
+  // state
+  const connectCount = messages.filter((item) => item.type === 'ENTER').length;
+
   return (
     <>
       {messages?.map((message, index) => (
         <div key={`chat_message_${dayjs(message.createdDate).valueOf()}_${index}`}>
-          <ChatMessage {...message} />
+          {connectCount > 1 && message.type === 'ENTER' && (
+            <div className="flex flex-row items-center justify-center">
+              <div className="badge badge-ghost">담당자와 연결되었습니다.</div>
+            </div>
+          )}
+          {message.type === 'MESSAGE' && <ChatMessage {...message} />}
         </div>
       ))}
     </>

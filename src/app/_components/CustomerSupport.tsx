@@ -129,11 +129,12 @@ export default function CustomerSupport({ wsHost }: { wsHost: string }) {
         <div className="h-[500px] w-full">
           <ChatChannel
             messages={messages.map((message) => ({
-              me: message.user.uniqueId === currentUser?.uniqueId,
-              avatar: `/api/users/${message.user.uniqueId}/avatar`,
+              type: message.type,
+              me: message.user?.uniqueId === currentUser?.uniqueId,
+              avatar: `/api/users/${message.user?.uniqueId}/avatar`,
               message: message.message,
-              name: message.user.username,
-              displayName: `${message.user.team?.name || ''} ${message.user.username} ${message.user.position?.name || ''}`,
+              name: message.user?.username || '',
+              displayName: `${message.user?.team?.name || ''} ${message.user?.username || ''} ${message.user?.position?.name || ''}`,
               createdDate: message.createdDate,
             }))}
             onSend={handleSendMessage}
