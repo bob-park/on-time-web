@@ -1,3 +1,5 @@
+import MonthPicker, { MonthPickerProvider } from '@/shared/components/date/MonthPicker';
+
 export default function DayoffManagePage() {
   return (
     <div className="flex size-full flex-col gap-3">
@@ -7,7 +9,13 @@ export default function DayoffManagePage() {
       </div>
 
       {/* contents */}
-      <div className=""></div>
+      <div className="flex w-full min-w-[600px] flex-col items-center justify-center gap-3">
+        <MonthPickerProvider>
+          <div className="mt-5 w-full">
+            <MonthPicker />
+          </div>
+        </MonthPickerProvider>
+      </div>
     </div>
   );
 }
