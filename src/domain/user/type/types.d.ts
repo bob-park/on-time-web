@@ -62,3 +62,15 @@ interface UserEmployment {
 type SearchUserLeaveEntryRequest = {
   year: number;
 }
+
+
+interface UserUsedVacation {
+  userUniqueId: string;
+  year: number;
+  usedVacations: UsedVacation[];
+}
+
+interface UsedVacation {
+  month: number;
+  used: number;
+}

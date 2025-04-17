@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
-import { useUserLeaveEntries } from '@/domain/user/query/user';
+import { useUserLeaveEntries, useUsersUsedVacations } from '@/domain/user/query/user';
 
 import dayjs from 'dayjs';
 
@@ -17,6 +17,7 @@ export default function DayOffManageContents() {
 
   // query
   const { users } = useUserLeaveEntries({ year });
+  const { usersUsedVacations } = useUsersUsedVacations({ year });
 
   return (
     <div className="flex size-full max-w-[calc(100vw-400px)] flex-col gap-3">
@@ -42,7 +43,14 @@ export default function DayOffManageContents() {
         {users
           .sort((o1, o2) => (dayjs(o1.employment?.effectiveDate).isAfter(o2.employment?.effectiveDate) ? 1 : -1))
           .map((user, index) => (
-            <DayOffViewContents key={`dayoff-manage-contents-${user.uniqueId}`} order={index + 1} user={user} />
+            <DayOffViewContents
+              key={`dayoff-manage-contents-${user.uniqueId}`}
+              order={index + 1}
+              user={user}
+              usedVacations={
+                usersUsedVacations.find((item) => item.userUniqueId === user.uniqueId)?.usedVacations || []
+              }
+            />
           ))}
       </div>
     </div>

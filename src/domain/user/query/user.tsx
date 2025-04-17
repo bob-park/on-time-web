@@ -2,6 +2,7 @@ import { currentUser } from '@/domain/user/api/session';
 import {
   getAllUserLeaveEntries,
   getUsers,
+  getUsersUsedVacations,
   resetUserAvatar,
   updateUserAvatar,
   updateUserPassword,
@@ -130,4 +131,13 @@ export function useUserLeaveEntries(req: SearchUserLeaveEntryRequest) {
   });
 
   return { users: data || ([] as User[]), isLoading };
+}
+
+export function useUsersUsedVacations(req: SearchUserLeaveEntryRequest) {
+  const { data, isLoading } = useQuery<UserUsedVacation[]>({
+    queryKey: ['users', 'used', 'vacations', req],
+    queryFn: () => getUsersUsedVacations(req),
+  });
+
+  return { usersUsedVacations: data || ([] as UserUsedVacation[]), isLoading };
 }

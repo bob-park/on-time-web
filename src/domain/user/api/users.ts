@@ -49,3 +49,7 @@ export async function updateUserSignature(signature: File) {
 export async function getAllUserLeaveEntries(req: SearchUserLeaveEntryRequest) {
   return api.get('/api/users/leave/entries', { searchParams: req }).json<User[]>();
 }
+
+export async function getUsersUsedVacations(req: SearchUserLeaveEntryRequest) {
+  return api.get('/api/users/used/vacations', { searchParams: req }).json<UserUsedVacation[]>();
+}

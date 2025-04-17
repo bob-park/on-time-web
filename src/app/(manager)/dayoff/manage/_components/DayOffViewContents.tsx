@@ -5,9 +5,10 @@ import dayjs from 'dayjs';
 interface DayOffViewContentsProps {
   order: number;
   user: User;
+  usedVacations: UsedVacation[];
 }
 
-export default function DayOffViewContents({ order, user }: DayOffViewContentsProps) {
+export default function DayOffViewContents({ order, user, usedVacations }: DayOffViewContentsProps) {
   return (
     <div className="relative flex h-12 w-max flex-row items-center gap-2 rounded-2xl font-semibold transition-all duration-150 select-none">
       <div className="sticky left-0 z-10 flex flex-row items-center gap-2 bg-white/90 backdrop-blur-xl">
@@ -24,7 +25,9 @@ export default function DayOffViewContents({ order, user }: DayOffViewContentsPr
 
       {/* months */}
       {new Array(12).fill('0').map((_, index) => (
-        <div key={`month-item-${index}`} className="w-16 flex-none text-center"></div>
+        <div key={`month-item-${index}`} className="w-16 flex-none text-center">
+          {usedVacations.find((item) => item.month === index + 1)?.used || 0}
+        </div>
       ))}
 
       {/* total */}
