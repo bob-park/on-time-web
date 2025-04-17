@@ -119,9 +119,9 @@ export default function NavMenu() {
               <span className="text-sm font-normal text-gray-400">관리자</span>
             </div>
 
-            <MenuItem href="/dayoff/manage" active={isActive(segments, ['dayoff', 'manage'])}>
+            <MenuItem href="/dayoff/users/vacations" active={isActive(segments, ['dayoff', 'users', 'vacations'])}>
               <MdManageAccounts className="inline-block size-6" />
-              임직원 휴가 관리
+              임직원 휴가 사용 현황
             </MenuItem>
 
             <MenuItem href="/attendance/view" active={isActive(segments, ['attendance', 'view'])}>
