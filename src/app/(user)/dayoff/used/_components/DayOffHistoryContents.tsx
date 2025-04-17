@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 
 const DEFAULT_SEARCH_PARAMS: SearchVacationDocumentRequest = {
   startDateFrom: `${dayjs().year()}-01-01`,
-  startDateTo: `${dayjs().year()}-12-31`,
+  endDateTo: `${dayjs().year()}-12-31`,
   status: 'APPROVED',
   page: 0,
   size: 100,
@@ -26,7 +26,7 @@ export default function DayOffHistoryContents() {
   const { vacationDocuments } = useVacationDocuments({
     ...DEFAULT_SEARCH_PARAMS,
     startDateFrom: `${selectedYear}-01-01`,
-    startDateTo: `${selectedYear}-12-31`,
+    endDateTo: `${selectedYear}-12-31`,
   });
 
   return (

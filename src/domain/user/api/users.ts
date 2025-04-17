@@ -45,3 +45,7 @@ export async function updateUserSignature(signature: File) {
 
   return result;
 }
+
+export async function getAllUserLeaveEntries(req: SearchUserLeaveEntryRequest) {
+  return api.get('/api/users/leave/entries', { searchParams: req }).json<User[]>();
+}

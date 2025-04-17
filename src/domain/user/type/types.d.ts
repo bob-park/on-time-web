@@ -24,6 +24,7 @@ interface User {
   isLeader?: boolean;
   teamUserDescription?: boolean;
   proceedingDocumentsCount?: number;
+  employment?: UserEmployment;
 }
 
 interface UserLeaveEntry {
@@ -51,4 +52,13 @@ interface UserCompLeaveEntry {
 
 interface UpdateUserPasswordRequest {
   updatePassword: string;
+}
+
+interface UserEmployment {
+  id: number;
+  effectiveDate: Date;
+}
+
+type SearchUserLeaveEntryRequest = {
+  year: number;
 }

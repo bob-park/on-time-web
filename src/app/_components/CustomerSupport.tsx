@@ -41,8 +41,6 @@ export default function CustomerSupport({ wsHost }: { wsHost: string }) {
     onSubscribe: (data) => {
       const res = JSON.parse(data) as ChatMessageResponse;
 
-      console.log(res);
-
       setMessages((prev) => {
         const newMessages = prev.slice();
 

@@ -1,5 +1,6 @@
 import { currentUser } from '@/domain/user/api/session';
 import {
+  getAllUserLeaveEntries,
   getUsers,
   resetUserAvatar,
   updateUserAvatar,
@@ -120,4 +121,13 @@ export function useUpdateUserSignature(onSuccess?: () => void, onError?: () => v
   });
 
   return { updateSignature: mutate, isLoading: isPending };
+}
+
+export function useUserLeaveEntries(req: SearchUserLeaveEntryRequest) {
+  const { data, isLoading } = useQuery<User[]>({
+    queryKey: ['users', 'leave', 'entries', req],
+    queryFn: () => getAllUserLeaveEntries(req),
+  });
+
+  return { users: data || ([] as User[]), isLoading };
 }

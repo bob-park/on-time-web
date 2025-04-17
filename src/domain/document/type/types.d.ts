@@ -65,5 +65,5 @@ type SearchVacationDocumentRequest = {
   status?: DocumentStatus;
   vacationType?: VacationType;
   startDateFrom?: string;
-  startDateTo?: string;
+  endDateTo?: string;
 } & SearchPageParams;
