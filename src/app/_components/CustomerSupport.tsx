@@ -80,7 +80,7 @@ export default function CustomerSupport({ wsHost }: { wsHost: string }) {
   return (
     <div className="fixed right-5 bottom-5">
       {!show && (
-        <div className="size-24 cursor-pointer hover:animate-bounce" onClick={() => setShow(true)}>
+        <div className="size-20 cursor-pointer hover:animate-bounce" onClick={() => setShow(true)}>
           <Image
             src="/customer/customer_support_chat_icon.png"
             alt="customer support chat icon"

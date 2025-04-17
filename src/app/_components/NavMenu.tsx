@@ -5,7 +5,7 @@ import { FaUsersViewfinder } from 'react-icons/fa6';
 import { HiDocumentPlus } from 'react-icons/hi2';
 import { IoChatbox } from 'react-icons/io5';
 import { LuHistory } from 'react-icons/lu';
-import { MdOutlineApproval } from 'react-icons/md';
+import { MdManageAccounts, MdOutlineApproval } from 'react-icons/md';
 import { PiGpsFixBold } from 'react-icons/pi';
 import { RiCalendarScheduleFill, RiDashboardFill } from 'react-icons/ri';
 
@@ -118,6 +118,11 @@ export default function NavMenu() {
             <div className="mt-5">
               <span className="text-sm font-normal text-gray-400">관리자</span>
             </div>
+
+            <MenuItem href="/dayoff/manage" active={isActive(segments, ['dayoff', 'manage'])}>
+              <MdManageAccounts className="inline-block size-6" />
+              임직원 휴가 관리
+            </MenuItem>
 
             <MenuItem href="/attendance/view" active={isActive(segments, ['attendance', 'view'])}>
               <FaUsersViewfinder className="inline-block size-6" />
