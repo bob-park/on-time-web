@@ -28,7 +28,6 @@ export default function ChatChannel({ loading = false, messages, onSend }: ChatC
     }
 
     chatMessageRef.current.scroll({
-      behavior: 'smooth',
       top: chatMessageRef.current.scrollHeight,
     });
   }, [messages]);
