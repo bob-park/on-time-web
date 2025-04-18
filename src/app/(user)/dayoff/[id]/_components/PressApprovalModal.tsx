@@ -4,6 +4,8 @@ import { useEffect, useRef } from 'react';
 
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
+import Image from 'next/image';
+
 import { useGetCurrentUser } from '@/domain/user/query/user';
 import { useUserNotification } from '@/domain/user/query/userNotification';
 
@@ -27,7 +29,7 @@ export default function PressApprovalModal({ show, approvalUserUniqueId, onClose
   const { sendMessage, isLoading } = useUserNotification(
     () => {
       handleClose();
-      push('결재 재촉하였습니다.', 'info');
+      push('결재자한테 알림을 보냈습니다. 넌 이제 큰일남!!', 'success');
     },
     () => {
       push('머가 잘못되었는디?', 'error');
@@ -62,7 +64,7 @@ export default function PressApprovalModal({ show, approvalUserUniqueId, onClose
     sendMessage({
       userUniqueId: approvalUserUniqueId,
       body: {
-        displayMessage: `${currentUser.team?.name || ''} ${currentUser.username} ${currentUser.position?.name || ''} 이(가) 빨리 결재해달라고 재촉하였습니다.`,
+        displayMessage: `${currentUser.team?.name || ''} ${currentUser.username} ${currentUser.position?.name || ''} 이(가) 결재 버튼 살짝 눌러달라고 요청했습니다.`,
         fields: [],
       },
     });
@@ -74,14 +76,19 @@ export default function PressApprovalModal({ show, approvalUserUniqueId, onClose
         <div className="flex w-full flex-col items-start justify-start gap-3">
           {/* header */}
           <div className="">
-            <h3 className="text-lg font-bold">좋은말로 할때 빨리 해줘라</h3>
+            <h3 className="text-lg font-bold">빨리 진행시켜</h3>
           </div>
         </div>
 
         {/* content */}
-        <div className="m-3 flex flex-col items-start justify-center gap-4">
-          <p className="text-base">라고 생각만 하려다가</p>
-          <p className="text-base font-semibold text-red-400">한번 알림 보내봐?</p>
+        <div className="m-3 flex flex-col items-center justify-center gap-4">
+          <Image
+            className="rounded-2xl"
+            src="/approval/press-approval-img.png"
+            alt="press img"
+            width={300}
+            height={300}
+          />
         </div>
 
         {/* action */}
