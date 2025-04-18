@@ -106,12 +106,12 @@ export default function DayOffDetailContents({ id }: DayOffDetailContentsProps) 
                   onClick={() => setShowPress(true)}
                 >
                   <IoNotifications className="size-6" />
-                  결재 재촉하기
+                  빨리 진행시켜줘
                 </button>
                 <button
                   type="button"
                   className="btn btn-neutral w-full flex-1"
-                  disabled={isPdfLoading || vacationDocument?.status !== 'APPROVED'}
+                  disabled={isPdfLoading || ['CANCELLED', 'REJECTED'].includes(vacationDocument?.status || '')}
                   onClick={handlePdfDownloadClick}
                 >
                   {isPdfLoading ? (

@@ -74,32 +74,32 @@ export default function PressApprovalModal({ show, approvalUserUniqueId, onClose
         <div className="flex w-full flex-col items-start justify-start gap-3">
           {/* header */}
           <div className="">
-            <h3 className="text-lg font-bold">결재 재촉하기</h3>
+            <h3 className="text-lg font-bold">좋은말로 할때 빨리 해줘라</h3>
           </div>
         </div>
 
         {/* content */}
         <div className="m-3 flex flex-col items-start justify-center gap-4">
-          <p className="text-base">이거 요청하면.. 혹시 혼날까?</p>
-          <p className="text-base font-semibold text-red-400">그래도 재촉하시겠습니까?</p>
+          <p className="text-base">라고 생각만 하려다가</p>
+          <p className="text-base font-semibold text-red-400">한번 알림 보내봐?</p>
         </div>
 
         {/* action */}
         <div className="modal-action">
-          <button className="btn w-32" onClick={handleClose}>
+          <button className="btn w-36" onClick={handleClose}>
             <FaTimes className="size-6" />
-            안할까?
+            보내지 말까?
           </button>
           <button className="btn btn-primary w-36" disabled={isLoading} onClick={handlePressApproval}>
             {isLoading ? (
               <>
                 <span className="loading loading-spinner loading-xs" />
-                재촉중
+                보내는중
               </>
             ) : (
               <>
                 <FaCheck className="size-5" />
-                그래도 할꺼?
+                보낼까?
               </>
             )}
           </button>
