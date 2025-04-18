@@ -80,7 +80,7 @@ export default function PressApprovalModal({ show, approvalUserUniqueId, onClose
 
         {/* content */}
         <div className="m-3 flex flex-col items-start justify-center gap-4">
-          <p className="text-base">이시간 이후 결재자로부터 보복이 있을 수 있습니다.</p>
+          <p className="text-base">이거 요청하면.. 혹시 혼날까?</p>
           <p className="text-base font-semibold text-red-400">그래도 재촉하시겠습니까?</p>
         </div>
 
