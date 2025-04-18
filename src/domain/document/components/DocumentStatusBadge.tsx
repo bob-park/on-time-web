@@ -7,11 +7,13 @@ export default function DocumentStatusBadge({ status }: { status: DocumentStatus
         'badge-neutral animate-pulse': status === 'WAITING',
         'badge-primary': status === 'APPROVED',
         'badge-secondary': status === 'REJECTED',
+        'badge-error': status === 'CANCELLED',
       })}
     >
       {status === 'WAITING' && <span>결재 진행중</span>}
       {status === 'APPROVED' && <span>결재 완료</span>}
       {status === 'REJECTED' && <span>결재 반려</span>}
+      {status === 'CANCELLED' && <span>취소</span>}
     </div>
   );
 }

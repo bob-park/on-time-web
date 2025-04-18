@@ -2,7 +2,7 @@
  * document
  */
 type DocumentsType = 'VACATION' | 'OVERTIME_WORK';
-type DocumentStatus = 'WAITING' | 'APPROVED' | 'REJECTED';
+type DocumentStatus = 'WAITING' | 'APPROVED' | 'REJECTED' | 'CANCELLED';
 
 interface Document {
   id: number;

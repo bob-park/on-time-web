@@ -172,6 +172,16 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
           </div>
         </div>
       </div>
+
+      {document.status === 'CANCELLED' && (
+        <div className="left-[45%]] absolute top-[40%]">
+          <div className="grid h-full w-full place-content-center opacity-50">
+            <div className="-rotate-45 rounded-2xl border-8 border-solid border-red-700 p-10 text-9xl font-black tracking-widest text-red-700">
+              취 소
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -238,8 +248,6 @@ function VacationTypeItem({ type, subType }: VacationTypeItemProps) {
             {subType === 'AM_HALF_DAY_OFF' && <span className="ml-2 text-xl">(오전)</span>}
             {subType === 'PM_HALF_DAY_OFF' && <span className="ml-2 text-xl">(오후)</span>}
           </div>
-
-          {/* TODO 대체 휴가는 대체휴가 발생일 및 사유를 적어야됨 */}
         </div>
       )}
     </div>
