@@ -23,7 +23,7 @@ function isActive(sources: string[], targets: string[]): boolean {
 }
 
 function MenuList({ children }: { children?: React.ReactNode }) {
-  return <div className="flex w-full flex-col items-start justify-start gap-3 font-semibold">{children}</div>;
+  return <div className="flex h-max w-full flex-col items-start justify-start gap-3 font-semibold">{children}</div>;
 }
 
 interface MenuItemProps {

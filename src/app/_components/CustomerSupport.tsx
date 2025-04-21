@@ -22,8 +22,6 @@ export default function CustomerSupport({ wsHost }: { wsHost: string }) {
   // query
   const { currentUser } = useGetCurrentUser();
   const { sendMessage } = useUserNotification();
-
-  // query
   const { pages } = useGetUsers({ page: 0, size: 100 });
 
   const admins = mergePageUsers(pages.map((page) => page.content)).filter((item) => item.role.type === 'ROLE_ADMIN');
@@ -139,7 +137,7 @@ export default function CustomerSupport({ wsHost }: { wsHost: string }) {
               userUniqueId: message.user.uniqueId,
               message: message.message,
               name: message.user.username,
-              displayName: `${message.user.team?.name || ''} ${message.user.username || ''} ${message.user.position?.name || ''}`,
+              displayName: parseDisplayName(message.user),
               createdDate: message.createdDate,
             }))}
             onSend={handleSendMessage}
@@ -160,4 +158,8 @@ function mergePageUsers(pages: User[][]) {
   }
 
   return users;
+}
+
+function parseDisplayName(user: User) {
+  return `${user.team?.name || ''} ${user.username || ''} ${user.position?.name || ''}`;
 }
