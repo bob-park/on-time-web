@@ -39,7 +39,7 @@ export default function DayOffRequestContent() {
   // query
   const { createVacation, isLoading } = useCreateVacation(
     (data) => {
-      push('휴가 신청이 완료되었습니다.', 'info');
+      push('휴가 신청 문서의 초안이 생성되었습니다.', 'info');
       router.push(`/dayoff/${data.id}`);
     },
     () => {
@@ -239,21 +239,23 @@ export default function DayOffRequestContent() {
             <button type="button" className="btn w-36">
               취소
             </button>
-            <button
-              type="button"
-              className="btn btn-neutral w-36"
-              disabled={isLoading || !selectedVacationType || !selectedVacationSubType || !reason}
-              onClick={handleRequestClick}
-            >
-              {isLoading ? (
-                <>
-                  <span className="loading loading-spinner" />
-                  신청중
-                </>
-              ) : (
-                '신청'
-              )}
-            </button>
+            <div className="tooltip" data-tip="문서 초안이 생성됩니다.">
+              <button
+                type="button"
+                className="btn btn-neutral w-36"
+                disabled={isLoading || !selectedVacationType || !selectedVacationSubType || !reason}
+                onClick={handleRequestClick}
+              >
+                {isLoading ? (
+                  <>
+                    <span className="loading loading-spinner" />
+                    초안 생성중
+                  </>
+                ) : (
+                  '초안 생성'
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -28,6 +28,14 @@ export async function rejectDocument(id: number, req: RejectDocumentRequest) {
   return result;
 }
 
+export async function requestDocument(id: number) {
+  const result = await api.post(`/api/documents/${id}/request`).json<Document>();
+
+  await delay(1_000);
+
+  return result;
+}
+
 export async function cancelDocument(id: number) {
   const result = await api.delete(`/api/documents/${id}/cancel`).json<{ id: number }>();
 

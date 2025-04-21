@@ -3,6 +3,7 @@ import {
   cancelDocument,
   getApprovalHistory,
   rejectDocument,
+  requestDocument,
   searchDocument,
 } from '@/domain/document/api/documents';
 
@@ -60,6 +61,24 @@ export function useRejectDocument(onSuccess?: () => void) {
   });
 
   return { reject: mutate, isLoading: isPending };
+}
+
+export function useRequestDocument(onSuccess?: () => void, onError?: () => void) {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ['documents', 'request'],
+    mutationFn: ({ id }: { id: number }) => requestDocument(id),
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries({ queryKey: ['documents'] });
+      onSuccess && onSuccess();
+    },
+    onError: () => {
+      onError && onError();
+    },
+  });
+
+  return { request: mutate, isLoading: isPending };
 }
 
 export function useCancelDocument(onSuccess?: () => void, onError?: () => void) {

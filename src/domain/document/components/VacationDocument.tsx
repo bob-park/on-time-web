@@ -182,6 +182,16 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
           </div>
         </div>
       )}
+
+      {document.status === 'DRAFT' && (
+        <div className="left-[45%]] absolute top-[40%]">
+          <div className="grid h-full w-full place-content-center opacity-50">
+            <div className="-rotate-45 rounded-2xl border-8 border-solid border-sky-300 p-10 text-9xl font-black tracking-widest text-sky-300">
+              초 안
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
