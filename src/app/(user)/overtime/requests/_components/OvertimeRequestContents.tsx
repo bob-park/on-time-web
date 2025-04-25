@@ -3,9 +3,12 @@
 import { useState } from 'react';
 
 import { FaCheck, FaFirstdraft } from 'react-icons/fa6';
+import { HiMiniCheckCircle } from 'react-icons/hi2';
 import { IoIosAddCircle } from 'react-icons/io';
 
 import useToast from '@/shared/hooks/useToast';
+
+import { getDaysOfWeek } from '@/utils/parse';
 
 import cx from 'classnames';
 import dayjs from 'dayjs';
@@ -41,10 +44,34 @@ export default function OvertimeRequestContents() {
 
   // handle
   const handleAddWorkTime = () => {
-    if (isRegisteredUser === undefined || !username || !contents) {
+    if (isRegisteredUser === undefined || !username || !contents || !date) {
       push('제대로 입력해야지? 혼나기 싫으면?', 'warning');
       return;
     }
+
+    setWorkTimes((prev) => {
+      const newWorkTimes = prev.slice();
+
+      newWorkTimes.push({
+        startDate: date.startDate,
+        endDate: date.endDate,
+        userUniqueId,
+        username,
+        contents,
+        isDayOff,
+      });
+
+      return newWorkTimes;
+    });
+
+    setIsRegisteredUser(undefined);
+    setUsername(undefined);
+    setUserUniqueId(undefined);
+    setContents(undefined);
+    setDate(undefined);
+    setIsDayOff(true);
+
+    document.getElementById('reset_is_registered_user_btn')?.click();
   };
 
   const handleSelectUser = (user: User) => {
@@ -68,6 +95,7 @@ export default function OvertimeRequestContents() {
                   <form className="filter">
                     <input
                       className="btn btn-square"
+                      id="reset_is_registered_user_btn"
                       type="reset"
                       value="×"
                       onClick={() => {
@@ -224,7 +252,45 @@ export default function OvertimeRequestContents() {
         <div className="card bg-base-100 m-3 flex size-full flex-col items-center justify-center gap-3 p-3 shadow-sm">
           {/* body */}
           <div className="card-body w-full">
-            <div className="flex flex-col gap-10"></div>
+            <div className="flex flex-col gap-10">
+              <table className="table w-full">
+                <thead>
+                  <tr>
+                    <th className="text-center font-bold">근무일</th>
+                    <th className="text-center font-bold">근무시간</th>
+                    <th className="font-boldr text-center">근무목적</th>
+                    <th className="text-center font-bold">근무자</th>
+                    <th className="text-center font-bold">보상휴가 여부</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {workTimes.map((workTime, index) => (
+                    <tr key={`work-time-item-${index}`} className="hover:bg-base-200 cursor-pointer">
+                      <td className="text-center">
+                        <span>{dayjs(workTime.startDate).format('YYYY-MM-DD')}</span>
+                        <span className="ms-1">
+                          <span>(</span>
+                          <span>{getDaysOfWeek(dayjs(workTime.startDate).day())}</span>
+                          <span>)</span>
+                        </span>
+                      </td>
+                      <td className="text-center">
+                        <span>{dayjs(workTime.startDate).format('HH:mm')}</span>
+                        <span> - </span>
+                        <span>{dayjs(workTime.endDate).format('HH:mm')}</span>
+                      </td>
+                      <td className="">{workTime.contents}</td>
+                      <td className="text-center">{workTime.username}</td>
+                      <td className="text-center">
+                        <div className="flex flex-row items-center justify-center gap-2">
+                          {workTime.isDayOff && <HiMiniCheckCircle className="size-6 text-green-700" />}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
 
           {/* action button */}
