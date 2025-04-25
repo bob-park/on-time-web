@@ -1,0 +1,252 @@
+'use client';
+
+import { useState } from 'react';
+
+import { FaCheck, FaFirstdraft } from 'react-icons/fa6';
+import { IoIosAddCircle } from 'react-icons/io';
+
+import useToast from '@/shared/hooks/useToast';
+
+import cx from 'classnames';
+import dayjs from 'dayjs';
+
+import SelectDatetimeModal from './SelectDatetimeModal';
+import SelectUserModal from './SelectUserModal';
+
+interface WorkTime {
+  startDate: Date;
+  endDate: Date;
+  userUniqueId?: string;
+  username: string;
+  contents: string;
+  isDayOff: boolean;
+}
+
+export default function OvertimeRequestContents() {
+  // state
+  const [workTimes, setWorkTimes] = useState<WorkTime[]>([]);
+
+  const [showUser, setShowUser] = useState<boolean>(false);
+  const [showDatetimePicker, setShowDatetimePicker] = useState<boolean>(false);
+
+  const [isRegisteredUser, setIsRegisteredUser] = useState<boolean>();
+  const [username, setUsername] = useState<string>();
+  const [userUniqueId, setUserUniqueId] = useState<string>();
+  const [isDayOff, setIsDayOff] = useState<boolean>(false);
+  const [contents, setContents] = useState<string>();
+  const [date, setDate] = useState<{ startDate: Date; endDate: Date }>();
+
+  // hooks
+  const { push } = useToast();
+
+  // handle
+  const handleAddWorkTime = () => {
+    if (isRegisteredUser === undefined || !username || !contents) {
+      push('제대로 입력해야지? 혼나기 싫으면?', 'warning');
+      return;
+    }
+  };
+
+  const handleSelectUser = (user: User) => {
+    setUserUniqueId(user.uniqueId);
+    setUsername(user.username);
+  };
+
+  return (
+    <>
+      <div className="flex size-full flex-col items-center justify-center gap-10">
+        {/* card */}
+        {/* add form */}
+        <div className="card bg-base-100 m-3 flex size-full flex-col items-center justify-center gap-3 p-3 shadow-sm">
+          {/* body */}
+          <div className="card-body w-full">
+            <div className="flex flex-col gap-10">
+              {/* select user  */}
+              <div className="flex flex-row items-center gap-3">
+                <span className="w-32 flex-none text-right text-base font-semibold">등록 여부 :</span>
+                <div className="">
+                  <form className="filter">
+                    <input
+                      className="btn btn-square"
+                      type="reset"
+                      value="×"
+                      onClick={() => {
+                        setIsRegisteredUser(undefined);
+                        setUsername(undefined);
+                        setUserUniqueId(undefined);
+                      }}
+                    />
+                    <input
+                      className={cx('btn', { 'btn-neutral': isRegisteredUser })}
+                      type="radio"
+                      name="vacationTypes"
+                      aria-label="등록 직원"
+                      onClick={() => setIsRegisteredUser(true)}
+                    />
+                    <input
+                      className={cx('btn', { 'btn-neutral': isRegisteredUser !== undefined && !isRegisteredUser })}
+                      type="radio"
+                      name="vacationTypes"
+                      aria-label="미등록 직원"
+                      onClick={() => setIsRegisteredUser(false)}
+                    />
+                  </form>
+                </div>
+              </div>
+
+              {/* select user */}
+              <div
+                className={cx('flex flex-row items-center gap-3', {
+                  hidden: !isRegisteredUser,
+                })}
+              >
+                <span className="w-32 flex-none text-right text-base font-semibold"> 인원 선택 :</span>
+                <div className="">
+                  <button className={cx('btn', { 'btn-neutral': !!userUniqueId })} onClick={() => setShowUser(true)}>
+                    {userUniqueId ? (
+                      <>
+                        <FaCheck className="size-5" />
+                        {username}
+                      </>
+                    ) : (
+                      <>인원 선택</>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* input username */}
+              {/* username */}
+              <div
+                className={cx('flex flex-row items-center gap-3', {
+                  hidden: isRegisteredUser === undefined || isRegisteredUser,
+                })}
+              >
+                <span className="w-32 flex-none text-right text-base font-semibold">인원 이름 :</span>
+                <div className="">
+                  <label className="input w-[380px]">
+                    <input
+                      type="text"
+                      className="grow"
+                      placeholder="성명"
+                      value={username || ''}
+                      onChange={(e) => setUsername(e.target.value)}
+                    />
+                    <span className="badge badge-neutral badge-xs">필수</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* contents */}
+              <div className={cx('flex flex-row items-center gap-3', {})}>
+                <span className="w-32 flex-none text-right text-base font-semibold">근무 목적 :</span>
+                <div className="">
+                  <label className="input w-[380px]">
+                    <input
+                      type="text"
+                      className="grow"
+                      placeholder="근무 목적"
+                      value={contents || ''}
+                      onChange={(e) => setContents(e.target.value)}
+                    />
+                    <span className="badge badge-neutral badge-xs">필수</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* date range */}
+              <div className={cx('flex w-full flex-row items-center gap-3', {})}>
+                <span className="w-32 flex-none text-right text-base font-semibold">근무 시간 :</span>
+                <div className="join w-[380px]">
+                  <label className="input join-item w-full">
+                    <div className="grow">
+                      {date && (
+                        <p>
+                          <span>{dayjs(date.startDate).format('YYYY-MM-DD HH:mm')}</span>
+                          <span> - </span>
+                          <span>{dayjs(date.endDate).format('YYYY-MM-DD HH:mm')}</span>
+                        </p>
+                      )}
+                    </div>
+                  </label>
+
+                  <button className="btn btn-neutral join-item w-24" onClick={() => setShowDatetimePicker(true)}>
+                    변경
+                  </button>
+                </div>
+              </div>
+
+              {/* type */}
+              <div className="flex flex-row items-center gap-3">
+                <span className="w-32 flex-none text-right text-base font-semibold">보상휴가 여부:</span>
+                <div className="">
+                  <label className="toggle">
+                    <input type="checkbox" checked={isDayOff} onChange={(e) => setIsDayOff(e.target.checked)} />
+                    <svg
+                      aria-label="disabled"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M18 6 6 18" />
+                      <path d="m6 6 12 12" />
+                    </svg>
+                    <svg aria-label="enabled" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                      <g strokeLinejoin="round" strokeLinecap="round" strokeWidth="4" fill="none" stroke="currentColor">
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </g>
+                    </svg>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* action button */}
+          <div className="my-10 flex flex-row gap-4">
+            <button type="button" className="btn w-36">
+              취소
+            </button>
+            <div className="tooltip" data-tip="결과에 추가될꺼임">
+              <button type="button" className="btn btn-neutral w-36" onClick={handleAddWorkTime}>
+                <IoIosAddCircle className="size-6" />
+                추가
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* list form */}
+        <div className="card bg-base-100 m-3 flex size-full flex-col items-center justify-center gap-3 p-3 shadow-sm">
+          {/* body */}
+          <div className="card-body w-full">
+            <div className="flex flex-col gap-10"></div>
+          </div>
+
+          {/* action button */}
+          <div className="my-10 flex flex-row gap-4">
+            <button type="button" className="btn w-36">
+              취소
+            </button>
+            <div className="tooltip" data-tip="문서 초안이 생성됩니다.">
+              <button type="button" className="btn btn-neutral w-36" disabled={workTimes.length === 0}>
+                <FaFirstdraft className="size-6" />
+                초안 생성
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <SelectUserModal show={showUser} onClose={() => setShowUser(false)} onSelect={handleSelectUser} />
+      <SelectDatetimeModal
+        show={showDatetimePicker}
+        onClose={() => setShowDatetimePicker(false)}
+        onSelect={(date) => setDate(date)}
+      />
+    </>
+  );
+}
