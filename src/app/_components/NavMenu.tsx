@@ -6,7 +6,7 @@ import { HiDocumentPlus } from 'react-icons/hi2';
 import { IoChatbox } from 'react-icons/io5';
 import { LuHistory } from 'react-icons/lu';
 import { MdManageAccounts, MdOutlineApproval } from 'react-icons/md';
-import { PiGpsFixBold } from 'react-icons/pi';
+import { PiGpsFixBold, PiUserFocusBold } from 'react-icons/pi';
 import { RiCalendarScheduleFill, RiDashboardFill } from 'react-icons/ri';
 
 import Link from 'next/link';
@@ -122,6 +122,14 @@ export default function NavMenu() {
             <MenuItem href="/dayoff/users/vacations" active={isActive(segments, ['dayoff', 'users', 'vacations'])}>
               <MdManageAccounts className="inline-block size-6" />
               임직원 휴가 사용 현황
+            </MenuItem>
+
+            <MenuItem
+              href="/dayoff/users/compensatory"
+              active={isActive(segments, ['dayoff', 'users', 'compensatory'])}
+            >
+              <PiUserFocusBold className="inline-block size-6" />
+              임직원 보상 휴가 현황
             </MenuItem>
 
             <MenuItem href="/attendance/view" active={isActive(segments, ['attendance', 'view'])}>
