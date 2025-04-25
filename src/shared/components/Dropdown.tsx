@@ -63,7 +63,9 @@ export default function Dropdown({ text, placeholder, children, onChange }: Drop
           </div>
           <div className="absolute right-0 pr-2">{show ? <IoIosArrowUp /> : <IoIosArrowDown />}</div>
         </div>
-        <ul className="menu dropdown-content rounded-box bg-base-100 z-[1] w-full p-2 shadow">{children}</ul>
+        <ul className="menu dropdown-content rounded-box bg-base-100 z-[1] w-full p-2 shadow">
+          <div className="max-h-[300px] overflow-auto">{children}</div>
+        </ul>
       </div>
     </DropdownContext.Provider>
   );

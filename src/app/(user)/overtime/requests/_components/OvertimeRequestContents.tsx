@@ -32,7 +32,7 @@ export default function OvertimeRequestContents() {
   const [isRegisteredUser, setIsRegisteredUser] = useState<boolean>();
   const [username, setUsername] = useState<string>();
   const [userUniqueId, setUserUniqueId] = useState<string>();
-  const [isDayOff, setIsDayOff] = useState<boolean>(false);
+  const [isDayOff, setIsDayOff] = useState<boolean>(true);
   const [contents, setContents] = useState<string>();
   const [date, setDate] = useState<{ startDate: Date; endDate: Date }>();
 
