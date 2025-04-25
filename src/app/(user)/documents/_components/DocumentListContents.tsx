@@ -98,6 +98,14 @@ export default function DocumentListContents({ params }: DocumentListContentsPro
                     className="btn"
                     type="radio"
                     name="vacationTypes"
+                    aria-label="취소"
+                    defaultChecked={searchParams.status === 'CANCELLED'}
+                    onClick={() => setSearchParams({ ...searchParams, page: 0, status: 'CANCELLED' })}
+                  />
+                  <input
+                    className="btn"
+                    type="radio"
+                    name="vacationTypes"
                     aria-label="초안"
                     defaultChecked={searchParams.status === 'DRAFT'}
                     onClick={() => setSearchParams({ ...searchParams, page: 0, status: 'DRAFT' })}
