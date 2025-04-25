@@ -3,7 +3,7 @@ import cx from 'classnames';
 export default function DocumentsTypeBadge({ type }: { type: DocumentsType }) {
   return (
     <div
-      className={cx('badge w-28', {
+      className={cx('badge w-32', {
         'badge-neutral': type === 'VACATION',
         'badge-primary': type === 'OVERTIME_WORK',
       })}

@@ -67,3 +67,41 @@ type SearchVacationDocumentRequest = {
   startDateFrom?: string;
   endDateTo?: string;
 } & SearchPageParams;
+
+
+/*
+ * overtime work
+ */
+interface OverTimeWorkDocument extends Document {
+  workTimes: OverTimeWorkTime[];
+}
+
+interface OverTimeWorkTime {
+  id: number;
+  userUniqueId?: string;
+  appliedHours: number;
+  username: string;
+  contents: string;
+  startDate: string;
+  endDate: string;
+  isDayOff: boolean;
+  appliedExtraPaymentHours: number;
+  reports: OverTimeWorkTimeReport[]
+}
+
+interface OverTimeWorkTimeReport{
+  report: string;
+}
+
+interface CreateOverTimeWorkDocumentRequest {
+  times: CreateOverTimeWorkTimeRequest[];
+}
+
+interface CreateOverTimeWorkTimeRequest {
+  userUniqueId?: string;
+  username: string;
+  contents: string;
+  startDate: string;
+  endDate: string;
+  isDayOff: boolean;
+}

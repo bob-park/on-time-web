@@ -6,6 +6,10 @@ import { FaCheck, FaFirstdraft } from 'react-icons/fa6';
 import { HiMiniCheckCircle } from 'react-icons/hi2';
 import { IoIosAddCircle } from 'react-icons/io';
 
+import { useRouter } from 'next/navigation';
+
+import { useCreateOverTimeWorkDocument } from '@/domain/document/query/overtime';
+
 import useToast from '@/shared/hooks/useToast';
 
 import { getDaysOfWeek } from '@/utils/parse';
@@ -41,6 +45,16 @@ export default function OvertimeRequestContents() {
 
   // hooks
   const { push } = useToast();
+  const router = useRouter();
+
+  // query
+  const { createOverTimeWork, isLoading } = useCreateOverTimeWorkDocument(
+    () => {
+      push('휴일 근무 보고서 초안이 작성되었습니다.', 'info');
+      router.push('/documents');
+    },
+    () => push('먼가 문제가 있는디?', 'error'),
+  );
 
   // handle
   const handleAddWorkTime = () => {
@@ -77,6 +91,23 @@ export default function OvertimeRequestContents() {
   const handleSelectUser = (user: User) => {
     setUserUniqueId(user.uniqueId);
     setUsername(user.username);
+  };
+
+  const handleCreateDocument = () => {
+    if (workTimes.length === 0) {
+      return;
+    }
+
+    createOverTimeWork({
+      times: workTimes.map((workTime) => ({
+        userUniqueId: workTime.userUniqueId,
+        username: workTime.username,
+        contents: workTime.contents,
+        startDate: dayjs(workTime.startDate).format('YYYY-MM-DDTHH:mm:ss'),
+        endDate: dayjs(workTime.endDate).format('YYYY-MM-DDTHH:mm:ss'),
+        isDayOff: workTime.isDayOff,
+      })),
+    });
   };
 
   return (
@@ -299,9 +330,23 @@ export default function OvertimeRequestContents() {
               취소
             </button>
             <div className="tooltip" data-tip="문서 초안이 생성됩니다.">
-              <button type="button" className="btn btn-neutral w-36" disabled={workTimes.length === 0}>
-                <FaFirstdraft className="size-6" />
-                초안 생성
+              <button
+                type="button"
+                className="btn btn-neutral w-36"
+                disabled={workTimes.length === 0 || isLoading}
+                onClick={handleCreateDocument}
+              >
+                {isLoading ? (
+                  <>
+                    <span className="loading loading-spinner" />
+                    초안 생성중
+                  </>
+                ) : (
+                  <>
+                    <FaFirstdraft className="size-6" />
+                    초안 생성
+                  </>
+                )}
               </button>
             </div>
           </div>
