@@ -90,6 +90,7 @@ interface OverTimeWorkTime {
 }
 
 interface OverTimeWorkTimeReport{
+  id: number;
   report: string;
 }
 

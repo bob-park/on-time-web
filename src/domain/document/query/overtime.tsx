@@ -21,7 +21,7 @@ export function useCreateOverTimeWorkDocument(onSuccess?: () => void, onError?: 
   return { createOverTimeWork: mutate, isLoading: isPending };
 }
 
-export function useOverTimeWorkDocuments(id: number) {
+export function useOverTimeWorkDocument(id: number) {
   const { data, isLoading } = useQuery<OverTimeWorkDocument>({
     queryKey: ['documents', 'overtimes', id],
     queryFn: () => getOverTimeWorkDocument(id),
