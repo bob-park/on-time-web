@@ -1,12 +1,16 @@
-import { createOverTimeWorkDocument } from '@/domain/document/api/overtime';
+import { createOverTimeWorkDocument, getOverTimeWorkDocument } from '@/domain/document/api/overtime';
 
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export function useCreateOverTimeWorkDocument(onSuccess?: () => void, onError?: () => void) {
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
-    mutationKey: ['documents', 'overtime', 'create'],
+    mutationKey: ['documents', 'overtimes', 'create'],
     mutationFn: (req: CreateOverTimeWorkDocumentRequest) => createOverTimeWorkDocument(req),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      queryClient.setQueryData(['documents', 'overtimes'], data);
+
       onSuccess && onSuccess();
     },
     onError: () => {
@@ -15,4 +19,13 @@ export function useCreateOverTimeWorkDocument(onSuccess?: () => void, onError?: 
   });
 
   return { createOverTimeWork: mutate, isLoading: isPending };
+}
+
+export function useOverTimeWorkDocuments(id: number) {
+  const { data, isLoading } = useQuery<OverTimeWorkDocument>({
+    queryKey: ['documents', 'overtimes', id],
+    queryFn: () => getOverTimeWorkDocument(id),
+  });
+
+  return { overTimeWorkDocument: data, isLoading };
 }

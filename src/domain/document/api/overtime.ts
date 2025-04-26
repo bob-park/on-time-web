@@ -9,3 +9,7 @@ export async function createOverTimeWorkDocument(req: CreateOverTimeWorkDocument
 
   return result;
 }
+
+export async function getOverTimeWorkDocument(id: number) {
+  return api.get(`/api/documents/overtimes/${id}`).json<OverTimeWorkDocument>();
+}
