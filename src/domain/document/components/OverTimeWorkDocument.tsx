@@ -146,7 +146,7 @@ function WorkTimeItem({ item }: { item: OverTimeWorkTime }) {
 
   return (
     <div
-      className="text-x1 relative flex h-16 flex-row items-center justify-center border-x border-b text-xl"
+      className="text-x1 relative flex min-h-16 flex-row items-center justify-center border-x border-b text-xl"
       style={{ borderColor: '#000', borderRightWidth: '2px', borderLeftWidth: '2px', borderBottomWidth: '1px' }}
     >
       <div
@@ -176,7 +176,7 @@ function WorkTimeItem({ item }: { item: OverTimeWorkTime }) {
         >
           <span className="">{item.appliedHours}</span>
 
-          <div className={cx('absolute top-12', { hidden: !hoverHour })}>
+          <div className={cx('absolute top-12 z-[100]', { hidden: !hoverHour })}>
             {item.reports.map((report) => (
               <div key={`work-time-item-${item.id}-report-${report.id}`} className="bg-base-200 rounded-2xl p-4">
                 {report.report.split('\n').map((line, index) => (
