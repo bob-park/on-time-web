@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
 
+import OverTimeWorkDocument from '@/domain/document/components/OverTimeWorkDocument';
 import VacationDocument from '@/domain/document/components/VacationDocument';
 
 import ApprovalProceedContents from './_components/ApprovalProceedContents';
@@ -41,6 +42,12 @@ export default async function ApprovalDetailPage({ params }: { params: Promise<{
             <div className="mt-2 aspect-[1/1.414] w-[1000px]">
               {res.document.type === 'VACATION' && (
                 <VacationDocument id="approval_document_vacation_id" document={res.document as VacationDocument} />
+              )}
+              {res.document.type === 'OVERTIME_WORK' && (
+                <OverTimeWorkDocument
+                  id="approval_overtime_work_document_id"
+                  document={res.document as OverTimeWorkDocument}
+                />
               )}
             </div>
           </div>

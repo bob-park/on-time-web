@@ -18,6 +18,7 @@ export function useSession() {
   const { data } = useQuery<User>({
     queryKey: ['user', 'session'],
     queryFn: () => currentUser(),
+    refetchIntervalInBackground: true,
     refetchInterval: 60 * 1_000,
     staleTime: 5 * 60 * 1_000,
     gcTime: 10 * 60 * 1_000,
