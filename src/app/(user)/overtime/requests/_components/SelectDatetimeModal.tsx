@@ -9,7 +9,7 @@ import Dropdown, { DropdownItem } from '@/shared/components/Dropdown';
 import { getDaysOfWeek } from '@/utils/parse';
 
 import dayjs from 'dayjs';
-import { pad, padStart } from 'lodash';
+import { padStart } from 'lodash';
 import { DayPicker } from 'react-day-picker';
 import { ko } from 'react-day-picker/locale';
 
