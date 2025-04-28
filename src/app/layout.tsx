@@ -41,10 +41,10 @@ export default async function RootLayout({
     redirect('/api/oauth2/authorization/keyflow-auth');
   }
 
-  await queryClient.prefetchQuery({
-    queryKey: ['user', 'me'],
-    queryFn: () => res.json(),
-  });
+  // await queryClient.prefetchQuery({
+  //   queryKey: ['user', 'me'],
+  //   queryFn: () => res.json(),
+  // });
 
   const dehydratedState = dehydrate(queryClient);
 

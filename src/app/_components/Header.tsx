@@ -66,8 +66,9 @@ export default function Header() {
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="m-1">
             <UserAvatar
+              key={currentUser?.uniqueId}
               avatar={currentUser && `/api/users/${currentUser.uniqueId}/avatar`}
-              alt={currentUser?.username || 'username'}
+              alt={currentUser?.username || ''}
             />
           </div>
           <ul tabIndex={0} className="menu dropdown-content rounded-box bg-base-100 z-[1] w-40 p-2 shadow">
