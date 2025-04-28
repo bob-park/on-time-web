@@ -13,7 +13,6 @@ export default async function ManagerLayout({ children }: Readonly<{ children: R
     headers: {
       Cookie: `JSESSIONID=${cookieStore.get('JSESSIONID')?.value || ''}`,
     },
-    credentials: 'include',
   });
 
   if (!res.ok) {

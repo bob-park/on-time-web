@@ -14,7 +14,6 @@ export default async function ChatUserPage({ params }: { params: Promise<{ uniqu
     headers: {
       Cookie: `JSESSIONID=${cookieStore.get('JSESSIONID')?.value || ''}`,
     },
-    credentials: 'include',
   })
     .then((res) => res.json())
     .then((data: User) => data);

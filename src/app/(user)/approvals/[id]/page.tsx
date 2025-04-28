@@ -17,7 +17,6 @@ export default async function ApprovalDetailPage({ params }: { params: Promise<{
     headers: {
       Cookie: `JSESSIONID=${cookieStore.get('JSESSIONID')?.value || ''}`,
     },
-    credentials: 'include',
   })
     .then((res) => res.json())
     .then((data: ApprovalHistory) => data);
