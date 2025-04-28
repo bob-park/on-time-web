@@ -35,16 +35,16 @@ export default async function RootLayout({
     headers: {
       Cookie: `JSESSIONID=${cookieStore.get('JSESSIONID')?.value || ''}`,
     },
-    credentials: 'include',
   });
 
   if (!res.ok) {
     redirect('/api/oauth2/authorization/keyflow-auth');
   }
 
-  const user = (await res.json()) as User;
-
-  queryClient.setQueryData<User>(['user', 'me'], user);
+  await queryClient.prefetchQuery({
+    queryKey: ['user', 'me'],
+    queryFn: () => res.json(),
+  });
 
   const dehydratedState = dehydrate(queryClient);
 

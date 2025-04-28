@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     authInterrupts: true,
     staleTimes: {
       static: 0,
-      dynamic: 0,
+      dynamic: 0
     },
   },
   async headers() {
