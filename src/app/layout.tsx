@@ -41,6 +41,8 @@ export default async function RootLayout({
     redirect('/api/oauth2/authorization/keyflow-auth');
   }
 
+  const user = (await res.json()) as User;
+
   // await queryClient.prefetchQuery({
   //   queryKey: ['user', 'me'],
   //   queryFn: () => res.json(),
@@ -74,7 +76,7 @@ export default async function RootLayout({
                 <div className="mx-3 my-7 size-full p-3">{children}</div>
               </div>
 
-              <CustomerSupport wsHost={WS_HOST || '/api/ws'} />
+              <CustomerSupport wsHost={WS_HOST || '/api/ws'} userUniqueId={user.uniqueId} />
             </ToastProvider>
           </HydrationBoundary>
         </RQProvider>

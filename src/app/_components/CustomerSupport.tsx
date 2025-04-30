@@ -14,7 +14,7 @@ import useWebSocket from '@/shared/hooks/ws/useWebSocket';
 
 import cx from 'classnames';
 
-export default function CustomerSupport({ wsHost }: { wsHost: string }) {
+export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: string; userUniqueId: string }) {
   // state
   const [show, setShow] = useState<boolean>(false);
   const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
@@ -30,10 +30,10 @@ export default function CustomerSupport({ wsHost }: { wsHost: string }) {
   const { publish } = useWebSocket({
     host: wsHost,
     auth: {
-      userUniqueId: currentUser?.uniqueId || '',
+      userUniqueId,
     },
-    subscribe: `/sub/users/${currentUser?.uniqueId}/chat`,
-    publish: `/pub/users/${currentUser?.uniqueId}/chat`,
+    subscribe: `/sub/users/${userUniqueId}/chat`,
+    publish: `/pub/users/${userUniqueId}/chat`,
     onConnect: () => {},
     onClose: () => {},
     onSubscribe: (data) => {
