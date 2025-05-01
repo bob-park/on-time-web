@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { IoClose } from 'react-icons/io5';
 
@@ -13,11 +13,13 @@ import { useUserNotification } from '@/domain/user/query/userNotification';
 import useWebSocket from '@/shared/hooks/ws/useWebSocket';
 
 import cx from 'classnames';
+import { v4 as uuid } from 'uuid';
 
 export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: string; userUniqueId: string }) {
   // state
   const [show, setShow] = useState<boolean>(false);
   const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
+  const [sendNotiMessages, setSendNotiMessages] = useState<string[]>([]);
 
   // query
   const { currentUser } = useGetCurrentUser();
@@ -49,6 +51,38 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
     },
   });
 
+  // useEffect
+  useEffect(() => {
+    if (sendNotiMessages.length === 0 || !currentUser) {
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      const message = sendNotiMessages.reduce((prev, current) => (prev += ' ' + current));
+
+      for (const admin of admins) {
+        sendMessage({
+          userUniqueId: admin.uniqueId,
+          body: {
+            displayMessage: `${currentUser.team?.name || ''} ${currentUser.username} ${currentUser.position?.name || ''} 이(가) 불편한 메세지를 보냈습니다.`,
+            fields: [
+              {
+                field: '내용',
+                text: message,
+              },
+            ],
+          },
+        });
+      }
+
+      setSendNotiMessages([]);
+    }, 5_000);
+
+    return () => {
+      timeoutId && clearTimeout(timeoutId);
+    };
+  }, [sendNotiMessages, currentUser]);
+
   // handle
   const handleSendMessage = (message: string) => {
     if (!currentUser) {
@@ -57,20 +91,13 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
 
     publish({ type: 'MESSAGE', message, userUniqueId: currentUser.uniqueId });
 
-    for (const admin of admins) {
-      sendMessage({
-        userUniqueId: admin.uniqueId,
-        body: {
-          displayMessage: `${currentUser.team?.name || ''} ${currentUser.username} ${currentUser.position?.name || ''} 이(가) 불편한 메세지를 보냈습니다.`,
-          fields: [
-            {
-              field: '내용',
-              text: message,
-            },
-          ],
-        },
-      });
-    }
+    setSendNotiMessages((prev) => {
+      const newMessages = prev.slice();
+
+      newMessages.push(message);
+
+      return newMessages;
+    });
   };
 
   return (
