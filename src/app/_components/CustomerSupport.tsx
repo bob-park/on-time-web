@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { IoClose } from 'react-icons/io5';
 
@@ -10,15 +10,17 @@ import ChatChannel from '@/domain/chat/components/ChatChannel';
 import { useGetCurrentUser, useGetUsers } from '@/domain/user/query/user';
 import { useUserNotification } from '@/domain/user/query/userNotification';
 
+import useToast from '@/shared/hooks/useToast';
 import useWebSocket from '@/shared/hooks/ws/useWebSocket';
 
 import cx from 'classnames';
-import { v4 as uuid } from 'uuid';
 
 export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: string; userUniqueId: string }) {
   // state
   const [show, setShow] = useState<boolean>(false);
   const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
+  const [lastMessageId, setLastMessageId] = useState<string>();
+
   const [sendNotiMessages, setSendNotiMessages] = useState<string[]>([]);
 
   // query
@@ -29,6 +31,7 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
   const admins = mergePageUsers(pages.map((page) => page.content)).filter((item) => item.role.type === 'ROLE_ADMIN');
 
   // hooks
+  const { push } = useToast();
   const { publish } = useWebSocket({
     host: wsHost,
     auth: {
@@ -41,17 +44,29 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
     onSubscribe: (data) => {
       const res = JSON.parse(data) as ChatMessageResponse;
 
-      setMessages((prev) => {
-        const newMessages = prev.slice();
-
-        newMessages.push(res);
-
-        return newMessages;
-      });
+      handleReceiveMessage(res);
     },
   });
 
   // useEffect
+  useEffect(() => {
+    if (messages.length === 0) {
+      return;
+    }
+
+    const lastMessage = messages[messages.length - 1];
+
+    setLastMessageId(lastMessage.id);
+
+    if (show || lastMessage.id === lastMessageId) {
+      return;
+    }
+
+    if (lastMessage.user.uniqueId !== currentUser?.uniqueId && lastMessage.type === 'MESSAGE') {
+      push(`${lastMessage.user.username}: ${lastMessage.message}`, 'message');
+    }
+  }, [messages, show, lastMessageId]);
+
   useEffect(() => {
     if (sendNotiMessages.length === 0 || !currentUser) {
       return;
@@ -92,6 +107,16 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
     publish({ type: 'MESSAGE', message, userUniqueId: currentUser.uniqueId });
 
     setSendNotiMessages((prev) => {
+      const newMessages = prev.slice();
+
+      newMessages.push(message);
+
+      return newMessages;
+    });
+  };
+
+  const handleReceiveMessage = (message: ChatMessageResponse) => {
+    setMessages((prev) => {
       const newMessages = prev.slice();
 
       newMessages.push(message);

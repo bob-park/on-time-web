@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { FaCheckCircle } from 'react-icons/fa';
 import { IoClose, IoWarning } from 'react-icons/io5';
 import { RiErrorWarningFill, RiInformationLine } from 'react-icons/ri';
+import { TbMessageFilled } from 'react-icons/tb';
 
 import cx from 'classnames';
 
@@ -26,6 +27,8 @@ function ToastIcon({ level }: ToastIconProps) {
       return <FaCheckCircle className="h-6 w-6 text-green-500" />;
     case 'error':
       return <RiErrorWarningFill className="h-6 w-6 text-red-500" />;
+    case 'message':
+      return <TbMessageFilled className="h-6 w-6 text-black" />;
     default:
       return <RiInformationLine className="h-6 w-6 text-sky-500" />;
   }
