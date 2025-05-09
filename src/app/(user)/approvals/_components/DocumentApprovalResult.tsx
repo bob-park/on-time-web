@@ -55,7 +55,7 @@ function DocumentApprovalItem({ item }: { item: ApprovalHistory }) {
         <DocumentsTypeBadge type={item.document.type} />
       </div>
       <div className="w-40 flex-none">
-        <DocumentStatusBadge status={item.status || 'WAITING'} />
+        <DocumentStatusBadge status={item.document.status === 'CANCELLED' ? 'CANCELLED' : item.status || 'WAITING'} />
       </div>
       <div className="w-40 flex-none font-normal">
         <p className="">

@@ -3,7 +3,6 @@
 import { useState } from 'react';
 
 import { FaFilePdf } from 'react-icons/fa';
-import { GiCancel } from 'react-icons/gi';
 import { IoNotifications } from 'react-icons/io5';
 import { PiUploadFill } from 'react-icons/pi';
 
@@ -20,7 +19,6 @@ import dayjs from 'dayjs';
 import html2canvas from 'html2canvas-pro';
 import jsPDF from 'jspdf';
 
-import CancelConfirmModal from './CancelConfirmModal';
 import PressApprovalModal from './PressApprovalModal';
 
 interface DayOffDetailContentsProps {
@@ -33,7 +31,7 @@ export default function DayOffDetailContents({ id }: DayOffDetailContentsProps) 
   // state
   const [isPdfLoading, setIsPdfLoading] = useState<boolean>(false);
   const [showPress, setShowPress] = useState<boolean>(false);
-  const [showCancel, setShowCancel] = useState<boolean>(false);
+
   const [showRequest, setShowRequest] = useState<boolean>(false);
 
   // query
@@ -98,17 +96,6 @@ export default function DayOffDetailContents({ id }: DayOffDetailContentsProps) 
                 <div className="flex-1">
                   <button
                     type="button"
-                    className="btn btn-secondary w-full"
-                    disabled={['CANCELLED', 'REJECTED'].includes(vacationDocument?.status || '')}
-                    onClick={() => setShowCancel(true)}
-                  >
-                    <GiCancel className="size-6" />
-                    취소
-                  </button>
-                </div>
-                <div className="flex-1">
-                  <button
-                    type="button"
                     className="btn btn-soft btn-warning w-full"
                     disabled={vacationDocument?.status !== 'WAITING'}
                     onClick={() => setShowPress(true)}
@@ -125,7 +112,7 @@ export default function DayOffDetailContents({ id }: DayOffDetailContentsProps) 
                 >
                   <button
                     type="button"
-                    className="btn btn-soft btn-accent w-full"
+                    className="btn btn-soft btn-info w-full"
                     disabled={vacationDocument?.status !== 'DRAFT'}
                     onClick={() => setShowRequest(true)}
                   >
@@ -182,7 +169,6 @@ export default function DayOffDetailContents({ id }: DayOffDetailContentsProps) 
       />
 
       <RequestConfirmModal show={showRequest} documentId={id} onClose={() => setShowRequest(false)} />
-      <CancelConfirmModal show={showCancel} documentId={id} onClose={() => setShowCancel(false)} />
     </>
   );
 }

@@ -7,7 +7,7 @@ import { GiCancel } from 'react-icons/gi';
 import { IoNotifications } from 'react-icons/io5';
 import { PiUploadFill } from 'react-icons/pi';
 
-import CancelConfirmModal from '@/app/(user)/dayoff/[id]/_components/CancelConfirmModal';
+import CancelConfirmModal from '@/app/(user)/approvals/[id]/_components/CancelConfirmModal';
 import PressApprovalModal from '@/app/(user)/dayoff/[id]/_components/PressApprovalModal';
 import RequestConfirmModal from '@/app/(user)/dayoff/[id]/_components/RequestConfirmModal';
 
