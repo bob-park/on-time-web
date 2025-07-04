@@ -4926,6 +4926,7 @@ __metadata:
     lodash: "npm:^4.17.21"
     msw: "npm:^2.3.1"
     next: "npm:15.2.4"
+    overlay-kit: "npm:^1.8.3"
     postcss: "npm:^8"
     qr-code-styling: "npm:^1.9.1"
     qrcode: "npm:^1.5.4"
@@ -4971,6 +4972,16 @@ __metadata:
   version: 1.4.3
   resolution: "outvariant@npm:1.4.3"
   checksum: 10c0/5976ca7740349cb8c71bd3382e2a762b1aeca6f33dc984d9d896acdf3c61f78c3afcf1bfe9cc633a7b3c4b295ec94d292048f83ea2b2594fae4496656eba992c
+  languageName: node
+  linkType: hard
+
+"overlay-kit@npm:^1.8.3":
+  version: 1.8.3
+  resolution: "overlay-kit@npm:1.8.3"
+  peerDependencies:
+    react: ^16.8 || ^17 || ^18 || ^19
+    react-dom: ^16.8 || ^17 || ^18 || ^19
+  checksum: 10c0/6be564c8d83c2dd1a55b6c654f93ca265870941634973c69ba5a563991041f0face53b4941e47115a95c2dfafb5a0ef4be47ac0c470d3c77059e40d66df3c367
   languageName: node
   linkType: hard
 

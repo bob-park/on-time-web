@@ -8,9 +8,13 @@ import { IoLogOutOutline } from 'react-icons/io5';
 
 import Link from 'next/link';
 
+import NotificationDialog from '@/app/_components/NotificationDialog';
+
 import UserAvatar from '@/domain/user/components/UserAvatar';
 import { useSession } from '@/domain/user/query/session';
 import { useGetCurrentUser } from '@/domain/user/query/user';
+
+import { overlay } from 'overlay-kit';
 
 export default function Header() {
   // query
@@ -42,6 +46,20 @@ export default function Header() {
       </div>
 
       <div className="flex flex-row items-center justify-center gap-3 pr-10">
+        <div className="z-10 mr-10 flex w-64 flex-row items-center justify-end gap-3">
+          <div className="">
+            <button
+              className="btn btn-soft btn-info"
+              onClick={() => {
+                overlay.open(({ isOpen, close, unmount }) => <NotificationDialog open={isOpen} onClose={close} />);
+              }}
+            >
+              <div className="badge badge-secondary">new</div>
+              <span className="">앱 출시</span>
+            </button>
+          </div>
+        </div>
+
         {/* team + position */}
         <div className="hidden text-lg select-none md:block">
           <span className="mr-3 text-gray-600">
