@@ -40,7 +40,7 @@ export default function NotificationDialog({ open, onClose }: Readonly<{ open: b
           </Link>
           <Link
             className="btn"
-            href="https://www.icloud.com/iclouddrive/0efxt0212ZsHLM497sZgXP-Zg#build-1751619928703"
+            href="https://www.icloud.com/iclouddrive/02f_eMeVn0eROtpYxI3dR_-9g#on-time"
             target="_blank"
             rel="noopener noreferrer"
           >
