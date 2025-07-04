@@ -9,7 +9,6 @@ import NavMenu from '@/app/_components/NavMenu';
 import ToastProvider from '@/shared/components/toast/ToastProvider';
 
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
-import { OverlayProvider } from 'overlay-kit';
 
 import Header from './_components/Header';
 import RQProvider from './_components/RQProvider';
