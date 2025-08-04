@@ -131,7 +131,7 @@ export default function SelectDatetimeModal({ show, onClose, onSelect }: SelectD
                       <span>{dayjs(endDate).format('YYYY-MM-DD')}</span>
                       <span className="mx-1">
                         <span>(</span>
-                        <span>{getDaysOfWeek(dayjs(startDate).day())}</span>
+                        <span>{getDaysOfWeek(dayjs(endDate).day())}</span>
                         <span>)</span>
                       </span>
                     </div>
