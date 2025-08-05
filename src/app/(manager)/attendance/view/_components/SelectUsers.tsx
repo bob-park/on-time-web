@@ -42,11 +42,11 @@ function mergePageUsers(pages: User[][]) {
 }
 
 const DisplayUsername = ({ user }: { user: User }) => {
-  const { team, position } = user;
+  const { group, position } = user;
 
   return (
     <div className="text-base">
-      {team && <span className="pr-1">{team.name} - </span>}
+      {group && <span className="pr-1">{group.name} - </span>}
       <span className="font-semibold">{user.username}</span>
       {position && <span className="pl-1 text-sm text-gray-500">{position.name}</span>}
     </div>

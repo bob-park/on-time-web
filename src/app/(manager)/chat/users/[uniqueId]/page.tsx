@@ -23,7 +23,7 @@ export default async function ChatUserPage({ params }: { params: Promise<{ uniqu
       {/* title */}
       <div className="">
         <p className="text-2xl">
-          {user.team && <span className="">{user.team.name}</span>}
+          {user.group && <span className="">{user.group.name}</span>}
           <span className="mx-2 font-bold">{user.username}</span>
           {user.position && <span className="">{user.position.name}</span>}
         </p>

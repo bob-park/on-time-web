@@ -62,7 +62,7 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
       return;
     }
 
-    if (lastMessage.user.id !== currentUser?.uniqueId && lastMessage.type === 'MESSAGE') {
+    if (lastMessage.user.id !== currentUser?.id && lastMessage.type === 'MESSAGE') {
       push(`${lastMessage.user.username}: ${lastMessage.message}`, 'message');
     }
   }, [messages, show, lastMessageId]);
@@ -79,7 +79,7 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
         sendMessage({
           userUniqueId: admin.id,
           body: {
-            displayMessage: `${currentUser.team?.name || ''} ${currentUser.username} ${currentUser.position?.name || ''} 이(가) 불편한 메세지를 보냈습니다.`,
+            displayMessage: `${currentUser.group?.name || ''} ${currentUser.username} ${currentUser.position?.name || ''} 이(가) 불편한 메세지를 보냈습니다.`,
             fields: [
               {
                 field: '내용',
@@ -104,7 +104,7 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
       return;
     }
 
-    publish({ type: 'MESSAGE', message, userUniqueId: currentUser.uniqueId });
+    publish({ type: 'MESSAGE', message, userUniqueId: currentUser.id });
 
     setSendNotiMessages((prev) => {
       const newMessages = prev.slice();
@@ -184,7 +184,7 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
             messages={messages.map((message) => ({
               id: message.id,
               type: message.type,
-              me: message.user.id === currentUser?.uniqueId,
+              me: message.user.id === currentUser?.id,
               avatar: `/api/users/${message.user?.id}/avatar`,
               userUniqueId: message.user.id,
               message: message.message,
@@ -213,5 +213,5 @@ function mergePageUsers(pages: User[][]) {
 }
 
 function parseDisplayName(user: User) {
-  return `${user.team?.name || ''} ${user.username || ''} ${user.position?.name || ''}`;
+  return `${user.group?.name || ''} ${user.username || ''} ${user.position?.name || ''}`;
 }

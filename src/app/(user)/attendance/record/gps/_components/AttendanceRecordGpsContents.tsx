@@ -40,7 +40,7 @@ export default function AttendanceRecordGpsContents() {
     reloadRecord();
   });
   const { attendanceRecords, reloadRecord } = useGetAttendanceRecord({
-    userUniqueId: currentUser?.uniqueId || '',
+    userUniqueId: currentUser?.id || '',
     startDate: now.format('YYYY-MM-DD'),
     endDate: now.format('YYYY-MM-DD'),
   });

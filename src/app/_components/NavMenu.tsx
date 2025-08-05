@@ -6,7 +6,7 @@ import { HiDocumentPlus } from 'react-icons/hi2';
 import { IoChatbox } from 'react-icons/io5';
 import { LuHistory } from 'react-icons/lu';
 import { MdManageAccounts, MdOutlineApproval } from 'react-icons/md';
-import { PiGpsFixBold, PiUserFocusBold } from 'react-icons/pi';
+import { PiUserFocusBold } from 'react-icons/pi';
 import { RiCalendarScheduleFill, RiDashboardFill } from 'react-icons/ri';
 
 import Link from 'next/link';
