@@ -26,9 +26,9 @@ export default function ChatUserContents() {
       {/* contents */}
       {users.map((user) => (
         <div
-          key={`user-item-${user.uniqueId}`}
+          key={`user-item-${user.id}`}
           className="hover:bg-base-200 flex h-12 flex-row items-center justify-center gap-4 rounded-2xl text-center text-base transition-all duration-150 hover:cursor-pointer"
-          onClick={() => router.push(`/chat/users/${user.uniqueId}`)}
+          onClick={() => router.push(`/chat/users/${user.id}`)}
         >
           <div className="w-40 flex-none">{user.team?.name}</div>
           <div className="w-32 flex-none">{user.position?.name}</div>

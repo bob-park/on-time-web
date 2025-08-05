@@ -62,7 +62,7 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
       return;
     }
 
-    if (lastMessage.user.uniqueId !== currentUser?.uniqueId && lastMessage.type === 'MESSAGE') {
+    if (lastMessage.user.id !== currentUser?.uniqueId && lastMessage.type === 'MESSAGE') {
       push(`${lastMessage.user.username}: ${lastMessage.message}`, 'message');
     }
   }, [messages, show, lastMessageId]);
@@ -77,7 +77,7 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
 
       for (const admin of admins) {
         sendMessage({
-          userUniqueId: admin.uniqueId,
+          userUniqueId: admin.id,
           body: {
             displayMessage: `${currentUser.team?.name || ''} ${currentUser.username} ${currentUser.position?.name || ''} 이(가) 불편한 메세지를 보냈습니다.`,
             fields: [
@@ -184,9 +184,9 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
             messages={messages.map((message) => ({
               id: message.id,
               type: message.type,
-              me: message.user.uniqueId === currentUser?.uniqueId,
-              avatar: `/api/users/${message.user?.uniqueId}/avatar`,
-              userUniqueId: message.user.uniqueId,
+              me: message.user.id === currentUser?.uniqueId,
+              avatar: `/api/users/${message.user?.id}/avatar`,
+              userUniqueId: message.user.id,
               message: message.message,
               name: message.user.username,
               displayName: parseDisplayName(message.user),

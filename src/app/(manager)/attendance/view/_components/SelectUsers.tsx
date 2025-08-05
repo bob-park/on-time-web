@@ -77,7 +77,7 @@ export default function SelectUsers() {
       return;
     }
 
-    const user = users.find((user: User) => user.uniqueId === uniqueId);
+    const user = users.find((user: User) => user.id === uniqueId);
 
     user && onChangeSelectUser(user);
   };
@@ -95,10 +95,10 @@ export default function SelectUsers() {
         {/* users */}
         {users.map((user: User) => (
           <DropdownItem
-            key={`dropdown-item-user-${user.uniqueId}`}
-            value={user.uniqueId}
+            key={`dropdown-item-user-${user.id}`}
+            value={user.id}
             text={<DisplayUsername user={user} />}
-            active={user.uniqueId === selectedUser?.uniqueId}
+            active={user.id === selectedUser?.id}
           />
         ))}
       </Dropdown>

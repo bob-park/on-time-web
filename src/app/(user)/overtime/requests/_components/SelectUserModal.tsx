@@ -51,7 +51,7 @@ export default function SelectUserModal({ show, onClose, onSelect }: SelectedUse
   };
 
   const handleSelectUser = () => {
-    const selectedUser = users.find((user) => user.uniqueId === selectedUserUniqueId);
+    const selectedUser = users.find((user) => user.id === selectedUserUniqueId);
 
     if (!selectedUser) {
       return;
@@ -85,13 +85,13 @@ export default function SelectUserModal({ show, onClose, onSelect }: SelectedUse
             <tbody className="">
               {users.map((user) => (
                 <tr
-                  key={`user-item-${user.uniqueId}`}
+                  key={`user-item-${user.id}`}
                   className={cx('hover:bg-base-200 hover:cursor-pointer', {
-                    'bg-base-200': user.uniqueId === selectedUserUniqueId,
+                    'bg-base-200': user.id === selectedUserUniqueId,
                   })}
-                  onClick={() => setSelectedUserUniqueId(user.uniqueId)}
+                  onClick={() => setSelectedUserUniqueId(user.id)}
                 >
-                  <td className="text-center">{user.team?.name}</td>
+                  <td className="text-center">{user.group?.name}</td>
                   <td className="text-center">{user.position?.name}</td>
                   <td className="text-center">{user.username}</td>
                 </tr>

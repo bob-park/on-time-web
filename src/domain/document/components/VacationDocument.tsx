@@ -18,7 +18,7 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
     {
       id: document.id,
       documentType: 'VACATION',
-      userUniqueId: document.user.uniqueId,
+      userUniqueId: document.user.id,
       contents: '담당',
       createdDate: new Date(),
     },
@@ -66,7 +66,7 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
           <span>:</span>
         </div>
         <div className="">
-          <span className="ml-16 text-2xl tracking-widest">{document.user.team.name}</span>
+          <span className="ml-16 text-2xl tracking-widest">{document.user.group.name}</span>
         </div>
       </div>
 
@@ -168,7 +168,7 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
           <span className="text-2xl font-bold tracking-widest">{document.user.username}</span>
           <span className="ml-16">(인)</span>
           <div className="absolute top-0 -right-5">
-            <UserSignature userUniqueId={document.user.uniqueId} />
+            <UserSignature userUniqueId={document.user.id} />
           </div>
         </div>
       </div>

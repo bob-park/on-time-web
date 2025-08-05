@@ -89,7 +89,7 @@ export default function OvertimeRequestContents() {
   };
 
   const handleSelectUser = (user: User) => {
-    setUserUniqueId(user.uniqueId);
+    setUserUniqueId(user.id);
     setUsername(user.username);
   };
 

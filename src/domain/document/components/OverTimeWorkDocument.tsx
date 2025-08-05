@@ -21,7 +21,7 @@ export default function OverTimeWorkDocument({ id, document }: OverTimeWorkDocum
     {
       id: document.id,
       documentType: 'VACATION',
-      userUniqueId: document.user.uniqueId,
+      userUniqueId: document.user.id,
       contents: '담당',
       createdDate: new Date(),
     },

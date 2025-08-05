@@ -25,10 +25,10 @@ export default function ChatUserContents({ wsHost, user }: ChatUserContentsProps
   const { publish } = useWebSocket({
     host: wsHost,
     auth: {
-      userUniqueId: currentUser?.uniqueId || '',
+      userUniqueId: currentUser?.id || '',
     },
-    subscribe: `/sub/users/${user.uniqueId}/chat`,
-    publish: `/pub/users/${user.uniqueId}/chat`,
+    subscribe: `/sub/users/${user.id}/chat`,
+    publish: `/pub/users/${user.id}/chat`,
     onConnect: () => {},
     onClose: () => {},
     onSubscribe: (data) => {
@@ -46,7 +46,7 @@ export default function ChatUserContents({ wsHost, user }: ChatUserContentsProps
 
   // handle
   const handleSendMessage = (message: string) => {
-    currentUser && publish({ type: 'MESSAGE', message, userUniqueId: currentUser.uniqueId });
+    currentUser && publish({ type: 'MESSAGE', message, userUniqueId: currentUser.id });
   };
 
   return (
@@ -62,12 +62,12 @@ export default function ChatUserContents({ wsHost, user }: ChatUserContentsProps
             messages={messages.map((message) => ({
               id: message.id,
               type: message.type,
-              me: message.user?.uniqueId === currentUser?.uniqueId,
-              avatar: `/api/users/${message.user?.uniqueId}/avatar`,
-              userUniqueId: message.user.uniqueId,
+              me: message.user?.id === currentUser?.id,
+              avatar: `/api/users/${message.user?.id}/avatar`,
+              userUniqueId: message.user.id,
               message: message.message,
               name: message.user.username,
-              displayName: `${message.user.team?.name || ''} ${message.user.username || ''} ${message.user.position?.name || ''}`,
+              displayName: `${message.user.group?.name || ''} ${message.user.username || ''} ${message.user.position?.name || ''}`,
               createdDate: message.createdDate,
             }))}
             onSend={handleSendMessage}

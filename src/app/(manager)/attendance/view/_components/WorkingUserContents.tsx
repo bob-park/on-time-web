@@ -211,7 +211,7 @@ export default function WorkingUserContents() {
 
   // query
   const { attendanceRecords } = useGetAttendanceRecord({
-    userUniqueId: selectedUser?.uniqueId,
+    userUniqueId: selectedUser?.id,
     startDate: dayjs(selectDate.startDate).format('YYYY-MM-DD'),
     endDate: dayjs(selectDate.endDate).format('YYYY-MM-DD'),
   });

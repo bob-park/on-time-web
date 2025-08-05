@@ -38,7 +38,7 @@ export default function UpdateUserSignatureContents() {
                 {currentUser && (
                   <Image
                     className="aspect-auto"
-                    src={`/api/users/${currentUser.uniqueId}/signature`}
+                    src={`/api/users/${currentUser.id}/signature`}
                     alt="user signature"
                     fill
                   />

@@ -82,9 +82,7 @@ function ChatMessages({ messages }: { messages: ChatMessageProps[] }) {
           {message.type === 'ENTER' && (
             <div className="flex flex-row items-center justify-center">
               <div className="badge badge-ghost">
-                {message.userUniqueId === currentUser?.uniqueId
-                  ? '고객지원에 연결되었습니다.'
-                  : '담당자와 연결되었습니다.'}
+                {message.userUniqueId === currentUser?.id ? '고객지원에 연결되었습니다.' : '담당자와 연결되었습니다.'}
               </div>
             </div>
           )}
@@ -92,7 +90,7 @@ function ChatMessages({ messages }: { messages: ChatMessageProps[] }) {
           {message.type === 'LEAVE' && (
             <div className="flex flex-row items-center justify-center">
               <div className="badge badge-ghost">
-                {message.userUniqueId === currentUser?.uniqueId
+                {message.userUniqueId === currentUser?.id
                   ? '고객지원에 연결 해제되었습니다.'
                   : '담당자가 나가부렀습니다.'}
               </div>

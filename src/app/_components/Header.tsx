@@ -63,8 +63,8 @@ export default function Header() {
         {/* team + position */}
         <div className="hidden text-lg select-none md:block">
           <span className="mr-3 text-gray-600">
-            <span className="font-semibold">{currentUser?.team.name}</span>
-            {currentUser?.team && currentUser?.team.isLeader && <span>(팀장)</span>}
+            <span className="font-semibold">{currentUser?.group.name}</span>
+            {currentUser?.group && currentUser?.group.isLeader && <span>(팀장)</span>}
           </span>
           <span className="font-bold">{currentUser?.username}</span>
           {currentUser?.position && (
@@ -72,10 +72,10 @@ export default function Header() {
               <span> {currentUser?.position.name} </span>
             </span>
           )}
-          {currentUser?.position && currentUser?.team.teamUserDescription && <span> / </span>}
-          {currentUser?.team.teamUserDescription && (
+          {currentUser?.position && currentUser?.group.teamUserDescription && <span> / </span>}
+          {currentUser?.group.teamUserDescription && (
             <span>
-              <span>{currentUser?.team.teamUserDescription}</span>
+              <span>{currentUser?.group.teamUserDescription}</span>
             </span>
           )}
         </div>
@@ -84,8 +84,8 @@ export default function Header() {
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="m-1">
             <UserAvatar
-              key={currentUser?.uniqueId}
-              avatar={currentUser && `/api/users/${currentUser.uniqueId}/avatar`}
+              key={currentUser?.id}
+              avatar={currentUser && `/api/users/${currentUser.id}/avatar`}
               alt={currentUser?.username || ''}
             />
           </div>

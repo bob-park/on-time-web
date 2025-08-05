@@ -44,12 +44,10 @@ export default function DayOffManageContents() {
           .sort((o1, o2) => (dayjs(o1.employment?.effectiveDate).isAfter(o2.employment?.effectiveDate) ? 1 : -1))
           .map((user, index) => (
             <DayOffViewContents
-              key={`dayoff-manage-contents-${user.uniqueId}`}
+              key={`dayoff-manage-contents-${user.id}`}
               order={index + 1}
               user={user}
-              usedVacations={
-                usersUsedVacations.find((item) => item.userUniqueId === user.uniqueId)?.usedVacations || []
-              }
+              usedVacations={usersUsedVacations.find((item) => item.userUniqueId === user.id)?.usedVacations || []}
             />
           ))}
       </div>

@@ -70,10 +70,10 @@ export default function NavMenu() {
           근무 일정
         </MenuItem>
 
-        <MenuItem href="/attendance/record/gps" active={isActive(segments, ['attendance', 'record', 'gps'])}>
-          <PiGpsFixBold className="inline-block h-6 w-6" />
-          근태 처리 (GPS)
-        </MenuItem>
+        {/*<MenuItem href="/attendance/record/gps" active={isActive(segments, ['attendance', 'record', 'gps'])}>*/}
+        {/*  <PiGpsFixBold className="inline-block h-6 w-6" />*/}
+        {/*  근태 처리 (GPS)*/}
+        {/*</MenuItem>*/}
 
         <div className="mt-5">
           <span className="text-sm font-normal text-gray-400">전자 결재</span>

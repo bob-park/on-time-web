@@ -29,7 +29,7 @@ export default function PersonalInfoContents() {
         >
           <UserAvatar
             alt={currentUser?.username || ''}
-            avatar={currentUser && `/api/users/${currentUser.uniqueId}/avatar`}
+            avatar={currentUser && `/api/users/${currentUser.id}/avatar`}
             size="lg"
             isOnline={false}
           />
@@ -49,10 +49,10 @@ export default function PersonalInfoContents() {
               <legend className="fieldset-legend text-base">개인 정보</legend>
 
               <label className="fieldset-label">소속 팀</label>
-              <p className="input w-full">{currentUser?.team.name}</p>
+              <p className="input w-full">{currentUser?.group.name}</p>
 
               <label className="fieldset-label">직책</label>
-              <p className="input w-full">{currentUser?.team.teamUserDescription}</p>
+              <p className="input w-full">{currentUser?.group.teamUserDescription}</p>
 
               <label className="fieldset-label">직급</label>
               <p className="input w-full">{currentUser?.position.name}</p>

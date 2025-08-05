@@ -7,7 +7,7 @@ interface Role {
 }
 
 interface User {
-  uniqueId: string;
+  id: string;
   userId: string;
   username: string;
   email: string;
@@ -15,7 +15,7 @@ interface User {
   cellPhone?: string;
   role: Role;
   position: Position;
-  team: Team;
+  group: Team;
   leaveEntry: UserLeaveEntry;
   createdDate: Date;
   createdBy: string;
@@ -61,8 +61,7 @@ interface UserEmployment {
 
 type SearchUserLeaveEntryRequest = {
   year: number;
-}
-
+};
 
 interface UserUsedVacation {
   userUniqueId: string;
