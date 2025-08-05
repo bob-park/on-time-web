@@ -47,7 +47,7 @@ export default function useWebSocket({
               onSubscribe && onSubscribe(message.body);
             },
             {
-              userUniqueId: auth?.userUniqueId || '',
+              userId: auth?.userUniqueId || '',
             },
           );
         }

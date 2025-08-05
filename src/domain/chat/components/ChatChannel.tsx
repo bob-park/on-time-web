@@ -36,7 +36,7 @@ export default function ChatChannel({ loading = false, messages, onSend }: ChatC
   const handleSend = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    message && onSend && onSend(message);
+    message && onSend?.(message);
     setMessage('');
   };
 
