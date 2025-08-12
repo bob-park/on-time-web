@@ -55,7 +55,7 @@ export default function OvertimeWorkDocumentContents({ id }: OvertimeWorkDocumen
       const pdf = new jsPDF('p', 'mm', 'a4');
       pdf.addImage(canvas, 'JPEG', 0, 0, 210, 297);
       pdf.save(
-        `휴가계_${overTimeWorkDocument.user.username}_${dayjs(overTimeWorkDocument.createdDate).format('YYYYMMDD')}.pdf`,
+        `휴일근무보고서_${overTimeWorkDocument.user.username}_${dayjs(overTimeWorkDocument.createdDate).format('YYYYMMDD')}.pdf`,
       );
 
       await delay(1_000);
