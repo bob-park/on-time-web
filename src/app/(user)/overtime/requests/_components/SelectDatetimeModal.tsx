@@ -109,7 +109,6 @@ export default function SelectDatetimeModal({ show, onClose, onSelect }: SelectD
                 <div className="">
                   <DayPicker
                     className="react-day-picker"
-                    animate
                     locale={ko}
                     mode="single"
                     captionLayout="dropdown-years"
@@ -149,7 +148,6 @@ export default function SelectDatetimeModal({ show, onClose, onSelect }: SelectD
                 <div className="">
                   <DayPicker
                     className="react-day-picker"
-                    animate
                     locale={ko}
                     mode="single"
                     captionLayout="dropdown-years"
