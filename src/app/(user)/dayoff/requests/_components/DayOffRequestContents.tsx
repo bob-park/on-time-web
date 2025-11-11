@@ -186,7 +186,6 @@ export default function DayOffRequestContent() {
                   animate
                   locale={ko}
                   mode="range"
-                  captionLayout="dropdown-years"
                   selected={selectedDate}
                   onSelect={(value) => value && setSelectedDate(value)}
                 />
