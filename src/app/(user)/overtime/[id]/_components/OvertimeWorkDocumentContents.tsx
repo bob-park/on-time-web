@@ -99,17 +99,6 @@ export default function OvertimeWorkDocumentContents({ id }: OvertimeWorkDocumen
                 <div className="flex-1">
                   <button
                     type="button"
-                    className="btn btn-secondary w-full"
-                    disabled={['CANCELLED', 'REJECTED'].includes(overTimeWorkDocument?.status || '')}
-                    onClick={() => setShowCancel(true)}
-                  >
-                    <GiCancel className="size-6" />
-                    취소
-                  </button>
-                </div>
-                <div className="flex-1">
-                  <button
-                    type="button"
                     className="btn btn-soft btn-warning w-full"
                     disabled={overTimeWorkDocument?.status !== 'WAITING'}
                     onClick={() => setShowPress(true)}
