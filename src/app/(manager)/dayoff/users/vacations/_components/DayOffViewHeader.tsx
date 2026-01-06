@@ -6,7 +6,14 @@ export default function DayOffViewHeader() {
         <div className="w-20 flex-none text-center">성명</div>
       </div>
       <div className="w-28 flex-none text-center">입사일</div>
-      <div className="w-24 flex-none text-center">발생연차</div>
+      <div className="w-24 flex-none text-center">
+        <span className="text-sm">연차</span>
+        <span className="text-xs">
+          <span>(</span>
+          <span className="text-blue-600">보상휴가</span>
+          <span>)</span>
+        </span>
+      </div>
       <div className="w-24 flex-none text-center">전년차감</div>
       <div className="w-24 flex-none text-center">사용가능일수</div>
       {/* months */}
@@ -17,7 +24,7 @@ export default function DayOffViewHeader() {
       ))}
       {/* total */}
       <div className="w-24 flex-none text-center">합계</div>
-      <div className="w-24 flex-none text-center">잔여일수</div>
+      <div className="w-24 flex-none text-center">잔여</div>
     </div>
   );
 }

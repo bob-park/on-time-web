@@ -19,20 +19,76 @@ export default function DayOffViewContents({ order, user, usedVacations }: DayOf
       <div className="w-28 flex-none text-center">
         {user.employment && dayjs(user.employment.effectiveDate).format('YYYY-MM-DD')}
       </div>
-      <div className="w-24 flex-none text-center">{user.leaveEntry.totalLeaveDays}</div>
+      <div className="w-24 flex-none text-center">
+        {/* 연차 */}
+        <span className="">{user.leaveEntry.totalLeaveDays}</span>
+
+        {/* 보상휴가 */}
+        <span className="text-sm">
+          <span>(</span>
+          <span className="text-blue-600">{user.leaveEntry.totalCompLeaveDays}</span>
+          <span>)</span>
+        </span>
+      </div>
       <div className="w-24 flex-none text-center">0</div>
-      <div className="w-24 flex-none text-center">{user.leaveEntry.totalLeaveDays}</div>
+      <div className="w-24 flex-none text-center">
+        {/* 연차 */}
+        <span className="">{user.leaveEntry.totalLeaveDays}</span>
+
+        {/* 보상휴가 */}
+        <span className="text-sm">
+          <span>(</span>
+          <span className="text-blue-600">{user.leaveEntry.totalCompLeaveDays}</span>
+          <span>)</span>
+        </span>
+      </div>
 
       {/* months */}
       {new Array(12).fill('0').map((_, index) => (
         <div key={`month-item-${index}`} className="w-16 flex-none text-center">
-          {usedVacations.find((item) => item.month === index + 1)?.used || 0}
+          {usedVacations
+            .filter((item) => item.month === index + 1)
+            .map((item) => (
+              <div key={`user-${index}-vacation-contents`}>
+                {/* 연차 */}
+                <span className="">{item.used}</span>
+
+                {/* 보상휴가 */}
+                <span className="text-sm">
+                  <span>(</span>
+                  <span className="text-blue-600">{item.usedComp}</span>
+                  <span>)</span>
+                </span>
+              </div>
+            ))}
         </div>
       ))}
 
       {/* total */}
-      <div className="w-24 flex-none text-center">{user.leaveEntry.usedLeaveDays}</div>
-      <div className="w-24 flex-none text-center">{user.leaveEntry.totalLeaveDays - user.leaveEntry.usedLeaveDays}</div>
+      <div className="w-24 flex-none text-center">
+        {/* 연차 */}
+        <span className="">{user.leaveEntry.usedLeaveDays}</span>
+
+        {/* 보상휴가 */}
+        <span className="text-sm">
+          <span>(</span>
+          <span className="text-blue-600">{user.leaveEntry.usedCompLeaveDays}</span>
+          <span>)</span>
+        </span>
+      </div>
+      <div className="w-24 flex-none text-center">
+        {/* 연차 */}
+        <span className="">{user.leaveEntry.totalLeaveDays - user.leaveEntry.usedLeaveDays}</span>
+
+        {/* 보상휴가 */}
+        <span className="text-sm">
+          <span>(</span>
+          <span className="text-blue-600">
+            {user.leaveEntry.totalCompLeaveDays - user.leaveEntry.usedCompLeaveDays}
+          </span>
+          <span>)</span>
+        </span>
+      </div>
     </div>
   );
 }

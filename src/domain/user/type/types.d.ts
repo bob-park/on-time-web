@@ -72,4 +72,5 @@ interface UserUsedVacation {
 interface UsedVacation {
   month: number;
   used: number;
+  usedComp: number;
 }
