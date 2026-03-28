@@ -1,27 +1,32 @@
 import WorkingTimeProvider from '@/domain/attendance/components/WorkingTimeProvider';
 import WorkingTimeView from '@/domain/attendance/components/WorkingTimeView';
 
+import WeeklySummaryCards from './_componets/WeeklySummaryCards';
 import WorkingRecordContents from './_componets/WorkingRecordContents';
 
 export default function DashboardPage() {
   return (
-    <div className="flex size-full flex-col items-center justify-start gap-3">
-      {/* title */}
-      <div className="w-full">
-        <h2 className="text-2xl font-bold">근로 시간</h2>
-      </div>
-
-      {/* contents */}
-      <div className="mt-10 w-full">
-        <WorkingTimeProvider>
-          <div className="flex w-full max-w-[860px] flex-col items-center justify-center gap-1">
-            <WorkingTimeView />
-            <div className="w-full">
-              <WorkingRecordContents />
-            </div>
+    <div className="flex size-full flex-col items-start justify-start gap-2">
+      <WorkingTimeProvider>
+        {/* breadcrumb + title + date nav */}
+        <div className="flex w-full items-end justify-between">
+          <div className="w-full">
+            <p className="text-xs font-medium tracking-widest text-gray-400 uppercase">근무 현황 &rsaquo; 근로 시간</p>
+            <h2 className="mt-1 text-2xl font-bold text-gray-900">근로 시간</h2>
           </div>
-        </WorkingTimeProvider>
-      </div>
+          <WorkingTimeView />
+        </div>
+
+        {/* summary cards */}
+        <div className="mt-4 w-full">
+          <WeeklySummaryCards />
+        </div>
+
+        {/* attendance table */}
+        <div className="w-full">
+          <WorkingRecordContents />
+        </div>
+      </WorkingTimeProvider>
     </div>
   );
 }

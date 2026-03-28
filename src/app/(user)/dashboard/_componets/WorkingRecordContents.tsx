@@ -2,50 +2,41 @@
 
 import { useContext } from 'react';
 
-import { FaCheckCircle } from 'react-icons/fa';
-import { GiNightSleep } from 'react-icons/gi';
-import { IoIosTime } from 'react-icons/io';
-import { RiErrorWarningFill } from 'react-icons/ri';
-
 import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
 import { useGetAttendanceRecord } from '@/domain/attendance/query/attendanceRecord';
 import { useGetCurrentUser } from '@/domain/user/query/user';
 
+import { getDuration } from '@/utils/parse';
 import { isIncludeTime } from '@/utils/dataUtils';
-import { getDaysOfWeek, getDuration } from '@/utils/parse';
 
 import cx from 'classnames';
 import dayjs from 'dayjs';
 import { padStart } from 'lodash';
 
 const ONE_HOUR = 3_600;
-
+const DAILY_TOTAL_HOURS = 8;
 const DEFAULT_WEEKENDS = [0, 6];
 
-function parseTimeFormat(seconds: number): string {
+function parseHours(seconds: number): string {
+  const hours = Math.floor(seconds / ONE_HOUR);
   const min = Math.floor((seconds / 60) % 60);
-  const hours = Math.floor(seconds / 3_600);
-
-  return `${hours}시간 ${padStart(min + '', 2, '0')}분`;
+  return `${hours}h ${padStart(min + '', 2, '0')}m`;
 }
 
-function WorkingRecordHeaders() {
-  return (
-    <div className="flex h-14 w-full flex-row items-center justify-center gap-1 border-y-2 border-y-gray-300 text-center font-semibold">
-      <span className="w-8 flex-none"></span>
-      <span className="w-32 flex-none">근무일</span>
-      <span className="w-12 flex-none">구분</span>
-      <span className="w-28 flex-none">출근 시간</span>
-      <span className="w-28 flex-none">퇴근 예정 시간</span>
-      <span className="w-28 flex-none">퇴근 시간</span>
-      <span className="w-12 flex-none">휴식</span>
-      <span className="w-16 flex-none">연장 근로</span>
-      <span className="w-28 flex-none">근무 시간</span>
-    </div>
-  );
+function getCategory(date: Date, dayOffType?: DayOffType): string {
+  if (dayOffType === 'DAY_OFF') return '연차';
+  if (dayOffType === 'AM_HALF_DAY_OFF' || dayOffType === 'PM_HALF_DAY_OFF') return '반차';
+  if (DEFAULT_WEEKENDS.includes(dayjs(date).day())) return '휴일';
+  return 'Work';
 }
 
-interface WorkingRecordItemsProps {
+function getCategoryStyle(category: string): string {
+  if (category === 'Work') return 'bg-blue-100 text-blue-700';
+  if (category === '연차' || category === '반차') return 'bg-purple-100 text-purple-700';
+  return 'bg-gray-100 text-gray-500';
+}
+
+interface WorkingRecordRowProps {
   date: Date;
   clockInTime?: Date;
   leaveWorkAt?: Date;
@@ -54,133 +45,131 @@ interface WorkingRecordItemsProps {
   dayOffType?: DayOffType;
 }
 
-const WorkingRecordItems = ({
-  date,
-  clockInTime,
-  leaveWorkAt,
-  clockOutTime,
-  status,
-  dayOffType,
-}: WorkingRecordItemsProps) => {
+function WorkingRecordRow({ date, clockInTime, clockOutTime, status, dayOffType }: WorkingRecordRowProps) {
   const now = dayjs().hour(0).minute(0).second(0).millisecond(0);
-  const workDurations = clockInTime && clockOutTime && getDuration(clockInTime, clockOutTime);
+  const isToday = now.isSame(date);
+  const isInProgress = isToday && clockInTime && !clockOutTime;
+
+  const rawDuration = clockInTime && clockOutTime ? getDuration(clockInTime, clockOutTime) : 0;
+  const workDuration = rawDuration
+    ? rawDuration -
+      (rawDuration > ONE_HOUR * 8 ||
+      isIncludeTime(
+        {
+          from: clockInTime || dayjs(date).hour(0).toDate(),
+          to: clockOutTime || dayjs(date).hour(0).toDate(),
+        },
+        dayjs(date).hour(12).toDate(),
+      )
+        ? ONE_HOUR
+        : 0)
+    : 0;
+
+  const durationPercent = Math.min(Math.round((workDuration / (ONE_HOUR * DAILY_TOTAL_HOURS)) * 100), 100);
+  const category = getCategory(date, dayOffType);
 
   return (
-    <div
-      className={cx(
-        'hover:bg-base-200 flex h-14 w-full flex-row items-center justify-center gap-1 rounded-xl px-4 text-center duration-150',
-        {
-          'bg-base-200': now.isSame(date),
-        },
-      )}
+    <tr
+      className={cx('border-b border-gray-100 transition-colors duration-100 hover:bg-gray-50', {
+        'bg-blue-50': isToday,
+      })}
     >
-      <span className="w-8 flex-none">
-        {dayOffType === 'DAY_OFF' && <GiNightSleep className="size-6 text-gray-500" />}
-        {!DEFAULT_WEEKENDS.includes(dayjs(date).day()) &&
-          (!status || status === 'WAITING') &&
-          dayOffType !== 'DAY_OFF' && <IoIosTime className="size-6 text-sky-600" />}
-        {status && <>{status === 'SUCCESS' && <FaCheckCircle className="h-6 w-6 text-green-500" />}</>}
-        {status && <>{status === 'WARNING' && <RiErrorWarningFill className="h-6 w-6 text-red-500" />}</>}
-      </span>
-      <span
-        className={cx('w-32 flex-none font-semibold', {
-          'text-blue-600': dayjs(date).day() === 6,
-          'text-red-600': dayjs(date).day() === 0,
-        })}
-      >
-        {`${dayjs(date).format('YYYY.MM.DD')} (${getDaysOfWeek(dayjs(date).day())})`}
-      </span>
-      <span className="w-12 flex-none font-semibold">
-        {dayOffType === 'DAY_OFF' ? '연차' : [0, 6].includes(dayjs(date).day()) ? '휴일' : '업무'}
-      </span>
-      <span className="w-28 flex-none">{clockInTime && dayjs(clockInTime).format('HH:mm')}</span>
-      <span className="w-28 flex-none">{leaveWorkAt && dayjs(leaveWorkAt).format('HH:mm')}</span>
-      <span className="w-28 flex-none">{clockOutTime && dayjs(clockOutTime).format('HH:mm')}</span>
-      <span className="w-12 flex-none">
-        {(workDurations && workDurations > ONE_HOUR * 8) ||
-        isIncludeTime(
-          { from: clockInTime || dayjs(date).hour(0).toDate(), to: clockOutTime || dayjs(date).hour(0).toDate() },
-          dayjs(date).hour(12).toDate(),
-        )
-          ? 1
-          : 0}
-        시간
-      </span>
-      <span className="w-16 flex-none">0분</span>
-      <span className="w-28 flex-none">
-        {workDurations &&
-          parseTimeFormat(
-            workDurations -
-              (workDurations > ONE_HOUR * 8 ||
-              isIncludeTime(
-                {
-                  from: clockInTime || dayjs(date).hour(0).toDate(),
-                  to: clockOutTime || dayjs(date).hour(0).toDate(),
-                },
-                dayjs(date).hour(12).toDate(),
-              )
-                ? ONE_HOUR
-                : 0),
-          )}
-      </span>
-    </div>
+      {/* DATE/DAY */}
+      <td className="py-3 pl-4 pr-3">
+        <span
+          className={cx('text-sm font-medium', {
+            'text-blue-600': dayjs(date).day() === 6,
+            'text-red-500': dayjs(date).day() === 0,
+            'text-gray-800': ![0, 6].includes(dayjs(date).day()),
+          })}
+        >
+          {dayjs(date).format('YYYY.MM.DD')}
+        </span>
+        <span className="ml-1.5 text-xs text-gray-400">{dayjs(date).format('dddd')}</span>
+      </td>
+
+      {/* CATEGORY */}
+      <td className="px-3 py-3">
+        <span className={cx('rounded-full px-2.5 py-0.5 text-xs font-semibold', getCategoryStyle(category))}>
+          {category}
+        </span>
+      </td>
+
+      {/* CLOCK-IN */}
+      <td className="px-3 py-3 text-sm text-gray-700">
+        {clockInTime ? dayjs(clockInTime).format('HH:mm') : <span className="text-gray-300">—</span>}
+      </td>
+
+      {/* CLOCK-OUT */}
+      <td className="px-3 py-3 text-sm text-gray-700">
+        {isInProgress ? (
+          <span className="text-xs font-medium text-blue-500">근무 중...</span>
+        ) : clockOutTime ? (
+          dayjs(clockOutTime).format('HH:mm')
+        ) : (
+          <span className="text-gray-300">—</span>
+        )}
+      </td>
+
+      {/* DURATION */}
+      <td className="px-3 py-3">
+        <div className="flex items-center gap-2">
+          <div className="h-1.5 w-20 overflow-hidden rounded-full bg-gray-200">
+            <div className="h-full rounded-full bg-blue-400" style={{ width: `${durationPercent}%` }} />
+          </div>
+          <span className="text-sm text-gray-700">
+            {workDuration > 0 ? parseHours(workDuration) : <span className="text-gray-300">—</span>}
+          </span>
+        </div>
+      </td>
+
+      {/* STATUS */}
+      <td className="py-3 pl-3 pr-4">
+        {DEFAULT_WEEKENDS.includes(dayjs(date).day()) && !status ? null : !status ? (
+          <span className="inline-block h-3 w-3 rounded-full bg-gray-200" />
+        ) : status === 'SUCCESS' ? (
+          <span className="inline-block h-3 w-3 rounded-full bg-green-500" />
+        ) : status === 'WARNING' ? (
+          <span className="inline-block h-3 w-3 rounded-full bg-red-500" />
+        ) : (
+          <span className="inline-block h-3 w-3 rounded-full bg-gray-300" />
+        )}
+      </td>
+    </tr>
   );
-};
+}
 
-function getDates(selectDate: { startDate: Date; endDate: Date }, attendanceRecords: AttendanceRecord[]) {
-  const result = new Array<WorkingRecordItemsProps>();
+function getDates(
+  selectDate: { startDate: Date; endDate: Date },
+  attendanceRecords: AttendanceRecord[],
+): WorkingRecordRowProps[] {
+  const result: WorkingRecordRowProps[] = [];
+  let current = dayjs(selectDate.startDate).hour(0).minute(0).second(0).millisecond(0).toDate();
 
-  let currentDate = dayjs(selectDate.startDate).hour(0).minute(0).second(0).millisecond(0).toDate();
-
-  while (currentDate <= selectDate.endDate) {
-    const attendanceRecord = attendanceRecords.find(
-      (item) => dayjs(item.workingDate).format('YYYY-MM-DD') === dayjs(currentDate).format('YYYY-MM-DD'),
+  while (current <= selectDate.endDate) {
+    const record = attendanceRecords.find(
+      (item) => dayjs(item.workingDate).format('YYYY-MM-DD') === dayjs(current).format('YYYY-MM-DD'),
     );
-
-    if (!attendanceRecord) {
-      result.push({ date: currentDate });
-    } else {
-      result.push({
-        date: currentDate,
-        clockInTime: attendanceRecord.clockInTime,
-        clockOutTime: attendanceRecord.clockOutTime,
-        leaveWorkAt: attendanceRecord.leaveWorkAt,
-        status: attendanceRecord.status,
-        dayOffType: attendanceRecord.dayOffType,
-      });
-    }
-
-    currentDate = dayjs(currentDate).add(1, 'day').toDate();
+    result.push(
+      record
+        ? {
+            date: current,
+            clockInTime: record.clockInTime,
+            clockOutTime: record.clockOutTime,
+            leaveWorkAt: record.leaveWorkAt,
+            status: record.status,
+            dayOffType: record.dayOffType,
+          }
+        : { date: current },
+    );
+    current = dayjs(current).add(1, 'day').toDate();
   }
 
   return result;
 }
 
-interface WorkTimeBarCharProps {
-  totalHours: number;
-  currentHours: number;
-  color?: string;
-  textBlur?: boolean;
-}
-
-const WorkTimeBarChart = ({ totalHours, currentHours, color = 'gray', textBlur = true }: WorkTimeBarCharProps) => {
-  return (
-    <div className="flex flex-row items-center justify-start gap-2">
-      <div
-        className={cx('h-8 flex-none rounded-2xl')}
-        style={{ backgroundColor: color, width: `${(currentHours / totalHours) * 100}%` }}
-      ></div>
-
-      <div className={cx('flex-none font-bold', textBlur && 'text-gray-500')}>{currentHours}시간</div>
-    </div>
-  );
-};
-
 export default function WorkingRecordContents() {
-  // context
-  const { selectDate } = useContext(WorkingTimeContext);
-
-  // query
+  const { selectDate, updateSelectDate } = useContext(WorkingTimeContext);
   const { currentUser } = useGetCurrentUser();
   const { attendanceRecords } = useGetAttendanceRecord({
     userUniqueId: currentUser?.id || '',
@@ -190,69 +179,86 @@ export default function WorkingRecordContents() {
 
   const dataList = getDates(selectDate, attendanceRecords);
 
+  const handlePrevWeek = () => {
+    updateSelectDate({
+      startDate: dayjs(selectDate.startDate).add(-7, 'day').toDate(),
+      endDate: dayjs(selectDate.endDate).add(-7, 'day').toDate(),
+    });
+  };
+
+  const handleNextWeek = () => {
+    updateSelectDate({
+      startDate: dayjs(selectDate.startDate).add(7, 'day').toDate(),
+      endDate: dayjs(selectDate.endDate).add(7, 'day').toDate(),
+    });
+  };
+
   return (
-    <div className="mt-5 flex w-full flex-col items-center justify-center gap-1">
-      {/* 근로 시간 */}
-      <div className="my-6 w-full">
-        <div className="flex flex-col items-center justify-start">
-          <div className="flex h-14 w-full flex-row items-center justify-start gap-2">
-            <div className="w-24 flex-none text-right font-semibold">누적 근로 시간</div>
-            <div className="w-1/2 border-l-[1px] pl-2">
-              <WorkTimeBarChart
-                color="dodgerblue"
-                textBlur={false}
-                totalHours={40}
-                currentHours={Math.floor(
-                  attendanceRecords
-                    .map((item) => {
-                      const duration =
-                        (item.clockInTime && item.clockOutTime && getDuration(item.clockInTime, item.clockOutTime)) ||
-                        0;
-
-                      return (
-                        duration -
-                        (duration > ONE_HOUR * 8 ||
-                        isIncludeTime(
-                          {
-                            from: item.clockInTime || dayjs(item.workingDate).hour(0).toDate(),
-                            to: item.clockOutTime || dayjs(item.workingDate).hour(0).toDate(),
-                          },
-                          dayjs(item.workingDate).hour(12).toDate(),
-                        )
-                          ? ONE_HOUR
-                          : 0)
-                      );
-                    })
-                    .reduce((sum, value) => sum + value, 0) / 3_600,
-                )}
-              />
-            </div>
-          </div>
-
-          <div className="flex h-14 w-full flex-row items-center justify-start gap-2">
-            <div className="w-24 flex-none text-right font-semibold">예상 근로 시간</div>
-            <div className="w-1/2 border-l-[1px] pl-2">
-              <WorkTimeBarChart totalHours={40} currentHours={40} />
-            </div>
-          </div>
-        </div>
+    <div className="mt-6 w-full rounded-2xl border border-gray-200 bg-white shadow-sm">
+      {/* section header */}
+      <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
+        <h3 className="text-sm font-semibold text-gray-800">주간 근태 상세 내역</h3>
       </div>
 
-      {/* header */}
-      <WorkingRecordHeaders />
+      {/* table */}
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-gray-100 bg-gray-50">
+              <th className="py-3 pl-4 pr-3 text-left text-xs font-semibold text-gray-500">
+                근무일
+              </th>
+              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-500">
+                구분
+              </th>
+              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-500">
+                출근
+              </th>
+              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-500">
+                퇴근
+              </th>
+              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-500">
+                근무 시간
+              </th>
+              <th className="py-3 pl-3 pr-4 text-left text-xs font-semibold text-gray-500">
+                상태
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {dataList.map((item) => (
+              <WorkingRecordRow
+                key={`working-record-${dayjs(item.date).unix()}`}
+                date={item.date}
+                clockInTime={item.clockInTime}
+                leaveWorkAt={item.leaveWorkAt}
+                clockOutTime={item.clockOutTime}
+                status={item.status}
+                dayOffType={item.dayOffType}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-      {/* contents */}
-      {dataList.map((item) => (
-        <WorkingRecordItems
-          key={`working-record-key-${dayjs(item.date).unix()}`}
-          date={item.date}
-          clockInTime={item.clockInTime}
-          leaveWorkAt={item.leaveWorkAt}
-          clockOutTime={item.clockOutTime}
-          status={item.status}
-          dayOffType={item.dayOffType}
-        />
-      ))}
+      {/* footer */}
+      <div className="flex items-center justify-between border-t border-gray-100 px-6 py-3">
+        <span className="text-xs text-gray-500">이번 주 {dataList.length}건</span>
+        <div className="flex gap-2">
+          <button
+            onClick={handlePrevWeek}
+            className="rounded-lg border border-gray-200 px-4 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors duration-150"
+          >
+            저번 주
+          </button>
+          <button
+            onClick={handleNextWeek}
+            className="rounded-lg bg-blue-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-blue-700 transition-colors duration-150"
+          >
+            다음 주
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

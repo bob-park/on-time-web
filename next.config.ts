@@ -3,11 +3,12 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   output: 'standalone',
   reactStrictMode: false,
+  allowedDevOrigins: ['127.0.0.1'],
   experimental: {
     authInterrupts: true,
     staleTimes: {
       static: 0,
-      dynamic: 0
+      dynamic: 0,
     },
   },
   async headers() {

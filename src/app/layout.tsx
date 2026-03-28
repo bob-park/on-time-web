@@ -56,19 +56,22 @@ export default async function RootLayout({
         <RQProvider>
           <HydrationBoundary state={dehydratedState}>
             <ToastProvider limit={5} timeout={5}>
-              {/* header */}
-              <div className="bg-base-100 sticky top-0 left-0 z-50 flex w-full flex-row items-center justify-center px-5">
-                <Header />
-              </div>
-
-              <div className="flex">
-                {/* nav menu*/}
-                <div className="sticky top-[120px] m-7 h-[calc(100vh-160px)] w-72 flex-none">
+              <div className="flex h-screen overflow-hidden">
+                {/* sidebar */}
+                <div className="w-64 flex-none">
                   <NavMenu />
                 </div>
 
-                {/* content */}
-                <div className="mx-3 my-7 size-full p-3">{children}</div>
+                {/* main area */}
+                <div className="flex flex-1 flex-col overflow-hidden">
+                  {/* header */}
+                  <div className="flex-none">
+                    <Header />
+                  </div>
+
+                  {/* content */}
+                  <div className="flex-1 overflow-y-auto p-6">{children}</div>
+                </div>
               </div>
 
               <CustomerSupport wsHost={WS_HOST || '/api/ws'} userUniqueId={user.id} />

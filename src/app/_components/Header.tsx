@@ -3,13 +3,12 @@
 import { useEffect } from 'react';
 
 import { CgProfile } from 'react-icons/cg';
-import { FiMenu } from 'react-icons/fi';
-import { IoLogOutOutline } from 'react-icons/io5';
+import { IoLogOutOutline, IoNotificationsOutline } from 'react-icons/io5';
+import { IoSearchOutline } from 'react-icons/io5';
 
 import Link from 'next/link';
 
 import NotificationDialog from '@/app/_components/NotificationDialog';
-
 import UserAvatar from '@/domain/user/components/UserAvatar';
 import { useSession } from '@/domain/user/query/session';
 import { useGetCurrentUser } from '@/domain/user/query/user';
@@ -29,60 +28,37 @@ export default function Header() {
   }, [currentUser]);
 
   return (
-    <header className="m-2 flex w-full flex-row items-center justify-between gap-3 rounded-2xl border border-gray-300 bg-white p-3 shadow-lg backdrop-blur">
-      {/* content */}
-      <div className="">
-        <div className="flex flex-row items-center justify-between">
-          {/* menu button */}
-          <button className="btn btn-circle btn-ghost">
-            <FiMenu className="h-6 w-6" />
-          </button>
+    <header className="flex w-full flex-row items-center justify-between gap-4 border-b border-gray-200 bg-white px-6 py-3">
+      {/* search */}
+      <div className=""></div>
 
-          {/* logo */}
-          <Link className="btn btn-ghost" href="/">
-            <h2 className="text-2xl font-bold text-sky-600 select-none">OnTime</h2>
-          </Link>
-        </div>
-      </div>
+      {/* right side */}
+      <div className="flex flex-row items-center gap-3">
+        {/* notification */}
+        <button
+          className="btn btn-circle btn-ghost btn-sm relative"
+          onClick={() => {
+            overlay.open(({ isOpen, close }) => <NotificationDialog open={isOpen} onClose={close} />);
+          }}
+        >
+          <IoNotificationsOutline className="h-5 w-5 text-gray-600" />
+        </button>
 
-      <div className="flex flex-row items-center justify-center gap-3 pr-10">
-        <div className="z-10 mr-10 flex w-64 flex-row items-center justify-end gap-3">
-          <div className="">
-            <button
-              className="btn btn-soft btn-info"
-              onClick={() => {
-                overlay.open(({ isOpen, close, unmount }) => <NotificationDialog open={isOpen} onClose={close} />);
-              }}
-            >
-              <div className="badge badge-secondary">new</div>
-              <span className="">앱 출시</span>
-            </button>
-          </div>
-        </div>
-
-        {/* team + position */}
-        <div className="hidden text-lg select-none md:block">
-          <span className="mr-3 text-gray-600">
-            <span className="font-semibold">{currentUser?.group.name}</span>
-            {currentUser?.group && currentUser?.group.isLeader && <span>(팀장)</span>}
-          </span>
-          <span className="font-bold">{currentUser?.username}</span>
-          {currentUser?.position && (
-            <span className="">
-              <span> {currentUser?.position.name} </span>
-            </span>
-          )}
-          {currentUser?.position && currentUser?.group.teamUserDescription && <span> / </span>}
-          {currentUser?.group.teamUserDescription && (
-            <span>
-              <span>{currentUser?.group.teamUserDescription}</span>
-            </span>
-          )}
-        </div>
-
-        {/* avatar */}
+        {/* user info + avatar */}
         <div className="dropdown dropdown-end">
-          <div tabIndex={0} role="button" className="m-1">
+          <div tabIndex={0} role="button" className="flex cursor-pointer flex-row items-center gap-2">
+            <div className="hidden text-right select-none md:block">
+              <p className="text-sm leading-tight font-semibold text-gray-800">
+                {currentUser?.group?.name && (
+                  <span className="mr-2 font-normal text-gray-500">{currentUser.group.name}</span>
+                )}
+                {currentUser?.username}
+                {currentUser?.group?.isLeader && <span className="ml-1 text-xs text-blue-600">(팀장)</span>}
+              </p>
+              <p className="text-xs leading-tight text-gray-500">
+                {currentUser?.position?.name || currentUser?.group?.teamUserDescription}
+              </p>
+            </div>
             <UserAvatar
               key={currentUser?.id}
               avatar={currentUser && `/api/users/${currentUser.id}/avatar`}
