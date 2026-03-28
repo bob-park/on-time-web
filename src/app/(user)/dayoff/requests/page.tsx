@@ -9,7 +9,6 @@ export default function DayOffRequestsPage() {
       {/* breadcrumb + header */}
       <div className="flex items-end justify-between">
         <div>
-          <p className="text-xs font-medium tracking-widest text-gray-400 uppercase">전자 결재 &rsaquo; 휴가 신청</p>
           <h2 className="mt-1 text-2xl font-bold text-gray-900">
             휴가 신청 <span className="text-lg font-normal text-gray-400"></span>
           </h2>

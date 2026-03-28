@@ -73,10 +73,10 @@ export default function NavMenu() {
             대시보드
           </MenuItem>
 
-          <MenuItem href="/schedule" active={isActive(segments, ['schedule'])}>
-            <RiCalendarScheduleFill className="inline-block h-5 w-5 flex-none" />
-            근무 일정
-          </MenuItem>
+          {/*<MenuItem href="/schedule" active={isActive(segments, ['schedule'])}>*/}
+          {/*  <RiCalendarScheduleFill className="inline-block h-5 w-5 flex-none" />*/}
+          {/*  근무 일정*/}
+          {/*</MenuItem>*/}
 
           <div className="mt-4 mb-1 px-3">
             <span className="text-xs font-medium tracking-wider text-slate-500 uppercase">전자 결재</span>
