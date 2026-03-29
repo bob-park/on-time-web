@@ -57,3 +57,4 @@ docker-compose*dev.yml
 
 ### bkit ###
 .bkit
+.gstack/
