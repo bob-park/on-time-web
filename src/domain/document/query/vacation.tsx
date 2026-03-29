@@ -32,5 +32,5 @@ export function useVacationDocuments(req: SearchVacationDocumentRequest) {
     queryFn: () => searchVacationDocuments(req),
   });
 
-  return { vacationDocuments: data?.content || [], isLoading };
+  return { vacationDocuments: data?.content || [], total: data?.total ?? 0, isLoading };
 }

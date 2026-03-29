@@ -53,3 +53,8 @@ docker-compose*dev.yml
 *.iws
 *.iml
 *.ipr
+
+
+### bkit ###
+.bkit
+.gstack/

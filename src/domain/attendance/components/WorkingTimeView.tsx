@@ -36,33 +36,31 @@ export default function WorkingTimeView() {
   };
 
   return (
-    <div className="flex w-full flex-row items-center justify-between gap-3">
-      {/* working time date */}
-      <div className="flex flex-row items-center justify-center gap-3 font-semibold">
-        {/* 저번주 */}
-        <button className="btn btn-neutral" onClick={handlePrevWeekClick}>
-          <IoIosArrowBack className="26 h-6" />
-          저번주
-        </button>
+    <div className="flex w-full flex-row items-center justify-end gap-2">
+      <button
+        className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 transition-colors duration-150"
+        onClick={handlePrevWeekClick}
+      >
+        <IoIosArrowBack className="h-4 w-4" />
+      </button>
 
-        {/* date */}
-        <div className="flex flex-row items-center justify-between gap-1">
-          <span className="">{`${dayjs(selectDate.startDate).format('YYYY.MM.DD')} (${getDaysOfWeek(dayjs(selectDate.startDate).day())})`}</span>
-          <span className=""> - </span>
-          <span className="">{`${dayjs(selectDate.endDate).format('YYYY.MM.DD')} (${getDaysOfWeek(dayjs(selectDate.endDate).day())})`}</span>
-        </div>
+      <span className="min-w-[220px] text-center text-sm font-medium text-gray-700">
+        {`${dayjs(selectDate.startDate).format('YYYY.MM.DD')} – ${dayjs(selectDate.endDate).format('MM.DD')}`}
+      </span>
 
-        {/* 다음주 */}
-        <button className="btn btn-neutral" onClick={handleNextWeekClick}>
-          다음주
-          <IoIosArrowForward className="26 h-6" />
-        </button>
+      <button
+        className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 transition-colors duration-150"
+        onClick={handleNextWeekClick}
+      >
+        <IoIosArrowForward className="h-4 w-4" />
+      </button>
 
-        {/* 오늘 */}
-        <button className="btn btn-neutral" onClick={handleTodayClick}>
-          오늘
-        </button>
-      </div>
+      <button
+        className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors duration-150"
+        onClick={handleTodayClick}
+      >
+        오늘
+      </button>
     </div>
   );
 }

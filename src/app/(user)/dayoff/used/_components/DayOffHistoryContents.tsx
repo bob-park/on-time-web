@@ -5,119 +5,173 @@ import { useState } from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 import { useVacationDocuments } from '@/domain/document/query/vacation';
-
-import { getDaysOfWeek } from '@/utils/parse';
+import { useGetCurrentUser } from '@/domain/user/query/user';
 
 import dayjs from 'dayjs';
 
-const DEFAULT_SEARCH_PARAMS: SearchVacationDocumentRequest = {
-  startDateFrom: `${dayjs().year()}-01-01`,
-  endDateTo: `${dayjs().year()}-12-31`,
-  status: 'APPROVED',
-  page: 0,
-  size: 100,
-};
-
 export default function DayOffHistoryContents() {
-  // statue
   const [selectedYear, setSelectedYear] = useState<number>(dayjs().year());
 
-  // query
-  const { vacationDocuments } = useVacationDocuments({
-    ...DEFAULT_SEARCH_PARAMS,
+  const { vacationDocuments, isLoading } = useVacationDocuments({
     startDateFrom: `${selectedYear}-01-01`,
     endDateTo: `${selectedYear}-12-31`,
+    status: 'APPROVED',
+    page: 0,
+    size: 1000,
   });
 
+  const { currentUser } = useGetCurrentUser();
+  const leaveEntry = currentUser?.leaveEntry;
+  const freeLeaveDays = (leaveEntry?.totalLeaveDays ?? 0) - (leaveEntry?.usedLeaveDays ?? 0);
+
+  // 총 사용일 합산
+  const totalUsedDays = vacationDocuments.reduce((sum, v) => sum + v.usedDays, 0);
+  const totalGeneralDays = vacationDocuments
+    .filter((v) => v.vacationType === 'GENERAL')
+    .reduce((sum, v) => sum + v.usedDays, 0);
+  const totalCompDays = vacationDocuments
+    .filter((v) => v.vacationType === 'COMPENSATORY')
+    .reduce((sum, v) => sum + v.usedDays, 0);
+
+  const handleYearChange = (delta: number) => {
+    setSelectedYear((y) => y + delta);
+  };
+
   return (
-    <div className="flex size-full flex-col items-center justify-center gap-10">
-      {/* select year */}
-      <div className="">
-        <div className="flex flex-row items-center justify-center gap-5">
-          {/* prev */}
-          <button className="btn btn-neutral" onClick={() => setSelectedYear(selectedYear - 1)}>
-            <IoIosArrowBack className="size-6" />
-          </button>
-          {/* current */}
-          <div className="">
-            <p className="text-lg font-semibold">{selectedYear} 년</p>
+    <div className="flex w-full flex-col gap-4">
+      {/* 연도 네비게이터 */}
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          className="flex size-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 transition-colors duration-150 hover:bg-gray-50"
+          onClick={() => handleYearChange(-1)}
+        >
+          <IoIosArrowBack className="size-4" />
+        </button>
+        <span className="min-w-[4rem] text-center text-sm font-semibold text-gray-800">{selectedYear}년</span>
+        <button
+          type="button"
+          className="flex size-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 transition-colors duration-150 hover:bg-gray-50"
+          onClick={() => handleYearChange(1)}
+        >
+          <IoIosArrowForward className="size-4" />
+        </button>
+      </div>
+
+      {/* 요약 카드 */}
+      <div className="flex w-full flex-row gap-4">
+        {/* 총 사용일 */}
+        <div className="flex-1 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+          <p className="text-xs font-medium text-gray-500">총 사용일</p>
+          <p className="mt-1 text-3xl font-bold text-gray-900">
+            {totalUsedDays.toFixed(1)}
+            <span className="ml-1 text-base font-normal text-gray-400">일</span>
+          </p>
+          <div className="mt-2 flex gap-2">
+            {totalGeneralDays > 0 && (
+              <span className="rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+                연차 {totalGeneralDays.toFixed(1)}일
+              </span>
+            )}
+            {totalCompDays > 0 && (
+              <span className="rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-medium text-orange-700">
+                보상 {totalCompDays.toFixed(1)}일
+              </span>
+            )}
+            {totalUsedDays === 0 && <span className="text-xs text-gray-400">사용 내역 없음</span>}
           </div>
-          {/* next */}
-          <button className="btn btn-neutral" onClick={() => setSelectedYear(selectedYear + 1)}>
-            <IoIosArrowForward className="size-6" />
-          </button>
+        </div>
+
+        {/* 잔여 연차 */}
+        <div className="flex-1 rounded-2xl bg-slate-800 p-5 text-white shadow-sm">
+          <p className="text-xs font-medium text-slate-300">잔여 연차</p>
+          <p className="mt-1 text-3xl font-bold">
+            {freeLeaveDays.toFixed(1)}
+            <span className="ml-1 text-base font-normal text-slate-300">일</span>
+          </p>
+          <p className="mt-2 text-xs text-slate-400">다음 만료일 {selectedYear}년 12월 31일</p>
         </div>
       </div>
 
-      {/* total used vacation */}
-      <div className="w-full">
-        <div className="flex w-full flex-row items-center gap-4">
-          <div className="w-24 flex-none text-right">총 사용 개수 :</div>
-          <div className="text-lg">
-            <span>총</span>
-            <span className="mx-2 font-bold">
-              {vacationDocuments.length > 0
-                ? vacationDocuments.map((item) => item.usedDays).reduce((total, current) => (total += current))
-                : 0}
-            </span>
-            <span>개</span>
-          </div>
+      {/* 상세 내역 테이블 */}
+      <div className="w-full rounded-2xl border border-gray-200 bg-white shadow-sm">
+        <div className="border-b border-gray-100 px-6 py-4">
+          <p className="text-sm font-semibold text-gray-800">상세 내역</p>
         </div>
-      </div>
 
-      {/* used vacations */}
-      <div className="w-full">
-        <div className="flex flex-col items-center justify-center gap-2">
-          {/* headers */}
-          <div className="flex h-12 flex-row items-center justify-center gap-2 border-b border-gray-300 text-center font-semibold">
-            <div className="w-24 flex-none">index</div>
-            <div className="w-24 flex-none">종류</div>
-            <div className="w-24 flex-none">구분</div>
-            <div className="w-36 flex-none">사용일</div>
-            <div className="w-24 flex-none">사용일수</div>
-            <div className="w-96 flex-none">비고</div>
+        {/* 테이블 헤더 */}
+        <div className="grid grid-cols-[3rem_7rem_6rem_10rem_5rem_1fr_6rem] items-center border-b border-gray-100 bg-gray-50 px-6 py-3 text-xs font-medium text-gray-500">
+          <div>번호</div>
+          <div>종류</div>
+          <div>구분</div>
+          <div>사용일</div>
+          <div>사용일수</div>
+          <div>비고</div>
+          <div>상태</div>
+        </div>
+
+        {/* 테이블 바디 */}
+        {isLoading ? (
+          <div className="flex items-center justify-center py-16 text-sm text-gray-400">불러오는 중...</div>
+        ) : vacationDocuments.length === 0 ? (
+          <div className="flex items-center justify-center py-16 text-sm text-gray-400">
+            {selectedYear}년 휴가 사용 내역이 없습니다.
           </div>
-
-          {/* contents */}
-          {vacationDocuments
-            .sort((o1, o2) => (dayjs(o1.startDate).isAfter(o2.startDate) ? 1 : -1))
-            .map((vacationDocument, index) => (
+        ) : (
+          vacationDocuments
+            .sort((a, b) => (dayjs(a.startDate).isAfter(b.startDate) ? 1 : -1))
+            .map((doc, index) => (
               <div
-                key={`vacation-document-item-${vacationDocument.id}`}
-                className="hover:bg-base-300 flex min-h-16 flex-row items-center justify-center gap-2 rounded-xl text-center transition-all duration-150"
+                key={`vacation-history-${doc.id}`}
+                className="grid grid-cols-[3rem_7rem_6rem_10rem_5rem_1fr_6rem] items-center border-b border-gray-50 px-6 py-4 text-sm text-gray-700 transition-colors duration-150 last:border-0 hover:bg-gray-50"
               >
-                <div className="w-24 flex-none">{index + 1}</div>
-                <div className="w-24 flex-none">
-                  <VacationTypeBadge type={vacationDocument.vacationType} />
+                {/* 번호 */}
+                <div className="text-gray-400">{index + 1}</div>
+
+                {/* 종류 */}
+                <div>
+                  <VacationTypeBadge type={doc.vacationType} />
                 </div>
-                <div className="w-24 flex-none">
-                  <VacationSubTypeBadge subType={vacationDocument.vacationSubType} />
+
+                {/* 구분 */}
+                <div className="text-gray-600">
+                  <VacationSubTypeText subType={doc.vacationSubType} />
                 </div>
-                <div className="w-36 flex-none">
-                  {dayjs(vacationDocument.startDate).isSame(vacationDocument.endDate) ? (
-                    <div className="">
-                      {`${dayjs(vacationDocument.startDate).format('YYYY-MM-DD')} (${getDaysOfWeek(dayjs(vacationDocument.startDate).day())})`}
-                    </div>
+
+                {/* 사용일 */}
+                <div className="text-gray-700">
+                  {dayjs(doc.startDate).isSame(doc.endDate, 'day') ? (
+                    dayjs(doc.startDate).format('YYYY.MM.DD')
                   ) : (
-                    <div className="text-left">
-                      <div>{`${dayjs(vacationDocument.startDate).format('YYYY-MM-DD')} (${getDaysOfWeek(dayjs(vacationDocument.startDate).day())})`}</div>
-                      <div>{`- ${dayjs(vacationDocument.endDate).format('YYYY-MM-DD')} (${getDaysOfWeek(dayjs(vacationDocument.endDate).day())})`}</div>
-                    </div>
+                    <>
+                      {dayjs(doc.startDate).format('YYYY.MM.DD')}
+                      <br />
+                      <span className="text-gray-400">— {dayjs(doc.endDate).format('YYYY.MM.DD')}</span>
+                    </>
                   )}
                 </div>
-                <div className="w-24 flex-none">{vacationDocument.usedDays}</div>
-                <div className="w-96 flex-none">
-                  {vacationDocument.usedCompLeaveEntries?.map((item) => (
-                    <div key={`vacation-document-used-comp-leave-entry-${item.id}`} className="my-2 text-start">
-                      <span>{dayjs(item.compLeaveEntry.effectiveDate).format('YYYY-MM-DD')}</span>
-                      <span className="mx-1">-</span>
-                      <span>{item.compLeaveEntry.contents}</span>
-                    </div>
+
+                {/* 사용일수 */}
+                <div className="font-medium text-gray-800">{doc.usedDays.toFixed(1)}일</div>
+
+                {/* 비고 */}
+                <div className="space-y-1">
+                  {doc.reason && <p className="text-gray-600">{doc.reason}</p>}
+                  {doc.usedCompLeaveEntries?.map((entry) => (
+                    <p key={`comp-entry-${entry.id}`} className="text-xs text-gray-400">
+                      {dayjs(entry.compLeaveEntry.effectiveDate).format('YYYY-MM-DD')} — {entry.compLeaveEntry.contents}
+                    </p>
                   ))}
                 </div>
+
+                {/* 상태 */}
+                <div>
+                  <DocumentStatusBadge status={doc.status} />
+                </div>
               </div>
-            ))}
-        </div>
+            ))
+        )}
+
       </div>
     </div>
   );
@@ -125,28 +179,41 @@ export default function DayOffHistoryContents() {
 
 function VacationTypeBadge({ type }: { type: VacationType }) {
   switch (type) {
-    case 'COMPENSATORY': {
-      return <div className="badge badge-secondary">보상휴가</div>;
-    }
-    case 'OFFICIAL': {
-      return <div className="badge badge-neutral">공가</div>;
-    }
-    default: {
-      return <div className="badge badge-primary">연차</div>;
-    }
+    case 'COMPENSATORY':
+      return (
+        <span className="rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-medium text-orange-700">보상휴가</span>
+      );
+    case 'OFFICIAL':
+      return <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">공가</span>;
+    default:
+      return <span className="rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">연차</span>;
   }
 }
 
-function VacationSubTypeBadge({ subType }: { subType?: VacationSubType }) {
+function VacationSubTypeText({ subType }: { subType?: VacationSubType }) {
   switch (subType) {
-    case 'AM_HALF_DAY_OFF': {
-      return <div className="badge badge-secondary">오전반차</div>;
-    }
-    case 'PM_HALF_DAY_OFF': {
-      return <div className="badge badge-neutral">오후반차</div>;
-    }
-    default: {
-      return <div></div>;
-    }
+    case 'AM_HALF_DAY_OFF':
+      return <span>오전 반차</span>;
+    case 'PM_HALF_DAY_OFF':
+      return <span>오후 반차</span>;
+    default:
+      return <span>종일</span>;
+  }
+}
+
+function DocumentStatusBadge({ status }: { status: DocumentStatus }) {
+  switch (status) {
+    case 'APPROVED':
+      return <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">승인됨</span>;
+    case 'REJECTED':
+      return <span className="rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-700">거절됨</span>;
+    case 'WAITING':
+      return (
+        <span className="rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-700">대기 중</span>
+      );
+    case 'CANCELLED':
+      return <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">취소됨</span>;
+    default:
+      return <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-500">임시저장</span>;
   }
 }

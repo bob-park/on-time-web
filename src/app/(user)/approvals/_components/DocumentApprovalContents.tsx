@@ -1,173 +1,178 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import DocumentApprovalResult from '@/app/(user)/approvals/_components/DocumentApprovalResult';
 
 import { useApprovalHistories } from '@/domain/approval/query/approvalHistory';
 
-import _ from 'lodash';
-
 interface DocumentApprovalContentsProps {
   params: SearchDocumentApprovalHistoryRequest;
 }
 
-export default function DocumentApprovalContents({ params }: DocumentApprovalContentsProps) {
-  // hooks
-  const router = useRouter();
+const CATEGORY_OPTIONS: { label: string; value: DocumentsType | undefined }[] = [
+  { label: '전체', value: undefined },
+  { label: '휴가계', value: 'VACATION' },
+  { label: '휴일근무보고서', value: 'OVERTIME_WORK' },
+];
 
-  // state
-  const [searchParams, setSearchParams] = useState<SearchDocumentApprovalHistoryRequest>(() => params);
+// No DRAFT on /approvals
+const STATUS_OPTIONS: { label: string; value: DocumentStatus | undefined }[] = [
+  { label: '전체', value: undefined },
+  { label: '진행', value: 'WAITING' },
+  { label: '승인', value: 'APPROVED' },
+  { label: '반려', value: 'REJECTED' },
+];
 
-  // query
-  const { page } = useApprovalHistories(searchParams);
-  let currentItemCount = page ? (page.pageable.pageNumber + 1) * page.pageable.pageSize : 0;
-
-  if (currentItemCount > (page?.total || 0)) {
-    currentItemCount = page?.total || 0;
+function getPaginationPages(currentPage: number, totalPages: number): (number | '...')[] {
+  if (totalPages <= 5) {
+    return Array.from({ length: totalPages }, (_, i) => i);
   }
+  if (currentPage <= 1) {
+    return [0, 1, 2, '...', totalPages - 1];
+  }
+  if (currentPage >= totalPages - 2) {
+    return [0, '...', totalPages - 3, totalPages - 2, totalPages - 1];
+  }
+  const showLeftEllipsis = currentPage - 1 > 1;
+  const showRightEllipsis = currentPage + 1 < totalPages - 2;
+  const result: (number | '...')[] = [0];
+  if (showLeftEllipsis) result.push('...');
+  result.push(currentPage - 1, currentPage, currentPage + 1);
+  if (showRightEllipsis) result.push('...');
+  result.push(totalPages - 1);
+  return result;
+}
 
-  // useEffect
-  useEffect(() => {
-    handleSubmit();
-  }, [searchParams]);
+export default function DocumentApprovalContents({ params }: DocumentApprovalContentsProps) {
+  const [selectedType, setSelectedType] = useState<DocumentsType | undefined>(undefined);
+  const [selectedStatus, setSelectedStatus] = useState<DocumentStatus | undefined>(undefined);
+  const [currentPage, setCurrentPage] = useState(0);
 
-  // handle
-  const handleSubmit = () => {
-    const urlSearchParams = new URLSearchParams();
+  const { page, isLoading } = useApprovalHistories({
+    type: selectedType,
+    status: selectedStatus,
+    page: currentPage,
+    size: 10,
+  });
 
-    _.entries(searchParams).forEach(([key, value]) => {
-      urlSearchParams.set(key, value !== undefined ? String(value) : '');
-    });
+  const total = page?.total ?? 0;
+  const totalPages = total === 0 ? 0 : Math.ceil(total / 10);
+  const startItem = total === 0 ? 0 : currentPage * 10 + 1;
+  const endItem = Math.min((currentPage + 1) * 10, total);
 
-    router.push(`/approvals?${urlSearchParams}`);
+  const handleTypeChange = (value: DocumentsType | undefined) => {
+    setSelectedType(value);
+    setCurrentPage(0);
+  };
+
+  const handleStatusChange = (value: DocumentStatus | undefined) => {
+    setSelectedStatus(value);
+    setCurrentPage(0);
+  };
+
+  const pillClass = (active: boolean) =>
+    active
+      ? 'bg-slate-800 text-white rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors duration-100 cursor-pointer'
+      : 'bg-slate-100 text-slate-600 rounded-full px-3.5 py-1.5 text-[13px] font-medium hover:bg-slate-200 transition-colors duration-100 cursor-pointer';
+
+  const pageBtnClass = (active: boolean, isDisabled: boolean) => {
+    if (isDisabled) {
+      return 'flex h-8 min-w-[32px] items-center justify-center rounded-md border border-slate-100 bg-white px-1.5 text-[13px] text-slate-300 cursor-not-allowed';
+    }
+    if (active) {
+      return 'flex h-8 min-w-[32px] items-center justify-center rounded-md border border-slate-800 bg-slate-800 px-2 text-[13px] text-white';
+    }
+    return 'flex h-8 min-w-[32px] items-center justify-center rounded-md border border-slate-200 bg-white px-2 text-[13px] text-slate-600 hover:bg-slate-50 transition-colors duration-100';
   };
 
   return (
-    <div className="flex flex-col gap-3">
-      {/* search form */}
-      <div className="w-full max-w-[800px]">
-        <div className="card bg-base-100 m-3 flex size-full flex-col items-center justify-center gap-5 p-3 shadow-sm">
-          {/* body */}
-          <div className="card-body w-full">
-            {/* type */}
-            <div className="flex flex-row items-center gap-3">
-              <span className="w-32 flex-none text-right text-base font-semibold">구분 :</span>
-              <div className="">
-                <form className="filter">
-                  <input
-                    className="btn btn-square"
-                    type="reset"
-                    value="×"
-                    onClick={() => setSearchParams({ ...searchParams, page: 0, type: undefined })}
-                  />
-                  <input
-                    className="btn"
-                    type="radio"
-                    name="vacationTypes"
-                    aria-label="휴가계"
-                    defaultChecked={searchParams.type === 'VACATION'}
-                    onClick={() => setSearchParams({ ...searchParams, page: 0, type: 'VACATION' })}
-                  />
-                  <input
-                    className="btn"
-                    type="radio"
-                    name="vacationTypes"
-                    aria-label="휴일 근무 보고서"
-                    defaultChecked={searchParams.type === 'OVERTIME_WORK'}
-                    onClick={() => setSearchParams({ ...searchParams, page: 0, type: 'OVERTIME_WORK' })}
-                  />
-                </form>
-              </div>
-            </div>
+    <div className="flex size-full flex-col">
+      <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        {/* Filters */}
+        <div className="mb-5 flex flex-col gap-2.5 border-b border-slate-100 pb-4">
+          <div role="group" aria-label="문서 구분 필터" className="flex flex-wrap items-center gap-2">
+            <span className="w-[72px] flex-none text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+              구분
+            </span>
+            {CATEGORY_OPTIONS.map((opt) => (
+              <button
+                key={opt.label}
+                type="button"
+                aria-pressed={selectedType === opt.value}
+                className={pillClass(selectedType === opt.value)}
+                onClick={() => handleTypeChange(opt.value)}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
 
-            {/* status */}
-            <div className="flex flex-row items-center gap-3">
-              <span className="w-32 flex-none text-right text-base font-semibold">상태 :</span>
-              <div className="">
-                <form className="filter">
-                  <input
-                    className="btn btn-square"
-                    type="reset"
-                    value="×"
-                    onClick={() => setSearchParams({ ...searchParams, page: 0, status: undefined })}
-                  />
-                  <input
-                    className="btn"
-                    type="radio"
-                    name="vacationTypes"
-                    aria-label="진행"
-                    defaultChecked={searchParams.status === 'WAITING'}
-                    onClick={() => setSearchParams({ ...searchParams, page: 0, status: 'WAITING' })}
-                  />
-                  <input
-                    className="btn"
-                    type="radio"
-                    name="vacationTypes"
-                    aria-label="승인"
-                    defaultChecked={searchParams.status === 'APPROVED'}
-                    onClick={() => setSearchParams({ ...searchParams, page: 0, status: 'APPROVED' })}
-                  />
-                  <input
-                    className="btn"
-                    type="radio"
-                    name="vacationTypes"
-                    aria-label="반려"
-                    defaultChecked={searchParams.status === 'REJECTED'}
-                    onClick={() => setSearchParams({ ...searchParams, page: 0, status: 'REJECTED' })}
-                  />
-                </form>
-              </div>
-            </div>
+          <div role="group" aria-label="문서 상태 필터" className="flex flex-wrap items-center gap-2">
+            <span className="w-[72px] flex-none text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+              상태
+            </span>
+            {STATUS_OPTIONS.map((opt) => (
+              <button
+                key={opt.label}
+                type="button"
+                aria-pressed={selectedStatus === opt.value}
+                className={pillClass(selectedStatus === opt.value)}
+                onClick={() => handleStatusChange(opt.value)}
+              >
+                {opt.label}
+              </button>
+            ))}
           </div>
         </div>
-      </div>
 
-      {/* result */}
-      <div className="min-h-[600px] w-full max-w-[1000px]">
-        <div className="card bg-base-100 m-3 flex size-full flex-col items-center justify-center gap-5 p-3 shadow-sm">
-          <div className="w-full">
-            <p className="mx-8">
-              <span>총</span>
-              <span className="mx-2 font-semibold">{(page?.total || 0).toLocaleString()} 개</span>
-              <span>중</span>
-              <span className="mx-2">{currentItemCount.toLocaleString()} 개</span>
-            </p>
-          </div>
+        {/* Table */}
+        <DocumentApprovalResult items={page?.content ?? []} isLoading={isLoading} />
 
-          {/* body */}
-          <div className="card-body size-full">
-            <div className="flex size-full flex-col items-center justify-center gap-3">
-              <DocumentApprovalResult items={page.content} />
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-4">
+            <span className="text-[13px] text-slate-500">
+              총 {total.toLocaleString()}건 중 {startItem}~{endItem}건 표시
+            </span>
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                disabled={currentPage === 0}
+                onClick={() => setCurrentPage((p) => p - 1)}
+                aria-label="이전 페이지"
+                className={pageBtnClass(false, currentPage === 0)}
+              >
+                &lt;
+              </button>
+              {getPaginationPages(currentPage, totalPages).map((p, i) =>
+                p === '...' ? (
+                  <span key={`ellipsis-${i}`} className="px-1 text-[13px] text-slate-400">
+                    ···
+                  </span>
+                ) : (
+                  <button
+                    key={p}
+                    type="button"
+                    className={pageBtnClass(p === currentPage, false)}
+                    onClick={() => setCurrentPage(p as number)}
+                  >
+                    {(p as number) + 1}
+                  </button>
+                ),
+              )}
+              <button
+                type="button"
+                disabled={currentPage >= totalPages - 1}
+                onClick={() => setCurrentPage((p) => p + 1)}
+                aria-label="다음 페이지"
+                className={pageBtnClass(false, currentPage >= totalPages - 1)}
+              >
+                &gt;
+              </button>
             </div>
           </div>
-
-          {/* action button */}
-          <div className="m-5 flex flex-row gap-4">
-            <div className="join">
-              <button
-                className="join-item btn"
-                disabled={!page || page.pageable.pageNumber === 0}
-                onClick={() => setSearchParams({ ...searchParams, page: searchParams.page - 1 })}
-              >
-                «
-              </button>
-              <button className="join-item btn">
-                <span>Page</span>
-                <span>{searchParams.page + 1}</span>
-              </button>
-              <button
-                className="join-item btn"
-                disabled={!page || Math.ceil(page.total / page.pageable.pageSize) <= searchParams.page + 1}
-                onClick={() => setSearchParams({ ...searchParams, page: searchParams.page + 1 })}
-              >
-                »
-              </button>
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

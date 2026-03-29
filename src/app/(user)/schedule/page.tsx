@@ -15,7 +15,7 @@ export default function SchedulePage() {
       {/* contents */}
       <div className="mt-10 w-[1152px]">
         <WorkingTimeProvider>
-          <div className="flex size-full flex-row items-center justify-between gap-2">
+          <div className="flex w-full flex-row items-center justify-between gap-2">
             <div className="">
               <WorkingTimeView />
             </div>
