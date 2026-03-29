@@ -104,11 +104,11 @@ export default function SelectUserModal({ show, onClose, onSelect }: SelectedUse
         <div className="modal-action">
           <button className="btn w-32" onClick={handleClose}>
             <FaTimes className="size-6" />
-            안할까?
+            취소
           </button>
           <button className="btn btn-primary w-32" disabled={!selectedUserUniqueId} onClick={handleSelectUser}>
             <FaCheck className="size-5" />
-            선택해?
+            선택
           </button>
         </div>
       </div>
