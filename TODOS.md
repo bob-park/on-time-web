@@ -65,5 +65,55 @@
 
 ---
 
+## OvertimeRequestContents — Zero-duration entry accepted
+**What:** `startHour`, `startMinutes`, `endHour`, `endMinutes` all default to `0`. No guard against submitting an entry where start === end, creating a 0-minute work record.
+**Why:** A user who never touches the time selectors adds a zero-duration entry that passes all validation. The API may silently accept it.
+**Priority:** P1
+**Fix:** Add `if (startHour === endHour && startMinutes === endMinutes) { push warning; return; }` in `handleAddWorkTime`.
+**Found by:** adversarial review (0.1.1.0, 2026-03-29)
+**Depends on / blocked by:** None.
+
+---
+
+## OvertimeRequestContents — Whitespace username bypasses validation
+**What:** Free-text username input sets `username` to `e.target.value || undefined`. A string of spaces is truthy, so `"   "` passes the `!username` check and gets sent to the API.
+**Why:** API receives a whitespace-only name — silent bad data.
+**Priority:** P1
+**Fix:** Trim in onChange: `e.target.value.trim() || undefined`.
+**Found by:** adversarial review (0.1.1.0, 2026-03-29)
+**Depends on / blocked by:** None.
+
+---
+
+## getPaginationPages — Duplicate page 0 when totalPages=3
+**What:** When `totalPages=3` and `currentPage=1` (tail branch fires), the function returns `[0, '...', 0, 1, 2]` — page 0 appears twice. `totalPages-3=0` is pushed alongside the leading `0`.
+**Why:** Two buttons both point to page 0. One of them is always active-styled. Confusing and broken.
+**Priority:** P1
+**Fix:** The tail branch should only push `'...'` when `totalPages-3 > 1`; otherwise fall through to the `<=5` rendering path. Applies to all 3 copies of `getPaginationPages` (documents, approvals, dayoff).
+**Found by:** adversarial review (0.1.1.0, 2026-03-29)
+**Depends on / blocked by:** None.
+
+---
+
+## DayOffRequestContents — Half-day subtype with multi-day range shows wrong balance
+**What:** `usedDays = isHalfDay ? 0.5 : businessDays`. If the user picks AM_HALF_DAY_OFF but selects a multi-day calendar range, the summary shows 0.5 days consumed while the server counts the full range.
+**Why:** User thinks they're using 0.5 days but the server will deduct more. Silent overconsumption.
+**Priority:** P1
+**Fix:** When `isHalfDay`, clamp `selectedDate.to = selectedDate.from` (single-day only), or show a warning when a multi-day range is selected with a half-day subtype.
+**Found by:** adversarial review (0.1.1.0, 2026-03-29)
+**Depends on / blocked by:** None.
+
+---
+
+## DayOffRequestContents — COMPENSATORY submit without comp-leave entries
+**What:** `handleRequestClick` only checks `!selectedVacationType || !selectedVacationSubType || !reason`. When `COMPENSATORY` is selected but no comp-leave entries are chosen, the form submits with an empty `usedCompLeaveEntries` array.
+**Why:** Silent or confusing failure at the API level. User expects their comp balance to be consumed but nothing is allocated.
+**Priority:** P1
+**Fix:** Add `if (selectedVacationType === 'COMPENSATORY' && usedCompLeaveEntries.length === 0) { push warning; return; }`.
+**Found by:** adversarial review (0.1.1.0, 2026-03-29)
+**Depends on / blocked by:** None.
+
+---
+
 ## Completed
 
