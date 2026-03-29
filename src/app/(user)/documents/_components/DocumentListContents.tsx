@@ -34,7 +34,14 @@ function getPaginationPages(currentPage: number, totalPages: number): (number | 
   if (currentPage >= totalPages - 2) {
     return [0, '...', totalPages - 3, totalPages - 2, totalPages - 1];
   }
-  return [0, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages - 1];
+  const showLeftEllipsis = currentPage - 1 > 1;
+  const showRightEllipsis = currentPage + 1 < totalPages - 2;
+  const result: (number | '...')[] = [0];
+  if (showLeftEllipsis) result.push('...');
+  result.push(currentPage - 1, currentPage, currentPage + 1);
+  if (showRightEllipsis) result.push('...');
+  result.push(totalPages - 1);
+  return result;
 }
 
 export default function DocumentListContents({ params }: DocumentListContentsProps) {
