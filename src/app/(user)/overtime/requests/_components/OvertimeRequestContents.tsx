@@ -99,11 +99,15 @@ export default function OvertimeRequestContents() {
       return;
     }
 
+    const isOvernight =
+      endHour < startHour || (endHour === startHour && endMinutes < startMinutes);
+    const endDateBase = isOvernight ? dayjs(date).add(1, 'day').toDate() : date;
+
     setWorkTimes((prev) => [
       ...prev,
       {
         startDate: toDate(date, startHour, startMinutes),
-        endDate: toDate(date, endHour, endMinutes),
+        endDate: toDate(endDateBase, endHour, endMinutes),
         userUniqueId,
         username,
         contents,
