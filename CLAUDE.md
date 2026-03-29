@@ -25,6 +25,8 @@ src/
 │   └── _components/       # 공통 레이아웃 컴포넌트
 ├── domain/                 # 도메인별 분리
 │   ├── attendance/        # 근태 도메인
+│   ├── document/          # 문서/결재 도메인
+│   ├── approval/          # 승인 도메인
 │   ├── user/              # 사용자 도메인
 │   └── ...
 ├── shared/                 # 공유 모듈
@@ -59,4 +61,4 @@ yarn lint         # ESLint 검사
 
 현재: **DO** (구현 단계)
 
-Active Features: on-time-web, store, _components, dashboard, requests, approvals
+Active Features: dashboard, documents (pill filters + table + pagination), dayoff/requests, dayoff/used, approvals, layout (_components, NavMenu, Header)
