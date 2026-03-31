@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.1.2.0] - 2026-03-31
+
+### Added
+- Attendance view (`/attendance/view`): all-employees 7-day grid — managers can now see every employee's weekly attendance on one screen without selecting individuals one by one. Rows = employees, columns = days, cells show clock-in/out times with color-coded status.
+- Attendance grid: 1-minute auto-refresh with last-updated timestamp so managers always see current data without reloading.
+- Attendance grid: per-cell loading shimmer, sticky employee column, WARNING cells highlighted in red, today's column highlighted in blue, day-off badges (연차/오전반차/오후반차).
+
+### Changed
+- Next.js 16 proxy migration: `src/middleware.ts` → `src/proxy.ts` with exported function renamed to `proxy` per Next.js 16 naming convention.
+- Attendance view page simplified: removed single-employee dropdown selector; all employees load automatically.
+
+### Removed
+- `SelectUsers` dropdown and `SelectUserContextProvider` from attendance view — no longer needed.
+
 ## [0.1.1.0] - 2026-03-29
 
 ### Added

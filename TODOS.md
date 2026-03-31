@@ -53,6 +53,7 @@
 **Priority:** P1
 **Found by:** adversarial review (0.1.1.0, 2026-03-29)
 **Depends on / blocked by:** None. Add the column back to `WorkingRecordContents.tsx`.
+**Note (2026-03-31):** The same fix was applied to `AllEmployeesGrid` in `feature/attendances-dashboard`. Pattern: clock-in / `~leaveWorkAt` (scheduled) / clock-out actual. Apply the same three-line cell structure to `WorkingRecordRow`.
 
 ---
 
