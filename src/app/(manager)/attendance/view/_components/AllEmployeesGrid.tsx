@@ -240,7 +240,7 @@ export default function AllEmployeesGrid() {
   const colHeaderClass = (date: Date) => {
     const isToday = dayjs().isSame(date, 'day');
     const isWeekend = DEFAULT_WEEKENDS.includes(dayjs(date).day());
-    return cx('sticky top-0 z-20 bg-gray-50 min-w-[110px] py-3 px-2 text-center text-xs font-semibold', {
+    return cx('sticky top-0  bg-gray-50 min-w-[110px] py-3 px-2 text-center text-xs font-semibold', {
       'text-blue-600 font-semibold': isToday,
       'text-gray-400': isWeekend && !isToday,
       'text-gray-500': !isWeekend && !isToday,
@@ -254,7 +254,7 @@ export default function AllEmployeesGrid() {
           <span className="text-xs text-gray-400">최근 갱신: {dayjs(lastUpdatedAt).format('HH:mm:ss')}</span>
         </div>
       )}
-      <table role="table" aria-label="임직원 근무 현황" className="w-full border-collapse">
+      <table className="table" role="table" aria-label="임직원 근무 현황">
         <thead>
           <tr className="border-b border-gray-100 bg-gray-50">
             <th
