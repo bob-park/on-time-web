@@ -54,7 +54,7 @@ function DayCell({ date, record, isLoading, isError }: DayCellProps) {
 
   const cellClass = cx('px-2 py-3 text-center align-middle', {
     'bg-blue-50': isToday && record?.status !== 'WARNING',
-    'bg-red-50': record?.status === 'WARNING' && !isToday,
+    'bg-red-50': record?.status === 'WARNING',
   });
 
   if (isLoading) {
@@ -214,9 +214,9 @@ export default function AllEmployeesGrid() {
   const startDateStr = dayjs(selectDate.startDate).format('YYYY-MM-DD');
   const endDateStr = dayjs(selectDate.endDate).format('YYYY-MM-DD');
 
-  const { pages, isLoading: usersLoading } = useGetUsers({ page: 0, size: 100 });
+  const { pages, isLoading: usersLoading, isError: usersError } = useGetUsers({ page: 0, size: 100 });
 
-  const users: User[] = pages.flatMap((page) => page.content);
+  const users: User[] = useMemo(() => pages.flatMap((page) => page.content), [pages]);
 
   const attendanceResults = useQueries({
     queries: users.map((user) => ({
@@ -230,13 +230,13 @@ export default function AllEmployeesGrid() {
     })),
   });
 
-  const lastUpdatedAt = useMemo(() => {
-    const timestamps = attendanceResults.map((r) => r.dataUpdatedAt ?? 0).filter((t) => t > 0);
-    if (timestamps.length === 0) return null;
-    return new Date(Math.max(...timestamps));
-  }, [attendanceResults]);
+  const maxUpdatedAt = attendanceResults.reduce(
+    (m, r) => (!r.isError && (r.dataUpdatedAt ?? 0) > 0 ? Math.max(m, r.dataUpdatedAt ?? 0) : m),
+    0,
+  );
+  const lastUpdatedAt = useMemo(() => (maxUpdatedAt > 0 ? new Date(maxUpdatedAt) : null), [maxUpdatedAt]);
 
-  const dates = buildDates(selectDate.startDate);
+  const dates = useMemo(() => buildDates(selectDate.startDate), [selectDate.startDate]);
 
   const colHeaderClass = (date: Date) => {
     const isToday = dayjs().isSame(date, 'day');
@@ -249,7 +249,7 @@ export default function AllEmployeesGrid() {
   };
 
   return (
-    <div className="h-full w-full overflow-auto rounded-2xl border border-gray-200 bg-white shadow-sm">
+    <div className="size-full overflow-auto rounded-2xl border border-gray-200 bg-white shadow-sm">
       {lastUpdatedAt && (
         <div className="flex justify-end border-b border-gray-100 px-4 py-2">
           <span className="text-xs text-gray-400">최근 갱신: {dayjs(lastUpdatedAt).format('HH:mm:ss')}</span>
@@ -274,7 +274,17 @@ export default function AllEmployeesGrid() {
         <tbody>
           {usersLoading && Array.from({ length: SKELETON_ROW_COUNT }).map((_, i) => <SkeletonRow key={i} />)}
 
-          {!usersLoading && users.length === 0 && (
+          {!usersLoading && usersError && (
+            <tr>
+              <td colSpan={8}>
+                <div className="flex h-32 items-center justify-center text-sm text-red-400">
+                  직원 목록을 불러오지 못했습니다. 페이지를 새로 고침해주세요.
+                </div>
+              </td>
+            </tr>
+          )}
+
+          {!usersLoading && !usersError && users.length === 0 && (
             <tr>
               <td colSpan={8}>
                 <div className="flex h-32 items-center justify-center text-sm text-gray-400">임직원이 없습니다.</div>
@@ -283,6 +293,7 @@ export default function AllEmployeesGrid() {
           )}
 
           {!usersLoading &&
+            !usersError &&
             users.map((user, idx) => {
               const result = attendanceResults[idx];
               const records: AttendanceRecord[] = (result?.data as AttendanceRecord[]) || [];
