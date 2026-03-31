@@ -222,7 +222,6 @@ export default function AllEmployeesGrid() {
     queries: users.map((user) => ({
       queryKey: ['record', 'attendance', { userUniqueId: user.id, startDate: startDateStr, endDate: endDateStr }],
       queryFn: () => getAllRecords({ userUniqueId: user.id, startDate: startDateStr, endDate: endDateStr }),
-      enabled: users.length > 0,
       staleTime: 5 * 60 * 1_000,
       gcTime: 10 * 60 * 1_000,
       refetchInterval: 60 * 1_000,
