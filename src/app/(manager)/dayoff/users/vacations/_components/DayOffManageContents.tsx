@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 
-import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { HiOutlineDocumentText } from 'react-icons/hi';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 import { useUserLeaveEntries, useUsersUsedVacations } from '@/domain/user/query/user';
 
@@ -23,22 +23,22 @@ export default function DayOffManageContents() {
   );
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       {/* Header zone */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+      <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
         <span className="text-[15px] font-semibold text-slate-800">임직원 휴가 사용 현황</span>
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 transition-colors"
+            className="flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-600 transition-colors hover:bg-slate-50"
             onClick={() => setYear(year - 1)}
           >
             <IoIosArrowBack className="size-4" />
           </button>
-          <span className="text-[15px] font-semibold text-slate-800 min-w-[64px] text-center">{year}년</span>
+          <span className="min-w-[64px] text-center text-[15px] font-semibold text-slate-800">{year}년</span>
           <button
             type="button"
-            className="flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 transition-colors"
+            className="flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-600 transition-colors hover:bg-slate-50"
             onClick={() => setYear(year + 1)}
           >
             <IoIosArrowForward className="size-4" />
@@ -48,39 +48,39 @@ export default function DayOffManageContents() {
 
       {/* Matrix zone */}
       <div className="overflow-x-auto">
-        <table className="w-max border-collapse">
+        <table className="x-max border-collapse">
           <thead>
             <tr className="h-10 border-b border-slate-200 bg-slate-50">
-              <th className="sticky left-0 z-20 bg-slate-50 w-12 px-3 text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500 text-center">
+              <th className="sticky left-0 z-20 w-12 bg-slate-50 px-3 text-center text-[11px] font-semibold tracking-[0.06em] text-slate-500 uppercase">
                 순번
               </th>
-              <th className="sticky left-[48px] z-20 bg-slate-50 w-20 px-3 border-r border-slate-200 text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500 text-center">
+              <th className="sticky left-[48px] z-20 w-20 border-r border-slate-200 bg-slate-50 px-3 text-center text-[11px] font-semibold tracking-[0.06em] text-slate-500 uppercase">
                 성명
               </th>
-              <th className="w-28 px-3 text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500 text-center">
+              <th className="w-28 px-3 text-center text-[11px] font-semibold tracking-[0.06em] text-slate-500 uppercase">
                 입사일
               </th>
-              <th className="w-24 px-3 text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500 text-center">
+              <th className="w-24 px-3 text-center text-[11px] font-semibold tracking-[0.06em] text-slate-500 uppercase">
                 연차<span className="text-blue-400">(보상)</span>
               </th>
-              <th className="w-24 px-3 text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500 text-center">
+              <th className="w-24 px-3 text-center text-[11px] font-semibold tracking-[0.06em] text-slate-500 uppercase">
                 전년차감
               </th>
-              <th className="w-24 px-3 border-r border-slate-200 text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500 text-center">
+              <th className="w-24 border-r border-slate-200 px-3 text-center text-[11px] font-semibold tracking-[0.06em] text-slate-500 uppercase">
                 사용가능
               </th>
               {new Array(12).fill(null).map((_, i) => (
                 <th
                   key={`th-month-${i}`}
-                  className="w-16 px-3 text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500 text-center"
+                  className="w-16 px-3 text-center text-[11px] font-semibold tracking-[0.06em] text-slate-500 uppercase"
                 >
                   {i + 1}월
                 </th>
               ))}
-              <th className="w-24 px-3 border-l border-slate-200 text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500 text-center">
+              <th className="w-24 border-l border-slate-200 px-3 text-center text-[11px] font-semibold tracking-[0.06em] text-slate-500 uppercase">
                 합계
               </th>
-              <th className="w-24 px-3 text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500 text-center">
+              <th className="w-24 px-3 text-center text-[11px] font-semibold tracking-[0.06em] text-slate-500 uppercase">
                 잔여
               </th>
             </tr>
@@ -110,9 +110,7 @@ export default function DayOffManageContents() {
                   key={`dayoff-manage-contents-${user.id}`}
                   order={index + 1}
                   user={user}
-                  usedVacations={
-                    usersUsedVacations.find((item) => item.userUniqueId === user.id)?.usedVacations || []
-                  }
+                  usedVacations={usersUsedVacations.find((item) => item.userUniqueId === user.id)?.usedVacations || []}
                 />
               ))
             )}
