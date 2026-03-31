@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const { WEB_SERVICE_HOST } = process.env;
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { nextUrl, cookies } = req;
   const { pathname } = nextUrl;
 
