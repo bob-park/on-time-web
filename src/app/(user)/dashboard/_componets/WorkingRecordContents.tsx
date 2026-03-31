@@ -5,9 +5,8 @@ import { useContext } from 'react';
 import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
 import { useGetAttendanceRecord } from '@/domain/attendance/query/attendanceRecord';
 import { useGetCurrentUser } from '@/domain/user/query/user';
-
-import { getDuration } from '@/utils/parse';
 import { isIncludeTime } from '@/utils/dataUtils';
+import { getDuration } from '@/utils/parse';
 
 import cx from 'classnames';
 import dayjs from 'dayjs';
@@ -45,7 +44,7 @@ interface WorkingRecordRowProps {
   dayOffType?: DayOffType;
 }
 
-function WorkingRecordRow({ date, clockInTime, clockOutTime, status, dayOffType }: WorkingRecordRowProps) {
+function WorkingRecordRow({ date, clockInTime, leaveWorkAt, clockOutTime, status, dayOffType }: WorkingRecordRowProps) {
   const now = dayjs().hour(0).minute(0).second(0).millisecond(0);
   const isToday = now.isSame(date);
   const isInProgress = isToday && clockInTime && !clockOutTime;
@@ -75,7 +74,7 @@ function WorkingRecordRow({ date, clockInTime, clockOutTime, status, dayOffType 
       })}
     >
       {/* DATE/DAY */}
-      <td className="py-3 pl-4 pr-3">
+      <td className="py-3 pr-3 pl-4">
         <span
           className={cx('text-sm font-medium', {
             'text-blue-600': dayjs(date).day() === 6,
@@ -89,19 +88,24 @@ function WorkingRecordRow({ date, clockInTime, clockOutTime, status, dayOffType 
       </td>
 
       {/* CATEGORY */}
-      <td className="px-3 py-3">
+      <td className="px-3 py-3 text-center">
         <span className={cx('rounded-full px-2.5 py-0.5 text-xs font-semibold', getCategoryStyle(category))}>
           {category}
         </span>
       </td>
 
       {/* CLOCK-IN */}
-      <td className="px-3 py-3 text-sm text-gray-700">
+      <td className="px-3 py-3 text-center text-sm text-gray-700">
         {clockInTime ? dayjs(clockInTime).format('HH:mm') : <span className="text-gray-300">—</span>}
       </td>
 
+      {/* TARGET CLOCK-OUT */}
+      <td className="px-3 py-3 text-center text-sm text-gray-700">
+        {leaveWorkAt ? dayjs(leaveWorkAt).format('HH:mm') : <span className="text-gray-300">—</span>}
+      </td>
+
       {/* CLOCK-OUT */}
-      <td className="px-3 py-3 text-sm text-gray-700">
+      <td className="px-3 py-3 text-center text-sm text-gray-700">
         {isInProgress ? (
           <span className="text-xs font-medium text-blue-500">근무 중...</span>
         ) : clockOutTime ? (
@@ -124,7 +128,7 @@ function WorkingRecordRow({ date, clockInTime, clockOutTime, status, dayOffType 
       </td>
 
       {/* STATUS */}
-      <td className="py-3 pl-3 pr-4">
+      <td className="py-3 pr-4 pl-3 text-center">
         {DEFAULT_WEEKENDS.includes(dayjs(date).day()) && !status ? null : !status ? (
           <span className="inline-block h-3 w-3 rounded-full bg-gray-200" />
         ) : status === 'SUCCESS' ? (
@@ -205,24 +209,13 @@ export default function WorkingRecordContents() {
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-100 bg-gray-50">
-              <th className="py-3 pl-4 pr-3 text-left text-xs font-semibold text-gray-500">
-                근무일
-              </th>
-              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-500">
-                구분
-              </th>
-              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-500">
-                출근
-              </th>
-              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-500">
-                퇴근
-              </th>
-              <th className="px-3 py-3 text-left text-xs font-semibold text-gray-500">
-                근무 시간
-              </th>
-              <th className="py-3 pl-3 pr-4 text-left text-xs font-semibold text-gray-500">
-                상태
-              </th>
+              <th className="py-3 pr-3 pl-4 text-center text-xs font-semibold text-gray-500">근무일</th>
+              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-500">구분</th>
+              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-500">출근 시간</th>
+              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-500">목표 퇴근 시간</th>
+              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-500">퇴근 시간</th>
+              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-500">근무 시간</th>
+              <th className="py-3 pr-4 pl-3 text-center text-xs font-semibold text-gray-500">상태</th>
             </tr>
           </thead>
           <tbody>
@@ -243,17 +236,17 @@ export default function WorkingRecordContents() {
 
       {/* footer */}
       <div className="flex items-center justify-between border-t border-gray-100 px-6 py-3">
-        <span className="text-xs text-gray-500">이번 주 {dataList.length}건</span>
+        <span className="text-xs text-gray-500">해당 주 {dataList.length}건</span>
         <div className="flex gap-2">
           <button
             onClick={handlePrevWeek}
-            className="rounded-lg border border-gray-200 px-4 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors duration-150"
+            className="rounded-lg border border-gray-200 px-4 py-1.5 text-sm font-medium text-gray-600 transition-colors duration-150 hover:bg-gray-50"
           >
-            저번 주
+            지난 주
           </button>
           <button
             onClick={handleNextWeek}
-            className="rounded-lg bg-blue-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-blue-700 transition-colors duration-150"
+            className="rounded-lg bg-blue-600 px-4 py-1.5 text-sm font-medium text-white transition-colors duration-150 hover:bg-blue-700"
           >
             다음 주
           </button>
