@@ -6,7 +6,7 @@ HR/근태 관리 웹 애플리케이션
 
 ## Tech Stack
 
-- **Framework**: Next.js 15 App Router
+- **Framework**: Next.js 16 App Router
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS v4 + DaisyUI v5
 - **State**: Zustand v5
