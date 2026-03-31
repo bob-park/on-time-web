@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Skill(gstack-plan-eng-review)",
-      "Bash(cat src/app/\\\\\\(manager\\\\\\)/attendance/view/_components/SelectUsers.tsx)"
-    ]
-  }
-}
