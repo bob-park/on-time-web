@@ -61,7 +61,7 @@ yarn lint         # ESLint 검사
 
 현재: **DO** (구현 단계)
 
-Active Features: dashboard, documents (pill filters + table + pagination), dayoff/requests, dayoff/used, approvals, layout (_components, NavMenu, Header)
+Active Features: dashboard (weekly record + target clock-out column), attendance/view (all-employees 7-day grid), documents (pill filters + table + pagination), dayoff/requests, dayoff/used, approvals, layout (_components, NavMenu, Header)
 
 ## Skill routing
 
