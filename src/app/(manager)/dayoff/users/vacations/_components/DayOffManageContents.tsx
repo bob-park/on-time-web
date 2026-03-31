@@ -48,7 +48,7 @@ export default function DayOffManageContents() {
 
       {/* Matrix zone */}
       <div className="overflow-x-auto">
-        <table className="x-max border-collapse">
+        <table className="w-max border-collapse">
           <thead>
             <tr className="h-10 border-b border-slate-200 bg-slate-50">
               <th className="sticky left-0 z-20 w-12 bg-slate-50 px-3 text-center text-[11px] font-semibold tracking-[0.06em] text-slate-500 uppercase">

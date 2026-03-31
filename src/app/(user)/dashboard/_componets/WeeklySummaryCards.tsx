@@ -75,7 +75,7 @@ export default function WeeklySummaryCards() {
               isOnTrack ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'
             }`}
           >
-            {isOnTrack ? '순조로움' : '지연'}
+            {isOnTrack ? '일쟁이' : '열심히 일해라 닝겐'}
           </span>
         </div>
 

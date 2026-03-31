@@ -21,7 +21,7 @@ export function useGetCurrentUser() {
 }
 
 export function useGetUsers(params: SearchPageParams) {
-  const { data, fetchNextPage, isLoading, refetch } = useInfiniteQuery<
+  const { data, fetchNextPage, isLoading, isError, refetch } = useInfiniteQuery<
     Page<User>,
     unknown,
     InfiniteData<Page<User>>,
@@ -59,6 +59,7 @@ export function useGetUsers(params: SearchPageParams) {
   return {
     pages: data?.pages || ([] as Page<User>[]),
     isLoading,
+    isError,
     fetchNextPage,
     reload: refetch,
   };
