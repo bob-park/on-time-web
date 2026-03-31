@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.1.2.1] - 2026-03-31
+
+### Added
+- Dashboard (`/dashboard`): 목표 퇴근 시간 (target clock-out) column between clock-in and clock-out — the field was already in the data but never rendered.
+
+### Changed
+- Attendance view (`/attendance/view`): Firefox scrollbar eliminated — grid now fills the available space without triggering a second scrollbar in Firefox.
+- Attendance view: table header and column names aligned to center; "이번 주" footer label corrected to "해당 주" (accurate for any selected week); "저번 주" button renamed to "지난 주".
+- Attendance grid: WARNING status cells now highlight red on all days including today (previously today suppressed the warning color).
+- Attendance grid: `users` and `dates` arrays wrapped in `useMemo` to prevent index drift during 60-second polling refetch cycles.
+- Attendance grid: error state added — if the employee list fails to load, a clear error message is shown instead of an empty grid.
+- Attendance grid: `lastUpdatedAt` timestamp now excludes errored queries from the max calculation.
+- Manager vacation view (`/dayoff/users/vacations`): fixed broken table layout caused by invalid `x-max` Tailwind class — restored to `w-max`.
+
 ## [0.1.2.0] - 2026-03-31
 
 ### Added
