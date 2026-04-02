@@ -2,69 +2,97 @@
 
 import { useState } from 'react';
 
-import { MdEdit } from 'react-icons/md';
-
 import UserAvatar from '@/domain/user/components/UserAvatar';
 import { useGetCurrentUser } from '@/domain/user/query/user';
 
-import cx from 'classnames';
-
 import UpdateAvatarModal from './UpdateAvatarModal';
+
+function SkeletonField() {
+  return (
+    <div className="flex flex-col gap-1">
+      <div className="h-3 w-14 animate-pulse rounded bg-slate-200" />
+      <div className="h-10 w-full animate-pulse rounded-lg bg-slate-200" />
+    </div>
+  );
+}
 
 export default function PersonalInfoContents() {
   // state
-  const [isAvatarHover, setIsAvatarHover] = useState<boolean>(false);
   const [showUpdateAvatarModal, setShowUpdateAvatarModal] = useState<boolean>(false);
 
   // query
-  const { currentUser } = useGetCurrentUser();
+  const { currentUser, isLoading } = useGetCurrentUser();
+
+  const hasAvatar = !!currentUser?.id;
 
   return (
     <>
-      <div className="bg-base-200 flex flex-row items-center justify-center gap-5 rounded-xl px-5 py-2">
-        <div
-          className="relative"
-          onMouseEnter={() => setIsAvatarHover(true)}
-          onMouseLeave={() => setIsAvatarHover(false)}
-        >
-          <UserAvatar
-            alt={currentUser?.username || ''}
-            avatar={currentUser && `/api/users/${currentUser.id}/avatar`}
-            size="lg"
-            isOnline={false}
-          />
-          <div
-            className={cx(
-              'hover:bg-base-300/50 absolute top-0 left-0 flex size-48 items-center justify-center rounded-full p-5 transition-all duration-300 hover:cursor-pointer',
-            )}
-            onClick={() => setShowUpdateAvatarModal(true)}
-          >
-            <MdEdit className={cx('size-24 text-gray-200', { invisible: !isAvatarHover })} />
+      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+        <h3 className="mb-5 border-b border-slate-100 pb-3 text-lg font-semibold text-gray-900">개인 정보</h3>
+
+        {isLoading ? (
+          <div className="flex gap-8">
+            <div className="flex flex-shrink-0 flex-col items-center gap-3">
+              <div className="h-24 w-24 animate-pulse rounded-full bg-slate-200" />
+              <div className="h-8 w-24 animate-pulse rounded-lg bg-slate-200" />
+            </div>
+            <div className="grid flex-1 grid-cols-1 gap-x-6 gap-y-3.5 md:grid-cols-2">
+              <SkeletonField />
+              <SkeletonField />
+              <SkeletonField />
+              <div className="md:col-span-2">
+                <SkeletonField />
+              </div>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex items-start gap-8">
+            <div className="flex flex-shrink-0 flex-col items-center gap-3">
+              <UserAvatar
+                alt={currentUser?.username || ''}
+                avatar={currentUser && `/api/users/${currentUser.id}/avatar`}
+                size="profile"
+                isOnline={false}
+              />
+              <button
+                className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-1.5 text-sm font-medium text-blue-500 transition-colors hover:bg-blue-100"
+                onClick={() => setShowUpdateAvatarModal(true)}
+              >
+                {hasAvatar ? '아바타 변경' : '아바타 등록'}
+              </button>
+            </div>
 
-        <div className="flex-1">
-          <div className="flex flex-col gap-3 text-lg">
-            <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-full border p-4">
-              <legend className="fieldset-legend text-base">개인 정보</legend>
+            <div className="grid flex-1 grid-cols-1 gap-x-6 gap-y-3.5 md:grid-cols-2">
+              <div className="flex flex-col gap-1">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">소속 팀</span>
+                <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-[15px] text-gray-900">
+                  {currentUser?.group.name}
+                </div>
+              </div>
 
-              <label className="fieldset-label">소속 팀</label>
-              <p className="input w-full">{currentUser?.group.name}</p>
+              <div className="flex flex-col gap-1">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">직급</span>
+                <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-[15px] text-gray-900">
+                  {currentUser?.position.name}
+                </div>
+              </div>
 
-              <label className="fieldset-label">직책</label>
-              <p className="input w-full">{currentUser?.group.teamUserDescription}</p>
+              <div className="flex flex-col gap-1">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">이름</span>
+                <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-[15px] text-gray-900">
+                  {currentUser?.username}
+                </div>
+              </div>
 
-              <label className="fieldset-label">직급</label>
-              <p className="input w-full">{currentUser?.position.name}</p>
-
-              <label className="fieldset-label">이름</label>
-              <p className="input w-full">{currentUser?.username}</p>
-
-              <label className="fieldset-label">e-mail</label>
-              <p className="input w-full">{currentUser?.email}</p>
-            </fieldset>
+              <div className="flex flex-col gap-1 md:col-span-2">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">E-MAIL</span>
+                <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-[15px] text-gray-900">
+                  {currentUser?.email}
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <UpdateAvatarModal show={showUpdateAvatarModal} onClose={() => setShowUpdateAvatarModal(false)} />
     </>

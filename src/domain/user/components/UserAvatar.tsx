@@ -7,7 +7,7 @@ import Image from 'next/image';
 import cx from 'classnames';
 
 interface UserAvatarProps {
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'profile';
   avatar?: string;
   alt: string;
   isOnline?: boolean;
@@ -22,6 +22,7 @@ export default function UserAvatar({ size = 'sm', avatar, alt, isOnline = true }
       <div
         className={cx('bg-neutral text-neutral-content rounded-full', {
           'w-12': size === 'sm',
+          'w-24': size === 'profile',
           'w-36': size === 'md',
           'w-48': size === 'lg',
           'w-72': size === 'xl',
@@ -29,7 +30,9 @@ export default function UserAvatar({ size = 'sm', avatar, alt, isOnline = true }
       >
         {isError ? (
           <div className="flex size-full items-center justify-center select-none">
-            <span className="text-3xl">{alt.substring(0, 1).toUpperCase()}</span>
+            <span className={cx({ 'text-xl': size === 'profile', 'text-3xl': size !== 'profile' })}>
+              {alt.substring(0, 1).toUpperCase()}
+            </span>
           </div>
         ) : (
           <Image

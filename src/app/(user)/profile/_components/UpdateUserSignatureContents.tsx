@@ -2,56 +2,55 @@
 
 import { useState } from 'react';
 
-import { MdEdit } from 'react-icons/md';
-
 import Image from 'next/image';
 
 import { useGetCurrentUser } from '@/domain/user/query/user';
-
-import cx from 'classnames';
 
 import UpdateSignatureModal from './UpdateSignatureModal';
 
 export default function UpdateUserSignatureContents() {
   // state
-  const [isHover, setIsHover] = useState<boolean>();
+  const [isError, setIsError] = useState<boolean>(false);
   const [showUpdateSignatureModal, setShowUpdateSignatureModal] = useState<boolean>(false);
 
   // query
   const { currentUser } = useGetCurrentUser();
 
+  const hasSignature = !!currentUser && !isError;
+
   return (
     <>
-      <div className="bg-base-200 flex flex-row items-center justify-center gap-5 rounded-xl px-5 py-2">
-        <div className="flex-1">
-          <div className="flex flex-col gap-3 text-lg">
-            <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-full border p-4">
-              <legend className="fieldset-legend text-base">결재 문서 서명 변경</legend>
+      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+        <h3 className="mb-5 border-b border-slate-100 pb-3 text-lg font-semibold text-gray-900">결재 서명</h3>
 
-              <label className="fieldset-label">서명</label>
-              <div
-                className="input relative h-[200px] w-[400px]"
-                onMouseEnter={() => setIsHover(true)}
-                onMouseLeave={() => setIsHover(false)}
-                onClick={() => setShowUpdateSignatureModal(true)}
-              >
-                {currentUser && (
-                  <Image
-                    className="aspect-auto"
-                    src={`/api/users/${currentUser.id}/signature`}
-                    alt="user signature"
-                    fill
-                  />
-                )}
-                <div
-                  className={cx(
-                    'absolute top-0 left-0 flex h-[198] w-[398] items-center justify-center rounded-md p-5 transition-all duration-300 hover:cursor-pointer hover:bg-gray-500/50',
-                  )}
-                >
-                  <MdEdit className={cx('size-24 text-gray-200', { invisible: !isHover })} />
-                </div>
+        <div className="flex flex-col gap-4">
+          <div className="relative h-[160px] w-full max-w-[400px] overflow-hidden rounded-xl border border-dashed border-slate-300 bg-slate-50">
+            {currentUser && !isError ? (
+              <Image
+                className="object-contain"
+                src={`/api/users/${currentUser.id}/signature`}
+                alt="user signature"
+                fill
+                onError={() => setIsError(true)}
+              />
+            ) : (
+              <div className="flex size-full items-center justify-center">
+                <span className="text-sm text-slate-400">서명이 등록되지 않았습니다</span>
               </div>
-            </fieldset>
+            )}
+          </div>
+
+          {hasSignature && (
+            <p className="text-sm text-red-500">⚠ 배경이 투명해야 정상적으로 서명이 보입니다.</p>
+          )}
+
+          <div className="flex justify-end">
+            <button
+              className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+              onClick={() => setShowUpdateSignatureModal(true)}
+            >
+              {hasSignature ? '서명 변경' : '서명 등록'}
+            </button>
           </div>
         </div>
       </div>
