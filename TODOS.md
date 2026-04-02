@@ -1,5 +1,14 @@
 # TODOS
 
+## Batch Attendance API — AllEmployeesGrid
+**What:** Replace the per-employee `useQueries` fan-out in `AllEmployeesGrid` with a single batch endpoint `GET /api/attendance/records?userIds=...&startDate=...&endDate=...`.
+**Why:** Current implementation fires one request per employee every 60 seconds. With 100 employees that's 100 simultaneous requests per minute — fine for now, but will become a backend bottleneck as headcount grows.
+**Priority:** P2
+**Found by:** /gstack-review adversarial pass (2026-03-31, feature/attendances-dashboard)
+**Depends on / blocked by:** Backend batch endpoint (verify existence before planning). Frontend change is a one-query swap once the endpoint exists.
+
+---
+
 ## Audit Trail — Document Activity Timeline
 **What:** Add an activity timeline panel on the document detail page showing: who requested, who approved/rejected, when, and the reason for rejection.
 **Why:** Turns the app into a system of record, not just a list view. When disputes happen (payroll, labor audits), users need to see the full history of a document. This is what makes the app sticky.
@@ -44,15 +53,6 @@
 **Priority:** P1
 **Found by:** adversarial review (0.1.1.0, 2026-03-29)
 **Depends on / blocked by:** Backend API change to return totals alongside paginated results.
-
----
-
-## WorkingRecordContents — Missing 퇴근 예정 시간 column
-**What:** `WorkingRecordRow` receives `leaveWorkAt` in its props interface and the parent passes it, but `leaveWorkAt` is not rendered anywhere in the new table row. The expected clock-out time is silently gone from the weekly dashboard.
-**Why:** Users rely on this to know when they can leave. Removing it without replacement is a regression disguised as a UI cleanup.
-**Priority:** P1
-**Found by:** adversarial review (0.1.1.0, 2026-03-29)
-**Depends on / blocked by:** None. Add the column back to `WorkingRecordContents.tsx`.
 
 ---
 
@@ -116,4 +116,8 @@
 ---
 
 ## Completed
+
+### WorkingRecordContents — Missing 퇴근 예정 시간 column
+**What:** `WorkingRecordRow` receives `leaveWorkAt` in its props interface and the parent passes it, but `leaveWorkAt` was not rendered in the table row.
+**Completed:** v0.1.2.1 (2026-03-31)
 

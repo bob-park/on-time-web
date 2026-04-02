@@ -34,7 +34,7 @@ export default function UpdateAvatarModal({ show, onClose }: UpdateAvatarModalPr
       handleClose();
     },
     () => {
-      push('먼가 잘못되었으니, 알아서 하셈', 'error');
+      push('아바타 변경에 실패했습니다. 다시 시도해 주세요.', 'error');
     },
   );
 
@@ -122,7 +122,7 @@ export default function UpdateAvatarModal({ show, onClose }: UpdateAvatarModalPr
                 <div>
                   <IoCloudUploadOutline className="size-10" />
                 </div>
-                <span>Drag and drop or click to upload image</span>
+                <span>클릭 또는 드래그하여 이미지를 업로드하세요</span>
               </div>
             )}
 
@@ -139,7 +139,7 @@ export default function UpdateAvatarModal({ show, onClose }: UpdateAvatarModalPr
         <div className="modal-action">
           <button className="btn w-32" onClick={handleClose}>
             <GiCancel className="size-6" />
-            안할까?
+            취소
           </button>
           <button className="btn btn-primary w-32" disabled={isLoading || !avatarFile} onClick={handleUpdateAvatar}>
             {isLoading ? (

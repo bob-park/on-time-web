@@ -6,7 +6,7 @@ HR/근태 관리 웹 애플리케이션
 
 ## Tech Stack
 
-- **Framework**: Next.js 15 App Router
+- **Framework**: Next.js 16 App Router
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS v4 + DaisyUI v5
 - **State**: Zustand v5
@@ -61,4 +61,22 @@ yarn lint         # ESLint 검사
 
 현재: **DO** (구현 단계)
 
-Active Features: dashboard, documents (pill filters + table + pagination), dayoff/requests, dayoff/used, approvals, layout (_components, NavMenu, Header)
+Active Features: dashboard (weekly record + target clock-out column), attendance/view (all-employees 7-day grid), documents (pill filters + table + pagination), dayoff/requests, dayoff/used, approvals, profile (white card redesign + skeleton loading + signature fallback), layout (_components, NavMenu, Header)
+
+## Skill routing
+
+When the user's request matches an available skill, ALWAYS invoke it using the Skill
+tool as your FIRST action. Do NOT answer directly, do NOT use other tools first.
+The skill has specialized workflows that produce better results than ad-hoc answers.
+
+Key routing rules:
+- Product ideas, "is this worth building", brainstorming → invoke office-hours
+- Bugs, errors, "why is this broken", 500 errors → invoke investigate
+- Ship, deploy, push, create PR → invoke ship
+- QA, test the site, find bugs → invoke qa
+- Code review, check my diff → invoke review
+- Update docs after shipping → invoke document-release
+- Weekly retro → invoke retro
+- Design system, brand → invoke design-consultation
+- Visual audit, design polish → invoke design-review
+- Architecture review → invoke plan-eng-review
