@@ -23,8 +23,6 @@ export default function PersonalInfoContents() {
   // query
   const { currentUser, isLoading } = useGetCurrentUser();
 
-  const hasAvatar = !!currentUser?.id;
-
   return (
     <>
       <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
@@ -58,7 +56,7 @@ export default function PersonalInfoContents() {
                 className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-1.5 text-sm font-medium text-blue-500 transition-colors hover:bg-blue-100"
                 onClick={() => setShowUpdateAvatarModal(true)}
               >
-                {hasAvatar ? '아바타 변경' : '아바타 등록'}
+                아바타 변경
               </button>
             </div>
 

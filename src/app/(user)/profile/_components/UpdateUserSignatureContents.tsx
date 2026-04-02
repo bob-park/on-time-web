@@ -54,7 +54,13 @@ export default function UpdateUserSignatureContents() {
           </div>
         </div>
       </div>
-      <UpdateSignatureModal show={showUpdateSignatureModal} onClose={() => setShowUpdateSignatureModal(false)} />
+      <UpdateSignatureModal
+        show={showUpdateSignatureModal}
+        onClose={() => {
+          setShowUpdateSignatureModal(false);
+          setIsError(false);
+        }}
+      />
     </>
   );
 }
