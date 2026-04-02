@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.1.3.0] - 2026-04-02
+
+### Added
+- Profile (`/profile`): modern white card UI redesign matching dashboard/documents/dayoff design language. Explicit avatar and signature change buttons replace hidden hover-only discovery. Password confirmation field with inline mismatch indicator prevents typo-lockouts. Skeleton loading state while user data loads. Signature fallback for users without uploaded signatures.
+- Profile: new `profile` size variant (96px) for UserAvatar component with scaled fallback text.
+
+### Changed
+- Profile: error messages changed from placeholder jokes to professional Korean copy ("패스워드 변경에 실패했습니다", "아바타 변경에 실패했습니다").
+- Profile: modal cancel button text "안할까?" → "취소", upload text translated to Korean.
+- Profile: signature error state resets on modal close so re-uploaded signatures display immediately.
+
+### Fixed
+- Profile: signature image 404 now shows "서명이 등록되지 않았습니다" placeholder instead of broken image icon.
+
 ## [0.1.2.1] - 2026-03-31
 
 ### Added
