@@ -29,7 +29,7 @@ export default function RequestConfirmModal({ show, documentId, onClose }: Reque
       push('문서가 신청되었습니다.', 'success');
     },
     () => {
-      push('머가 잘못되었는디?', 'error');
+      push('문서 신청 중 오류가 발생했습니다. 다시 시도해 주세요.', 'error');
     },
   );
 

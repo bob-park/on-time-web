@@ -57,6 +57,7 @@ export default function DayOffRequestContent() {
   }));
   const [usedCompLeaveEntries, setUsedCompLeaveEntries] = useState<UsedCompLeaveEntryRequest[]>([]);
   const [showSelectCompLeaveEntries, setShowSelectCompLeaveEntries] = useState<boolean>(false);
+  const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState<boolean>(false);
 
   const router = useRouter();
   const { push } = useToast();
@@ -77,6 +78,8 @@ export default function DayOffRequestContent() {
   }, [showSelectCompLeaveEntries]);
 
   const handleRequestClick = () => {
+    setHasAttemptedSubmit(true);
+
     if (!selectedVacationType || !selectedVacationSubType || !reason) {
       push('필수 항목을 입력해주세요', 'error');
       return;
@@ -113,7 +116,12 @@ export default function DayOffRequestContent() {
 
             {/* 연차 구분 */}
             <div className="mb-5">
-              <p className="mb-2 text-xs font-medium text-slate-500">연차 구분</p>
+              <p className="mb-2 text-xs font-medium text-slate-500">
+              연차 구분
+              {hasAttemptedSubmit && !selectedVacationType && (
+                <span className="ml-2 text-red-500">선택해 주세요</span>
+              )}
+            </p>
               <div className="flex flex-col gap-2">
                 {VACATION_TYPES.map((type) => (
                   <button
@@ -146,7 +154,12 @@ export default function DayOffRequestContent() {
 
             {/* 부가 구분 */}
             <div className="mb-5">
-              <p className="mb-2 text-xs font-medium text-slate-500">부가 구분</p>
+              <p className="mb-2 text-xs font-medium text-slate-500">
+              부가 구분
+              {hasAttemptedSubmit && !selectedVacationSubType && (
+                <span className="ml-2 text-red-500">선택해 주세요</span>
+              )}
+            </p>
               <div className="flex flex-col gap-2">
                 {VACATION_SUBTYPES.map((sub) => (
                   <button
@@ -201,10 +214,19 @@ export default function DayOffRequestContent() {
 
             {/* 사유 */}
             <div>
-              <p className="mb-2 text-xs font-medium text-slate-500">사유</p>
+              <p className="mb-2 text-xs font-medium text-slate-500">
+                사유
+                {hasAttemptedSubmit && !reason && (
+                  <span className="ml-2 text-red-500">입력해 주세요</span>
+                )}
+              </p>
               <input
                 type="text"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:border-slate-400 focus:bg-white focus:outline-none"
+                maxLength={200}
+                className={cx(
+                  'w-full rounded-xl border bg-slate-50 px-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:border-slate-400 focus:bg-white focus:outline-none',
+                  hasAttemptedSubmit && !reason ? 'border-red-300' : 'border-slate-200',
+                )}
                 placeholder="개인 사유"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}

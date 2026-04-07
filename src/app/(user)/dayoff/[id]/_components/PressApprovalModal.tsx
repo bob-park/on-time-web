@@ -32,7 +32,7 @@ export default function PressApprovalModal({ show, approvalUserUniqueId, onClose
       push('결재자한테 알림을 보냈습니다. 넌 이제 큰일남!!', 'success');
     },
     () => {
-      push('머가 잘못되었는디?', 'error');
+      push('알림 전송 중 오류가 발생했습니다. 다시 시도해 주세요.', 'error');
     },
   );
 

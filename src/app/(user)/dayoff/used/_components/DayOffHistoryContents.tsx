@@ -155,8 +155,8 @@ export default function DayOffHistoryContents() {
                 <div className="font-medium text-slate-800">{doc.usedDays.toFixed(1)}일</div>
 
                 {/* 비고 */}
-                <div className="space-y-1">
-                  {doc.reason && <p className="text-slate-600">{doc.reason}</p>}
+                <div className="min-w-0 space-y-1">
+                  {doc.reason && <p className="truncate text-slate-600">{doc.reason}</p>}
                   {doc.usedCompLeaveEntries?.map((entry) => (
                     <p key={`comp-entry-${entry.id}`} className="text-xs text-slate-400">
                       {dayjs(entry.compLeaveEntry.effectiveDate).format('YYYY-MM-DD')} — {entry.compLeaveEntry.contents}
