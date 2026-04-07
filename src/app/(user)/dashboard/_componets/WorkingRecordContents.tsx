@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext } from 'react';
+import { memo, useContext } from 'react';
 
 import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
 import { useGetAttendanceRecord } from '@/domain/attendance/query/attendanceRecord';
@@ -10,7 +10,7 @@ import { getDuration } from '@/utils/parse';
 
 import cx from 'classnames';
 import dayjs from 'dayjs';
-import { padStart } from 'lodash';
+import padStart from 'lodash/padStart';
 
 const ONE_HOUR = 3_600;
 const DAILY_TOTAL_HOURS = 8;
@@ -32,7 +32,7 @@ function getCategory(date: Date, dayOffType?: DayOffType): string {
 function getCategoryStyle(category: string): string {
   if (category === 'Work') return 'bg-blue-100 text-blue-700';
   if (category === '연차' || category === '반차') return 'bg-purple-100 text-purple-700';
-  return 'bg-gray-100 text-gray-500';
+  return 'bg-slate-100 text-slate-500';
 }
 
 interface WorkingRecordRowProps {
@@ -44,7 +44,7 @@ interface WorkingRecordRowProps {
   dayOffType?: DayOffType;
 }
 
-function WorkingRecordRow({ date, clockInTime, leaveWorkAt, clockOutTime, status, dayOffType }: WorkingRecordRowProps) {
+const WorkingRecordRow = memo(function WorkingRecordRow({ date, clockInTime, leaveWorkAt, clockOutTime, status, dayOffType }: WorkingRecordRowProps) {
   const now = dayjs().hour(0).minute(0).second(0).millisecond(0);
   const isToday = now.isSame(date);
   const isInProgress = isToday && clockInTime && !clockOutTime;
@@ -69,7 +69,7 @@ function WorkingRecordRow({ date, clockInTime, leaveWorkAt, clockOutTime, status
 
   return (
     <tr
-      className={cx('border-b border-gray-100 transition-colors duration-100 hover:bg-gray-50', {
+      className={cx('border-b border-slate-100 transition-colors duration-100 hover:bg-slate-50', {
         'bg-blue-50': isToday,
       })}
     >
@@ -79,12 +79,12 @@ function WorkingRecordRow({ date, clockInTime, leaveWorkAt, clockOutTime, status
           className={cx('text-sm font-medium', {
             'text-blue-600': dayjs(date).day() === 6,
             'text-red-500': dayjs(date).day() === 0,
-            'text-gray-800': ![0, 6].includes(dayjs(date).day()),
+            'text-slate-800': ![0, 6].includes(dayjs(date).day()),
           })}
         >
           {dayjs(date).format('YYYY.MM.DD')}
         </span>
-        <span className="ml-1.5 text-xs text-gray-400">{dayjs(date).format('dddd')}</span>
+        <span className="ml-1.5 text-xs text-slate-400">{dayjs(date).format('dddd')}</span>
       </td>
 
       {/* CATEGORY */}
@@ -95,34 +95,34 @@ function WorkingRecordRow({ date, clockInTime, leaveWorkAt, clockOutTime, status
       </td>
 
       {/* CLOCK-IN */}
-      <td className="px-3 py-3 text-center text-sm text-gray-700">
-        {clockInTime ? dayjs(clockInTime).format('HH:mm') : <span className="text-gray-300">—</span>}
+      <td className="px-3 py-3 text-center text-sm text-slate-700">
+        {clockInTime ? dayjs(clockInTime).format('HH:mm') : <span className="text-slate-300">—</span>}
       </td>
 
       {/* TARGET CLOCK-OUT */}
-      <td className="px-3 py-3 text-center text-sm text-gray-700">
-        {leaveWorkAt ? dayjs(leaveWorkAt).format('HH:mm') : <span className="text-gray-300">—</span>}
+      <td className="px-3 py-3 text-center text-sm text-slate-700">
+        {leaveWorkAt ? dayjs(leaveWorkAt).format('HH:mm') : <span className="text-slate-300">—</span>}
       </td>
 
       {/* CLOCK-OUT */}
-      <td className="px-3 py-3 text-center text-sm text-gray-700">
+      <td className="px-3 py-3 text-center text-sm text-slate-700">
         {isInProgress ? (
-          <span className="text-xs font-medium text-blue-500">근무 중...</span>
+          <span className="animate-pulse text-xs font-medium text-blue-500">근무 중...</span>
         ) : clockOutTime ? (
           dayjs(clockOutTime).format('HH:mm')
         ) : (
-          <span className="text-gray-300">—</span>
+          <span className="text-slate-300">—</span>
         )}
       </td>
 
       {/* DURATION */}
       <td className="px-3 py-3">
         <div className="flex items-center gap-2">
-          <div className="h-1.5 w-20 overflow-hidden rounded-full bg-gray-200">
+          <div className="h-1.5 w-20 overflow-hidden rounded-full bg-slate-200">
             <div className="h-full rounded-full bg-blue-400" style={{ width: `${durationPercent}%` }} />
           </div>
-          <span className="text-sm text-gray-700">
-            {workDuration > 0 ? parseHours(workDuration) : <span className="text-gray-300">—</span>}
+          <span className="text-sm text-slate-700">
+            {workDuration > 0 ? parseHours(workDuration) : <span className="text-slate-300">—</span>}
           </span>
         </div>
       </td>
@@ -130,18 +130,18 @@ function WorkingRecordRow({ date, clockInTime, leaveWorkAt, clockOutTime, status
       {/* STATUS */}
       <td className="py-3 pr-4 pl-3 text-center">
         {DEFAULT_WEEKENDS.includes(dayjs(date).day()) && !status ? null : !status ? (
-          <span className="inline-block h-3 w-3 rounded-full bg-gray-200" />
+          <span className="inline-block h-3 w-3 rounded-full bg-slate-200" />
         ) : status === 'SUCCESS' ? (
           <span className="inline-block h-3 w-3 rounded-full bg-green-500" />
         ) : status === 'WARNING' ? (
           <span className="inline-block h-3 w-3 rounded-full bg-red-500" />
         ) : (
-          <span className="inline-block h-3 w-3 rounded-full bg-gray-300" />
+          <span className="inline-block h-3 w-3 rounded-full bg-slate-300" />
         )}
       </td>
     </tr>
   );
-}
+});
 
 function getDates(
   selectDate: { startDate: Date; endDate: Date },
@@ -198,24 +198,24 @@ export default function WorkingRecordContents() {
   };
 
   return (
-    <div className="mt-6 w-full rounded-2xl border border-gray-200 bg-white shadow-sm">
+    <div className="animate-fade-up delay-225 mt-6 w-full rounded-2xl border border-slate-200 bg-white shadow-sm">
       {/* section header */}
-      <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
-        <h3 className="text-sm font-semibold text-gray-800">주간 근태 상세 내역</h3>
+      <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4">
+        <h3 className="text-sm font-bold tracking-wide text-slate-800 uppercase">주간 근태 상세 내역</h3>
       </div>
 
       {/* table */}
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-gray-100 bg-gray-50">
-              <th className="py-3 pr-3 pl-4 text-center text-xs font-semibold text-gray-500">근무일</th>
-              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-500">구분</th>
-              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-500">출근 시간</th>
-              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-500">목표 퇴근 시간</th>
-              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-500">퇴근 시간</th>
-              <th className="px-3 py-3 text-center text-xs font-semibold text-gray-500">근무 시간</th>
-              <th className="py-3 pr-4 pl-3 text-center text-xs font-semibold text-gray-500">상태</th>
+            <tr className="border-b border-slate-100 bg-slate-50">
+              <th className="py-3 pr-3 pl-4 text-center text-xs font-semibold text-slate-500">근무일</th>
+              <th className="px-3 py-3 text-center text-xs font-semibold text-slate-500">구분</th>
+              <th className="px-3 py-3 text-center text-xs font-semibold text-slate-500">출근 시간</th>
+              <th className="px-3 py-3 text-center text-xs font-semibold text-slate-500">목표 퇴근 시간</th>
+              <th className="px-3 py-3 text-center text-xs font-semibold text-slate-500">퇴근 시간</th>
+              <th className="px-3 py-3 text-center text-xs font-semibold text-slate-500">근무 시간</th>
+              <th className="py-3 pr-4 pl-3 text-center text-xs font-semibold text-slate-500">상태</th>
             </tr>
           </thead>
           <tbody>
@@ -235,12 +235,12 @@ export default function WorkingRecordContents() {
       </div>
 
       {/* footer */}
-      <div className="flex items-center justify-between border-t border-gray-100 px-6 py-3">
-        <span className="text-xs text-gray-500">해당 주 {dataList.length}건</span>
+      <div className="flex items-center justify-between border-t border-slate-100 px-6 py-3">
+        <span className="text-xs text-slate-500">해당 주 {dataList.length}건</span>
         <div className="flex gap-2">
           <button
             onClick={handlePrevWeek}
-            className="rounded-lg border border-gray-200 px-4 py-1.5 text-sm font-medium text-gray-600 transition-colors duration-150 hover:bg-gray-50"
+            className="rounded-lg border border-slate-200 px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors duration-150 hover:bg-slate-50"
           >
             지난 주
           </button>

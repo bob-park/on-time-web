@@ -71,7 +71,7 @@ export default function ToastProvider({ children, limit, timeout }: ToastProvide
 
   return (
     <ToastContext.Provider value={contextValues}>
-      <div className="fixed top-20 right-0 z-50 mt-2 mr-5 mb-2 flex flex-col items-end gap-2">
+      <div className="fixed top-20 right-0 z-50 mt-2 mr-5 mb-2 flex flex-col items-end gap-2" role="status" aria-live="polite">
         {messages.map((message) => (
           <Toast
             key={`alert-${message.id}`}

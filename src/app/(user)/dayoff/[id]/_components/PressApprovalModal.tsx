@@ -29,10 +29,10 @@ export default function PressApprovalModal({ show, approvalUserUniqueId, onClose
   const { sendMessage, isLoading } = useUserNotification(
     () => {
       handleClose();
-      push('결재자한테 알림을 보냈습니다. 넌 이제 큰일남!!', 'success');
+      push('결재자에게 알림을 보냈습니다.', 'success');
     },
     () => {
-      push('머가 잘못되었는디?', 'error');
+      push('알림 전송 중 오류가 발생했습니다. 다시 시도해 주세요.', 'error');
     },
   );
 
@@ -76,7 +76,7 @@ export default function PressApprovalModal({ show, approvalUserUniqueId, onClose
         <div className="flex w-full flex-col items-start justify-start gap-3">
           {/* header */}
           <div className="">
-            <h3 className="text-lg font-bold">빨리 진행시켜</h3>
+            <h3 className="text-lg font-bold">결재 독촉 알림</h3>
           </div>
         </div>
 
@@ -95,18 +95,18 @@ export default function PressApprovalModal({ show, approvalUserUniqueId, onClose
         <div className="modal-action">
           <button className="btn w-36" onClick={handleClose}>
             <FaTimes className="size-6" />
-            보내지 말까?
+            취소
           </button>
           <button className="btn btn-primary w-36" disabled={isLoading} onClick={handlePressApproval}>
             {isLoading ? (
               <>
                 <span className="loading loading-spinner loading-xs" />
-                보내는중
+                전송 중
               </>
             ) : (
               <>
                 <FaCheck className="size-5" />
-                보낼까?
+                알림 보내기
               </>
             )}
           </button>

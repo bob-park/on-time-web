@@ -25,8 +25,8 @@ export default function PersonalInfoContents() {
 
   return (
     <>
-      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-        <h3 className="mb-5 border-b border-slate-100 pb-3 text-lg font-semibold text-gray-900">개인 정보</h3>
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h3 className="mb-5 border-b border-slate-100 pb-3 text-lg font-semibold text-slate-900">개인 정보</h3>
 
         {isLoading ? (
           <div className="flex gap-8">
@@ -62,29 +62,29 @@ export default function PersonalInfoContents() {
 
             <div className="grid flex-1 grid-cols-1 gap-x-6 gap-y-3.5 md:grid-cols-2">
               <div className="flex flex-col gap-1">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">소속 팀</span>
-                <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-[15px] text-gray-900">
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">소속 팀</span>
+                <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900">
                   {currentUser?.group.name}
                 </div>
               </div>
 
               <div className="flex flex-col gap-1">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">직급</span>
-                <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-[15px] text-gray-900">
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">직급</span>
+                <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900">
                   {currentUser?.position.name}
                 </div>
               </div>
 
               <div className="flex flex-col gap-1">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">이름</span>
-                <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-[15px] text-gray-900">
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">이름</span>
+                <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900">
                   {currentUser?.username}
                 </div>
               </div>
 
               <div className="flex flex-col gap-1 md:col-span-2">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">E-MAIL</span>
-                <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-[15px] text-gray-900">
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">E-MAIL</span>
+                <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900">
                   {currentUser?.email}
                 </div>
               </div>

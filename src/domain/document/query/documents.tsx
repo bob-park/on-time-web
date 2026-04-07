@@ -32,7 +32,7 @@ export function useApprovalDocument(id: number) {
   return { approvalHistory: data, isLoading };
 }
 
-export function useApproveDocument(onSuccess?: () => void) {
+export function useApproveDocument(onSuccess?: () => void, onError?: () => void) {
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
@@ -43,12 +43,15 @@ export function useApproveDocument(onSuccess?: () => void) {
 
       onSuccess && onSuccess();
     },
+    onError: () => {
+      onError && onError();
+    },
   });
 
   return { approve: mutate, isLoading: isPending };
 }
 
-export function useRejectDocument(onSuccess?: () => void) {
+export function useRejectDocument(onSuccess?: () => void, onError?: () => void) {
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
@@ -57,6 +60,9 @@ export function useRejectDocument(onSuccess?: () => void) {
     onSuccess: async (data) => {
       await queryClient.invalidateQueries({ queryKey: ['documents'] });
       onSuccess && onSuccess();
+    },
+    onError: () => {
+      onError && onError();
     },
   });
 

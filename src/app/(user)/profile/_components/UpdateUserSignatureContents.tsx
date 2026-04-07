@@ -20,8 +20,8 @@ export default function UpdateUserSignatureContents() {
 
   return (
     <>
-      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-        <h3 className="mb-5 border-b border-slate-100 pb-3 text-lg font-semibold text-gray-900">결재 서명</h3>
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h3 className="mb-5 border-b border-slate-100 pb-3 text-lg font-semibold text-slate-900">결재 서명</h3>
 
         <div className="flex flex-col gap-4">
           <div className="relative h-[160px] w-full max-w-[400px] overflow-hidden rounded-xl border border-dashed border-slate-300 bg-slate-50">

@@ -7,7 +7,10 @@ export default function AttendanceViewPage() {
     <div className="flex h-full w-full flex-col gap-2 max-w-screen-lg">
       <WorkingTimeProvider>
         <div className="flex w-full flex-none items-end justify-between">
-          <h2 className="mt-1 w-full text-2xl font-bold text-gray-900">임직원 근무 현황</h2>
+          <div className="w-full">
+            <p className="text-xs font-semibold tracking-widest text-slate-400 uppercase">Attendance</p>
+            <h2 className="mt-1 text-3xl font-extrabold tracking-tight text-slate-900">임직원 근무 현황</h2>
+          </div>
           <WorkingTimeView />
         </div>
 

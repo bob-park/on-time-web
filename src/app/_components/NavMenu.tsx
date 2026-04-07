@@ -6,9 +6,8 @@ import { HiDocumentPlus } from 'react-icons/hi2';
 import { IoChatbox, IoLogOutOutline } from 'react-icons/io5';
 import { LuHistory } from 'react-icons/lu';
 import { MdManageAccounts, MdOutlineApproval } from 'react-icons/md';
-import { MdSupportAgent } from 'react-icons/md';
 import { PiUserFocusBold } from 'react-icons/pi';
-import { RiCalendarScheduleFill, RiDashboardFill } from 'react-icons/ri';
+import { RiDashboardFill } from 'react-icons/ri';
 
 import Link from 'next/link';
 import { useSelectedLayoutSegments } from 'next/navigation';
@@ -36,12 +35,16 @@ interface MenuItemProps {
 function MenuItem({ children, href, active }: MenuItemProps) {
   return (
     <Link
-      className={cx('w-full rounded-xl px-3 py-2.5 text-slate-300 duration-150 hover:bg-slate-700 hover:text-white', {
-        'bg-slate-700 text-white': active,
-      })}
+      className={cx(
+        'relative w-full rounded-xl px-3 py-2.5 text-slate-400 duration-200 hover:bg-slate-800 hover:text-white',
+        active && 'bg-slate-800 text-white shadow-sm shadow-indigo-500/10',
+      )}
       href={href}
     >
-      <div className={cx('flex w-full flex-row items-center justify-start gap-3')}>{children}</div>
+      <div className="flex w-full flex-row items-center justify-start gap-3">
+        {active && <div className="absolute left-0 h-5 w-0.5 rounded-r-full bg-indigo-500" />}
+        {children}
+      </div>
     </Link>
   );
 }
@@ -59,8 +62,9 @@ export default function NavMenu() {
     <div className="flex h-full w-full flex-col overflow-hidden bg-slate-900 select-none">
       {/* logo */}
       <div className="my-1 flex-none border-b border-slate-700 px-6 py-5">
-        <Link href="/">
-          <h1 className="text-xl font-bold text-white">OnTime</h1>
+        <Link href="/" className="group flex items-center gap-2">
+          <div className="h-8 w-1 rounded-full bg-indigo-500 transition-all duration-200 group-hover:h-6 group-hover:bg-indigo-400" />
+          <h1 className="text-2xl font-extrabold tracking-tight text-white">OnTime</h1>
         </Link>
       </div>
 
@@ -72,11 +76,6 @@ export default function NavMenu() {
             <RiDashboardFill className="inline-block h-5 w-5 flex-none" />
             대시보드
           </MenuItem>
-
-          {/*<MenuItem href="/schedule" active={isActive(segments, ['schedule'])}>*/}
-          {/*  <RiCalendarScheduleFill className="inline-block h-5 w-5 flex-none" />*/}
-          {/*  근무 일정*/}
-          {/*</MenuItem>*/}
 
           <div className="mt-4 mb-1 px-3">
             <span className="text-xs font-medium tracking-wider text-slate-500 uppercase">전자 결재</span>

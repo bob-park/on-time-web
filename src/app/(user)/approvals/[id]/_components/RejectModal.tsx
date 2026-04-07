@@ -25,10 +25,15 @@ export default function RejectModal({ show, id, onClose }: ApproveModalProps) {
   const [reason, setReason] = useState<string>('');
 
   // query
-  const { reject, isLoading } = useRejectDocument(() => {
-    push('문서가 반려되었습니다.', 'info');
-    handleClose();
-  });
+  const { reject, isLoading } = useRejectDocument(
+    () => {
+      push('문서가 반려되었습니다.', 'success');
+      handleClose();
+    },
+    () => {
+      push('반려 처리 중 오류가 발생했습니다. 다시 시도해 주세요.', 'error');
+    },
+  );
 
   // useEffect
   useEffect(() => {
@@ -41,6 +46,7 @@ export default function RejectModal({ show, id, onClose }: ApproveModalProps) {
 
   // handle
   const handleClose = () => {
+    setReason('');
     onClose && onClose();
   };
 
@@ -71,7 +77,8 @@ export default function RejectModal({ show, id, onClose }: ApproveModalProps) {
             <input
               type="text"
               className="grow"
-              placeholder=""
+              placeholder="반려 사유를 입력해 주세요"
+              maxLength={200}
               value={reason}
               onChange={(e) => setReason(e.target.value)}
             />
@@ -83,18 +90,18 @@ export default function RejectModal({ show, id, onClose }: ApproveModalProps) {
         <div className="modal-action">
           <button className="btn w-32" onClick={handleClose}>
             <FaTimes className="size-6" />
-            안할까?
+            취소
           </button>
           <button className="btn btn-primary w-32" disabled={isLoading || !reason} onClick={handleReject}>
             {isLoading ? (
               <>
                 <span className="loading loading-spinner loading-xs" />
-                반려중
+                반려 중
               </>
             ) : (
               <>
                 <FaCheck className="size-5" />
-                할까?
+                반려
               </>
             )}
           </button>

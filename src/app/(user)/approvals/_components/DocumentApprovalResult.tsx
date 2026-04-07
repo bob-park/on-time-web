@@ -1,5 +1,7 @@
 'use client';
 
+import { memo } from 'react';
+
 import { useRouter } from 'next/navigation';
 
 import DocumentStatusBadge from '@/domain/document/components/DocumentStatusBadge';
@@ -20,19 +22,19 @@ export default function DocumentApprovalResult({ items, isLoading }: DocumentApp
       <table className="w-full border-collapse">
         <thead>
           <tr className="h-10 border-b border-slate-200 bg-slate-50">
-            <th className="w-[110px] px-3 text-left text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+            <th className="w-[110px] px-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
               문서번호
             </th>
-            <th className="w-[110px] px-3 text-left text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+            <th className="w-[110px] px-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
               구분
             </th>
-            <th className="w-[110px] px-3 text-left text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+            <th className="w-[110px] px-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
               상태
             </th>
-            <th className="w-[140px] px-3 text-left text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+            <th className="w-[140px] px-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
               신청자
             </th>
-            <th className="px-3 text-left text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+            <th className="px-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
               요청일
             </th>
             <th className="w-14 px-3" />
@@ -54,7 +56,7 @@ export default function DocumentApprovalResult({ items, isLoading }: DocumentApp
   );
 }
 
-function ApprovalRow({ item }: { item: ApprovalHistory }) {
+const ApprovalRow = memo(function ApprovalRow({ item }: { item: ApprovalHistory }) {
   const router = useRouter();
 
   const handleClick = () => {
@@ -74,7 +76,7 @@ function ApprovalRow({ item }: { item: ApprovalHistory }) {
       onKeyDown={(e) => e.key === 'Enter' && handleClick()}
       aria-label={`결재 ${item.id ?? ''} 상세 보기`}
     >
-      <td className="px-3 text-[13px] font-semibold text-slate-500">
+      <td className="px-3 text-sm font-semibold text-slate-500">
         {item.id !== undefined ? `#${item.id}` : '—'}
       </td>
       <td className="px-3">
@@ -84,10 +86,10 @@ function ApprovalRow({ item }: { item: ApprovalHistory }) {
         <DocumentStatusBadge status={statusForBadge} />
       </td>
       <td className="px-3">
-        <div className="text-[13px] text-slate-800">{item.document.user.username}</div>
-        <div className="text-[11px] text-slate-400">{item.document.user.position.name}</div>
+        <div className="text-sm text-slate-800">{item.document.user.username}</div>
+        <div className="text-xs text-slate-400">{item.document.user.position.name}</div>
       </td>
-      <td className="px-3 text-[13px] text-slate-500">
+      <td className="px-3 text-sm text-slate-500">
         {item.createdDate
           ? dayjs(item.createdDate).locale('ko').format('YYYY년 MM월 DD일')
           : '—'}
@@ -96,7 +98,7 @@ function ApprovalRow({ item }: { item: ApprovalHistory }) {
         <button
           type="button"
           aria-label="결재 상세 보기"
-          className="flex h-7 w-7 items-center justify-center rounded-md border border-slate-200 bg-white text-[13px] text-slate-500 transition-colors duration-100 hover:bg-slate-50"
+          className="flex h-7 w-7 items-center justify-center rounded-md border border-slate-200 bg-white text-sm text-slate-500 transition-colors duration-100 hover:bg-slate-50"
           onClick={(e) => {
             e.stopPropagation();
             handleClick();
@@ -107,7 +109,7 @@ function ApprovalRow({ item }: { item: ApprovalHistory }) {
       </td>
     </tr>
   );
-}
+});
 
 function SkeletonRows() {
   const widths = [
@@ -152,8 +154,8 @@ function EmptyState() {
       <td colSpan={6} className="py-16 text-center">
         <div className="flex flex-col items-center gap-2">
           <HiOutlineDocumentText className="size-10 text-slate-300" />
-          <p className="text-[15px] font-semibold text-slate-500">결재 문서가 없습니다</p>
-          <p className="text-[13px] text-slate-400">조건에 맞는 문서가 없습니다</p>
+          <p className="text-sm font-semibold text-slate-500">결재 문서가 없습니다</p>
+          <p className="text-sm text-slate-400">조건에 맞는 문서가 없습니다</p>
         </div>
       </td>
     </tr>

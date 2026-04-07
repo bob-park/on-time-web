@@ -16,7 +16,7 @@ export default function ChatUserContents() {
   return (
     <div className="flex size-full flex-col items-center justify-start gap-1">
       {/* headers */}
-      <div className="flex h-12 flex-row items-center justify-center gap-4 border-b border-gray-300 text-center text-base font-semibold">
+      <div className="flex h-12 flex-row items-center justify-center gap-4 border-b border-slate-300 text-center text-base font-semibold">
         <div className="w-40 flex-none">팀(부서)</div>
         <div className="w-32 flex-none">직급</div>
         <div className="w-40 flex-none">이름</div>

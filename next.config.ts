@@ -9,8 +9,7 @@ const nextConfig: NextConfig = {
   },
   images: {
     dangerouslyAllowLocalIP: true,
-    unoptimized: true,
-    minimumCacheTTL: 0,
+    minimumCacheTTL: 3600,
     remotePatterns: [
       {
         hostname: '**',

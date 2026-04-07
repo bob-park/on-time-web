@@ -16,8 +16,6 @@ import delay from '@/utils/delay';
 
 import cx from 'classnames';
 import dayjs from 'dayjs';
-import html2canvas from 'html2canvas-pro';
-import jsPDF from 'jspdf';
 
 import PressApprovalModal from './PressApprovalModal';
 
@@ -50,7 +48,8 @@ export default function DayOffDetailContents({ id }: DayOffDetailContentsProps) 
 
     setIsPdfLoading(true);
 
-    html2canvas(docElement).then(async (canvas) => {
+    Promise.all([import('html2canvas-pro'), import('jspdf')]).then(async ([{ default: html2canvas }, { default: jsPDF }]) => {
+      const canvas = await html2canvas(docElement);
       const pdf = new jsPDF('p', 'mm', 'a4');
       pdf.addImage(canvas, 'JPEG', 0, 0, 210, 297);
       pdf.save(`휴가계_${vacationDocument.user.username}_${dayjs(vacationDocument.startDate).format('YYYYMMDD')}.pdf`);

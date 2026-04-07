@@ -38,25 +38,25 @@ export default function WorkingTimeView() {
   return (
     <div className="flex w-full flex-row items-center justify-end gap-2">
       <button
-        className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 transition-colors duration-150"
+        className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 active:scale-95 transition-[colors,transform] duration-150"
         onClick={handlePrevWeekClick}
       >
         <IoIosArrowBack className="h-4 w-4" />
       </button>
 
-      <span className="min-w-[220px] text-center text-sm font-medium text-gray-700">
+      <span className="min-w-[220px] text-center text-sm font-medium text-slate-700">
         {`${dayjs(selectDate.startDate).format('YYYY.MM.DD')} – ${dayjs(selectDate.endDate).format('MM.DD')}`}
       </span>
 
       <button
-        className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 transition-colors duration-150"
+        className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 active:scale-95 transition-[colors,transform] duration-150"
         onClick={handleNextWeekClick}
       >
         <IoIosArrowForward className="h-4 w-4" />
       </button>
 
       <button
-        className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors duration-150"
+        className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 active:scale-95 transition-[colors,transform] duration-150"
         onClick={handleTodayClick}
       >
         오늘

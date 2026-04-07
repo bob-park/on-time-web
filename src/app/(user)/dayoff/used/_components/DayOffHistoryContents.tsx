@@ -43,15 +43,15 @@ export default function DayOffHistoryContents() {
       <div className="flex items-center gap-2">
         <button
           type="button"
-          className="flex size-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 transition-colors duration-150 hover:bg-gray-50"
+          className="flex size-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition-colors duration-150 hover:bg-slate-50"
           onClick={() => handleYearChange(-1)}
         >
           <IoIosArrowBack className="size-4" />
         </button>
-        <span className="min-w-[4rem] text-center text-sm font-semibold text-gray-800">{selectedYear}년</span>
+        <span className="min-w-[4rem] text-center text-sm font-semibold text-slate-800">{selectedYear}년</span>
         <button
           type="button"
-          className="flex size-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 transition-colors duration-150 hover:bg-gray-50"
+          className="flex size-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition-colors duration-150 hover:bg-slate-50"
           onClick={() => handleYearChange(1)}
         >
           <IoIosArrowForward className="size-4" />
@@ -61,11 +61,11 @@ export default function DayOffHistoryContents() {
       {/* 요약 카드 */}
       <div className="flex w-full flex-row gap-4">
         {/* 총 사용일 */}
-        <div className="flex-1 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-          <p className="text-xs font-medium text-gray-500">총 사용일</p>
-          <p className="mt-1 text-3xl font-bold text-gray-900">
+        <div className="flex-1 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <p className="text-xs font-medium text-slate-500">총 사용일</p>
+          <p className="mt-1 text-3xl font-bold text-slate-900">
             {totalUsedDays.toFixed(1)}
-            <span className="ml-1 text-base font-normal text-gray-400">일</span>
+            <span className="ml-1 text-base font-normal text-slate-400">일</span>
           </p>
           <div className="mt-2 flex gap-2">
             {totalGeneralDays > 0 && (
@@ -78,29 +78,29 @@ export default function DayOffHistoryContents() {
                 보상 {totalCompDays.toFixed(1)}일
               </span>
             )}
-            {totalUsedDays === 0 && <span className="text-xs text-gray-400">사용 내역 없음</span>}
+            {totalUsedDays === 0 && <span className="text-xs text-slate-400">사용 내역 없음</span>}
           </div>
         </div>
 
         {/* 잔여 연차 */}
-        <div className="flex-1 rounded-2xl bg-slate-800 p-5 text-white shadow-sm">
-          <p className="text-xs font-medium text-slate-300">잔여 연차</p>
-          <p className="mt-1 text-3xl font-bold">
+        <div className="flex-1 rounded-2xl border border-slate-200 bg-slate-50 p-5 shadow-sm">
+          <p className="text-xs font-medium text-slate-500">잔여 연차</p>
+          <p className="mt-1 text-3xl font-bold text-slate-900">
             {freeLeaveDays.toFixed(1)}
-            <span className="ml-1 text-base font-normal text-slate-300">일</span>
+            <span className="ml-1 text-base font-normal text-slate-400">일</span>
           </p>
           <p className="mt-2 text-xs text-slate-400">다음 만료일 {selectedYear}년 12월 31일</p>
         </div>
       </div>
 
       {/* 상세 내역 테이블 */}
-      <div className="w-full rounded-2xl border border-gray-200 bg-white shadow-sm">
-        <div className="border-b border-gray-100 px-6 py-4">
-          <p className="text-sm font-semibold text-gray-800">상세 내역</p>
+      <div className="w-full rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="border-b border-slate-100 px-6 py-4">
+          <p className="text-sm font-semibold text-slate-800">상세 내역</p>
         </div>
 
         {/* 테이블 헤더 */}
-        <div className="grid grid-cols-[3rem_7rem_6rem_10rem_5rem_1fr_6rem] items-center border-b border-gray-100 bg-gray-50 px-6 py-3 text-xs font-medium text-gray-500">
+        <div className="grid grid-cols-[3rem_7rem_6rem_10rem_5rem_1fr_6rem] items-center border-b border-slate-100 bg-slate-50 px-6 py-3 text-xs font-medium text-slate-500">
           <div>번호</div>
           <div>종류</div>
           <div>구분</div>
@@ -112,9 +112,9 @@ export default function DayOffHistoryContents() {
 
         {/* 테이블 바디 */}
         {isLoading ? (
-          <div className="flex items-center justify-center py-16 text-sm text-gray-400">불러오는 중...</div>
+          <div className="flex items-center justify-center py-16 text-sm text-slate-400">불러오는 중...</div>
         ) : vacationDocuments.length === 0 ? (
-          <div className="flex items-center justify-center py-16 text-sm text-gray-400">
+          <div className="flex items-center justify-center py-16 text-sm text-slate-400">
             {selectedYear}년 휴가 사용 내역이 없습니다.
           </div>
         ) : (
@@ -123,10 +123,10 @@ export default function DayOffHistoryContents() {
             .map((doc, index) => (
               <div
                 key={`vacation-history-${doc.id}`}
-                className="grid grid-cols-[3rem_7rem_6rem_10rem_5rem_1fr_6rem] items-center border-b border-gray-50 px-6 py-4 text-sm text-gray-700 transition-colors duration-150 last:border-0 hover:bg-gray-50"
+                className="grid grid-cols-[3rem_7rem_6rem_10rem_5rem_1fr_6rem] items-center border-b border-slate-50 px-6 py-4 text-sm text-slate-700 transition-colors duration-150 last:border-0 hover:bg-slate-50"
               >
                 {/* 번호 */}
-                <div className="text-gray-400">{index + 1}</div>
+                <div className="text-slate-400">{index + 1}</div>
 
                 {/* 종류 */}
                 <div>
@@ -134,31 +134,31 @@ export default function DayOffHistoryContents() {
                 </div>
 
                 {/* 구분 */}
-                <div className="text-gray-600">
+                <div className="text-slate-600">
                   <VacationSubTypeText subType={doc.vacationSubType} />
                 </div>
 
                 {/* 사용일 */}
-                <div className="text-gray-700">
+                <div className="text-slate-700">
                   {dayjs(doc.startDate).isSame(doc.endDate, 'day') ? (
                     dayjs(doc.startDate).format('YYYY.MM.DD')
                   ) : (
                     <>
                       {dayjs(doc.startDate).format('YYYY.MM.DD')}
                       <br />
-                      <span className="text-gray-400">— {dayjs(doc.endDate).format('YYYY.MM.DD')}</span>
+                      <span className="text-slate-400">— {dayjs(doc.endDate).format('YYYY.MM.DD')}</span>
                     </>
                   )}
                 </div>
 
                 {/* 사용일수 */}
-                <div className="font-medium text-gray-800">{doc.usedDays.toFixed(1)}일</div>
+                <div className="font-medium text-slate-800">{doc.usedDays.toFixed(1)}일</div>
 
                 {/* 비고 */}
-                <div className="space-y-1">
-                  {doc.reason && <p className="text-gray-600">{doc.reason}</p>}
+                <div className="min-w-0 space-y-1">
+                  {doc.reason && <p className="truncate text-slate-600">{doc.reason}</p>}
                   {doc.usedCompLeaveEntries?.map((entry) => (
-                    <p key={`comp-entry-${entry.id}`} className="text-xs text-gray-400">
+                    <p key={`comp-entry-${entry.id}`} className="text-xs text-slate-400">
                       {dayjs(entry.compLeaveEntry.effectiveDate).format('YYYY-MM-DD')} — {entry.compLeaveEntry.contents}
                     </p>
                   ))}
@@ -184,7 +184,7 @@ function VacationTypeBadge({ type }: { type: VacationType }) {
         <span className="rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-medium text-orange-700">보상휴가</span>
       );
     case 'OFFICIAL':
-      return <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">공가</span>;
+      return <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">공가</span>;
     default:
       return <span className="rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">연차</span>;
   }
@@ -212,8 +212,8 @@ function DocumentStatusBadge({ status }: { status: DocumentStatus }) {
         <span className="rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-700">대기 중</span>
       );
     case 'CANCELLED':
-      return <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">취소됨</span>;
+      return <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">취소됨</span>;
     default:
-      return <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-500">임시저장</span>;
+      return <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-500">임시저장</span>;
   }
 }

@@ -8,7 +8,7 @@ import { getDaysOfWeek } from '@/utils/parse';
 
 import cx from 'classnames';
 import dayjs from 'dayjs';
-import QRCodeStyling, { Options } from 'qr-code-styling';
+import type { Options } from 'qr-code-styling';
 
 const QR_CANVAS_ID = 'qr_canvas';
 
@@ -31,7 +31,7 @@ export default function QRContents() {
       crossOrigin: 'anonymous',
     },
   });
-  const [qrCode, setQrCode] = useState<QRCodeStyling>();
+  const [qrCode, setQrCode] = useState<InstanceType<typeof import('qr-code-styling').default>>();
 
   // query
   const { currentCheck } = useGetCurrentCheck();
@@ -41,7 +41,9 @@ export default function QRContents() {
   useEffect(() => {
     generateCheck({ type: 'QR', attendanceType: selectType });
 
-    setQrCode(new QRCodeStyling(qrOptions));
+    import('qr-code-styling').then(({ default: QRCodeStyling }) => {
+      setQrCode(new QRCodeStyling(qrOptions));
+    });
   }, []);
 
   useEffect(() => {
@@ -50,7 +52,6 @@ export default function QRContents() {
     }
 
     const url = `${location.origin}/attendance/record/${currentCheck?.id}`;
-    console.log(url);
 
     setQrOptions({
       ...qrOptions,

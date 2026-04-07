@@ -16,7 +16,7 @@ import { getDaysOfWeek } from '@/utils/parse';
 import cx from 'classnames';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { padStart } from 'lodash';
+import padStart from 'lodash/padStart';
 
 dayjs.extend(duration);
 
@@ -40,7 +40,7 @@ export default function ScheduleContents() {
   return (
     <div className="flex w-full flex-col items-start justify-center gap-1 select-none">
       {/* headers */}
-      <div className="flex h-16 flex-row border-b-2 border-gray-300">
+      <div className="flex h-16 flex-row border-b-2 border-slate-300">
         {/* working dates */}
         <div className="w-48 flex-none">
           <div className="flex size-full items-center justify-center">
@@ -165,7 +165,7 @@ const WorkingScheduleItem = ({
       <div className="w-48 flex-none">
         <div className="flex size-full flex-row items-center justify-center">
           <div className="w-8 flex-none">
-            {dayOffType === 'DAY_OFF' && <GiNightSleep className="size-6 text-gray-500" />}
+            {dayOffType === 'DAY_OFF' && <GiNightSleep className="size-6 text-slate-500" />}
             {!DEFAULT_WEEKENDS.includes(dayjs(date).day()) &&
               dayOffType !== 'DAY_OFF' &&
               (!status || status === 'WAITING') && <IoIosTime className="size-6 text-sky-600" />}

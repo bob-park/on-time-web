@@ -43,16 +43,11 @@ export default async function RootLayout({
 
   const user = (await res.json()) as User;
 
-  // await queryClient.prefetchQuery({
-  //   queryKey: ['user', 'me'],
-  //   queryFn: () => res.json(),
-  // });
-
   const dehydratedState = dehydrate(queryClient);
 
   return (
     <html lang="ko" data-theme="light">
-      <body className="relative min-w-max">
+      <body className="relative font-[Pretendard,system-ui,-apple-system,sans-serif]">
         <RQProvider>
           <HydrationBoundary state={dehydratedState}>
             <ToastProvider limit={5} timeout={5}>
@@ -70,7 +65,7 @@ export default async function RootLayout({
                   </div>
 
                   {/* content */}
-                  <div className="flex-1 overflow-y-auto p-6">{children}</div>
+                  <div className="flex-1 overflow-y-auto bg-slate-50/50 p-6">{children}</div>
                 </div>
               </div>
 

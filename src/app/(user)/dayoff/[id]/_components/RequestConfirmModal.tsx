@@ -29,7 +29,7 @@ export default function RequestConfirmModal({ show, documentId, onClose }: Reque
       push('문서가 신청되었습니다.', 'success');
     },
     () => {
-      push('머가 잘못되었는디?', 'error');
+      push('문서 신청 중 오류가 발생했습니다. 다시 시도해 주세요.', 'error');
     },
   );
 
@@ -69,14 +69,14 @@ export default function RequestConfirmModal({ show, documentId, onClose }: Reque
 
         {/* content */}
         <div className="m-3 flex flex-col items-start justify-center gap-4">
-          <p className="text-base">이 문서를 신청할까?</p>
+          <p className="text-base">이 문서를 결재 신청하시겠습니까?</p>
         </div>
 
         {/* action */}
         <div className="modal-action">
           <button className="btn w-32" onClick={handleClose}>
             <FaTimes className="size-6" />
-            안할까?
+            취소
           </button>
           <button className="btn btn-primary w-36" disabled={isLoading} onClick={handleCancel}>
             {isLoading ? (
@@ -87,7 +87,7 @@ export default function RequestConfirmModal({ show, documentId, onClose }: Reque
             ) : (
               <>
                 <PiUploadFill className="size-5" />
-                신청?
+                신청하기
               </>
             )}
           </button>

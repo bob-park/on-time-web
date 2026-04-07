@@ -71,7 +71,7 @@ export default function SelectUserCompLeaveEntriesModal({
 
         {/* content */}
         <div className="m-3 flex flex-col items-start justify-center gap-4">
-          <p className="text-base">보상 휴가를 선택해야 신청할 수 있지 않을까?</p>
+          <p className="text-base">사용할 보상 휴가를 선택해 주세요.</p>
 
           <table className="table">
             {/* head */}
@@ -134,11 +134,11 @@ export default function SelectUserCompLeaveEntriesModal({
         <div className="modal-action">
           <button className="btn w-32" onClick={handleClose}>
             <FaTimes className="size-6" />
-            안할까?
+            취소
           </button>
           <button className="btn btn-primary w-32" disabled={selectedItems.length === 0} onClick={handleSelect}>
             <FaCheck className="size-5" />
-            할까?
+            선택 완료
           </button>
         </div>
       </div>

@@ -1,5 +1,7 @@
 'use client';
 
+import { memo } from 'react';
+
 import { useRouter } from 'next/navigation';
 
 import DocumentStatusBadge from '@/domain/document/components/DocumentStatusBadge';
@@ -20,16 +22,16 @@ export default function DocumentResult({ documents, isLoading }: DocumentResultP
       <table className="w-full border-collapse">
         <thead>
           <tr className="h-10 border-b border-slate-200 bg-slate-50">
-            <th className="w-[110px] px-3 text-left text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+            <th className="w-[110px] px-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
               문서번호
             </th>
-            <th className="w-[110px] px-3 text-left text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+            <th className="w-[110px] px-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
               구분
             </th>
-            <th className="w-[110px] px-3 text-left text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+            <th className="w-[110px] px-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
               상태
             </th>
-            <th className="px-3 text-left text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+            <th className="px-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
               요청일
             </th>
             <th className="w-14 px-3" />
@@ -49,7 +51,7 @@ export default function DocumentResult({ documents, isLoading }: DocumentResultP
   );
 }
 
-function DocumentRow({ document }: { document: Document }) {
+const DocumentRow = memo(function DocumentRow({ document }: { document: Document }) {
   const router = useRouter();
 
   const handleClick = () => {
@@ -74,21 +76,21 @@ function DocumentRow({ document }: { document: Document }) {
       onKeyDown={(e) => e.key === 'Enter' && handleClick()}
       aria-label={`문서 ${document.id} 상세 보기`}
     >
-      <td className="px-3 text-[13px] font-semibold text-slate-500">#{document.id}</td>
+      <td className="px-3 text-sm font-semibold text-slate-500">#{document.id}</td>
       <td className="px-3">
         <DocumentsTypeBadge type={document.type} />
       </td>
       <td className="px-3">
         <DocumentStatusBadge status={document.status} />
       </td>
-      <td className="px-3 text-[13px] text-slate-500">
+      <td className="px-3 text-sm text-slate-500">
         {dayjs(document.createdDate).locale('ko').format('YYYY년 MM월 DD일')}
       </td>
       <td className="px-3 text-center">
         <button
           type="button"
           aria-label="문서 상세 보기"
-          className="flex h-7 w-7 items-center justify-center rounded-md border border-slate-200 bg-white text-[13px] text-slate-500 transition-colors duration-100 hover:bg-slate-50"
+          className="flex h-7 w-7 items-center justify-center rounded-md border border-slate-200 bg-white text-sm text-slate-500 transition-colors duration-100 hover:bg-slate-50"
           onClick={(e) => {
             e.stopPropagation();
             handleClick();
@@ -99,7 +101,7 @@ function DocumentRow({ document }: { document: Document }) {
       </td>
     </tr>
   );
-}
+});
 
 function SkeletonRows() {
   const widths = [
@@ -140,8 +142,8 @@ function EmptyState() {
       <td colSpan={5} className="py-16 text-center">
         <div className="flex flex-col items-center gap-2">
           <HiOutlineDocumentText className="size-10 text-slate-300" />
-          <p className="text-[15px] font-semibold text-slate-500">결재 문서가 없습니다</p>
-          <p className="text-[13px] text-slate-400">조건에 맞는 문서가 없습니다</p>
+          <p className="text-sm font-semibold text-slate-500">결재 문서가 없습니다</p>
+          <p className="text-sm text-slate-400">조건에 맞는 문서가 없습니다</p>
         </div>
       </td>
     </tr>

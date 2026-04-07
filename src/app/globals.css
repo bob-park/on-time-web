@@ -1,14 +1,31 @@
 @import 'tailwindcss';
 @plugin "daisyui";
 
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+  font-display: swap;
+}
+
+/*@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');*/
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 @plugin "daisyui/theme" {
   name: 'light';
   default: true;
   prefersdark: false;
   color-scheme: 'light';
   --color-base-100: oklch(100% 0 0);
-  --color-base-200: oklch(98% 0 0);
-  --color-base-300: oklch(95% 0 0);
+  --color-base-200: oklch(98% 0.003 277);
+  --color-base-300: oklch(95% 0.005 277);
   --color-base-content: oklch(21% 0.006 285.885);
   --color-primary: oklch(45% 0.24 277.023);
   --color-primary-content: oklch(93% 0.034 272.788);
@@ -34,4 +51,88 @@
   --border: 1px;
   --depth: 1;
   --noise: 0;
+}
+
+/* Entrance animations */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes progress-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@utility animate-fade-up {
+  animation: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@utility animate-fade-in {
+  animation: fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@utility animate-scale-in {
+  animation: scale-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@utility animate-progress {
+  animation: progress-fill 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@utility delay-75 {
+  animation-delay: 75ms;
+}
+
+@utility delay-150 {
+  animation-delay: 150ms;
+}
+
+@utility delay-225 {
+  animation-delay: 225ms;
+}
+
+@utility delay-300 {
+  animation-delay: 300ms;
+}
+
+/* Modal transitions */
+dialog.modal::backdrop {
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+dialog.modal[open] .modal-box {
+  animation: scale-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Focus ring for keyboard users */
+:focus-visible {
+  outline: 2px solid oklch(45% 0.24 277.023);
+  outline-offset: 2px;
 }

@@ -46,17 +46,17 @@ export default function UpdatePasswordContents() {
   };
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-      <h3 className="mb-5 border-b border-slate-100 pb-3 text-lg font-semibold text-gray-900">패스워드 변경</h3>
+    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h3 className="mb-5 border-b border-slate-100 pb-3 text-lg font-semibold text-slate-900">패스워드 변경</h3>
 
       <form onSubmit={handleUpdatePassword}>
         <div className="flex flex-col gap-3.5">
           <div className="flex flex-col gap-1">
-            <label className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">새 패스워드</label>
+            <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">새 패스워드</label>
             <div className="flex items-center rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5">
               <input
                 type={showPassword ? 'text' : 'password'}
-                className="flex-1 bg-transparent text-[15px] text-gray-900 outline-none"
+                className="flex-1 bg-transparent text-sm text-slate-900 outline-none"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -72,7 +72,7 @@ export default function UpdatePasswordContents() {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+            <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">
               패스워드 확인
             </label>
             <div
@@ -80,7 +80,7 @@ export default function UpdatePasswordContents() {
             >
               <input
                 type={showConfirmPassword ? 'text' : 'password'}
-                className="flex-1 bg-transparent text-[15px] text-gray-900 outline-none"
+                className="flex-1 bg-transparent text-sm text-slate-900 outline-none"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />

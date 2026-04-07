@@ -40,12 +40,14 @@ export default function Toast({ message, timeout, onRemove }: ToastProps) {
 
   // useEffect
   useEffect(() => {
-    setTimeout(() => setIsShow(true), 0);
+    const showTimer = setTimeout(() => setIsShow(true), 10);
+    const hideTimer = setTimeout(() => setIsShow(false), timeout * 1000);
 
-    setTimeout(() => {
-      setIsShow(false);
-    }, timeout * 1000);
-  }, []);
+    return () => {
+      clearTimeout(showTimer);
+      clearTimeout(hideTimer);
+    };
+  }, [timeout]);
 
   // handle
   const handleRemove = () => {
@@ -61,7 +63,7 @@ export default function Toast({ message, timeout, onRemove }: ToastProps) {
         'shadow-lg',
         'flex-none',
         'w-[430px]',
-        'transition-[opacity,transform]',
+        'transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
       )}
       role="alert"
     >
