@@ -53,7 +53,7 @@ export default function ChatUserContents({ wsHost, user }: ChatUserContentsProps
     <div className="flex size-full flex-col items-center justify-start gap-1">
       <div
         className={cx(
-          'relative flex h-[calc(100vh-300px)] w-[500px] flex-col gap-4 rounded-2xl border border-gray-300 bg-white shadow-2xl',
+          'relative flex h-[calc(100vh-300px)] w-[500px] flex-col gap-4 rounded-2xl border border-slate-300 bg-white shadow-2xl',
         )}
       >
         {/* contents */}

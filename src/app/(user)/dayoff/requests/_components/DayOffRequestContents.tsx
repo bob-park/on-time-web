@@ -106,14 +106,14 @@ export default function DayOffRequestContent() {
         {/* 2-column layout */}
         <div className="flex w-full flex-row gap-4">
           {/* Left — 휴가 구분 설정 */}
-          <div className="w-80 flex-none rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-            <p className="mb-4 text-sm font-semibold text-gray-800">
-              휴가 구분 <span className="font-normal text-gray-400">Settings</span>
+          <div className="w-80 flex-none rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <p className="mb-4 text-sm font-semibold text-slate-800">
+              휴가 구분 <span className="font-normal text-slate-400">Settings</span>
             </p>
 
             {/* 연차 구분 */}
             <div className="mb-5">
-              <p className="mb-2 text-xs font-medium text-gray-500">연차 구분</p>
+              <p className="mb-2 text-xs font-medium text-slate-500">연차 구분</p>
               <div className="flex flex-col gap-2">
                 {VACATION_TYPES.map((type) => (
                   <button
@@ -127,14 +127,14 @@ export default function DayOffRequestContent() {
                       'flex flex-col items-start rounded-xl border px-4 py-3 text-left transition-colors duration-150',
                       selectedVacationType === type.value
                         ? 'border-slate-800 bg-slate-800 text-white'
-                        : 'border-gray-200 bg-gray-50 text-gray-700 hover:bg-gray-100',
+                        : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100',
                     )}
                   >
                     <span className="text-sm font-semibold">{type.label}</span>
                     <span
                       className={cx(
                         'text-xs',
-                        selectedVacationType === type.value ? 'text-slate-300' : 'text-gray-400',
+                        selectedVacationType === type.value ? 'text-slate-300' : 'text-slate-400',
                       )}
                     >
                       {type.description}
@@ -146,7 +146,7 @@ export default function DayOffRequestContent() {
 
             {/* 부가 구분 */}
             <div className="mb-5">
-              <p className="mb-2 text-xs font-medium text-gray-500">부가 구분</p>
+              <p className="mb-2 text-xs font-medium text-slate-500">부가 구분</p>
               <div className="flex flex-col gap-2">
                 {VACATION_SUBTYPES.map((sub) => (
                   <button
@@ -157,14 +157,14 @@ export default function DayOffRequestContent() {
                       'flex items-center justify-between rounded-xl border px-4 py-2.5 text-sm transition-colors duration-150',
                       selectedVacationSubType === sub.value
                         ? 'border-slate-800 bg-slate-800 text-white'
-                        : 'border-gray-200 bg-gray-50 text-gray-700 hover:bg-gray-100',
+                        : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100',
                     )}
                   >
                     <span className="font-medium">{sub.label}</span>
                     <span
                       className={cx(
                         'text-xs',
-                        selectedVacationSubType === sub.value ? 'text-slate-300' : 'text-gray-400',
+                        selectedVacationSubType === sub.value ? 'text-slate-300' : 'text-slate-400',
                       )}
                     >
                       {sub.days}일
@@ -177,7 +177,7 @@ export default function DayOffRequestContent() {
             {/* 보상 휴가 선택 (COMPENSATORY 시에만) */}
             {selectedVacationType === 'COMPENSATORY' && (
               <div className="mb-5">
-                <p className="mb-2 text-xs font-medium text-gray-500">보상 휴가 선택</p>
+                <p className="mb-2 text-xs font-medium text-slate-500">보상 휴가 선택</p>
                 <button
                   type="button"
                   onClick={() => setShowSelectCompLeaveEntries(true)}
@@ -185,7 +185,7 @@ export default function DayOffRequestContent() {
                     'flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors duration-150',
                     usedCompLeaveEntries.length !== 0
                       ? 'border-slate-800 bg-slate-800 text-white'
-                      : 'border-gray-200 bg-gray-50 text-gray-700 hover:bg-gray-100',
+                      : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100',
                   )}
                 >
                   {usedCompLeaveEntries.length !== 0 ? (
@@ -201,10 +201,10 @@ export default function DayOffRequestContent() {
 
             {/* 사유 */}
             <div>
-              <p className="mb-2 text-xs font-medium text-gray-500">사유</p>
+              <p className="mb-2 text-xs font-medium text-slate-500">사유</p>
               <input
                 type="text"
-                className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:border-slate-400 focus:bg-white focus:outline-none"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:border-slate-400 focus:bg-white focus:outline-none"
                 placeholder="개인 사유"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
@@ -213,9 +213,9 @@ export default function DayOffRequestContent() {
           </div>
 
           {/* Right — 날짜 선택 */}
-          <div className="flex flex-1 flex-col rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-            <p className="mb-4 text-sm font-semibold text-gray-800">
-              날짜 선택 <span className="font-normal text-gray-400">Select Dates</span>
+          <div className="flex flex-1 flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <p className="mb-4 text-sm font-semibold text-slate-800">
+              날짜 선택 <span className="font-normal text-slate-400">Select Dates</span>
             </p>
             <div className="flex flex-1 items-start justify-center">
               <DayPicker
@@ -230,18 +230,18 @@ export default function DayOffRequestContent() {
         </div>
 
         {/* Bottom — 신청 요약 패널 */}
-        <div className="w-full rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+        <div className="w-full rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
           <div className="flex items-center justify-between">
-            <p className="text-sm font-semibold text-gray-800">
-              신청 요약 <span className="font-normal text-gray-400">Summary</span>
+            <p className="text-sm font-semibold text-slate-800">
+              신청 요약 <span className="font-normal text-slate-400">Summary</span>
             </p>
           </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-8">
             {/* 선택 날짜 */}
             <div>
-              <p className="text-xs text-gray-400">선택 날짜</p>
-              <p className="mt-0.5 text-sm font-semibold text-gray-800">
+              <p className="text-xs text-slate-400">선택 날짜</p>
+              <p className="mt-0.5 text-sm font-semibold text-slate-800">
                 {dayjs(selectedDate.from).format('YYYY.MM.DD')}
                 {selectedDate.to && !dayjs(selectedDate.from).isSame(selectedDate.to, 'day') && (
                   <> — {dayjs(selectedDate.to).format('YYYY.MM.DD')}</>
@@ -251,15 +251,15 @@ export default function DayOffRequestContent() {
 
             {/* 사용 기간 */}
             <div>
-              <p className="text-xs text-gray-400">사용 기간</p>
-              <p className="mt-0.5 text-sm font-semibold text-gray-800">{usedDays.toFixed(1)} 일</p>
+              <p className="text-xs text-slate-400">사용 기간</p>
+              <p className="mt-0.5 text-sm font-semibold text-slate-800">{usedDays.toFixed(1)} 일</p>
             </div>
 
             {/* 사용 후 잔여 */}
             <div>
-              <p className="text-xs text-gray-400">사용 후 잔여</p>
+              <p className="text-xs text-slate-400">사용 후 잔여</p>
               <p
-                className={cx('mt-0.5 text-sm font-semibold', remainingAfterUse < 0 ? 'text-red-500' : 'text-gray-800')}
+                className={cx('mt-0.5 text-sm font-semibold', remainingAfterUse < 0 ? 'text-red-500' : 'text-slate-800')}
               >
                 {remainingAfterUse.toFixed(1)} 일
               </p>
@@ -267,15 +267,15 @@ export default function DayOffRequestContent() {
 
             {/* 승인 예상 */}
             <div>
-              <p className="text-xs text-gray-400">승인 예상</p>
-              <p className="mt-0.5 text-sm font-semibold text-gray-800">→ 즉시</p>
+              <p className="text-xs text-slate-400">승인 예상</p>
+              <p className="mt-0.5 text-sm font-semibold text-slate-800">→ 즉시</p>
             </div>
 
             {/* 버튼 (우측 정렬) */}
             <div className="ml-auto flex gap-3">
               <button
                 type="button"
-                className="rounded-xl border border-gray-200 px-5 py-2.5 text-sm font-medium text-gray-600 transition-colors duration-150 hover:bg-gray-50"
+                className="rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-medium text-slate-600 transition-colors duration-150 hover:bg-slate-50"
                 onClick={() => {
                   setSelectedVacationType(undefined);
                   setSelectedVacationSubType(undefined);

@@ -7,7 +7,7 @@ import CardPageTitle from './_components/CardPageTitle';
 export default function Forbidden() {
   return (
     <div className="flex size-full flex-col items-center justify-center gap-2">
-      <div className="mt-36 flex cursor-default flex-row items-center justify-center gap-4 text-9xl font-bold text-gray-400 select-none">
+      <div className="mt-36 flex cursor-default flex-row items-center justify-center gap-4 text-9xl font-bold text-slate-400 select-none">
         <CardPageTitle placeholder="Wow">
           <span>4</span>
         </CardPageTitle>
@@ -26,8 +26,8 @@ export default function Forbidden() {
       <div className="mt-5">
         <p className="text-xl font-medium">
           이 페이지의 성벽이
-          <span className="px-1 text-2xl font-bold text-gray-500">🏰 너무 높아</span>
-          <span className="px-1 text-2xl font-bold text-gray-500">🛠️현재 장비</span>로 올라갈수가 없어요!!
+          <span className="px-1 text-2xl font-bold text-slate-500">🏰 너무 높아</span>
+          <span className="px-1 text-2xl font-bold text-slate-500">🛠️현재 장비</span>로 올라갈수가 없어요!!
         </p>
       </div>
 

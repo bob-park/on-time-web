@@ -6,9 +6,8 @@ import { HiDocumentPlus } from 'react-icons/hi2';
 import { IoChatbox, IoLogOutOutline } from 'react-icons/io5';
 import { LuHistory } from 'react-icons/lu';
 import { MdManageAccounts, MdOutlineApproval } from 'react-icons/md';
-import { MdSupportAgent } from 'react-icons/md';
 import { PiUserFocusBold } from 'react-icons/pi';
-import { RiCalendarScheduleFill, RiDashboardFill } from 'react-icons/ri';
+import { RiDashboardFill } from 'react-icons/ri';
 
 import Link from 'next/link';
 import { useSelectedLayoutSegments } from 'next/navigation';
@@ -72,11 +71,6 @@ export default function NavMenu() {
             <RiDashboardFill className="inline-block h-5 w-5 flex-none" />
             대시보드
           </MenuItem>
-
-          {/*<MenuItem href="/schedule" active={isActive(segments, ['schedule'])}>*/}
-          {/*  <RiCalendarScheduleFill className="inline-block h-5 w-5 flex-none" />*/}
-          {/*  근무 일정*/}
-          {/*</MenuItem>*/}
 
           <div className="mt-4 mb-1 px-3">
             <span className="text-xs font-medium tracking-wider text-slate-500 uppercase">전자 결재</span>

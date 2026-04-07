@@ -8,7 +8,7 @@ export default function DayOffHistoryPage() {
       {/* 브레드크럼 + 헤더 */}
       <div className="flex items-end justify-between">
         <div>
-          <h2 className="mt-1 text-2xl font-bold text-gray-900">휴가 내역</h2>
+          <h2 className="mt-1 text-2xl font-bold text-slate-900">휴가 내역</h2>
         </div>
         <Link
           href="/dayoff/requests"

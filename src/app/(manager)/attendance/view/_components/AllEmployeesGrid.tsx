@@ -20,17 +20,17 @@ const SKELETON_ROW_COUNT = 5;
 function SkeletonCell() {
   return (
     <td className="px-2 py-3 text-center align-middle" aria-label="데이터 로딩 중">
-      <div className="mx-auto h-3 w-12 animate-pulse rounded bg-gray-200" />
+      <div className="mx-auto h-3 w-12 animate-pulse rounded bg-slate-200" />
     </td>
   );
 }
 
 function SkeletonRow() {
   return (
-    <tr className="border-b border-gray-100 last:border-b-0">
+    <tr className="border-b border-slate-100 last:border-b-0">
       <td className="sticky left-0 z-10 min-w-[140px] bg-white px-3 py-3 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)]">
-        <div className="mb-1 h-3 w-20 animate-pulse rounded bg-gray-200" />
-        <div className="h-2 w-14 animate-pulse rounded bg-gray-100" />
+        <div className="mb-1 h-3 w-20 animate-pulse rounded bg-slate-200" />
+        <div className="h-2 w-14 animate-pulse rounded bg-slate-100" />
       </td>
       {Array.from({ length: 7 }).map((_, i) => (
         <SkeletonCell key={i} />
@@ -60,7 +60,7 @@ function DayCell({ date, record, isLoading, isError }: DayCellProps) {
   if (isLoading) {
     return (
       <td className={cellClass} aria-label="데이터 로딩 중">
-        <div className="mx-auto h-3 w-12 animate-pulse rounded bg-gray-200" />
+        <div className="mx-auto h-3 w-12 animate-pulse rounded bg-slate-200" />
       </td>
     );
   }
@@ -76,7 +76,7 @@ function DayCell({ date, record, isLoading, isError }: DayCellProps) {
   if (isWeekend) {
     return (
       <td className={cellClass}>
-        <span className="text-xs text-gray-300">휴일</span>
+        <span className="text-xs text-slate-300">휴일</span>
       </td>
     );
   }
@@ -84,7 +84,7 @@ function DayCell({ date, record, isLoading, isError }: DayCellProps) {
   if (!record) {
     return (
       <td className={cellClass}>
-        <span className="text-gray-300">—</span>
+        <span className="text-slate-300">—</span>
       </td>
     );
   }
@@ -118,31 +118,31 @@ function DayCell({ date, record, isLoading, isError }: DayCellProps) {
   const leaveWorkAt = record.leaveWorkAt ? dayjs(record.leaveWorkAt).format('HH:mm') : null;
   const isInProgress = isToday && clockIn && !clockOut;
 
-  const timeColor = record.status === 'WARNING' ? 'text-red-600' : 'text-gray-800';
+  const timeColor = record.status === 'WARNING' ? 'text-red-600' : 'text-slate-800';
 
   return (
     <td className={cellClass}>
       <div className="space-y-0.5 text-sm leading-snug">
         {clockIn && (
           <div className={timeColor}>
-            <span className="text-xs text-gray-400">출근· </span>
+            <span className="text-xs text-slate-400">출근· </span>
             {clockIn}
           </div>
         )}
         {leaveWorkAt && (
-          <div className="text-gray-500">
-            <span className="text-xs text-gray-400">예정· </span>
+          <div className="text-slate-500">
+            <span className="text-xs text-slate-400">예정· </span>
             {leaveWorkAt}
           </div>
         )}
         {clockOut && (
-          <div className="text-gray-600">
-            <span className="text-xs text-gray-400">퇴근· </span>
+          <div className="text-slate-600">
+            <span className="text-xs text-slate-400">퇴근· </span>
             {clockOut}
           </div>
         )}
         {isInProgress && <div className="text-xs text-blue-500">근무중</div>}
-        {!clockIn && !clockOut && <span className="text-gray-300">—</span>}
+        {!clockIn && !clockOut && <span className="text-slate-300">—</span>}
       </div>
       {record.status === 'SUCCESS' && (
         <>
@@ -172,13 +172,13 @@ interface EmployeeRowProps {
 
 function EmployeeRow({ user, dates, records, isLoading, isError }: EmployeeRowProps) {
   return (
-    <tr className="group border-b border-gray-100 transition-colors duration-100 last:border-b-0 hover:bg-gray-50">
+    <tr className="group border-b border-slate-100 transition-colors duration-100 last:border-b-0 hover:bg-slate-50">
       <td
         scope="row"
-        className="sticky left-0 z-10 min-w-[140px] bg-white px-3 py-3 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)] group-hover:bg-gray-50"
+        className="sticky left-0 z-10 min-w-[140px] bg-white px-3 py-3 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)] group-hover:bg-slate-50"
       >
-        <div className="max-w-[130px] truncate font-medium text-gray-900">{user.username}</div>
-        <div className="max-w-[130px] truncate text-xs text-gray-500">
+        <div className="max-w-[130px] truncate font-medium text-slate-900">{user.username}</div>
+        <div className="max-w-[130px] truncate text-xs text-slate-500">
           {user.group?.name}
           {user.group?.name && user.position?.name && ' · '}
           {user.position?.name}
@@ -240,26 +240,26 @@ export default function AllEmployeesGrid() {
   const colHeaderClass = (date: Date) => {
     const isToday = dayjs().isSame(date, 'day');
     const isWeekend = DEFAULT_WEEKENDS.includes(dayjs(date).day());
-    return cx('sticky top-0  bg-gray-50 min-w-[110px] py-3 px-2 text-center text-xs font-semibold', {
+    return cx('sticky top-0  bg-slate-50 min-w-[110px] py-3 px-2 text-center text-xs font-semibold', {
       'text-blue-600 font-semibold': isToday,
-      'text-gray-400': isWeekend && !isToday,
-      'text-gray-500': !isWeekend && !isToday,
+      'text-slate-400': isWeekend && !isToday,
+      'text-slate-500': !isWeekend && !isToday,
     });
   };
 
   return (
-    <div className="size-full overflow-auto rounded-2xl border border-gray-200 bg-white shadow-sm">
+    <div className="size-full overflow-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
       {lastUpdatedAt && (
-        <div className="flex justify-end border-b border-gray-100 px-4 py-2">
-          <span className="text-xs text-gray-400">최근 갱신: {dayjs(lastUpdatedAt).format('HH:mm:ss')}</span>
+        <div className="flex justify-end border-b border-slate-100 px-4 py-2">
+          <span className="text-xs text-slate-400">최근 갱신: {dayjs(lastUpdatedAt).format('HH:mm:ss')}</span>
         </div>
       )}
       <table className="table" role="table" aria-label="임직원 근무 현황">
         <thead>
-          <tr className="border-b border-gray-100 bg-gray-50">
+          <tr className="border-b border-slate-100 bg-slate-50">
             <th
               scope="col"
-              className="sticky top-0 left-0 z-30 min-w-[140px] bg-gray-50 py-3 pl-4 text-left text-xs font-semibold text-gray-500"
+              className="sticky top-0 left-0 z-30 min-w-[140px] bg-slate-50 py-3 pl-4 text-left text-xs font-semibold text-slate-500"
             >
               임직원
             </th>
@@ -286,7 +286,7 @@ export default function AllEmployeesGrid() {
           {!usersLoading && !usersError && users.length === 0 && (
             <tr>
               <td colSpan={8}>
-                <div className="flex h-32 items-center justify-center text-sm text-gray-400">임직원이 없습니다.</div>
+                <div className="flex h-32 items-center justify-center text-sm text-slate-400">임직원이 없습니다.</div>
               </td>
             </tr>
           )}

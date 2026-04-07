@@ -11,7 +11,7 @@ export default function DashboardPage() {
         {/* breadcrumb + title + date nav */}
         <div className="flex w-full items-end justify-between">
           <div className="w-full">
-            <h2 className="mt-1 text-2xl font-bold text-gray-900">근로 시간</h2>
+            <h2 className="mt-1 text-2xl font-bold text-slate-900">근로 시간</h2>
           </div>
           <WorkingTimeView />
         </div>

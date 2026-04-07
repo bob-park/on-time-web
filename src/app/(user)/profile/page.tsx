@@ -7,7 +7,7 @@ export default function ProfilePage() {
     <div className="flex size-full flex-col gap-4">
       {/* title */}
       <div>
-        <h2 className="text-2xl font-bold text-gray-900">프로필</h2>
+        <h2 className="text-2xl font-bold text-slate-900">프로필</h2>
       </div>
 
       {/* contents */}
