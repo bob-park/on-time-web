@@ -198,10 +198,10 @@ export default function WorkingRecordContents() {
   };
 
   return (
-    <div className="mt-6 w-full rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div className="animate-fade-up delay-225 mt-6 w-full rounded-2xl border border-slate-200 bg-white shadow-sm">
       {/* section header */}
       <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4">
-        <h3 className="text-sm font-semibold text-slate-800">주간 근태 상세 내역</h3>
+        <h3 className="text-sm font-bold tracking-wide text-slate-800 uppercase">주간 근태 상세 내역</h3>
       </div>
 
       {/* table */}

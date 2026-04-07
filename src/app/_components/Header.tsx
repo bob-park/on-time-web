@@ -18,7 +18,7 @@ export default function Header() {
   const {} = useSession();
 
   return (
-    <header className="flex w-full flex-row items-center justify-between gap-4 border-b border-slate-200 bg-white px-6 py-3">
+    <header className="flex w-full flex-row items-center justify-between gap-4 border-b border-slate-100 bg-white px-6 py-3 shadow-[0_1px_3px_0_rgba(0,0,0,0.04)]">
       {/* search */}
       <div className=""></div>
 

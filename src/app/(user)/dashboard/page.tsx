@@ -11,13 +11,14 @@ export default function DashboardPage() {
         {/* breadcrumb + title + date nav */}
         <div className="flex w-full items-end justify-between">
           <div className="w-full">
-            <h2 className="mt-1 text-2xl font-bold text-slate-900">근로 시간</h2>
+            <p className="text-xs font-semibold tracking-widest text-slate-400 uppercase">Dashboard</p>
+            <h2 className="mt-1 text-4xl font-extrabold tracking-tight text-slate-900">근로 시간</h2>
           </div>
           <WorkingTimeView />
         </div>
 
         {/* summary cards */}
-        <div className="mt-4 w-full">
+        <div className="mt-6 w-full">
           <WeeklySummaryCards />
         </div>
 

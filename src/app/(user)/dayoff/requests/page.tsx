@@ -9,9 +9,8 @@ export default function DayOffRequestsPage() {
       {/* breadcrumb + header */}
       <div className="flex items-end justify-between">
         <div>
-          <h2 className="mt-1 text-2xl font-bold text-slate-900">
-            휴가 신청 <span className="text-lg font-normal text-slate-400"></span>
-          </h2>
+          <p className="text-xs font-semibold tracking-widest text-slate-400 uppercase">Day Off</p>
+          <h2 className="mt-1 text-3xl font-extrabold tracking-tight text-slate-900">휴가 신청</h2>
         </div>
         <Link
           href="/dayoff/used"

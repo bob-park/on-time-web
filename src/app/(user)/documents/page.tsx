@@ -18,7 +18,8 @@ export default async function DocumentListPage({
     <div className="flex size-full flex-col gap-3">
       {/* title */}
       <div>
-        <h2 className="text-2xl font-bold">내 결재 문서</h2>
+        <p className="text-xs font-semibold tracking-widest text-slate-400 uppercase">Documents</p>
+        <h2 className="mt-1 text-3xl font-extrabold tracking-tight text-slate-900">내 결재 문서</h2>
         <p className="mt-1 text-sm text-slate-500">결재 신청 내역을 조회하고 상태를 확인합니다</p>
       </div>
 
