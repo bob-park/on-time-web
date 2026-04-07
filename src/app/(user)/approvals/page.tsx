@@ -19,7 +19,7 @@ export default async function ApprovalsPage({
       {/* title */}
       <div>
         <h2 className="text-2xl font-bold">결재 처리</h2>
-        <p className="mt-1 text-[14px] text-slate-500">결재 요청 목록을 조회하고 처리합니다</p>
+        <p className="mt-1 text-sm text-slate-500">결재 요청 목록을 조회하고 처리합니다</p>
       </div>
 
       {/* content */}

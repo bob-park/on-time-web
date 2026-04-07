@@ -33,15 +33,15 @@ function toDate(date: Date, hour: number, minute: number) {
 
 const pillClass = (active: boolean) =>
   active
-    ? 'bg-slate-800 text-white rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors duration-100 cursor-pointer'
-    : 'bg-slate-100 text-slate-600 rounded-full px-3.5 py-1.5 text-[13px] font-medium hover:bg-slate-200 transition-colors duration-100 cursor-pointer';
+    ? 'bg-slate-800 text-white rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors duration-100 cursor-pointer'
+    : 'bg-slate-100 text-slate-600 rounded-full px-3.5 py-1.5 text-sm font-medium hover:bg-slate-200 transition-colors duration-100 cursor-pointer';
 
-const fieldLabel = 'w-[72px] flex-none text-[11px] font-semibold uppercase tracking-wider text-slate-400 pt-2';
+const fieldLabel = 'w-[72px] flex-none text-xs font-semibold uppercase tracking-wider text-slate-400 pt-2';
 
 const inputClass =
-  'border border-slate-200 rounded-lg px-3 py-2 text-[13px] text-slate-800 placeholder:text-slate-300 outline-none focus:border-slate-400';
+  'border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800 placeholder:text-slate-300 outline-none focus:border-slate-400';
 
-const selectClass = 'border border-slate-200 rounded-lg px-2 py-1.5 text-[13px] bg-white text-slate-800';
+const selectClass = 'border border-slate-200 rounded-lg px-2 py-1.5 text-sm bg-white text-slate-800';
 
 export default function OvertimeRequestContents() {
   const [workTimes, setWorkTimes] = useState<WorkTime[]>([]);
@@ -157,7 +157,7 @@ export default function OvertimeRequestContents() {
             <div className="flex flex-wrap gap-2">
               <button
                 type="button"
-                className="rounded-full bg-slate-100 px-2.5 py-1.5 text-[12px] font-medium text-slate-400 transition-colors duration-100 hover:bg-slate-200 cursor-pointer"
+                className="rounded-full bg-slate-100 px-2.5 py-1.5 text-xs font-medium text-slate-400 transition-colors duration-100 hover:bg-slate-200 cursor-pointer"
                 onClick={() => {
                   setIsRegisteredUser(undefined);
                   setUsername(undefined);
@@ -202,7 +202,7 @@ export default function OvertimeRequestContents() {
                   type="button"
                   className={
                     userUniqueId
-                      ? 'rounded-lg bg-slate-800 px-3 py-2 text-[13px] font-medium text-white'
+                      ? 'rounded-lg bg-slate-800 px-3 py-2 text-sm font-medium text-white'
                       : `${inputClass} cursor-pointer`
                   }
                   onClick={() => setShowUser(true)}
@@ -270,7 +270,7 @@ export default function OvertimeRequestContents() {
           <div className="flex items-start gap-3">
             <span className={fieldLabel}>근무 시간</span>
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[12px] text-slate-400">시작</span>
+              <span className="text-xs text-slate-400">시작</span>
               <select
                 value={startHour}
                 onChange={(e) => setStartHour(Number(e.target.value))}
@@ -290,8 +290,8 @@ export default function OvertimeRequestContents() {
                 <option value={0}>00 분</option>
                 <option value={30}>30 분</option>
               </select>
-              <span className="text-[12px] text-slate-400">—</span>
-              <span className="text-[12px] text-slate-400">종료</span>
+              <span className="text-xs text-slate-400">—</span>
+              <span className="text-xs text-slate-400">종료</span>
               <select
                 value={endHour}
                 onChange={(e) => setEndHour(Number(e.target.value))}
@@ -324,7 +324,7 @@ export default function OvertimeRequestContents() {
                 checked={isDayOff}
                 onChange={(e) => setIsDayOff(e.target.checked)}
               />
-              <span className="text-[13px] text-slate-500">보상휴가로 처리</span>
+              <span className="text-sm text-slate-500">보상휴가로 처리</span>
             </div>
           </div>
 
@@ -332,7 +332,7 @@ export default function OvertimeRequestContents() {
           <div className="flex justify-end pt-1">
             <button
               type="button"
-              className="rounded-lg bg-slate-800 px-4 py-2 text-[13px] font-medium text-white"
+              className="rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white"
               onClick={handleAddWorkTime}
             >
               + 목록에 추가
@@ -345,26 +345,26 @@ export default function OvertimeRequestContents() {
 
         {/* List zone */}
         <div>
-          <p className="px-5 pb-2 pt-4 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+          <p className="px-5 pb-2 pt-4 text-xs font-semibold uppercase tracking-wider text-slate-400">
             추가된 근무 내역 ({workTimes.length}건)
           </p>
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
                 <tr className="h-10 border-b border-slate-200 bg-slate-50">
-                  <th className="px-4 text-left text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+                  <th className="px-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
                     근무일
                   </th>
-                  <th className="px-4 text-left text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+                  <th className="px-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
                     근무 시간
                   </th>
-                  <th className="px-4 text-left text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+                  <th className="px-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
                     근무 목적
                   </th>
-                  <th className="px-4 text-left text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+                  <th className="px-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
                     근무자
                   </th>
-                  <th className="px-4 text-left text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+                  <th className="px-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
                     보상휴가
                   </th>
                   <th className="w-12 px-4" />
@@ -376,22 +376,22 @@ export default function OvertimeRequestContents() {
                     <td colSpan={6} className="py-16 text-center">
                       <div className="flex flex-col items-center gap-2">
                         <HiOutlineDocumentText className="size-10 text-slate-300" />
-                        <p className="text-[15px] font-semibold text-slate-500">추가된 항목이 없습니다</p>
-                        <p className="text-[13px] text-slate-400">위 양식을 작성한 후 추가 버튼을 클릭하세요.</p>
+                        <p className="text-sm font-semibold text-slate-500">추가된 항목이 없습니다</p>
+                        <p className="text-sm text-slate-400">위 양식을 작성한 후 추가 버튼을 클릭하세요.</p>
                       </div>
                     </td>
                   </tr>
                 ) : (
                   workTimes.map((wt, index) => (
                     <tr key={index} className="h-[52px] border-b border-slate-100 last:border-b-0">
-                      <td className="px-4 text-[13px] text-slate-500">
+                      <td className="px-4 text-sm text-slate-500">
                         {dayjs(wt.startDate).format('YYYY-MM-DD')} ({getDaysOfWeek(dayjs(wt.startDate).day())})
                       </td>
-                      <td className="px-4 text-[13px] text-slate-500">
+                      <td className="px-4 text-sm text-slate-500">
                         {dayjs(wt.startDate).format('HH:mm')} — {dayjs(wt.endDate).format('HH:mm')}
                       </td>
-                      <td className="px-4 text-[13px] text-slate-500">{wt.contents}</td>
-                      <td className="px-4 text-[13px] text-slate-500">{wt.username}</td>
+                      <td className="px-4 text-sm text-slate-500">{wt.contents}</td>
+                      <td className="px-4 text-sm text-slate-500">{wt.username}</td>
                       <td className="px-4">
                         {wt.isDayOff && (
                           <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">
@@ -421,14 +421,14 @@ export default function OvertimeRequestContents() {
         <div className="flex justify-end gap-3 border-t border-slate-100 px-5 py-4">
           <button
             type="button"
-            className="rounded-lg border border-slate-200 bg-white px-5 py-2 text-[13px] text-slate-600"
+            className="rounded-lg border border-slate-200 bg-white px-5 py-2 text-sm text-slate-600"
             onClick={() => router.push('/documents')}
           >
             취소
           </button>
           <button
             type="button"
-            className="rounded-lg bg-slate-800 px-5 py-2 text-[13px] font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-lg bg-slate-800 px-5 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
             disabled={workTimes.length === 0 || isLoading}
             onClick={handleCreateDocument}
           >
