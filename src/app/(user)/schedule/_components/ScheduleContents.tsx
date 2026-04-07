@@ -16,7 +16,7 @@ import { getDaysOfWeek } from '@/utils/parse';
 import cx from 'classnames';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { padStart } from 'lodash';
+import padStart from 'lodash/padStart';
 
 dayjs.extend(duration);
 

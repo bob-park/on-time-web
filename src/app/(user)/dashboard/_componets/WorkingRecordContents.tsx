@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext } from 'react';
+import { memo, useContext } from 'react';
 
 import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
 import { useGetAttendanceRecord } from '@/domain/attendance/query/attendanceRecord';
@@ -10,7 +10,7 @@ import { getDuration } from '@/utils/parse';
 
 import cx from 'classnames';
 import dayjs from 'dayjs';
-import { padStart } from 'lodash';
+import padStart from 'lodash/padStart';
 
 const ONE_HOUR = 3_600;
 const DAILY_TOTAL_HOURS = 8;
@@ -44,7 +44,7 @@ interface WorkingRecordRowProps {
   dayOffType?: DayOffType;
 }
 
-function WorkingRecordRow({ date, clockInTime, leaveWorkAt, clockOutTime, status, dayOffType }: WorkingRecordRowProps) {
+const WorkingRecordRow = memo(function WorkingRecordRow({ date, clockInTime, leaveWorkAt, clockOutTime, status, dayOffType }: WorkingRecordRowProps) {
   const now = dayjs().hour(0).minute(0).second(0).millisecond(0);
   const isToday = now.isSame(date);
   const isInProgress = isToday && clockInTime && !clockOutTime;
@@ -141,7 +141,7 @@ function WorkingRecordRow({ date, clockInTime, leaveWorkAt, clockOutTime, status
       </td>
     </tr>
   );
-}
+});
 
 function getDates(
   selectDate: { startDate: Date; endDate: Date },

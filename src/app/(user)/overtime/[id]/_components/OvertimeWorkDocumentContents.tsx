@@ -19,8 +19,6 @@ import delay from '@/utils/delay';
 
 import cx from 'classnames';
 import dayjs from 'dayjs';
-import html2canvas from 'html2canvas-pro';
-import jsPDF from 'jspdf';
 
 interface OvertimeWorkDocumentContentsProps {
   id: number;
@@ -51,7 +49,8 @@ export default function OvertimeWorkDocumentContents({ id }: OvertimeWorkDocumen
 
     setIsPdfLoading(true);
 
-    html2canvas(docElement).then(async (canvas) => {
+    Promise.all([import('html2canvas-pro'), import('jspdf')]).then(async ([{ default: html2canvas }, { default: jsPDF }]) => {
+      const canvas = await html2canvas(docElement);
       const pdf = new jsPDF('p', 'mm', 'a4');
       pdf.addImage(canvas, 'JPEG', 0, 0, 210, 297);
       pdf.save(

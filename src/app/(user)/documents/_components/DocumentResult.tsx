@@ -1,5 +1,7 @@
 'use client';
 
+import { memo } from 'react';
+
 import { useRouter } from 'next/navigation';
 
 import DocumentStatusBadge from '@/domain/document/components/DocumentStatusBadge';
@@ -49,7 +51,7 @@ export default function DocumentResult({ documents, isLoading }: DocumentResultP
   );
 }
 
-function DocumentRow({ document }: { document: Document }) {
+const DocumentRow = memo(function DocumentRow({ document }: { document: Document }) {
   const router = useRouter();
 
   const handleClick = () => {
@@ -99,7 +101,7 @@ function DocumentRow({ document }: { document: Document }) {
       </td>
     </tr>
   );
-}
+});
 
 function SkeletonRows() {
   const widths = [

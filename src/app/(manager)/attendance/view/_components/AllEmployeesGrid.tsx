@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useMemo } from 'react';
+import { memo, useContext, useMemo } from 'react';
 
 import { useQueries } from '@tanstack/react-query';
 
@@ -170,7 +170,7 @@ interface EmployeeRowProps {
   isError: boolean;
 }
 
-function EmployeeRow({ user, dates, records, isLoading, isError }: EmployeeRowProps) {
+const EmployeeRow = memo(function EmployeeRow({ user, dates, records, isLoading, isError }: EmployeeRowProps) {
   return (
     <tr className="group border-b border-slate-100 transition-colors duration-100 last:border-b-0 hover:bg-slate-50">
       <td
@@ -200,7 +200,7 @@ function EmployeeRow({ user, dates, records, isLoading, isError }: EmployeeRowPr
       })}
     </tr>
   );
-}
+});
 
 // ── Main component ────────────────────────────────────────────────────────
 

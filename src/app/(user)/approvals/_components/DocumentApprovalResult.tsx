@@ -1,5 +1,7 @@
 'use client';
 
+import { memo } from 'react';
+
 import { useRouter } from 'next/navigation';
 
 import DocumentStatusBadge from '@/domain/document/components/DocumentStatusBadge';
@@ -54,7 +56,7 @@ export default function DocumentApprovalResult({ items, isLoading }: DocumentApp
   );
 }
 
-function ApprovalRow({ item }: { item: ApprovalHistory }) {
+const ApprovalRow = memo(function ApprovalRow({ item }: { item: ApprovalHistory }) {
   const router = useRouter();
 
   const handleClick = () => {
@@ -107,7 +109,7 @@ function ApprovalRow({ item }: { item: ApprovalHistory }) {
       </td>
     </tr>
   );
-}
+});
 
 function SkeletonRows() {
   const widths = [
