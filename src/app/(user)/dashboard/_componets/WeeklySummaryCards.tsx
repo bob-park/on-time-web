@@ -95,7 +95,7 @@ export default function WeeklySummaryCards() {
             </div>
             <div className="h-3 w-full overflow-hidden rounded-full bg-white/10">
               <div
-                className="animate-progress h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-400"
+                className="animate-progress h-full origin-left rounded-full bg-gradient-to-r from-indigo-500 to-purple-400"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>

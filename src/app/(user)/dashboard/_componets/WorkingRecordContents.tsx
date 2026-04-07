@@ -107,7 +107,7 @@ const WorkingRecordRow = memo(function WorkingRecordRow({ date, clockInTime, lea
       {/* CLOCK-OUT */}
       <td className="px-3 py-3 text-center text-sm text-slate-700">
         {isInProgress ? (
-          <span className="text-xs font-medium text-blue-500">근무 중...</span>
+          <span className="animate-pulse text-xs font-medium text-blue-500">근무 중...</span>
         ) : clockOutTime ? (
           dayjs(clockOutTime).format('HH:mm')
         ) : (

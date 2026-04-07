@@ -172,7 +172,7 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
                 <p className="text-base font-bold">고객지원</p>
               </div>
               <div className="">
-                <p className="text-sm text-slate-400">언제 답변이 올지 모르지롱.</p>
+                <p className="text-sm text-slate-400">문의사항을 남겨 주세요.</p>
               </div>
             </div>
           </div>

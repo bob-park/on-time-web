@@ -24,7 +24,7 @@ export default function ApproveModal({ show, id, onClose }: ApproveModalProps) {
   // query
   const { approve, isLoading } = useApproveDocument(
     () => {
-      push('문서가 승인되었습니다.', 'info');
+      push('문서가 승인되었습니다.', 'success');
       handleClose();
     },
     () => {
@@ -68,25 +68,25 @@ export default function ApproveModal({ show, id, onClose }: ApproveModalProps) {
 
         {/* content */}
         <div className="m-3 flex flex-col items-start justify-center gap-4">
-          <p className="text-base">이것은 다시 확인하는 것이여</p>
+          <p className="text-base">이 문서를 승인하시겠습니까?</p>
         </div>
 
         {/* action */}
         <div className="modal-action">
           <button className="btn w-32" onClick={handleClose}>
             <FaTimes className="size-6" />
-            안할까?
+            취소
           </button>
           <button className="btn btn-primary w-32" disabled={isLoading} onClick={handleApprove}>
             {isLoading ? (
               <>
                 <span className="loading loading-spinner loading-xs" />
-                승인중
+                승인 중
               </>
             ) : (
               <>
                 <FaCheck className="size-5" />
-                할까?
+                승인
               </>
             )}
           </button>

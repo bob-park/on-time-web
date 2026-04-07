@@ -224,7 +224,7 @@ export default function DayOffRequestContent() {
                 type="text"
                 maxLength={200}
                 className={cx(
-                  'w-full rounded-xl border bg-slate-50 px-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:border-slate-400 focus:bg-white focus:outline-none',
+                  'w-full rounded-xl border bg-slate-50 px-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 transition-[border-color,background-color] duration-150 focus:border-slate-400 focus:bg-white focus:outline-none',
                   hasAttemptedSubmit && !reason ? 'border-red-300' : 'border-slate-200',
                 )}
                 placeholder="개인 사유"

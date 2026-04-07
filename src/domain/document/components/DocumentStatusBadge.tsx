@@ -3,7 +3,7 @@ import cx from 'classnames';
 export default function DocumentStatusBadge({ status }: { status: DocumentStatus }) {
   return (
     <div
-      className={cx('badge badge-soft w-28', {
+      className={cx('badge badge-soft w-28 transition-colors duration-200', {
         'badge-info': status === 'DRAFT',
         'badge-neutral': status === 'WAITING',
         'badge-primary': status === 'APPROVED',

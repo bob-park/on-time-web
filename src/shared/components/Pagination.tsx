@@ -35,7 +35,7 @@ const pageBtnClass = (active: boolean, isDisabled: boolean) => {
   if (active) {
     return 'flex h-8 min-w-[32px] items-center justify-center rounded-md border border-slate-800 bg-slate-800 px-2 text-sm text-white';
   }
-  return 'flex h-8 min-w-[32px] items-center justify-center rounded-md border border-slate-200 bg-white px-2 text-sm text-slate-600 hover:bg-slate-50 transition-colors duration-100';
+  return 'flex h-8 min-w-[32px] items-center justify-center rounded-md border border-slate-200 bg-white px-2 text-sm text-slate-600 hover:bg-slate-50 active:scale-95 transition-[colors,transform] duration-100';
 };
 
 export default function Pagination({ currentPage, totalPages, total, pageSize, onPageChange }: PaginationProps) {

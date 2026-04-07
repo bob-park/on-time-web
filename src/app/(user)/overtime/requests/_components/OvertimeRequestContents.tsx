@@ -39,7 +39,7 @@ const pillClass = (active: boolean) =>
 const fieldLabel = 'w-[72px] flex-none text-xs font-semibold uppercase tracking-wider text-slate-400 pt-2';
 
 const inputClass =
-  'border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800 placeholder:text-slate-300 outline-none focus:border-slate-400';
+  'border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-800 placeholder:text-slate-300 outline-none transition-colors duration-150 focus:border-slate-400';
 
 const selectClass = 'border border-slate-200 rounded-lg px-2 py-1.5 text-sm bg-white text-slate-800';
 

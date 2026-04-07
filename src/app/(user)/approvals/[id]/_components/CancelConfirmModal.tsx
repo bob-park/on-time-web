@@ -68,25 +68,25 @@ export default function CancelConfirmModal({ show, documentId, onClose }: Cancel
 
         {/* content */}
         <div className="m-3 flex flex-col items-start justify-center gap-4">
-          <p className="text-base">이 문서는 폐기됩니다. 그래도 하실꺼?</p>
+          <p className="text-base">이 문서를 취소하면 폐기됩니다. 계속하시겠습니까?</p>
         </div>
 
         {/* action */}
         <div className="modal-action">
           <button className="btn w-32" onClick={handleClose}>
             <FaTimes className="size-6" />
-            안할까?
+            돌아가기
           </button>
-          <button className="btn btn-primary w-36" disabled={isLoading} onClick={handleCancel}>
+          <button className="btn btn-error w-36" disabled={isLoading} onClick={handleCancel}>
             {isLoading ? (
               <>
                 <span className="loading loading-spinner loading-xs" />
-                취소중
+                취소 중
               </>
             ) : (
               <>
                 <FaCheck className="size-5" />
-                그래도 할꺼?
+                문서 취소
               </>
             )}
           </button>

@@ -15,8 +15,8 @@ interface PillFilterProps<T> {
 
 const pillClass = (active: boolean) =>
   active
-    ? 'bg-slate-800 text-white rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors duration-100 cursor-pointer'
-    : 'bg-slate-100 text-slate-600 rounded-full px-3.5 py-1.5 text-sm font-medium hover:bg-slate-200 transition-colors duration-100 cursor-pointer';
+    ? 'bg-slate-800 text-white rounded-full px-3.5 py-1.5 text-sm font-medium transition-[colors,transform] duration-100 cursor-pointer active:scale-95'
+    : 'bg-slate-100 text-slate-600 rounded-full px-3.5 py-1.5 text-sm font-medium hover:bg-slate-200 transition-[colors,transform] duration-100 cursor-pointer active:scale-95';
 
 export default function PillFilter<T>({ label, options, value, onChange, ariaLabel }: PillFilterProps<T>) {
   return (
