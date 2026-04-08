@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
   images: {
     dangerouslyAllowLocalIP: true,
     minimumCacheTTL: 3600,
+    unoptimized: true,
     remotePatterns: [
       {
         hostname: '**',
