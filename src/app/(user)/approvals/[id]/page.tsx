@@ -2,6 +2,9 @@ import { cookies } from 'next/headers';
 
 import OverTimeWorkDocument from '@/domain/document/components/OverTimeWorkDocument';
 import VacationDocument from '@/domain/document/components/VacationDocument';
+import PageHeader from '@/shared/components/PageHeader';
+
+import { getTranslations } from 'next-intl/server';
 
 import ApprovalProceedContents from './_components/ApprovalProceedContents';
 
@@ -9,6 +12,7 @@ const { WEB_SERVICE_HOST } = process.env;
 
 export default async function ApprovalDetailPage({ params }: { params: Promise<{ id: number }> }) {
   const id = (await params).id;
+  const t = await getTranslations('approval.detail');
 
   const cookieStore = await cookies();
 
@@ -22,14 +26,14 @@ export default async function ApprovalDetailPage({ params }: { params: Promise<{
     .then((data: ApprovalHistory) => data);
 
   return (
-    <div className="flex size-full flex-col items-center gap-2">
-      {/* title */}
-      <div className="w-full">
-        <h2 className="text-2xl font-bold">결재 처리 정보</h2>
+    <div className="animate-fade-up flex size-full flex-col items-center gap-4">
+      {/* eyebrow + title */}
+      <div className="w-full max-w-[1200px]">
+        <PageHeader eyebrow={t('proceedEyebrow')} title={t('proceedTitle')} />
       </div>
 
       {/* contents */}
-      <div className="mt-5 flex w-full max-w-[1200px] flex-col items-center justify-center gap-3">
+      <div className="flex w-full max-w-[1200px] flex-col items-center justify-center gap-4">
         {/* proceed buttons */}
         <div className="w-full">
           <ApprovalProceedContents id={id} currentId={res.approvalLine.id} />
@@ -37,8 +41,8 @@ export default async function ApprovalDetailPage({ params }: { params: Promise<{
 
         {/* document info */}
         <div className="w-full">
-          <div className="card bg-base-100 m-3 flex w-full flex-col items-center justify-center gap-4 shadow-xl">
-            <div className="mt-2 aspect-[1/1.414] w-[1000px]">
+          <div className="bg-base-300 flex w-full items-center justify-center rounded-lg p-6">
+            <div className="aspect-[1/1.414] w-[1000px] shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
               {res.document.type === 'VACATION' && (
                 <VacationDocument id="approval_document_vacation_id" document={res.document as VacationDocument} />
               )}

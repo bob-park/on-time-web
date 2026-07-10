@@ -1,17 +1,22 @@
+import PageHeader from '@/shared/components/PageHeader';
+
+import { getTranslations } from 'next-intl/server';
+
 import DayOffDetailContents from './_components/DayOffDetailContents';
 
 export default async function DayOffDetailPage({ params }: { params: Promise<{ id: number }> }) {
   const id = (await params).id;
+  const t = await getTranslations('approval.detail');
 
   return (
-    <div className="flex size-full flex-col items-center gap-2">
-      {/* title */}
-      <div className="w-full">
-        <h2 className="text-2xl font-bold">휴가 신청 정보</h2>
+    <div className="animate-fade-up flex size-full flex-col items-center gap-4">
+      {/* eyebrow + title */}
+      <div className="w-full max-w-[1200px]">
+        <PageHeader eyebrow={t('eyebrow')} title={t('dayoffTitle')} />
       </div>
 
       {/* contents */}
-      <div className="mt-5 max-w-[1200px]">
+      <div className="w-full max-w-[1200px]">
         <DayOffDetailContents id={id} />
       </div>
     </div>

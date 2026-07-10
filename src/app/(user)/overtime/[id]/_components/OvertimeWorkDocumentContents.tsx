@@ -16,6 +16,7 @@ import delay from '@/utils/delay';
 
 import cx from 'classnames';
 import dayjs from 'dayjs';
+import { useTranslations } from 'next-intl';
 
 interface OvertimeWorkDocumentContentsProps {
   id: number;
@@ -24,6 +25,9 @@ interface OvertimeWorkDocumentContentsProps {
 const DEFAULT_DOCUMENT_ID = 'overtime_work_document_id';
 
 export default function OvertimeWorkDocumentContents({ id }: OvertimeWorkDocumentContentsProps) {
+  // i18n
+  const t = useTranslations('approval.detail');
+
   // state
   const [isPdfLoading, setIsPdfLoading] = useState<boolean>(false);
   const [showPress, setShowPress] = useState<boolean>(false);
@@ -66,96 +70,81 @@ export default function OvertimeWorkDocumentContents({ id }: OvertimeWorkDocumen
     <>
       <div className="flex size-full flex-col items-center justify-center gap-4">
         {/* 현재 결재 라인 상태 정보 */}
-        <div className="card bg-base-100 m-3 flex w-full flex-col items-center justify-center gap-4 shadow-xl">
-          {/* body */}
-          <div className="card-body w-full">
-            <div className="flex w-full flex-col gap-4">
-              <div className="">
-                <h3 className="text-lg font-medium">현재 결재 상태</h3>
-              </div>
-              <div className="h-24 w-full">
-                <ApprovalLines
-                  lines={
-                    overTimeWorkDocument?.approvalHistories.map((item) => ({
-                      id: item.approvalLine.id,
-                      contents: item.approvalLine.contents,
-                      status: item.status || 'NOT_YET',
-                      reason: item.reason,
-                    })) || []
-                  }
-                />
-              </div>
-            </div>
+        <div className="bg-base-300 flex w-full flex-col gap-5 rounded-lg p-6">
+          <h3 className="text-lg font-semibold">{t('statusTitle')}</h3>
+          <div className="w-full py-2">
+            <ApprovalLines
+              lines={
+                overTimeWorkDocument?.approvalHistories.map((item) => ({
+                  id: item.approvalLine.id,
+                  contents: item.approvalLine.contents,
+                  status: item.status || 'NOT_YET',
+                  reason: item.reason,
+                })) || []
+              }
+            />
           </div>
         </div>
 
         {/* 휴가계 다운로드 버튼 */}
-        <div className="card bg-base-100 m-3 flex w-full flex-col items-center justify-center gap-4 shadow-xl">
-          <div className="card-body w-full">
-            <div className="mt-2 flex flex-col items-center justify-center gap-4">
-              <div className="flex w-full flex-row items-center justify-center gap-10">
-                <div className="flex-1">
-                  <button
-                    type="button"
-                    className="btn btn-soft btn-warning w-full"
-                    disabled={overTimeWorkDocument?.status !== 'WAITING'}
-                    onClick={() => setShowPress(true)}
-                  >
-                    <IoNotifications className="size-6" />
-                    빨리 진행시켜줘
-                  </button>
-                </div>
-                <div
-                  className={cx('flex-1', {
-                    tooltip: overTimeWorkDocument?.status !== 'DRAFT',
-                  })}
-                  data-tip="이미 신청된 문서입니다."
-                >
-                  <button
-                    type="button"
-                    className="btn btn-soft btn-accent w-full"
-                    disabled={overTimeWorkDocument?.status !== 'DRAFT'}
-                    onClick={() => setShowRequest(true)}
-                  >
-                    <PiUploadFill className="size-6" />
-                    신청하기
-                  </button>
-                </div>
-                <div
-                  className={cx('flex-1', {
-                    tooltip: overTimeWorkDocument?.status === 'DRAFT',
-                  })}
-                  data-tip="초안인 경우 다운로드 받을 수 없습니다. 문서를 신청해주세요"
-                >
-                  <button
-                    type="button"
-                    className="btn btn-neutral w-full"
-                    disabled={
-                      isPdfLoading || ['CANCELLED', 'REJECTED', 'DRAFT'].includes(overTimeWorkDocument?.status || '')
-                    }
-                    onClick={handlePdfDownloadClick}
-                  >
-                    {isPdfLoading ? (
-                      <>
-                        <span className="loading loading-spinner" />
-                        생성중
-                      </>
-                    ) : (
-                      <>
-                        <FaFilePdf className="size-6" />
-                        PDF 다운로드
-                      </>
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
+        <div className="bg-base-300 flex w-full flex-row items-center justify-center gap-6 rounded-lg p-6">
+          <div className="flex-1">
+            <button
+              type="button"
+              className="btn btn-outline btn-warning w-full"
+              disabled={overTimeWorkDocument?.status !== 'WAITING'}
+              onClick={() => setShowPress(true)}
+            >
+              <IoNotifications className="size-6" />
+              {t('actions.press')}
+            </button>
+          </div>
+          <div
+            className={cx('flex-1', {
+              tooltip: overTimeWorkDocument?.status !== 'DRAFT',
+            })}
+            data-tip={t('tooltip.alreadyRequested')}
+          >
+            <button
+              type="button"
+              className="btn btn-primary w-full"
+              disabled={overTimeWorkDocument?.status !== 'DRAFT'}
+              onClick={() => setShowRequest(true)}
+            >
+              <PiUploadFill className="size-6" />
+              {t('actions.request')}
+            </button>
+          </div>
+          <div
+            className={cx('flex-1', {
+              tooltip: overTimeWorkDocument?.status === 'DRAFT',
+            })}
+            data-tip={t('tooltip.draftNoDownload')}
+          >
+            <button
+              type="button"
+              className="btn btn-outline w-full"
+              disabled={isPdfLoading || ['CANCELLED', 'REJECTED', 'DRAFT'].includes(overTimeWorkDocument?.status || '')}
+              onClick={handlePdfDownloadClick}
+            >
+              {isPdfLoading ? (
+                <>
+                  <span className="loading loading-spinner" />
+                  {t('actions.pdfLoading')}
+                </>
+              ) : (
+                <>
+                  <FaFilePdf className="size-6" />
+                  {t('actions.pdf')}
+                </>
+              )}
+            </button>
           </div>
         </div>
 
         {/* 휴일 근무 보고서 정보 */}
-        <div className="card bg-base-100 m-3 flex w-full flex-col items-center justify-center gap-4 shadow-xl">
-          <div className="mt-2 aspect-[1/1.414] w-[1000px]">
+        <div className="bg-base-300 flex w-full items-center justify-center rounded-lg p-6">
+          <div className="aspect-[1/1.414] w-[1000px] shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
             {overTimeWorkDocument && <OverTimeWorkDocument id={DEFAULT_DOCUMENT_ID} document={overTimeWorkDocument} />}
           </div>
         </div>

@@ -8,6 +8,8 @@ import { PiUploadFill } from 'react-icons/pi';
 import { useRequestDocument } from '@/domain/document/query/documents';
 import useToast from '@/shared/hooks/useToast';
 
+import { useTranslations } from 'next-intl';
+
 interface RequestConfirmModalProps {
   show: boolean;
   documentId: number;
@@ -17,6 +19,9 @@ interface RequestConfirmModalProps {
 export default function RequestConfirmModal({ show, documentId, onClose }: RequestConfirmModalProps) {
   // ref
   const ref = useRef<HTMLDialogElement>(null);
+
+  // i18n
+  const t = useTranslations('approval.detail.request');
 
   // hooks
   const { push } = useToast();
@@ -58,35 +63,35 @@ export default function RequestConfirmModal({ show, documentId, onClose }: Reque
 
   return (
     <dialog ref={ref} className="modal" onKeyDownCapture={handleKeyboardDown}>
-      <div className="modal-box">
+      <div className="modal-box rounded-xl bg-[#252525] shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
         <div className="flex w-full flex-col items-start justify-start gap-3">
           {/* header */}
           <div className="">
-            <h3 className="text-lg font-bold">신청하기</h3>
+            <h3 className="text-lg font-bold">{t('title')}</h3>
           </div>
         </div>
 
         {/* content */}
         <div className="m-3 flex flex-col items-start justify-center gap-4">
-          <p className="text-base">이 문서를 결재 신청하시겠습니까?</p>
+          <p className="text-base">{t('body')}</p>
         </div>
 
         {/* action */}
         <div className="modal-action">
-          <button className="btn w-32" onClick={handleClose}>
+          <button className="btn btn-ghost w-32" onClick={handleClose}>
             <FaTimes className="size-6" />
-            취소
+            {t('cancel')}
           </button>
           <button className="btn btn-primary w-36" disabled={isLoading} onClick={handleCancel}>
             {isLoading ? (
               <>
                 <span className="loading loading-spinner loading-xs" />
-                신청 중
+                {t('submitting')}
               </>
             ) : (
               <>
                 <PiUploadFill className="size-5" />
-                신청하기
+                {t('submit')}
               </>
             )}
           </button>

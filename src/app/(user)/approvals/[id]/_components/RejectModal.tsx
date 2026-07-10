@@ -7,6 +7,8 @@ import { FaCheck, FaTimes } from 'react-icons/fa';
 import { useRejectDocument } from '@/domain/document/query/documents';
 import useToast from '@/shared/hooks/useToast';
 
+import { useTranslations } from 'next-intl';
+
 interface ApproveModalProps {
   show: boolean;
   id: number;
@@ -16,6 +18,9 @@ interface ApproveModalProps {
 export default function RejectModal({ show, id, onClose }: ApproveModalProps) {
   // ref
   const ref = useRef<HTMLDialogElement>(null);
+
+  // i18n
+  const t = useTranslations('approval.detail.reject');
 
   // hooks
   const { push } = useToast();
@@ -61,46 +66,46 @@ export default function RejectModal({ show, id, onClose }: ApproveModalProps) {
 
   return (
     <dialog ref={ref} className="modal" onKeyDownCapture={handleKeyboardDown}>
-      <div className="modal-box">
+      <div className="modal-box rounded-xl bg-[#252525] shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
         <div className="flex w-full flex-col items-start justify-start gap-3">
           {/* header */}
           <div className="">
-            <h3 className="text-lg font-bold">결재 반려</h3>
+            <h3 className="text-lg font-bold">{t('title')}</h3>
           </div>
         </div>
 
         {/* content */}
         <div className="m-3 flex flex-col items-start justify-center gap-4">
           <label className="input mt-5 w-full">
-            <span className="label">사유</span>
+            <span className="label">{t('reasonLabel')}</span>
             <input
               type="text"
               className="grow"
-              placeholder="반려 사유를 입력해 주세요"
+              placeholder={t('reasonPlaceholder')}
               maxLength={200}
               value={reason}
               onChange={(e) => setReason(e.target.value)}
             />
-            <span className="badge badge-neutral badge-xs">필수</span>
+            <span className="badge badge-neutral badge-xs">{t('required')}</span>
           </label>
         </div>
 
         {/* action */}
         <div className="modal-action">
-          <button className="btn w-32" onClick={handleClose}>
+          <button className="btn btn-ghost w-32" onClick={handleClose}>
             <FaTimes className="size-6" />
-            취소
+            {t('cancel')}
           </button>
-          <button className="btn btn-primary w-32" disabled={isLoading || !reason} onClick={handleReject}>
+          <button className="btn btn-outline btn-error w-32" disabled={isLoading || !reason} onClick={handleReject}>
             {isLoading ? (
               <>
                 <span className="loading loading-spinner loading-xs" />
-                반려 중
+                {t('confirming')}
               </>
             ) : (
               <>
                 <FaCheck className="size-5" />
-                반려
+                {t('confirm')}
               </>
             )}
           </button>

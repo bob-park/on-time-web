@@ -249,5 +249,65 @@
       },
       "empty": "{year}년 휴가 사용 내역이 없습니다."
     }
+  },
+  "approval": {
+    "detail": {
+      "eyebrow": "Approval",
+      "proceedEyebrow": "Approvals",
+      "dayoffTitle": "휴가 신청 정보",
+      "overtimeTitle": "휴일 근무 보고서 신청 정보",
+      "proceedTitle": "결재 처리 정보",
+      "statusTitle": "현재 결재 상태",
+      "stepCurrent": "현재",
+      "actions": {
+        "press": "빨리 진행시켜줘",
+        "request": "신청하기",
+        "pdf": "PDF 다운로드",
+        "pdfLoading": "생성중",
+        "approve": "승인",
+        "reject": "반려",
+        "cancel": "취소"
+      },
+      "tooltip": {
+        "alreadyRequested": "이미 신청된 문서입니다.",
+        "draftNoDownload": "초안인 경우 다운로드 받을 수 없습니다. 문서를 신청해주세요"
+      },
+      "press": {
+        "title": "결재 독촉 알림",
+        "cancel": "취소",
+        "send": "알림 보내기",
+        "sending": "전송 중"
+      },
+      "request": {
+        "title": "신청하기",
+        "body": "이 문서를 결재 신청하시겠습니까?",
+        "cancel": "취소",
+        "submit": "신청하기",
+        "submitting": "신청 중"
+      },
+      "approve": {
+        "title": "결재 승인",
+        "body": "이 문서를 승인하시겠습니까?",
+        "cancel": "취소",
+        "confirm": "승인",
+        "confirming": "승인 중"
+      },
+      "reject": {
+        "title": "결재 반려",
+        "reasonLabel": "사유",
+        "reasonPlaceholder": "반려 사유를 입력해 주세요",
+        "required": "필수",
+        "cancel": "취소",
+        "confirm": "반려",
+        "confirming": "반려 중"
+      },
+      "cancelModal": {
+        "title": "취소하기",
+        "body": "이 문서를 취소하면 폐기됩니다. 계속하시겠습니까?",
+        "back": "돌아가기",
+        "confirm": "문서 취소",
+        "confirming": "취소 중"
+      }
+    }
   }
 }

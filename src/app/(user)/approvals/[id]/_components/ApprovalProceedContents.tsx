@@ -8,6 +8,8 @@ import { GiCancel } from 'react-icons/gi';
 import ApprovalLines from '@/domain/approval/components/ApprovalLines';
 import { useApprovalDocument } from '@/domain/document/query/documents';
 
+import { useTranslations } from 'next-intl';
+
 import ApproveModal from './ApproveModal';
 import CancelConfirmModal from './CancelConfirmModal';
 import RejectModal from './RejectModal';
@@ -18,6 +20,9 @@ interface ApprovalProceedContentsProps {
 }
 
 export default function ApprovalProceedContents({ id, currentId }: ApprovalProceedContentsProps) {
+  // i18n
+  const t = useTranslations('approval.detail');
+
   // state
   const [showApprove, setShowApprove] = useState<boolean>(false);
   const [showReject, setShowReject] = useState<boolean>(false);
@@ -28,72 +33,59 @@ export default function ApprovalProceedContents({ id, currentId }: ApprovalProce
 
   return (
     <>
-      <div className="flex w-full flex-col items-center justify-center gap-3">
+      <div className="flex w-full flex-col items-center justify-center gap-4">
         {/* 현재 결재 라인 상태 정보 */}
-        <div className="card bg-base-100 m-3 flex w-full flex-col items-center justify-center gap-4 shadow-xl">
-          {/* body */}
-          <div className="card-body w-full">
-            <div className="flex w-full flex-col gap-4">
-              <div className="">
-                <h3 className="text-lg font-medium">현재 결재 상태</h3>
-              </div>
-              <div className="h-32 w-full">
-                <ApprovalLines
-                  lines={
-                    approvalHistory?.document.approvalHistories.map((item) => ({
-                      id: item.approvalLine.id,
-                      contents: item.approvalLine.contents,
-                      status: item.status || 'NOT_YET',
-                      reason: item.reason,
-                    })) || []
-                  }
-                  currentId={currentId}
-                />
-              </div>
-            </div>
+        <div className="bg-base-300 flex w-full flex-col gap-5 rounded-lg p-6">
+          <h3 className="text-lg font-semibold">{t('statusTitle')}</h3>
+          <div className="w-full py-2">
+            <ApprovalLines
+              lines={
+                approvalHistory?.document.approvalHistories.map((item) => ({
+                  id: item.approvalLine.id,
+                  contents: item.approvalLine.contents,
+                  status: item.status || 'NOT_YET',
+                  reason: item.reason,
+                })) || []
+              }
+              currentId={currentId}
+            />
           </div>
         </div>
 
         {/* buttons */}
-        <div className="card bg-base-100 m-3 flex w-full flex-col items-center justify-center gap-4 shadow-xl">
-          <div className="card-body w-full">
-            <div className="mt-2 flex flex-col items-center justify-center gap-4">
-              <div className="flex w-full flex-row items-center justify-center gap-10">
-                <div className="flex-1">
-                  <button
-                    type="button"
-                    className="btn btn-secondary w-full"
-                    disabled={['CANCELLED', 'REJECTED'].includes(approvalHistory?.document.status || '')}
-                    onClick={() => setShowCancel(true)}
-                  >
-                    <GiCancel className="size-6" />
-                    취소
-                  </button>
-                </div>
-                <div className="flex-1">
-                  <button
-                    type="button"
-                    className="btn btn-secondary w-full flex-1"
-                    disabled={approvalHistory?.document.status === 'CANCELLED' || approvalHistory?.status !== 'WAITING'}
-                    onClick={() => setShowReject(true)}
-                  >
-                    <FaTimes className="size-5" />
-                    반려
-                  </button>
-                </div>
-                <div className="flex-1">
-                  <button
-                    type="button"
-                    className="btn btn-primary w-full flex-1"
-                    disabled={approvalHistory?.document.status === 'CANCELLED' || approvalHistory?.status !== 'WAITING'}
-                    onClick={() => setShowApprove(true)}
-                  >
-                    <FaCheck className="size-5" />
-                    승인
-                  </button>
-                </div>
-              </div>
-            </div>
+        <div className="bg-base-300 flex w-full flex-row items-center justify-center gap-6 rounded-lg p-6">
+          <div className="flex-1">
+            <button
+              type="button"
+              className="btn btn-ghost w-full"
+              disabled={['CANCELLED', 'REJECTED'].includes(approvalHistory?.document.status || '')}
+              onClick={() => setShowCancel(true)}
+            >
+              <GiCancel className="size-6" />
+              {t('actions.cancel')}
+            </button>
+          </div>
+          <div className="flex-1">
+            <button
+              type="button"
+              className="btn btn-outline btn-error w-full"
+              disabled={approvalHistory?.document.status === 'CANCELLED' || approvalHistory?.status !== 'WAITING'}
+              onClick={() => setShowReject(true)}
+            >
+              <FaTimes className="size-5" />
+              {t('actions.reject')}
+            </button>
+          </div>
+          <div className="flex-1">
+            <button
+              type="button"
+              className="btn btn-primary w-full"
+              disabled={approvalHistory?.document.status === 'CANCELLED' || approvalHistory?.status !== 'WAITING'}
+              onClick={() => setShowApprove(true)}
+            >
+              <FaCheck className="size-5" />
+              {t('actions.approve')}
+            </button>
           </div>
         </div>
       </div>
