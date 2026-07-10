@@ -9,16 +9,23 @@ import CustomerSupport from '@/app/_components/CustomerSupport';
 import NavMenu from '@/app/_components/NavMenu';
 import ToastProvider from '@/shared/components/toast/ToastProvider';
 
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages, getTranslations } from 'next-intl/server';
+
 import Header from './_components/Header';
 import RQProvider from './_components/RQProvider';
 import './globals.css';
 
 const { WEB_SERVICE_HOST, WS_HOST } = process.env;
 
-export const metadata: Metadata = {
-  title: 'On Time ',
-  description: '전자 근태 관리 시스템',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('metadata');
+
+  return {
+    title: t('title'),
+    description: t('description'),
+  };
+}
 
 export default async function RootLayout({
   children,
@@ -44,34 +51,38 @@ export default async function RootLayout({
 
   const dehydratedState = dehydrate(queryClient);
 
+  const messages = await getMessages();
+
   return (
     <html lang="ko" data-theme="light">
       <body className="relative font-[Pretendard,system-ui,-apple-system,sans-serif]">
-        <RQProvider>
-          <HydrationBoundary state={dehydratedState}>
-            <ToastProvider limit={5} timeout={5}>
-              <div className="flex h-screen overflow-hidden">
-                {/* sidebar */}
-                <div className="w-64 flex-none">
-                  <NavMenu />
-                </div>
-
-                {/* main area */}
-                <div className="flex flex-1 flex-col overflow-hidden">
-                  {/* header */}
-                  <div className="flex-none">
-                    <Header />
+        <NextIntlClientProvider locale="ko" messages={messages}>
+          <RQProvider>
+            <HydrationBoundary state={dehydratedState}>
+              <ToastProvider limit={5} timeout={5}>
+                <div className="flex h-screen overflow-hidden">
+                  {/* sidebar */}
+                  <div className="w-64 flex-none">
+                    <NavMenu />
                   </div>
 
-                  {/* content */}
-                  <div className="flex-1 overflow-y-auto bg-slate-50/50 p-6">{children}</div>
-                </div>
-              </div>
+                  {/* main area */}
+                  <div className="flex flex-1 flex-col overflow-hidden">
+                    {/* header */}
+                    <div className="flex-none">
+                      <Header />
+                    </div>
 
-              <CustomerSupport wsHost={WS_HOST || '/api/ws'} userUniqueId={user.id} />
-            </ToastProvider>
-          </HydrationBoundary>
-        </RQProvider>
+                    {/* content */}
+                    <div className="flex-1 overflow-y-auto bg-slate-50/50 p-6">{children}</div>
+                  </div>
+                </div>
+
+                <CustomerSupport wsHost={WS_HOST || '/api/ws'} userUniqueId={user.id} />
+              </ToastProvider>
+            </HydrationBoundary>
+          </RQProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
