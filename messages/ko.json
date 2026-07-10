@@ -309,5 +309,65 @@
         "confirming": "취소 중"
       }
     }
+  },
+  "overtime": {
+    "request": {
+      "eyebrow": "Overtime",
+      "title": "휴일 근무 보고서 신청",
+      "viewDocuments": "결재 신청 목록",
+      "formTitle": "근무 내역 입력",
+      "formHint": "한 건씩 추가할 수 있어요",
+      "registeredLabel": "등록 여부",
+      "clearAria": "선택 해제",
+      "registered": "등록 직원",
+      "unregistered": "미등록 직원",
+      "personLabel": "인원",
+      "selectPerson": "인원 선택",
+      "namePlaceholder": "성명",
+      "purposeLabel": "근무 목적",
+      "purposePlaceholder": "근무 목적 입력",
+      "workDateLabel": "근무일",
+      "selectDate": "날짜 선택",
+      "workTimeLabel": "근무 시간",
+      "start": "시작",
+      "end": "종료",
+      "timeSep": "~",
+      "hourUnit": "{value}시",
+      "minuteUnit": "{value}분",
+      "compLabel": "보상휴가",
+      "compToggle": "보상휴가로 처리",
+      "addButton": "+ 목록에 추가",
+      "listTitle": "추가된 근무 내역",
+      "listCount": "({count}건)",
+      "colDate": "근무일",
+      "colTime": "근무 시간",
+      "colPurpose": "근무 목적",
+      "colWorker": "근무자",
+      "colComp": "보상휴가",
+      "colDelete": "삭제",
+      "compApplied": "적용",
+      "deleteAria": "삭제",
+      "emptyTitle": "추가된 항목이 없습니다",
+      "emptyDescription": "위 양식을 작성한 후 추가 버튼을 클릭하세요.",
+      "cancel": "취소",
+      "submit": "초안 생성",
+      "submitting": "처리 중...",
+      "toast": {
+        "created": "휴일 근무 보고서 초안이 작성되었습니다.",
+        "error": "문서 생성에 실패했습니다. 다시 시도해 주세요.",
+        "selectRegistered": "등록 여부를 선택해 주세요.",
+        "selectPerson": "인원을 선택하거나 이름을 입력해 주세요.",
+        "inputPurpose": "근무 목적을 입력해 주세요.",
+        "selectDate": "근무일을 선택해 주세요."
+      },
+      "modal": {
+        "title": "인원 선택",
+        "colTeam": "팀",
+        "colPosition": "직급",
+        "colName": "이름",
+        "cancel": "취소",
+        "confirm": "선택"
+      }
+    }
   }
 }

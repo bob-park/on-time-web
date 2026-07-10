@@ -1,18 +1,30 @@
+import Link from 'next/link';
+
+import PageHeader from '@/shared/components/PageHeader';
+
+import { getTranslations } from 'next-intl/server';
+
 import OvertimeRequestContents from './_components/OvertimeRequestContents';
 
-export default function OvertimeRequestsPage() {
-  return (
-    <div className="flex size-full flex-col gap-3">
-      {/* title */}
-      <div className="">
-        <h2 className="text-2xl font-bold">휴일 근무 보고서 신청</h2>
-      </div>
+export default async function OvertimeRequestsPage() {
+  const t = await getTranslations('overtime.request');
 
-      {/* content */}
-      <div className="flex max-w-[800px] flex-col items-center justify-center gap-3">
-        <div className="w-full">
-          <OvertimeRequestContents />
-        </div>
+  return (
+    <div className="animate-fade-up flex size-full flex-col gap-4">
+      {/* eyebrow + title + action */}
+      <PageHeader
+        eyebrow={t('eyebrow')}
+        title={t('title')}
+        actions={
+          <Link href="/documents" className="btn btn-ghost btn-sm">
+            {t('viewDocuments')} ›
+          </Link>
+        }
+      />
+
+      {/* request form */}
+      <div className="w-full max-w-[800px]">
+        <OvertimeRequestContents />
       </div>
     </div>
   );
