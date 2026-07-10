@@ -11,29 +11,29 @@ import DocumentsTypeBadge from '@/domain/document/components/DocumentTypeBadge';
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
+import { useTranslations } from 'next-intl';
 
 interface DocumentResultProps {
   documents: Document[];
   isLoading: boolean;
 }
 
+const thClass =
+  'text-base-content/60 border-b border-white/10 px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase';
+
 export default function DocumentResult({ documents, isLoading }: DocumentResultProps) {
+  const t = useTranslations('documents');
+
   return (
     <div className="w-full overflow-x-auto select-none">
-      <table className="w-full border-collapse">
+      <table className="w-full border-collapse text-sm">
         <thead>
-          <tr className="h-10 border-b border-slate-200 bg-slate-50">
-            <th className="w-[110px] px-3 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase">
-              문서번호
-            </th>
-            <th className="w-[110px] px-3 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase">
-              구분
-            </th>
-            <th className="w-[110px] px-3 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase">
-              상태
-            </th>
-            <th className="px-3 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase">요청일</th>
-            <th className="w-14 px-3" />
+          <tr>
+            <th className={`w-[120px] ${thClass}`}>{t('colDocNo')}</th>
+            <th className={`w-[150px] ${thClass}`}>{t('colCategory')}</th>
+            <th className={`w-[130px] ${thClass}`}>{t('colStatus')}</th>
+            <th className={thClass}>{t('colDate')}</th>
+            <th className={`w-14 ${thClass}`} />
           </tr>
         </thead>
         <tbody>
@@ -51,6 +51,7 @@ export default function DocumentResult({ documents, isLoading }: DocumentResultP
 }
 
 const DocumentRow = memo(function DocumentRow({ document }: { document: Document }) {
+  const t = useTranslations('documents');
   const router = useRouter();
 
   const handleClick = () => {
@@ -68,28 +69,28 @@ const DocumentRow = memo(function DocumentRow({ document }: { document: Document
 
   return (
     <tr
-      className="h-[52px] cursor-pointer border-b border-slate-100 transition-colors duration-100 last:border-b-0 hover:bg-slate-50"
+      className="h-[52px] cursor-pointer border-b border-white/[0.04] transition-colors duration-100 last:border-b-0 hover:bg-white/[0.04]"
       onClick={handleClick}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && handleClick()}
-      aria-label={`문서 ${document.id} 상세 보기`}
+      aria-label={t('rowAria', { id: document.id })}
     >
-      <td className="px-3 text-sm font-semibold text-slate-500">#{document.id}</td>
-      <td className="px-3">
+      <td className="text-base-content px-4 text-sm font-bold">#{document.id}</td>
+      <td className="px-4">
         <DocumentsTypeBadge type={document.type} />
       </td>
-      <td className="px-3">
+      <td className="px-4">
         <DocumentStatusBadge status={document.status} />
       </td>
-      <td className="px-3 text-sm text-slate-500">
+      <td className="text-base-content/60 px-4 text-sm">
         {dayjs(document.createdDate).locale('ko').format('YYYY년 MM월 DD일')}
       </td>
-      <td className="px-3 text-center">
+      <td className="px-4 text-center">
         <button
           type="button"
-          aria-label="문서 상세 보기"
-          className="flex h-7 w-7 items-center justify-center rounded-md border border-slate-200 bg-white text-sm text-slate-500 transition-colors duration-100 hover:bg-slate-50"
+          aria-label={t('moreAria')}
+          className="text-base-content/60 hover:text-base-content mx-auto flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-100 hover:bg-white/10"
           onClick={(e) => {
             e.stopPropagation();
             handleClick();
@@ -113,21 +114,21 @@ function SkeletonRows() {
   return (
     <>
       {widths.map((w, i) => (
-        <tr key={i} className="h-[52px] border-b border-slate-100 last:border-b-0">
-          <td className="px-3">
-            <div className={`h-3.5 animate-pulse rounded bg-slate-200 ${w.id}`} />
+        <tr key={i} className="h-[52px] border-b border-white/[0.04] last:border-b-0">
+          <td className="px-4">
+            <div className={`h-3.5 animate-pulse rounded bg-white/5 ${w.id}`} />
           </td>
-          <td className="px-3">
-            <div className={`h-5 animate-pulse rounded-full bg-slate-200 ${w.type}`} />
+          <td className="px-4">
+            <div className={`h-5 animate-pulse rounded-full bg-white/5 ${w.type}`} />
           </td>
-          <td className="px-3">
-            <div className={`h-5 animate-pulse rounded-full bg-slate-200 ${w.status}`} />
+          <td className="px-4">
+            <div className={`h-5 animate-pulse rounded-full bg-white/5 ${w.status}`} />
           </td>
-          <td className="px-3">
-            <div className={`h-3.5 animate-pulse rounded bg-slate-200 ${w.date}`} />
+          <td className="px-4">
+            <div className={`h-3.5 animate-pulse rounded bg-white/5 ${w.date}`} />
           </td>
-          <td className="px-3 text-center">
-            <div className="mx-auto h-7 w-7 animate-pulse rounded-md bg-slate-200" />
+          <td className="px-4 text-center">
+            <div className="mx-auto h-8 w-8 animate-pulse rounded-full bg-white/5" />
           </td>
         </tr>
       ))}
@@ -136,13 +137,14 @@ function SkeletonRows() {
 }
 
 function EmptyState() {
+  const t = useTranslations('documents');
   return (
     <tr>
       <td colSpan={5} className="py-16 text-center">
         <div className="flex flex-col items-center gap-2">
-          <HiOutlineDocumentText className="size-10 text-slate-300" />
-          <p className="text-sm font-semibold text-slate-500">결재 문서가 없습니다</p>
-          <p className="text-sm text-slate-400">조건에 맞는 문서가 없습니다</p>
+          <HiOutlineDocumentText className="text-base-content/20 size-10" />
+          <p className="text-base-content/70 text-sm font-semibold">{t('emptyTitle')}</p>
+          <p className="text-base-content/50 text-sm">{t('emptyDescription')}</p>
         </div>
       </td>
     </tr>

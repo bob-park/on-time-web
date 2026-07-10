@@ -7,7 +7,18 @@
     "today": "오늘",
     "cancel": "취소",
     "confirm": "확인",
-    "total": "총 {count}건"
+    "total": "총 {count}건",
+    "filter": {
+      "categoryLabel": "구분",
+      "statusLabel": "상태",
+      "all": "전체",
+      "typeVacation": "휴가계",
+      "typeOvertime": "휴일근무보고서",
+      "statusDraft": "초안",
+      "statusWaiting": "진행",
+      "statusApproved": "승인",
+      "statusRejected": "반려"
+    }
   },
   "preparing": {
     "title": "준비중",
@@ -92,5 +103,36 @@
     "cancel": "취소",
     "addAction": "추가",
     "adding": "추가중"
+  },
+  "documents": {
+    "eyebrow": "Documents",
+    "title": "내 결재 문서",
+    "subtitle": "결재 신청 내역을 조회하고 상태를 확인합니다",
+    "categoryFilterAria": "문서 구분 필터",
+    "statusFilterAria": "문서 상태 필터",
+    "colDocNo": "문서번호",
+    "colCategory": "구분",
+    "colStatus": "상태",
+    "colDate": "요청일",
+    "rowAria": "문서 {id} 상세 보기",
+    "moreAria": "문서 상세 보기",
+    "emptyTitle": "결재 문서가 없습니다",
+    "emptyDescription": "조건에 맞는 문서가 없습니다"
+  },
+  "approvals": {
+    "eyebrow": "Approvals",
+    "title": "결재 처리",
+    "subtitle": "결재 요청 목록을 조회하고 처리합니다",
+    "categoryFilterAria": "문서 구분 필터",
+    "statusFilterAria": "문서 상태 필터",
+    "colDocNo": "문서번호",
+    "colCategory": "구분",
+    "colStatus": "상태",
+    "colApplicant": "신청자",
+    "colDate": "요청일",
+    "rowAria": "결재 {id} 상세 보기",
+    "moreAria": "결재 상세 보기",
+    "emptyTitle": "결재 문서가 없습니다",
+    "emptyDescription": "조건에 맞는 문서가 없습니다"
   }
 }

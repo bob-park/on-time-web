@@ -1,3 +1,7 @@
+import PageHeader from '@/shared/components/PageHeader';
+
+import { getTranslations } from 'next-intl/server';
+
 import DocumentApprovalContents from './_components/DocumentApprovalContents';
 
 export default async function ApprovalsPage({
@@ -6,6 +10,7 @@ export default async function ApprovalsPage({
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }) {
   const { page, type, status } = await searchParams;
+  const t = await getTranslations('approvals');
 
   const params: SearchDocumentApprovalHistoryRequest = {
     page: parseInt(page || '0', 0),
@@ -15,16 +20,12 @@ export default async function ApprovalsPage({
   };
 
   return (
-    <div className="flex size-full flex-col gap-3">
-      {/* title */}
-      <div>
-        <p className="text-xs font-semibold tracking-widest text-slate-400 uppercase">Approvals</p>
-        <h2 className="mt-1 text-3xl font-extrabold tracking-tight text-slate-900">결재 처리</h2>
-        <p className="mt-1 text-sm text-slate-500">결재 요청 목록을 조회하고 처리합니다</p>
-      </div>
+    <div className="w-full">
+      {/* eyebrow + title */}
+      <PageHeader eyebrow={t('eyebrow')} title={t('title')} subtitle={t('subtitle')} />
 
       {/* content */}
-      <div className="size-full min-w-[600px]">
+      <div className="w-full min-w-[600px]">
         <DocumentApprovalContents params={params} />
       </div>
     </div>
