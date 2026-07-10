@@ -208,6 +208,46 @@
         "cancel": "취소",
         "confirm": "선택 완료"
       }
+    },
+    "used": {
+      "eyebrow": "History",
+      "title": "휴가 내역",
+      "requestAction": "+ 휴가 신청",
+      "unit": "일",
+      "year": "{year}년",
+      "prevYear": "이전 연도",
+      "nextYear": "다음 연도",
+      "stat": {
+        "totalUsed": "총 사용일",
+        "generalChip": "연차 {days}일",
+        "compChip": "보상 {days}일",
+        "noneUsed": "사용 내역 없음",
+        "remaining": "잔여 연차",
+        "expireCaption": "만료일 {year}년 12월 31일"
+      },
+      "table": {
+        "title": "상세 내역",
+        "count": "{year}년 · {count}건",
+        "colNo": "번호",
+        "colType": "종류",
+        "colSubType": "구분",
+        "colDate": "사용일",
+        "colDays": "사용일수",
+        "colNote": "비고",
+        "colStatus": "상태",
+        "days": "{days}일"
+      },
+      "type": {
+        "general": "연차",
+        "compensatory": "보상휴가",
+        "official": "공가"
+      },
+      "subType": {
+        "allDay": "종일",
+        "amHalf": "오전 반차",
+        "pmHalf": "오후 반차"
+      },
+      "empty": "{year}년 휴가 사용 내역이 없습니다."
     }
   }
 }

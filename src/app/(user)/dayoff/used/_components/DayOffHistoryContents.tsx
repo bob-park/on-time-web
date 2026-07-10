@@ -4,12 +4,21 @@ import { useState } from 'react';
 
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
+import DocumentStatusBadge from '@/domain/document/components/DocumentStatusBadge';
 import { useVacationDocuments } from '@/domain/document/query/vacation';
 import { useGetCurrentUser } from '@/domain/user/query/user';
+import StatCard from '@/shared/components/StatCard';
 
+import cx from 'classnames';
 import dayjs from 'dayjs';
+import { useTranslations } from 'next-intl';
+
+const thClass =
+  'text-base-content/60 border-b border-white/10 px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase';
 
 export default function DayOffHistoryContents() {
+  const t = useTranslations('dayoff.used');
+
   const [selectedYear, setSelectedYear] = useState<number>(dayjs().year());
 
   const { vacationDocuments, isLoading } = useVacationDocuments({
@@ -37,21 +46,27 @@ export default function DayOffHistoryContents() {
     setSelectedYear((y) => y + delta);
   };
 
+  const sortedDocuments = [...vacationDocuments].sort((a, b) => (dayjs(a.startDate).isAfter(b.startDate) ? 1 : -1));
+
   return (
     <div className="flex w-full flex-col gap-4">
       {/* 연도 네비게이터 */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         <button
           type="button"
-          className="flex size-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition-colors duration-150 hover:bg-slate-50"
+          aria-label={t('prevYear')}
+          className="border-base-content/10 text-base-content/70 hover:bg-base-content/5 hover:text-base-content flex size-9 items-center justify-center rounded-full border transition-colors duration-150"
           onClick={() => handleYearChange(-1)}
         >
           <IoIosArrowBack className="size-4" />
         </button>
-        <span className="min-w-[4rem] text-center text-sm font-semibold text-slate-800">{selectedYear}년</span>
+        <span className="text-base-content min-w-[4.5rem] text-center text-base font-bold">
+          {t('year', { year: selectedYear })}
+        </span>
         <button
           type="button"
-          className="flex size-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition-colors duration-150 hover:bg-slate-50"
+          aria-label={t('nextYear')}
+          className="border-base-content/10 text-base-content/70 hover:bg-base-content/5 hover:text-base-content flex size-9 items-center justify-center rounded-full border transition-colors duration-150"
           onClick={() => handleYearChange(1)}
         >
           <IoIosArrowForward className="size-4" />
@@ -59,162 +74,194 @@ export default function DayOffHistoryContents() {
       </div>
 
       {/* 요약 카드 */}
-      <div className="flex w-full flex-row gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {/* 총 사용일 */}
-        <div className="flex-1 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-          <p className="text-xs font-medium text-slate-500">총 사용일</p>
-          <p className="mt-1 text-3xl font-bold text-slate-900">
-            {totalUsedDays.toFixed(1)}
-            <span className="ml-1 text-base font-normal text-slate-400">일</span>
-          </p>
-          <div className="mt-2 flex gap-2">
+        <StatCard label={t('stat.totalUsed')} value={totalUsedDays.toFixed(1)} unit={t('unit')}>
+          <div className="mt-3 flex flex-wrap gap-2">
             {totalGeneralDays > 0 && (
-              <span className="rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">
-                연차 {totalGeneralDays.toFixed(1)}일
+              <span className="bg-info/15 text-info inline-flex h-[22px] items-center rounded-full px-2.5 text-[11px] font-semibold">
+                {t('stat.generalChip', { days: totalGeneralDays.toFixed(1) })}
               </span>
             )}
             {totalCompDays > 0 && (
-              <span className="rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-medium text-orange-700">
-                보상 {totalCompDays.toFixed(1)}일
+              <span className="bg-warning/15 text-warning inline-flex h-[22px] items-center rounded-full px-2.5 text-[11px] font-semibold">
+                {t('stat.compChip', { days: totalCompDays.toFixed(1) })}
               </span>
             )}
-            {totalUsedDays === 0 && <span className="text-xs text-slate-400">사용 내역 없음</span>}
+            {totalUsedDays === 0 && <span className="text-base-content/50 text-xs">{t('stat.noneUsed')}</span>}
           </div>
-        </div>
+        </StatCard>
 
         {/* 잔여 연차 */}
-        <div className="flex-1 rounded-2xl border border-slate-200 bg-slate-50 p-5 shadow-sm">
-          <p className="text-xs font-medium text-slate-500">잔여 연차</p>
-          <p className="mt-1 text-3xl font-bold text-slate-900">
-            {freeLeaveDays.toFixed(1)}
-            <span className="ml-1 text-base font-normal text-slate-400">일</span>
-          </p>
-          <p className="mt-2 text-xs text-slate-400">다음 만료일 {selectedYear}년 12월 31일</p>
-        </div>
+        <StatCard
+          label={t('stat.remaining')}
+          value={freeLeaveDays.toFixed(1)}
+          unit={t('unit')}
+          caption={t('stat.expireCaption', { year: selectedYear })}
+          highlight
+        />
       </div>
 
-      {/* 상세 내역 테이블 */}
-      <div className="w-full rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div className="border-b border-slate-100 px-6 py-4">
-          <p className="text-sm font-semibold text-slate-800">상세 내역</p>
+      {/* 상세 내역 */}
+      <div className="bg-base-200 mt-1 w-full rounded-lg">
+        <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
+          <span className="text-base-content text-sm font-semibold">{t('table.title')}</span>
+          <span className="text-base-content/50 text-xs">
+            {t('table.count', { year: selectedYear, count: vacationDocuments.length })}
+          </span>
         </div>
 
-        {/* 테이블 헤더 */}
-        <div className="grid grid-cols-[3rem_7rem_6rem_10rem_5rem_1fr_6rem] items-center border-b border-slate-100 bg-slate-50 px-6 py-3 text-xs font-medium text-slate-500">
-          <div>번호</div>
-          <div>종류</div>
-          <div>구분</div>
-          <div>사용일</div>
-          <div>사용일수</div>
-          <div>비고</div>
-          <div>상태</div>
+        <div className="w-full overflow-x-auto select-none">
+          <table className="w-full border-collapse text-sm">
+            <thead>
+              <tr>
+                <th className={`w-16 ${thClass}`}>{t('table.colNo')}</th>
+                <th className={`w-[7rem] ${thClass}`}>{t('table.colType')}</th>
+                <th className={`w-[6rem] ${thClass}`}>{t('table.colSubType')}</th>
+                <th className={`w-[11rem] ${thClass}`}>{t('table.colDate')}</th>
+                <th className={`w-[6rem] ${thClass}`}>{t('table.colDays')}</th>
+                <th className={thClass}>{t('table.colNote')}</th>
+                <th className={`w-[7rem] ${thClass}`}>{t('table.colStatus')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {isLoading ? (
+                <SkeletonRows />
+              ) : sortedDocuments.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="text-base-content/50 py-16 text-center text-sm">
+                    {t('empty', { year: selectedYear })}
+                  </td>
+                </tr>
+              ) : (
+                sortedDocuments.map((doc, index) => (
+                  <tr
+                    key={`vacation-history-${doc.id}`}
+                    className="border-b border-white/[0.04] transition-colors duration-100 last:border-b-0 hover:bg-white/[0.04]"
+                  >
+                    {/* 번호 */}
+                    <td className="text-base-content/40 px-4 py-4 text-sm">{index + 1}</td>
+
+                    {/* 종류 */}
+                    <td className="px-4 py-4">
+                      <VacationTypeBadge type={doc.vacationType} />
+                    </td>
+
+                    {/* 구분 */}
+                    <td className="text-base-content/70 px-4 py-4">
+                      <VacationSubTypeText subType={doc.vacationSubType} />
+                    </td>
+
+                    {/* 사용일 */}
+                    <td className="text-base-content px-4 py-4">
+                      {dayjs(doc.startDate).isSame(doc.endDate, 'day') ? (
+                        <span className="font-semibold">{dayjs(doc.startDate).format('YYYY.MM.DD')}</span>
+                      ) : (
+                        <span className="font-semibold">
+                          {dayjs(doc.startDate).format('YYYY.MM.DD')}
+                          <span className="text-base-content/50 font-normal">
+                            {' '}
+                            — {dayjs(doc.endDate).format('YYYY.MM.DD')}
+                          </span>
+                        </span>
+                      )}
+                    </td>
+
+                    {/* 사용일수 */}
+                    <td className="text-base-content px-4 py-4 font-medium">
+                      {t('table.days', { days: doc.usedDays.toFixed(1) })}
+                    </td>
+
+                    {/* 비고 */}
+                    <td className="min-w-0 px-4 py-4">
+                      <div className="space-y-1">
+                        {doc.reason && <p className="text-base-content/70 truncate">{doc.reason}</p>}
+                        {doc.usedCompLeaveEntries?.map((entry) => (
+                          <p key={`comp-entry-${entry.id}`} className="text-base-content/40 text-xs">
+                            {dayjs(entry.compLeaveEntry.effectiveDate).format('YYYY-MM-DD')} —{' '}
+                            {entry.compLeaveEntry.contents}
+                          </p>
+                        ))}
+                      </div>
+                    </td>
+
+                    {/* 상태 */}
+                    <td className="px-4 py-4">
+                      <DocumentStatusBadge status={doc.status} />
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
-
-        {/* 테이블 바디 */}
-        {isLoading ? (
-          <div className="flex items-center justify-center py-16 text-sm text-slate-400">불러오는 중...</div>
-        ) : vacationDocuments.length === 0 ? (
-          <div className="flex items-center justify-center py-16 text-sm text-slate-400">
-            {selectedYear}년 휴가 사용 내역이 없습니다.
-          </div>
-        ) : (
-          vacationDocuments
-            .sort((a, b) => (dayjs(a.startDate).isAfter(b.startDate) ? 1 : -1))
-            .map((doc, index) => (
-              <div
-                key={`vacation-history-${doc.id}`}
-                className="grid grid-cols-[3rem_7rem_6rem_10rem_5rem_1fr_6rem] items-center border-b border-slate-50 px-6 py-4 text-sm text-slate-700 transition-colors duration-150 last:border-0 hover:bg-slate-50"
-              >
-                {/* 번호 */}
-                <div className="text-slate-400">{index + 1}</div>
-
-                {/* 종류 */}
-                <div>
-                  <VacationTypeBadge type={doc.vacationType} />
-                </div>
-
-                {/* 구분 */}
-                <div className="text-slate-600">
-                  <VacationSubTypeText subType={doc.vacationSubType} />
-                </div>
-
-                {/* 사용일 */}
-                <div className="text-slate-700">
-                  {dayjs(doc.startDate).isSame(doc.endDate, 'day') ? (
-                    dayjs(doc.startDate).format('YYYY.MM.DD')
-                  ) : (
-                    <>
-                      {dayjs(doc.startDate).format('YYYY.MM.DD')}
-                      <br />
-                      <span className="text-slate-400">— {dayjs(doc.endDate).format('YYYY.MM.DD')}</span>
-                    </>
-                  )}
-                </div>
-
-                {/* 사용일수 */}
-                <div className="font-medium text-slate-800">{doc.usedDays.toFixed(1)}일</div>
-
-                {/* 비고 */}
-                <div className="min-w-0 space-y-1">
-                  {doc.reason && <p className="truncate text-slate-600">{doc.reason}</p>}
-                  {doc.usedCompLeaveEntries?.map((entry) => (
-                    <p key={`comp-entry-${entry.id}`} className="text-xs text-slate-400">
-                      {dayjs(entry.compLeaveEntry.effectiveDate).format('YYYY-MM-DD')} — {entry.compLeaveEntry.contents}
-                    </p>
-                  ))}
-                </div>
-
-                {/* 상태 */}
-                <div>
-                  <DocumentStatusBadge status={doc.status} />
-                </div>
-              </div>
-            ))
-        )}
       </div>
     </div>
   );
 }
 
 function VacationTypeBadge({ type }: { type: VacationType }) {
+  const t = useTranslations('dayoff.used');
+  const base = 'inline-flex h-[22px] items-center rounded-full px-2.5 text-[11px] font-semibold';
+
   switch (type) {
     case 'COMPENSATORY':
-      return (
-        <span className="rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-medium text-orange-700">보상휴가</span>
-      );
+      return <span className={cx(base, 'bg-warning/15 text-warning')}>{t('type.compensatory')}</span>;
     case 'OFFICIAL':
-      return <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">공가</span>;
+      return <span className={cx(base, 'bg-base-content/10 text-base-content/60')}>{t('type.official')}</span>;
     default:
-      return <span className="rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">연차</span>;
+      return <span className={cx(base, 'bg-info/15 text-info')}>{t('type.general')}</span>;
   }
 }
 
 function VacationSubTypeText({ subType }: { subType?: VacationSubType }) {
+  const t = useTranslations('dayoff.used');
+
   switch (subType) {
     case 'AM_HALF_DAY_OFF':
-      return <span>오전 반차</span>;
+      return <span>{t('subType.amHalf')}</span>;
     case 'PM_HALF_DAY_OFF':
-      return <span>오후 반차</span>;
+      return <span>{t('subType.pmHalf')}</span>;
     default:
-      return <span>종일</span>;
+      return <span>{t('subType.allDay')}</span>;
   }
 }
 
-function DocumentStatusBadge({ status }: { status: DocumentStatus }) {
-  switch (status) {
-    case 'APPROVED':
-      return <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">승인됨</span>;
-    case 'REJECTED':
-      return <span className="rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-700">거절됨</span>;
-    case 'WAITING':
-      return (
-        <span className="rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-700">대기 중</span>
-      );
-    case 'CANCELLED':
-      return <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">취소됨</span>;
-    default:
-      return (
-        <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-500">임시저장</span>
-      );
-  }
+function SkeletonRows() {
+  const widths = [
+    { no: 'w-4', type: 'w-14', sub: 'w-12', date: 'w-24', days: 'w-10', note: 'w-40' },
+    { no: 'w-4', type: 'w-16', sub: 'w-14', date: 'w-28', days: 'w-10', note: 'w-32' },
+    { no: 'w-4', type: 'w-14', sub: 'w-12', date: 'w-24', days: 'w-10', note: 'w-36' },
+    { no: 'w-4', type: 'w-14', sub: 'w-16', date: 'w-24', days: 'w-10', note: 'w-28' },
+    { no: 'w-4', type: 'w-16', sub: 'w-12', date: 'w-28', days: 'w-10', note: 'w-40' },
+  ];
+  return (
+    <>
+      {widths.map((w, i) => (
+        <tr key={i} className="border-b border-white/[0.04] last:border-b-0">
+          <td className="px-4 py-4">
+            <div className={`h-3.5 animate-pulse rounded bg-white/5 ${w.no}`} />
+          </td>
+          <td className="px-4 py-4">
+            <div className={`h-[22px] animate-pulse rounded-full bg-white/5 ${w.type}`} />
+          </td>
+          <td className="px-4 py-4">
+            <div className={`h-3.5 animate-pulse rounded bg-white/5 ${w.sub}`} />
+          </td>
+          <td className="px-4 py-4">
+            <div className={`h-3.5 animate-pulse rounded bg-white/5 ${w.date}`} />
+          </td>
+          <td className="px-4 py-4">
+            <div className={`h-3.5 animate-pulse rounded bg-white/5 ${w.days}`} />
+          </td>
+          <td className="px-4 py-4">
+            <div className={`h-3.5 animate-pulse rounded bg-white/5 ${w.note}`} />
+          </td>
+          <td className="px-4 py-4">
+            <div className="h-[22px] w-16 animate-pulse rounded-full bg-white/5" />
+          </td>
+        </tr>
+      ))}
+    </>
+  );
 }
