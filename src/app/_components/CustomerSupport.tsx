@@ -139,7 +139,7 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
 
       <div
         className={cx(
-          'relative flex h-[600px] w-[400px] flex-col gap-4 rounded-2xl border border-slate-300 bg-white shadow-2xl transition-all duration-300',
+          'relative flex h-[600px] w-[400px] flex-col gap-4 rounded-xl bg-[#252525] shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-all duration-300',
           {
             'translate-y-0 opacity-100': show,
             'hidden translate-y-6 opacity-0': !show,
@@ -171,7 +171,7 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
                 <p className="text-base font-bold">고객지원</p>
               </div>
               <div className="">
-                <p className="text-sm text-slate-400">문의사항을 남겨 주세요.</p>
+                <p className="text-base-content/60 text-sm">문의사항을 남겨 주세요.</p>
               </div>
             </div>
           </div>

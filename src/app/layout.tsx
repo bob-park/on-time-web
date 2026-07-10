@@ -7,6 +7,7 @@ import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query
 
 import CustomerSupport from '@/app/_components/CustomerSupport';
 import NavMenu from '@/app/_components/NavMenu';
+import NowWorkingBar from '@/app/_components/NowWorkingBar';
 import ToastProvider from '@/shared/components/toast/ToastProvider';
 
 import { NextIntlClientProvider } from 'next-intl';
@@ -60,23 +61,18 @@ export default async function RootLayout({
           <RQProvider>
             <HydrationBoundary state={dehydratedState}>
               <ToastProvider limit={5} timeout={5}>
-                <div className="flex h-screen overflow-hidden">
-                  {/* sidebar */}
-                  <div className="w-64 flex-none">
-                    <NavMenu />
-                  </div>
+                <div className="bg-base-100 flex h-screen gap-2 overflow-hidden p-2">
+                  {/* sidebar (desktop) + mobile dock rendered inside NavMenu */}
+                  <NavMenu />
 
-                  {/* main area */}
-                  <div className="flex flex-1 flex-col overflow-hidden">
-                    {/* header */}
-                    <div className="flex-none">
-                      <Header />
-                    </div>
-
-                    {/* content */}
-                    <div className="flex-1 overflow-y-auto bg-slate-50/50 p-6">{children}</div>
+                  {/* main area — floating surface card */}
+                  <div className="to-base-200 flex min-w-0 flex-1 flex-col overflow-hidden rounded-lg bg-gradient-to-b from-[#1c1c1c]">
+                    <Header />
+                    <main className="flex-1 overflow-y-auto px-6 pb-[120px]">{children}</main>
                   </div>
                 </div>
+
+                <NowWorkingBar />
 
                 <CustomerSupport wsHost={WS_HOST || '/api/ws'} userUniqueId={user.id} />
               </ToastProvider>
