@@ -10,11 +10,15 @@ import { getDuration } from '@/utils/parse';
 
 import cx from 'classnames';
 import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 import padStart from 'lodash/padStart';
+import { useTranslations } from 'next-intl';
 
 const ONE_HOUR = 3_600;
 const DAILY_TOTAL_HOURS = 8;
 const DEFAULT_WEEKENDS = [0, 6];
+
+type CategoryKey = 'work' | 'dayOff' | 'halfDayOff' | 'holiday';
 
 function parseHours(seconds: number): string {
   const hours = Math.floor(seconds / ONE_HOUR);
@@ -22,17 +26,16 @@ function parseHours(seconds: number): string {
   return `${hours}h ${padStart(min + '', 2, '0')}m`;
 }
 
-function getCategory(date: Date, dayOffType?: DayOffType): string {
-  if (dayOffType === 'DAY_OFF') return '연차';
-  if (dayOffType === 'AM_HALF_DAY_OFF' || dayOffType === 'PM_HALF_DAY_OFF') return '반차';
-  if (DEFAULT_WEEKENDS.includes(dayjs(date).day())) return '휴일';
-  return 'Work';
+function getCategoryKey(date: Date, dayOffType?: DayOffType): CategoryKey {
+  if (dayOffType === 'DAY_OFF') return 'dayOff';
+  if (dayOffType === 'AM_HALF_DAY_OFF' || dayOffType === 'PM_HALF_DAY_OFF') return 'halfDayOff';
+  if (DEFAULT_WEEKENDS.includes(dayjs(date).day())) return 'holiday';
+  return 'work';
 }
 
-function getCategoryStyle(category: string): string {
-  if (category === 'Work') return 'bg-blue-100 text-blue-700';
-  if (category === '연차' || category === '반차') return 'bg-purple-100 text-purple-700';
-  return 'bg-slate-100 text-slate-500';
+function getCategoryBadgeStyle(category: CategoryKey): string {
+  if (category === 'dayOff' || category === 'halfDayOff') return 'bg-info/15 text-info';
+  return 'bg-base-content/10 text-base-content/60';
 }
 
 interface WorkingRecordRowProps {
@@ -52,9 +55,12 @@ const WorkingRecordRow = memo(function WorkingRecordRow({
   status,
   dayOffType,
 }: WorkingRecordRowProps) {
+  const t = useTranslations('dashboard');
+
   const now = dayjs().hour(0).minute(0).second(0).millisecond(0);
   const isToday = now.isSame(date);
   const isInProgress = isToday && clockInTime && !clockOutTime;
+  const isWeekend = DEFAULT_WEEKENDS.includes(dayjs(date).day());
 
   const rawDuration = clockInTime && clockOutTime ? getDuration(clockInTime, clockOutTime) : 0;
   const workDuration = rawDuration
@@ -72,78 +78,88 @@ const WorkingRecordRow = memo(function WorkingRecordRow({
     : 0;
 
   const durationPercent = Math.min(Math.round((workDuration / (ONE_HOUR * DAILY_TOTAL_HOURS)) * 100), 100);
-  const category = getCategory(date, dayOffType);
+  const categoryKey = getCategoryKey(date, dayOffType);
+  const categoryLabel = t(
+    categoryKey === 'dayOff'
+      ? 'categoryDayOff'
+      : categoryKey === 'halfDayOff'
+        ? 'categoryHalfDayOff'
+        : categoryKey === 'holiday'
+          ? 'categoryHoliday'
+          : 'categoryWork',
+  );
+  const isUnder = status === 'WARNING';
+
+  const emptyCell = <span className="text-base-content/40">—</span>;
 
   return (
     <tr
-      className={cx('border-b border-slate-100 transition-colors duration-100 hover:bg-slate-50', {
-        'bg-blue-50': isToday,
+      className={cx('border-b border-white/[0.04] transition-colors duration-100 hover:bg-white/[0.04]', {
+        'bg-primary/[0.07]': isToday,
       })}
     >
-      {/* DATE/DAY */}
-      <td className="py-3 pr-3 pl-4">
-        <span
-          className={cx('text-sm font-medium', {
-            'text-blue-600': dayjs(date).day() === 6,
-            'text-red-500': dayjs(date).day() === 0,
-            'text-slate-800': ![0, 6].includes(dayjs(date).day()),
-          })}
-        >
-          {dayjs(date).format('YYYY.MM.DD')}
+      {/* DATE / DAY */}
+      <td className="px-4 py-3.5">
+        <span className="text-sm font-bold">{dayjs(date).format('MM.DD')}</span>
+        <span className="text-base-content/60 ml-1.5 text-[13px]">
+          {dayjs(date).locale('ko').format('dd')}
+          {isToday && ` · ${t('todaySuffix')}`}
         </span>
-        <span className="ml-1.5 text-xs text-slate-400">{dayjs(date).format('dddd')}</span>
       </td>
 
       {/* CATEGORY */}
-      <td className="px-3 py-3 text-center">
-        <span className={cx('rounded-full px-2.5 py-0.5 text-xs font-semibold', getCategoryStyle(category))}>
-          {category}
+      <td className="px-4 py-3.5">
+        <span
+          className={cx(
+            'inline-flex h-[22px] items-center rounded-full px-2.5 text-[11px] font-semibold',
+            getCategoryBadgeStyle(categoryKey),
+          )}
+        >
+          {categoryLabel}
         </span>
       </td>
 
       {/* CLOCK-IN */}
-      <td className="px-3 py-3 text-center text-sm text-slate-700">
-        {clockInTime ? dayjs(clockInTime).format('HH:mm') : <span className="text-slate-300">—</span>}
-      </td>
+      <td className="px-4 py-3.5 text-sm">{clockInTime ? dayjs(clockInTime).format('HH:mm') : emptyCell}</td>
 
       {/* TARGET CLOCK-OUT */}
-      <td className="px-3 py-3 text-center text-sm text-slate-700">
-        {leaveWorkAt ? dayjs(leaveWorkAt).format('HH:mm') : <span className="text-slate-300">—</span>}
+      <td className="text-base-content/60 px-4 py-3.5 text-[13px]">
+        {leaveWorkAt ? dayjs(leaveWorkAt).format('HH:mm') : emptyCell}
       </td>
 
       {/* CLOCK-OUT */}
-      <td className="px-3 py-3 text-center text-sm text-slate-700">
+      <td className="px-4 py-3.5 text-sm">
         {isInProgress ? (
-          <span className="animate-pulse text-xs font-medium text-blue-500">근무 중...</span>
+          <span className="text-primary animate-pulse font-bold">{t('working')}</span>
         ) : clockOutTime ? (
           dayjs(clockOutTime).format('HH:mm')
         ) : (
-          <span className="text-slate-300">—</span>
+          emptyCell
         )}
       </td>
 
-      {/* DURATION */}
-      <td className="px-3 py-3">
-        <div className="flex items-center gap-2">
-          <div className="h-1.5 w-20 overflow-hidden rounded-full bg-slate-200">
-            <div className="h-full rounded-full bg-blue-400" style={{ width: `${durationPercent}%` }} />
-          </div>
-          <span className="text-sm text-slate-700">
-            {workDuration > 0 ? parseHours(workDuration) : <span className="text-slate-300">—</span>}
+      {/* WORK DURATION */}
+      <td className="px-4 py-3.5">
+        <div className="flex items-center gap-2.5">
+          <span className="inline-block h-1 w-[120px] overflow-hidden rounded bg-white/15">
+            <span
+              className={cx('block h-full rounded', isUnder ? 'bg-warning' : 'bg-primary')}
+              style={{ width: `${durationPercent}%` }}
+            />
           </span>
+          <span className="text-base-content/60 text-[13px]">{workDuration > 0 ? parseHours(workDuration) : '—'}</span>
         </div>
       </td>
 
       {/* STATUS */}
-      <td className="py-3 pr-4 pl-3 text-center">
-        {DEFAULT_WEEKENDS.includes(dayjs(date).day()) && !status ? null : !status ? (
-          <span className="inline-block h-3 w-3 rounded-full bg-slate-200" />
-        ) : status === 'SUCCESS' ? (
-          <span className="inline-block h-3 w-3 rounded-full bg-green-500" />
-        ) : status === 'WARNING' ? (
-          <span className="inline-block h-3 w-3 rounded-full bg-red-500" />
-        ) : (
-          <span className="inline-block h-3 w-3 rounded-full bg-slate-300" />
+      <td className="px-4 py-3.5">
+        {isWeekend && !status ? null : (
+          <span
+            className={cx(
+              'inline-block h-2 w-2 rounded-full',
+              status === 'SUCCESS' ? 'bg-primary' : status === 'WARNING' ? 'bg-error' : 'bg-white/25',
+            )}
+          />
         )}
       </td>
     </tr>
@@ -180,6 +196,7 @@ function getDates(
 }
 
 export default function WorkingRecordContents() {
+  const t = useTranslations('dashboard');
   const { selectDate, updateSelectDate } = useContext(WorkingTimeContext);
   const { currentUser } = useGetCurrentUser();
   const { attendanceRecords } = useGetAttendanceRecord({
@@ -205,24 +222,39 @@ export default function WorkingRecordContents() {
   };
 
   return (
-    <div className="animate-fade-up mt-6 w-full rounded-2xl border border-slate-200 bg-white shadow-sm delay-225">
+    <div className="animate-fade-up bg-base-300 w-full rounded-lg p-5 delay-225">
       {/* section header */}
-      <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4">
-        <h3 className="text-sm font-bold tracking-wide text-slate-800 uppercase">주간 근태 상세 내역</h3>
+      <div className="mb-4 flex items-center justify-between">
+        <span className="text-lg font-semibold">{t('sectionTitle')}</span>
+        <span className="text-base-content/60 text-[13px]">{t('weekCount', { count: dataList.length })}</span>
       </div>
 
       {/* table */}
       <div className="overflow-x-auto">
-        <table className="w-full">
+        <table className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b border-slate-100 bg-slate-50">
-              <th className="py-3 pr-3 pl-4 text-center text-xs font-semibold text-slate-500">근무일</th>
-              <th className="px-3 py-3 text-center text-xs font-semibold text-slate-500">구분</th>
-              <th className="px-3 py-3 text-center text-xs font-semibold text-slate-500">출근 시간</th>
-              <th className="px-3 py-3 text-center text-xs font-semibold text-slate-500">목표 퇴근 시간</th>
-              <th className="px-3 py-3 text-center text-xs font-semibold text-slate-500">퇴근 시간</th>
-              <th className="px-3 py-3 text-center text-xs font-semibold text-slate-500">근무 시간</th>
-              <th className="py-3 pr-4 pl-3 text-center text-xs font-semibold text-slate-500">상태</th>
+            <tr>
+              <th className="text-base-content/60 border-b border-white/10 px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
+                {t('colDate')}
+              </th>
+              <th className="text-base-content/60 border-b border-white/10 px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
+                {t('colCategory')}
+              </th>
+              <th className="text-base-content/60 border-b border-white/10 px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
+                {t('colClockIn')}
+              </th>
+              <th className="text-base-content/60 border-b border-white/10 px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
+                {t('colTargetClockOut')}
+              </th>
+              <th className="text-base-content/60 border-b border-white/10 px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
+                {t('colClockOut')}
+              </th>
+              <th className="text-base-content/60 border-b border-white/10 px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
+                {t('colWorkTime')}
+              </th>
+              <th className="text-base-content/60 border-b border-white/10 px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
+                {t('colStatus')}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -242,22 +274,13 @@ export default function WorkingRecordContents() {
       </div>
 
       {/* footer */}
-      <div className="flex items-center justify-between border-t border-slate-100 px-6 py-3">
-        <span className="text-xs text-slate-500">해당 주 {dataList.length}건</span>
-        <div className="flex gap-2">
-          <button
-            onClick={handlePrevWeek}
-            className="rounded-lg border border-slate-200 px-4 py-1.5 text-sm font-medium text-slate-600 transition-colors duration-150 hover:bg-slate-50"
-          >
-            지난 주
-          </button>
-          <button
-            onClick={handleNextWeek}
-            className="rounded-lg bg-blue-600 px-4 py-1.5 text-sm font-medium text-white transition-colors duration-150 hover:bg-blue-700"
-          >
-            다음 주
-          </button>
-        </div>
+      <div className="mt-3.5 flex items-center justify-end gap-2">
+        <button onClick={handlePrevWeek} className="btn btn-ghost btn-sm">
+          ‹ {t('prevWeek')}
+        </button>
+        <button onClick={handleNextWeek} className="btn btn-ghost btn-sm">
+          {t('nextWeek')} ›
+        </button>
       </div>
     </div>
   );

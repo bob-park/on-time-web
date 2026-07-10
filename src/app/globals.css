@@ -54,7 +54,12 @@
 }
 
 body {
-  font-family: 'Pretendard Variable', Pretendard, -apple-system, system-ui, sans-serif;
+  font-family:
+    'Pretendard Variable',
+    Pretendard,
+    -apple-system,
+    system-ui,
+    sans-serif;
   background: #121212;
 }
 
