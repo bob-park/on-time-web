@@ -219,7 +219,7 @@ export default function OvertimeRequestContents() {
                 <button type="button" className={pillControl} onClick={() => setShowUser(true)}>
                   <span className="text-base-content/50">{t('selectPerson')} —</span>
                   <span className={cx(userUniqueId ? 'text-base-content' : 'text-base-content/40')}>
-                    {username || t('selectPerson')}
+                    {username || t('selectPersonPlaceholder')}
                   </span>
                 </button>
               ) : (

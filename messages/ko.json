@@ -323,6 +323,7 @@
       "unregistered": "미등록 직원",
       "personLabel": "인원",
       "selectPerson": "인원 선택",
+      "selectPersonPlaceholder": "직원을 선택하세요",
       "namePlaceholder": "성명",
       "purposeLabel": "근무 목적",
       "purposePlaceholder": "근무 목적 입력",
