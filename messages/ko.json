@@ -2,5 +2,19 @@
   "metadata": {
     "title": "On Time",
     "description": "전자 근태 관리 시스템"
+  },
+  "common": {
+    "today": "오늘",
+    "cancel": "취소",
+    "confirm": "확인",
+    "total": "총 {count}건"
+  },
+  "preparing": {
+    "title": "준비중",
+    "descriptionExpense": "지출결의서 기능을 준비하고 있어요 — 조금만 기다려 주세요",
+    "descriptionSchedules": "임직원 근무 일정 등록 기능을 준비하고 있어요",
+    "descriptionCompensatory": "임직원 보상 휴가 현황 기능을 준비하고 있어요",
+    "backToDocuments": "결재 목록으로",
+    "backToDashboard": "대시보드로"
   }
 }

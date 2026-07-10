@@ -55,7 +55,7 @@ export default function Dropdown({ text, placeholder, children, onChange }: Drop
     <DropdownContext.Provider value={contextValue}>
       <div className={cx('dropdown w-full select-none', show && 'dropdown-open')}>
         <div
-          className="relative flex h-12 w-full cursor-pointer flex-row items-center gap-2 rounded-lg border border-slate-500 px-3 py-2"
+          className="border-base-content/20 relative flex h-12 w-full cursor-pointer flex-row items-center gap-2 rounded-lg border px-3 py-2"
           onClick={() => setShow(!show)}
         >
           <div className="w-full text-center">
@@ -63,7 +63,7 @@ export default function Dropdown({ text, placeholder, children, onChange }: Drop
           </div>
           <div className="absolute right-0 pr-2">{show ? <IoIosArrowUp /> : <IoIosArrowDown />}</div>
         </div>
-        <ul className="menu dropdown-content rounded-box bg-base-100 z-[1] w-full p-2 shadow">
+        <ul className="menu dropdown-content z-[1] w-full rounded-lg bg-[#252525] p-2 shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
           <div className="max-h-[300px] overflow-auto">{children}</div>
         </ul>
       </div>

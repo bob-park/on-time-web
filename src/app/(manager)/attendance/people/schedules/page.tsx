@@ -1,9 +1,13 @@
 import Preparing from '@/app/_components/Preparing';
 
-export default function AttendancePeopleSchedulePage() {
+import { getTranslations } from 'next-intl/server';
+
+export default async function AttendancePeopleSchedulePage() {
+  const t = await getTranslations('preparing');
+
   return (
     <div className="flex size-full flex-col items-center justify-center gap-2">
-      <Preparing />
+      <Preparing description={t('descriptionSchedules')} backHref="/dashboard" backLabel={t('backToDashboard')} />
     </div>
   );
 }

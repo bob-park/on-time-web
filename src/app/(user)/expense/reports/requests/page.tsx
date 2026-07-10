@@ -1,9 +1,13 @@
 import Preparing from '@/app/_components/Preparing';
 
-export default function ExpenseReportsRequestsPage() {
+import { getTranslations } from 'next-intl/server';
+
+export default async function ExpenseReportsRequestsPage() {
+  const t = await getTranslations('preparing');
+
   return (
     <div className="flex size-full flex-col items-center justify-center gap-2">
-      <Preparing />
+      <Preparing description={t('descriptionExpense')} backHref="/documents" backLabel={t('backToDocuments')} />
     </div>
   );
 }
