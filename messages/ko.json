@@ -425,5 +425,35 @@
       "errorToast": "서명 변경에 실패했습니다. 다시 시도해 주세요.",
       "previewAlt": "변경할 서명"
     }
+  },
+  "attendance": {
+    "record": {
+      "eyebrow": "Attendance",
+      "title": "근태 처리",
+      "clockInDone": "출근 처리되었습니다.",
+      "clockOutDone": "퇴근 처리되었습니다.",
+      "invalidAccess": "잘못된 접근입니다.",
+      "closeHint": "이 창은 닫으셔도 됩니다.",
+      "workingDate": "근무일",
+      "clockInTime": "출근 시간",
+      "leaveWorkAt": "퇴근 예정 시간",
+      "clockOutTime": "퇴근 시간",
+      "gps": {
+        "eyebrow": "GPS Check",
+        "title": "근태 처리 (GPS)",
+        "subtitle": "현재 위치를 기준으로 출퇴근을 처리합니다",
+        "locationLabel": "장소",
+        "typeLabel": "출 / 퇴근",
+        "clockIn": "출근",
+        "clockOut": "퇴근",
+        "createdDate": "생성일",
+        "expiredDate": "만료일",
+        "autoRefresh": "토큰 자동 갱신 중",
+        "proceed": "진행하기",
+        "proceeding": "진행중",
+        "tooltip": "현재 위치에서 처리할 수 없지만, 너굴맨이 처리함",
+        "errorTitle": "무언가 잘못되었는디?"
+      }
+    }
   }
 }
