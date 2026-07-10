@@ -481,6 +481,26 @@
       "legendNormal": "정상",
       "legendWarning": "지각 / 근무시간 미달",
       "legendDayOff": "연차"
+    },
+    "vacations": {
+      "eyebrow": "Manage",
+      "title": "임직원 휴가 사용 현황",
+      "gridLabel": "임직원 휴가 사용 현황",
+      "prevYear": "이전 연도",
+      "nextYear": "다음 연도",
+      "yearLabel": "{year}년",
+      "hint": "괄호 안 숫자는 <comp>보상휴가</comp> 사용분입니다 · 단위: 일",
+      "colOrder": "순번",
+      "colName": "성명",
+      "colEffectiveDate": "입사일",
+      "colAnnual": "연차",
+      "colAnnualComp": "(보상)",
+      "colAvailable": "사용가능",
+      "colMonth": "{month}월",
+      "colTotal": "합계",
+      "colRemaining": "잔여",
+      "noEmployees": "직원 데이터가 없습니다",
+      "noEmployeesHint": "연도를 변경하거나 직원 데이터를 확인해 주세요."
     }
   }
 }
