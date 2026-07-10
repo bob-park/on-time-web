@@ -370,5 +370,60 @@
         "confirm": "선택"
       }
     }
+  },
+  "profile": {
+    "eyebrow": "Profile",
+    "title": "프로필",
+    "personalInfo": {
+      "title": "개인 정보",
+      "changeAvatar": "아바타 변경",
+      "labelTeam": "소속 팀",
+      "labelPosition": "직급",
+      "labelName": "이름",
+      "labelEmail": "E-MAIL"
+    },
+    "password": {
+      "title": "패스워드 변경",
+      "newLabel": "새 패스워드",
+      "newPlaceholder": "새 패스워드를 입력하세요",
+      "confirmLabel": "패스워드 확인",
+      "confirmPlaceholder": "한 번 더 입력하세요",
+      "mismatch": "패스워드가 일치하지 않습니다",
+      "hint": "8자 이상, 영문/숫자/특수문자 조합",
+      "toggleAria": "패스워드 표시 전환",
+      "submit": "변경",
+      "submitting": "변경중",
+      "successToast": "패스워드가 변경되었습니다. 다음 로그인 시 적용됩니다.",
+      "errorToast": "패스워드 변경에 실패했습니다. 다시 시도해 주세요."
+    },
+    "signature": {
+      "title": "결재 서명",
+      "empty": "서명이 등록되지 않았습니다",
+      "transparentWarning": "⚠ 배경이 투명해야 정상적으로 서명이 보입니다.",
+      "register": "서명 등록",
+      "change": "서명 변경",
+      "alt": "결재 서명"
+    },
+    "avatarModal": {
+      "title": "아바타 수정",
+      "dropzone": "클릭 또는 드래그하여 이미지를 업로드하세요",
+      "cancel": "취소",
+      "submit": "변경",
+      "submitting": "변경중",
+      "successToast": "사용자의 아바타가 변경되었습니다. 화면에 보이는 아바타는 추후 변경됩니다.",
+      "errorToast": "아바타 변경에 실패했습니다. 다시 시도해 주세요.",
+      "previewAlt": "변경할 아바타"
+    },
+    "signatureModal": {
+      "title": "결재 서명 수정",
+      "dropzone": "클릭 또는 드래그하여 이미지를 업로드하세요",
+      "transparentWarning": "배경이 투명해야 정상적으로 서명이 보입니다.",
+      "cancel": "취소",
+      "submit": "변경",
+      "submitting": "변경중",
+      "successToast": "결재 서명이 변경되었습니다. 화면에 보이는 결재 서명은 추후 변경됩니다.",
+      "errorToast": "서명 변경에 실패했습니다. 다시 시도해 주세요.",
+      "previewAlt": "변경할 서명"
+    }
   }
 }

@@ -9,12 +9,17 @@ import { TbArrowsExchange } from 'react-icons/tb';
 import { useUpdateUserSignature } from '@/domain/user/query/user';
 import useToast from '@/shared/hooks/useToast';
 
+import { useTranslations } from 'next-intl';
+
 interface UpdateSignatureModalProps {
   show: boolean;
   onClose?: () => void;
 }
 
 export default function UpdateSignatureModal({ show, onClose }: UpdateSignatureModalProps) {
+  // i18n
+  const t = useTranslations('profile.signatureModal');
+
   // ref
   const ref = useRef<HTMLDialogElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -28,12 +33,12 @@ export default function UpdateSignatureModal({ show, onClose }: UpdateSignatureM
   // query
   const { updateSignature, isLoading } = useUpdateUserSignature(
     () => {
-      push('결재 서명이 변경되었습니다. 화면에 보이는 결재 서명은 추후 변경됩니다.', 'success');
+      push(t('successToast'), 'success');
 
       handleClose();
     },
     () => {
-      push('서명 변경에 실패했습니다. 다시 시도해 주세요.', 'error');
+      push(t('errorToast'), 'error');
     },
   );
 
@@ -94,18 +99,18 @@ export default function UpdateSignatureModal({ show, onClose }: UpdateSignatureM
 
   return (
     <dialog ref={ref} className="modal" onKeyDownCapture={handleKeyboardDown}>
-      <div className="modal-box">
+      <div className="modal-box rounded-xl bg-[#252525] shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
         <div className="flex w-full flex-col items-start justify-start gap-3">
           {/* header */}
           <div className="">
-            <h3 className="text-lg font-bold">결재 서명 수정</h3>
+            <h3 className="text-lg font-bold">{t('title')}</h3>
           </div>
         </div>
 
         {/* content */}
         <div className="m-3 flex flex-col items-start justify-center gap-4">
           <div
-            className="bg-base-300 h-[200px] w-full cursor-pointer rounded-xl"
+            className="hover:border-primary flex h-[200px] w-full cursor-pointer items-center justify-center rounded-xl border border-dashed border-white/20 transition-colors"
             onClick={handleClick}
             onDragEnter={handlePreventDragEvent}
             onMouseLeave={handlePreventDragEvent}
@@ -113,19 +118,18 @@ export default function UpdateSignatureModal({ show, onClose }: UpdateSignatureM
             onDrop={handleFileDrop}
           >
             {signatureFile ? (
-              <div className="flex size-full flex-col items-center justify-center gap-5">
+              // 서명은 검정 잉크 + 투명 배경이므로 미리보기 내부만 밝게 유지
+              <div className="flex size-full items-center justify-center rounded-xl bg-white p-4">
                 <img
-                  className="aspect-auto h-[200] w-[400] rounded-full"
+                  className="max-h-full max-w-full object-contain"
                   src={URL.createObjectURL(signatureFile)}
-                  alt="change avatar"
+                  alt={t('previewAlt')}
                 />
               </div>
             ) : (
-              <div className="flex size-full flex-col items-center justify-center gap-5">
-                <div>
-                  <IoCloudUploadOutline className="size-10" />
-                </div>
-                <span>클릭 또는 드래그하여 이미지를 업로드하세요</span>
+              <div className="text-base-content/60 flex size-full flex-col items-center justify-center gap-4">
+                <IoCloudUploadOutline className="size-10" />
+                <span className="text-sm">{t('dropzone')}</span>
               </div>
             )}
 
@@ -139,27 +143,27 @@ export default function UpdateSignatureModal({ show, onClose }: UpdateSignatureM
 
           <div className="w-full">
             <div className="flex flex-col items-center justify-center gap-2">
-              <span className="text-sm text-red-500">배경이 투명해야 정상적으로 서명이 보입니다.</span>
+              <span className="text-warning text-sm">{t('transparentWarning')}</span>
             </div>
           </div>
         </div>
 
         {/* action */}
         <div className="modal-action">
-          <button className="btn w-32" onClick={handleClose}>
+          <button className="btn btn-ghost w-32" onClick={handleClose}>
             <GiCancel className="size-6" />
-            취소
+            {t('cancel')}
           </button>
           <button className="btn btn-primary w-32" disabled={isLoading || !signatureFile} onClick={handleUpdateAvatar}>
             {isLoading ? (
               <>
                 <span className="loading loading-spinner loading-xs" />
-                변경중
+                {t('submitting')}
               </>
             ) : (
               <>
                 <TbArrowsExchange className="size-6" />
-                변경
+                {t('submit')}
               </>
             )}
           </button>
