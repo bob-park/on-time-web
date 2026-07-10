@@ -1,82 +1,40 @@
-# on-time-web — CLAUDE.md
+# CLAUDE.md
 
-## Project Level: Dynamic
+@AGENTS.md
 
-HR/근태 관리 웹 애플리케이션
+## Claude Code 전용 규칙
 
-## Tech Stack
+### Plan Mode
+- 큰 변경(파일 3개 이상 / 새 기능 / 마이그레이션) 은 plan mode 로 진행한다.
 
-- **Framework**: Next.js 16 App Router
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS v4 + DaisyUI v5
-- **State**: Zustand v5
-- **Data Fetching**: TanStack Query v5
-- **HTTP Client**: ky
-- **Auth**: OAuth2 (keyflow-auth) — 자체 백엔드 연동
-- **Mocking**: MSW v2
+### 실행 명령어 안내
+다음 명령어를 우선적으로 사용한다. 추가 도구가 필요한 경우 사용자에게 확인.
 
-## Project Structure
+- `yarn dev` — Next.js 개발 서버 실행
+- `yarn build` — production 빌드
+- `yarn start` — production 빌드 실행
+- `yarn lint` — ESLint 실행 (커밋 전 필수)
+- `yarn prettier` — 전체 소스 포매팅
+- `mise trust && mise ls` — Node 버전 동기화
 
-```
-src/
-├── app/                    # Next.js App Router
-│   ├── (user)/            # 일반 사용자 라우트
-│   ├── (manager)/         # 관리자 라우트
-│   └── _components/       # 공통 레이아웃 컴포넌트
-├── domain/                 # 도메인별 분리
-│   ├── attendance/        # 근태 도메인
-│   ├── document/          # 문서/결재 도메인
-│   ├── approval/          # 승인 도메인
-│   ├── user/              # 사용자 도메인
-│   └── ...
-├── shared/                 # 공유 모듈
-│   ├── api/               # HTTP 클라이언트 (ky 기반)
-│   └── store/             # 공유 스토어
-└── utils/                  # 유틸리티
-```
+테스트 스크립트는 현재 `package.json` 에 정의되어 있지 않다. 테스트가
+도입되면 본 섹션과 `docs/agents/tech-stack.md`,
+`docs/agents/workflows/dev-env.md` 를 함께 업데이트한다.
 
-## API Integration
+### Design Prompt 템플릿 위치
+- 재사용 가능한 시스템 디자인 / UI 디자인 prompt 템플릿은 `./docs/design/`
+  아래에 보관한다.
+- 사용자가 디자인 관련 요청을 줄 때, 가장 먼저 `./docs/design/` 의 템플릿을
+  확인하여 일관된 출력 스타일과 산출물 형식을 따른다.
 
-- 백엔드: 자체 REST API (`/api/*` rewrites → `WEB_SERVICE_HOST`)
-- 인증: OAuth2 via keyflow-auth (`/api/oauth2/authorization/keyflow-auth`)
-- 401 응답 시 자동 로그인 페이지 리다이렉트
+### 디자인 프롬프트 처리 워크플로우
+사용자가 UI / 디자인 관련 요청(목업, 레이아웃 비교, 비주얼 컴포넌트) 을 주면:
 
-## Environment Variables
-
-```
-WEB_SERVICE_HOST=http://your-backend-server
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-```
-
-## Development Commands
-
-```bash
-yarn dev          # 개발 서버 시작
-yarn mock         # MSW mock 서버 시작
-yarn build        # 프로덕션 빌드
-yarn lint         # ESLint 검사
-```
-
-## PDCA Phase
-
-현재: **DO** (구현 단계)
-
-Active Features: dashboard (weekly record + target clock-out column), attendance/view (all-employees 7-day grid), documents (pill filters + table + pagination), dayoff/requests, dayoff/used, approvals, profile (white card redesign + skeleton loading + signature fallback), layout (_components, NavMenu, Header)
-
-## Skill routing
-
-When the user's request matches an available skill, ALWAYS invoke it using the Skill
-tool as your FIRST action. Do NOT answer directly, do NOT use other tools first.
-The skill has specialized workflows that produce better results than ad-hoc answers.
-
-Key routing rules:
-- Product ideas, "is this worth building", brainstorming → invoke office-hours
-- Bugs, errors, "why is this broken", 500 errors → invoke investigate
-- Ship, deploy, push, create PR → invoke ship
-- QA, test the site, find bugs → invoke qa
-- Code review, check my diff → invoke review
-- Update docs after shipping → invoke document-release
-- Weekly retro → invoke retro
-- Design system, brand → invoke design-consultation
-- Visual audit, design polish → invoke design-review
-- Architecture review → invoke plan-eng-review
+1. `./docs/design/` 에 적용 가능한 prompt 템플릿이 있는지 먼저 확인한다.
+2. superpowers brainstorming 단계에서 visual companion 사용을 제안한다.
+3. 사용자가 동의하면 정적 HTML 목업을 임시 디렉토리에 작성한다.
+4. `npx serve <dir>` 또는 `python3 -m http.server` 로 로컬 HTTP 서버를
+   구동하고, 접속 URL과 포트를 사용자에게 안내한다.
+5. 사용자 피드백을 받아 반복 작업한 뒤, 최종 합의된 디자인만 실제
+   `src/` 코드에 반영한다.
+6. 작업 종료 시 HTTP 서버를 정리한다.
