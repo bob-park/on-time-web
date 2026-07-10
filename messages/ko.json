@@ -455,5 +455,32 @@
         "errorTitle": "무언가 잘못되었는디?"
       }
     }
+  },
+  "manager": {
+    "attendance": {
+      "eyebrow": "Attendance",
+      "title": "임직원 근무 현황",
+      "gridLabel": "임직원 근무 현황",
+      "employee": "임직원",
+      "lastUpdated": "최근 갱신: {time}",
+      "clockIn": "출근",
+      "clockOut": "퇴근",
+      "scheduled": "예정",
+      "working": "근무 중",
+      "dayOff": "연차",
+      "amHalfDayOff": "오전반차",
+      "pmHalfDayOff": "오후반차",
+      "holiday": "휴일",
+      "loadError": "오류",
+      "loadingLabel": "데이터 로딩 중",
+      "errorLabel": "데이터 오류",
+      "statusDone": "완료",
+      "statusWarning": "경고",
+      "usersError": "직원 목록을 불러오지 못했습니다. 페이지를 새로 고침해주세요.",
+      "noEmployees": "임직원이 없습니다.",
+      "legendNormal": "정상",
+      "legendWarning": "지각 / 근무시간 미달",
+      "legendDayOff": "연차"
+    }
   }
 }
