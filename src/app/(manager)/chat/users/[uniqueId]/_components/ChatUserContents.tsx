@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 import ChatChannel from '@/domain/chat/components/ChatChannel';
 import { useGetCurrentUser } from '@/domain/user/query/user';
-
 import useWebSocket from '@/shared/hooks/ws/useWebSocket';
 
 import cx from 'classnames';

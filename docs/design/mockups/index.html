@@ -1,67 +1,159 @@
 <!doctype html>
 <html lang="ko">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>On Time — UI 리디자인 목업 인덱스</title>
-<link rel="stylesheet" href="tokens.css">
-<style>
-  .wrap { max-width: 1100px; margin: 0 auto; padding: 48px 24px 96px; }
-  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px; }
-  .page-card {
-    display: block;
-    background: var(--bg-raised);
-    border-radius: 8px;
-    padding: 18px;
-    text-decoration: none;
-    color: var(--text-primary);
-    transition: background 0.15s, transform 0.1s;
-  }
-  .page-card:hover { background: var(--bg-card); transform: translateY(-2px); }
-  .page-card .t { font-size: 15px; font-weight: 700; }
-  .page-card .r { font-size: 12px; color: var(--text-secondary); margin-top: 6px; font-family: monospace; }
-  .group-h { margin: 40px 0 4px; }
-</style>
-</head>
-<body>
-<div class="wrap">
-  <div class="eyebrow">On Time — Spotify Dark Redesign</div>
-  <h1 class="page-title" style="font-size:32px;">UI 목업 인덱스</h1>
-  <p class="page-sub">각 카드를 클릭해 페이지별 목업을 확인하세요. 좌측 하단 노란 pill 로 언제든 돌아올 수 있습니다.</p>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>On Time — UI 리디자인 목업 인덱스</title>
+    <link rel="stylesheet" href="tokens.css" />
+    <style>
+      .wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 48px 24px 96px;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-top: 16px;
+      }
+      .page-card {
+        display: block;
+        background: var(--bg-raised);
+        border-radius: 8px;
+        padding: 18px;
+        text-decoration: none;
+        color: var(--text-primary);
+        transition:
+          background 0.15s,
+          transform 0.1s;
+      }
+      .page-card:hover {
+        background: var(--bg-card);
+        transform: translateY(-2px);
+      }
+      .page-card .t {
+        font-size: 15px;
+        font-weight: 700;
+      }
+      .page-card .r {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-top: 6px;
+        font-family: monospace;
+      }
+      .group-h {
+        margin: 40px 0 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="eyebrow">On Time — Spotify Dark Redesign</div>
+      <h1 class="page-title" style="font-size: 32px">UI 목업 인덱스</h1>
+      <p class="page-sub">
+        각 카드를 클릭해 페이지별 목업을 확인하세요. 좌측 하단 노란 pill 로 언제든 돌아올 수 있습니다.
+      </p>
 
-  <h2 class="section-title group-h">사용자 — 근태</h2>
-  <div class="cards">
-    <a class="page-card" href="dashboard.html"><div class="t">대시보드</div><div class="r">/dashboard</div></a>
-    <a class="page-card" href="schedule.html"><div class="t">근무 일정</div><div class="r">/schedule</div></a>
-    <a class="page-card" href="schedule-add.html"><div class="t">근무 일정 추가 (모달)</div><div class="r">/schedule/add</div></a>
-    <a class="page-card" href="attendance-record.html"><div class="t">근태 처리 (QR 체크)</div><div class="r">/attendance/record/[checkId]</div></a>
-    <a class="page-card" href="attendance-gps.html"><div class="t">근태 처리 (GPS)</div><div class="r">/attendance/record/gps</div></a>
-    <a class="page-card" href="profile.html"><div class="t">프로필</div><div class="r">/profile</div></a>
-  </div>
+      <h2 class="section-title group-h">사용자 — 근태</h2>
+      <div class="cards">
+        <a class="page-card" href="dashboard.html"
+          ><div class="t">대시보드</div>
+          <div class="r">/dashboard</div></a
+        >
+        <a class="page-card" href="schedule.html"
+          ><div class="t">근무 일정</div>
+          <div class="r">/schedule</div></a
+        >
+        <a class="page-card" href="schedule-add.html"
+          ><div class="t">근무 일정 추가 (모달)</div>
+          <div class="r">/schedule/add</div></a
+        >
+        <a class="page-card" href="attendance-record.html"
+          ><div class="t">근태 처리 (QR 체크)</div>
+          <div class="r">/attendance/record/[checkId]</div></a
+        >
+        <a class="page-card" href="attendance-gps.html"
+          ><div class="t">근태 처리 (GPS)</div>
+          <div class="r">/attendance/record/gps</div></a
+        >
+        <a class="page-card" href="profile.html"
+          ><div class="t">프로필</div>
+          <div class="r">/profile</div></a
+        >
+      </div>
 
-  <h2 class="section-title group-h">사용자 — 전자 결재</h2>
-  <div class="cards">
-    <a class="page-card" href="dayoff-requests.html"><div class="t">휴가 신청</div><div class="r">/dayoff/requests</div></a>
-    <a class="page-card" href="dayoff-used.html"><div class="t">휴가 사용 내역</div><div class="r">/dayoff/used</div></a>
-    <a class="page-card" href="dayoff-detail.html"><div class="t">휴가 신청 정보 (문서)</div><div class="r">/dayoff/[id]</div></a>
-    <a class="page-card" href="overtime-requests.html"><div class="t">휴일근무보고서 신청</div><div class="r">/overtime/requests</div></a>
-    <a class="page-card" href="overtime-detail.html"><div class="t">휴일근무보고서 정보 (문서)</div><div class="r">/overtime/[id]</div></a>
-    <a class="page-card" href="expense-requests.html"><div class="t">지출결의서 신청 (준비중)</div><div class="r">/expense/reports/requests</div></a>
-    <a class="page-card" href="documents.html"><div class="t">결재 신청 목록</div><div class="r">/documents</div></a>
-    <a class="page-card" href="approvals.html"><div class="t">결재 처리 대기 목록</div><div class="r">/approvals</div></a>
-    <a class="page-card" href="approval-detail.html"><div class="t">결재 처리 정보</div><div class="r">/approvals/[id]</div></a>
-  </div>
+      <h2 class="section-title group-h">사용자 — 전자 결재</h2>
+      <div class="cards">
+        <a class="page-card" href="dayoff-requests.html"
+          ><div class="t">휴가 신청</div>
+          <div class="r">/dayoff/requests</div></a
+        >
+        <a class="page-card" href="dayoff-used.html"
+          ><div class="t">휴가 사용 내역</div>
+          <div class="r">/dayoff/used</div></a
+        >
+        <a class="page-card" href="dayoff-detail.html"
+          ><div class="t">휴가 신청 정보 (문서)</div>
+          <div class="r">/dayoff/[id]</div></a
+        >
+        <a class="page-card" href="overtime-requests.html"
+          ><div class="t">휴일근무보고서 신청</div>
+          <div class="r">/overtime/requests</div></a
+        >
+        <a class="page-card" href="overtime-detail.html"
+          ><div class="t">휴일근무보고서 정보 (문서)</div>
+          <div class="r">/overtime/[id]</div></a
+        >
+        <a class="page-card" href="expense-requests.html"
+          ><div class="t">지출결의서 신청 (준비중)</div>
+          <div class="r">/expense/reports/requests</div></a
+        >
+        <a class="page-card" href="documents.html"
+          ><div class="t">결재 신청 목록</div>
+          <div class="r">/documents</div></a
+        >
+        <a class="page-card" href="approvals.html"
+          ><div class="t">결재 처리 대기 목록</div>
+          <div class="r">/approvals</div></a
+        >
+        <a class="page-card" href="approval-detail.html"
+          ><div class="t">결재 처리 정보</div>
+          <div class="r">/approvals/[id]</div></a
+        >
+      </div>
 
-  <h2 class="section-title group-h">관리자</h2>
-  <div class="cards">
-    <a class="page-card" href="manager-attendance.html"><div class="t">임직원 근무 현황</div><div class="r">/attendance/view</div></a>
-    <a class="page-card" href="manager-schedules.html"><div class="t">임직원 근무 일정 등록 (준비중)</div><div class="r">/attendance/people/schedules</div></a>
-    <a class="page-card" href="manager-vacations.html"><div class="t">임직원 휴가 사용 현황</div><div class="r">/dayoff/users/vacations</div></a>
-    <a class="page-card" href="manager-compensatory.html"><div class="t">임직원 보상 휴가 현황 (준비중)</div><div class="r">/dayoff/users/compensatory</div></a>
-    <a class="page-card" href="manager-chat.html"><div class="t">임직원과의 소통</div><div class="r">/chat/users</div></a>
-    <a class="page-card" href="manager-chat-room.html"><div class="t">1:1 채팅</div><div class="r">/chat/users/[uniqueId]</div></a>
-    <a class="page-card" href="qr.html"><div class="t">QR 코드 생성</div><div class="r">/qr</div></a>
-  </div>
-</div>
-</body>
+      <h2 class="section-title group-h">관리자</h2>
+      <div class="cards">
+        <a class="page-card" href="manager-attendance.html"
+          ><div class="t">임직원 근무 현황</div>
+          <div class="r">/attendance/view</div></a
+        >
+        <a class="page-card" href="manager-schedules.html"
+          ><div class="t">임직원 근무 일정 등록 (준비중)</div>
+          <div class="r">/attendance/people/schedules</div></a
+        >
+        <a class="page-card" href="manager-vacations.html"
+          ><div class="t">임직원 휴가 사용 현황</div>
+          <div class="r">/dayoff/users/vacations</div></a
+        >
+        <a class="page-card" href="manager-compensatory.html"
+          ><div class="t">임직원 보상 휴가 현황 (준비중)</div>
+          <div class="r">/dayoff/users/compensatory</div></a
+        >
+        <a class="page-card" href="manager-chat.html"
+          ><div class="t">임직원과의 소통</div>
+          <div class="r">/chat/users</div></a
+        >
+        <a class="page-card" href="manager-chat-room.html"
+          ><div class="t">1:1 채팅</div>
+          <div class="r">/chat/users/[uniqueId]</div></a
+        >
+        <a class="page-card" href="qr.html"
+          ><div class="t">QR 코드 생성</div>
+          <div class="r">/qr</div></a
+        >
+      </div>
+    </div>
+  </body>
 </html>

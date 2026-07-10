@@ -40,9 +40,7 @@ export default function UpdateUserSignatureContents() {
             )}
           </div>
 
-          {hasSignature && (
-            <p className="text-sm text-red-500">⚠ 배경이 투명해야 정상적으로 서명이 보입니다.</p>
-          )}
+          {hasSignature && <p className="text-sm text-red-500">⚠ 배경이 투명해야 정상적으로 서명이 보입니다.</p>}
 
           <div className="flex justify-end">
             <button

@@ -15,7 +15,7 @@ import { overlay } from 'overlay-kit';
 export default function Header() {
   // query
   const { currentUser } = useGetCurrentUser();
-  const {} = useSession();
+  useSession();
 
   return (
     <header className="flex w-full flex-row items-center justify-between gap-4 border-b border-slate-100 bg-white px-6 py-3 shadow-[0_1px_3px_0_rgba(0,0,0,0.04)]">

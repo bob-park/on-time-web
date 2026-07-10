@@ -76,7 +76,7 @@ export default function WeeklySummaryCards() {
             </p>
           </div>
           <span
-            className={`animate-fade-in delay-300 rounded-full px-4 py-1.5 text-xs font-bold tracking-wide uppercase ${
+            className={`animate-fade-in rounded-full px-4 py-1.5 text-xs font-bold tracking-wide uppercase delay-300 ${
               isOnTrack
                 ? 'bg-emerald-500/20 text-emerald-400 ring-1 ring-emerald-500/30'
                 : 'bg-amber-500/20 text-amber-400 ring-1 ring-amber-500/30'
@@ -115,7 +115,7 @@ export default function WeeklySummaryCards() {
       </div>
 
       {/* Overtime Balance Card */}
-      <div className="animate-fade-up delay-150 w-60 flex-none rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="animate-fade-up w-60 flex-none rounded-2xl border border-slate-200 bg-white p-6 shadow-sm delay-150">
         <p className="text-xs font-bold tracking-wider text-slate-400 uppercase">보상휴가 잔여</p>
         <p className="mt-3 text-5xl font-extrabold tracking-tight text-slate-900">
           {overtimeBalanceHours >= 0 ? '+' : ''}

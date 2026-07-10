@@ -44,7 +44,14 @@ interface WorkingRecordRowProps {
   dayOffType?: DayOffType;
 }
 
-const WorkingRecordRow = memo(function WorkingRecordRow({ date, clockInTime, leaveWorkAt, clockOutTime, status, dayOffType }: WorkingRecordRowProps) {
+const WorkingRecordRow = memo(function WorkingRecordRow({
+  date,
+  clockInTime,
+  leaveWorkAt,
+  clockOutTime,
+  status,
+  dayOffType,
+}: WorkingRecordRowProps) {
   const now = dayjs().hour(0).minute(0).second(0).millisecond(0);
   const isToday = now.isSame(date);
   const isInProgress = isToday && clockInTime && !clockOutTime;
@@ -198,7 +205,7 @@ export default function WorkingRecordContents() {
   };
 
   return (
-    <div className="animate-fade-up delay-225 mt-6 w-full rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div className="animate-fade-up mt-6 w-full rounded-2xl border border-slate-200 bg-white shadow-sm delay-225">
       {/* section header */}
       <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4">
         <h3 className="text-sm font-bold tracking-wide text-slate-800 uppercase">주간 근태 상세 내역</h3>

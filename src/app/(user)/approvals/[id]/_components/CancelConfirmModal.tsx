@@ -5,7 +5,6 @@ import { useEffect, useRef } from 'react';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
 import { useCancelDocument } from '@/domain/document/query/documents';
-
 import useToast from '@/shared/hooks/useToast';
 
 interface CancelConfirmModalProps {

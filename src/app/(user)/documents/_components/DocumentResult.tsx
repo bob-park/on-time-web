@@ -2,6 +2,8 @@
 
 import { memo } from 'react';
 
+import { HiOutlineDocumentText } from 'react-icons/hi';
+
 import { useRouter } from 'next/navigation';
 
 import DocumentStatusBadge from '@/domain/document/components/DocumentStatusBadge';
@@ -9,7 +11,6 @@ import DocumentsTypeBadge from '@/domain/document/components/DocumentTypeBadge';
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { HiOutlineDocumentText } from 'react-icons/hi';
 
 interface DocumentResultProps {
   documents: Document[];
@@ -18,22 +19,20 @@ interface DocumentResultProps {
 
 export default function DocumentResult({ documents, isLoading }: DocumentResultProps) {
   return (
-    <div className="w-full select-none overflow-x-auto">
+    <div className="w-full overflow-x-auto select-none">
       <table className="w-full border-collapse">
         <thead>
           <tr className="h-10 border-b border-slate-200 bg-slate-50">
-            <th className="w-[110px] px-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+            <th className="w-[110px] px-3 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase">
               문서번호
             </th>
-            <th className="w-[110px] px-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+            <th className="w-[110px] px-3 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase">
               구분
             </th>
-            <th className="w-[110px] px-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+            <th className="w-[110px] px-3 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase">
               상태
             </th>
-            <th className="px-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
-              요청일
-            </th>
+            <th className="px-3 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase">요청일</th>
             <th className="w-14 px-3" />
           </tr>
         </thead>
@@ -69,7 +68,7 @@ const DocumentRow = memo(function DocumentRow({ document }: { document: Document
 
   return (
     <tr
-      className="h-[52px] cursor-pointer border-b border-slate-100 transition-colors duration-100 hover:bg-slate-50 last:border-b-0"
+      className="h-[52px] cursor-pointer border-b border-slate-100 transition-colors duration-100 last:border-b-0 hover:bg-slate-50"
       onClick={handleClick}
       role="button"
       tabIndex={0}

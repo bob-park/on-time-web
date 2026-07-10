@@ -4,7 +4,7 @@ import WorkingTimeView from '@/domain/attendance/components/WorkingTimeView';
 
 export default function AttendanceViewPage() {
   return (
-    <div className="flex h-full w-full flex-col gap-2 max-w-screen-lg">
+    <div className="flex h-full w-full max-w-screen-lg flex-col gap-2">
       <WorkingTimeProvider>
         <div className="flex w-full flex-none items-end justify-between">
           <div className="w-full">

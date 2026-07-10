@@ -1,428 +1,505 @@
 <!doctype html>
 <html lang="ko">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>On Time — 근무 일정 추가 (목업)</title>
-<link rel="stylesheet" href="tokens.css">
-<style>
-  /* --- Gantt timeline (page-specific) --- */
-  .gantt-row {
-    display: grid;
-    grid-template-columns: 180px 1fr;
-    align-items: center;
-    gap: 16px;
-    padding: 10px 8px;
-    border-radius: 6px;
-    transition: background 0.1s;
-  }
-  .gantt-row:hover { background: rgba(255, 255, 255, 0.04); }
-  .gantt-row + .gantt-row { border-top: 1px solid rgba(255, 255, 255, 0.05); }
-  .gantt-row.today { background: rgba(30, 215, 96, 0.06); }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>On Time — 근무 일정 추가 (목업)</title>
+    <link rel="stylesheet" href="tokens.css" />
+    <style>
+      /* --- Gantt timeline (page-specific) --- */
+      .gantt-row {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        align-items: center;
+        gap: 16px;
+        padding: 10px 8px;
+        border-radius: 6px;
+        transition: background 0.1s;
+      }
+      .gantt-row:hover {
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .gantt-row + .gantt-row {
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .gantt-row.today {
+        background: rgba(30, 215, 96, 0.06);
+      }
 
-  .gantt-day {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-  }
-  .gantt-day .st {
-    width: 24px; height: 24px;
-    flex: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    font-size: 12px;
-  }
-  .st-done { background: rgba(30, 215, 96, 0.15); color: var(--accent); }
-  .st-pending { background: rgba(179, 179, 179, 0.12); color: var(--text-secondary); }
-  .st-off { background: rgba(83, 157, 245, 0.15); }
-  .st-warn { background: rgba(255, 164, 43, 0.15); color: var(--warning); }
-  .gantt-day .d { font-weight: 700; }
-  .gantt-day .wd { color: var(--text-secondary); font-size: 12px; }
-  .gantt-day .wd.sat { color: var(--info); }
-  .gantt-day .wd.sun { color: var(--negative); }
+      .gantt-day {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+      }
+      .gantt-day .st {
+        width: 24px;
+        height: 24px;
+        flex: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 12px;
+      }
+      .st-done {
+        background: rgba(30, 215, 96, 0.15);
+        color: var(--accent);
+      }
+      .st-pending {
+        background: rgba(179, 179, 179, 0.12);
+        color: var(--text-secondary);
+      }
+      .st-off {
+        background: rgba(83, 157, 245, 0.15);
+      }
+      .st-warn {
+        background: rgba(255, 164, 43, 0.15);
+        color: var(--warning);
+      }
+      .gantt-day .d {
+        font-weight: 700;
+      }
+      .gantt-day .wd {
+        color: var(--text-secondary);
+        font-size: 12px;
+      }
+      .gantt-day .wd.sat {
+        color: var(--info);
+      }
+      .gantt-day .wd.sun {
+        color: var(--negative);
+      }
 
-  .gantt-track {
-    position: relative;
-    height: 26px;
-    border-radius: 4px;
-    background:
-      repeating-linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.05) 0,
-        rgba(255, 255, 255, 0.05) 1px,
-        transparent 1px,
-        transparent calc(100% / 24)
-      );
-  }
-  .gantt-bar {
-    position: absolute;
-    top: 5px;
-    height: 16px;
-    border-radius: 9999px;
-    background: rgba(255, 255, 255, 0.25);
-    display: flex;
-    align-items: center;
-    padding: 0 10px;
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--text-primary);
-    white-space: nowrap;
-  }
-  .gantt-bar.live {
-    background: rgba(30, 215, 96, 0.28);
-    box-shadow: 0 0 0 1px var(--accent-border) inset;
-    color: var(--accent);
-  }
-  .gantt-bar.warn {
-    background: rgba(255, 164, 43, 0.22);
-    color: var(--warning);
-  }
+      .gantt-track {
+        position: relative;
+        height: 26px;
+        border-radius: 4px;
+        background: repeating-linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.05) 0,
+          rgba(255, 255, 255, 0.05) 1px,
+          transparent 1px,
+          transparent calc(100% / 24)
+        );
+      }
+      .gantt-bar {
+        position: absolute;
+        top: 5px;
+        height: 16px;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.25);
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--text-primary);
+        white-space: nowrap;
+      }
+      .gantt-bar.live {
+        background: rgba(30, 215, 96, 0.28);
+        box-shadow: 0 0 0 1px var(--accent-border) inset;
+        color: var(--accent);
+      }
+      .gantt-bar.warn {
+        background: rgba(255, 164, 43, 0.22);
+        color: var(--warning);
+      }
 
-  .gantt-axis {
-    display: grid;
-    grid-template-columns: 180px 1fr;
-    gap: 16px;
-    padding: 4px 8px 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  }
-  .gantt-axis .axis-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1.4px;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-  }
-  .gantt-axis .hours {
-    position: relative;
-    height: 14px;
-  }
-  .gantt-axis .hours span {
-    position: absolute;
-    top: 0;
-    transform: translateX(-50%);
-    font-size: 10px;
-    color: var(--text-secondary);
-  }
+      .gantt-axis {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 16px;
+        padding: 4px 8px 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .gantt-axis .axis-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+      }
+      .gantt-axis .hours {
+        position: relative;
+        height: 14px;
+      }
+      .gantt-axis .hours span {
+        position: absolute;
+        top: 0;
+        transform: translateX(-50%);
+        font-size: 10px;
+        color: var(--text-secondary);
+      }
 
-  /* --- modal form (page-specific) --- */
-  .type-option {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 20px;
-    border-radius: 9999px;
-    background: var(--bg-raised);
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .type-option:hover { background: #2a2a2a; }
-  .type-option.selected {
-    box-shadow: 0 0 0 1px var(--accent-border) inset;
-    background: rgba(30, 215, 96, 0.08);
-    font-weight: 700;
-  }
-  .type-option .check { color: var(--accent); font-weight: 700; }
+      /* --- modal form (page-specific) --- */
+      .type-option {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 20px;
+        border-radius: 9999px;
+        background: var(--bg-raised);
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .type-option:hover {
+        background: #2a2a2a;
+      }
+      .type-option.selected {
+        box-shadow: 0 0 0 1px var(--accent-border) inset;
+        background: rgba(30, 215, 96, 0.08);
+        font-weight: 700;
+      }
+      .type-option .check {
+        color: var(--accent);
+        font-weight: 700;
+      }
 
-  .cal {
-    margin-top: 12px;
-    background: var(--bg-raised);
-    border-radius: 12px;
-    padding: 16px;
-  }
-  .cal .cal-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-    font-size: 13px;
-    font-weight: 700;
-  }
-  .cal table { width: 100%; border-collapse: collapse; }
-  .cal th {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-    padding: 6px 0;
-  }
-  .cal th.sun { color: var(--negative); }
-  .cal th.sat { color: var(--info); }
-  .cal td {
-    text-align: center;
-    padding: 3px 0;
-    font-size: 13px;
-    color: var(--text-primary);
-  }
-  .cal td span {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-  .cal td span:hover { background: rgba(255, 255, 255, 0.08); }
-  .cal td.sun span { color: var(--negative); }
-  .cal td.sat span { color: var(--info); }
-  .cal td.muted span { color: var(--border-strong); }
-  .cal td span.picked {
-    background: var(--accent);
-    color: #000;
-    font-weight: 700;
-  }
-</style>
-</head>
-<body>
-<div class="app">
+      .cal {
+        margin-top: 12px;
+        background: var(--bg-raised);
+        border-radius: 12px;
+        padding: 16px;
+      }
+      .cal .cal-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .cal table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .cal th {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+        padding: 6px 0;
+      }
+      .cal th.sun {
+        color: var(--negative);
+      }
+      .cal th.sat {
+        color: var(--info);
+      }
+      .cal td {
+        text-align: center;
+        padding: 3px 0;
+        font-size: 13px;
+        color: var(--text-primary);
+      }
+      .cal td span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+      .cal td span:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .cal td.sun span {
+        color: var(--negative);
+      }
+      .cal td.sat span {
+        color: var(--info);
+      }
+      .cal td.muted span {
+        color: var(--border-strong);
+      }
+      .cal td span.picked {
+        background: var(--accent);
+        color: #000;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <!-- ===================== sidebar ===================== -->
+      <aside class="sidebar">
+        <a class="logo" href="index.html"><span class="logo-dot"></span>OnTime</a>
+        <nav class="nav">
+          <a class="nav-item" href="dashboard.html"><span class="ico">◧</span>대시보드</a>
+          <a class="nav-item active" href="schedule.html"><span class="ico">🗓</span>근무 일정</a>
 
-  <!-- ===================== sidebar ===================== -->
-  <aside class="sidebar">
-    <a class="logo" href="index.html"><span class="logo-dot"></span>OnTime</a>
-    <nav class="nav">
-      <a class="nav-item" href="dashboard.html"><span class="ico">◧</span>대시보드</a>
-      <a class="nav-item active" href="schedule.html"><span class="ico">🗓</span>근무 일정</a>
+          <div class="nav-group">전자 결재</div>
+          <a class="nav-item" href="dayoff-requests.html"><span class="ico">✚</span>휴가 신청</a>
+          <a class="nav-item" href="dayoff-used.html"><span class="ico">↺</span>휴가 사용 내역</a>
+          <a class="nav-item" href="overtime-requests.html"><span class="ico">✚</span>휴일근무보고서 신청</a>
+          <a class="nav-item" href="expense-requests.html"><span class="ico">✚</span>지출결의서 신청</a>
+          <a class="nav-item" href="documents.html"><span class="ico">▤</span>결재 신청 목록</a>
+          <a class="nav-item" href="approvals.html"
+            ><span class="ico">✓</span>결재 처리 대기 목록<span class="count">3</span></a
+          >
 
-      <div class="nav-group">전자 결재</div>
-      <a class="nav-item" href="dayoff-requests.html"><span class="ico">✚</span>휴가 신청</a>
-      <a class="nav-item" href="dayoff-used.html"><span class="ico">↺</span>휴가 사용 내역</a>
-      <a class="nav-item" href="overtime-requests.html"><span class="ico">✚</span>휴일근무보고서 신청</a>
-      <a class="nav-item" href="expense-requests.html"><span class="ico">✚</span>지출결의서 신청</a>
-      <a class="nav-item" href="documents.html"><span class="ico">▤</span>결재 신청 목록</a>
-      <a class="nav-item" href="approvals.html"><span class="ico">✓</span>결재 처리 대기 목록<span class="count">3</span></a>
+          <div class="nav-group">관리자</div>
+          <a class="nav-item" href="manager-vacations.html"><span class="ico">☰</span>임직원 휴가 사용 현황</a>
+          <a class="nav-item" href="manager-compensatory.html"><span class="ico">☰</span>임직원 보상 휴가 현황</a>
+          <a class="nav-item" href="manager-attendance.html"><span class="ico">▦</span>임직원 근무 현황</a>
+          <a class="nav-item" href="manager-schedules.html"><span class="ico">🗓</span>임직원 근무 일정 등록</a>
+          <a class="nav-item" href="manager-chat.html"><span class="ico">💬</span>임직원과의 소통</a>
+        </nav>
+        <div class="logout">
+          <a class="nav-item" href="#"><span class="ico">⎋</span>로그아웃</a>
+        </div>
+      </aside>
 
-      <div class="nav-group">관리자</div>
-      <a class="nav-item" href="manager-vacations.html"><span class="ico">☰</span>임직원 휴가 사용 현황</a>
-      <a class="nav-item" href="manager-compensatory.html"><span class="ico">☰</span>임직원 보상 휴가 현황</a>
-      <a class="nav-item" href="manager-attendance.html"><span class="ico">▦</span>임직원 근무 현황</a>
-      <a class="nav-item" href="manager-schedules.html"><span class="ico">🗓</span>임직원 근무 일정 등록</a>
-      <a class="nav-item" href="manager-chat.html"><span class="ico">💬</span>임직원과의 소통</a>
-    </nav>
-    <div class="logout">
-      <a class="nav-item" href="#"><span class="ico">⎋</span>로그아웃</a>
+      <!-- ===================== main ===================== -->
+      <div class="main">
+        <header class="header">
+          <button class="icon-btn" title="알림">🔔</button>
+          <div class="profile-chip">
+            <span class="avatar">박</span>
+            <span class="who">
+              <div class="name">박현우 <span class="text-muted">(팀장)</span></div>
+              <div class="team">개발팀 · 책임</div>
+            </span>
+          </div>
+        </header>
+
+        <div class="content">
+          <div class="page-head">
+            <div>
+              <div class="eyebrow">Schedule</div>
+              <h1 class="page-title">근무 일정</h1>
+            </div>
+          </div>
+
+          <!-- toolbar -->
+          <div class="spread" style="margin-bottom: 16px">
+            <div class="navigator">
+              <button class="icon-btn">‹</button>
+              <span class="range">2026.07.06 – 07.12</span>
+              <button class="icon-btn">›</button>
+              <button class="btn btn-sm btn-outline">오늘</button>
+            </div>
+            <button class="btn btn-primary">＋ 추가</button>
+          </div>
+
+          <!-- gantt timeline -->
+          <div class="card">
+            <div class="gantt-axis">
+              <span class="axis-label">근무일</span>
+              <div class="hours">
+                <span style="left: 0%">00</span>
+                <span style="left: 12.5%">03</span>
+                <span style="left: 25%">06</span>
+                <span style="left: 37.5%">09</span>
+                <span style="left: 50%">12</span>
+                <span style="left: 62.5%">15</span>
+                <span style="left: 75%">18</span>
+                <span style="left: 87.5%">21</span>
+                <span style="left: 100%">23</span>
+              </div>
+            </div>
+
+            <!-- 월 07.06 — 완료 -->
+            <div class="gantt-row">
+              <div class="gantt-day">
+                <span class="st st-done">✓</span>
+                <span class="d">07.06</span>
+                <span class="wd">월</span>
+              </div>
+              <div class="gantt-track">
+                <div class="gantt-bar" style="left: 37.5%; width: 39.6%">09:02 – 18:32</div>
+              </div>
+            </div>
+
+            <!-- 화 07.07 — 오후 반차 (14:00 종료) -->
+            <div class="gantt-row">
+              <div class="gantt-day">
+                <span class="st st-done">✓</span>
+                <span class="d">07.07</span>
+                <span class="wd">화</span>
+                <span class="badge badge-blue">PM 반차</span>
+              </div>
+              <div class="gantt-track">
+                <div class="gantt-bar" style="left: 37.1%; width: 21.2%">08:54 – 14:00</div>
+              </div>
+            </div>
+
+            <!-- 수 07.08 — 연차 -->
+            <div class="gantt-row">
+              <div class="gantt-day">
+                <span class="st st-off">😴</span>
+                <span class="d">07.08</span>
+                <span class="wd">수</span>
+                <span class="badge badge-blue">연차</span>
+              </div>
+              <div class="gantt-track"></div>
+            </div>
+
+            <!-- 목 07.09 — 근무 시간 미달 경고 -->
+            <div class="gantt-row">
+              <div class="gantt-day">
+                <span class="st st-warn">⚠</span>
+                <span class="d">07.09</span>
+                <span class="wd">목</span>
+              </div>
+              <div class="gantt-track">
+                <div class="gantt-bar warn" style="left: 39.6%; width: 33.3%">09:31 – 17:30 · 7h 34m</div>
+              </div>
+            </div>
+
+            <!-- 금 07.10 — 오늘, 근무 중 -->
+            <div class="gantt-row today">
+              <div class="gantt-day">
+                <span class="st st-done">⏱</span>
+                <span class="d">07.10</span>
+                <span class="wd">금 · 오늘</span>
+              </div>
+              <div class="gantt-track">
+                <div class="gantt-bar live" style="left: 37.4%; width: 19.9%">08:58 – 근무 중</div>
+              </div>
+            </div>
+
+            <!-- 토 07.11 -->
+            <div class="gantt-row">
+              <div class="gantt-day">
+                <span class="st st-pending">⏱</span>
+                <span class="d">07.11</span>
+                <span class="wd sat">토</span>
+              </div>
+              <div class="gantt-track"></div>
+            </div>
+
+            <!-- 일 07.12 -->
+            <div class="gantt-row">
+              <div class="gantt-day">
+                <span class="st st-pending">⏱</span>
+                <span class="d">07.12</span>
+                <span class="wd sun">일</span>
+              </div>
+              <div class="gantt-track"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </aside>
 
-  <!-- ===================== main ===================== -->
-  <div class="main">
-    <header class="header">
-      <button class="icon-btn" title="알림">🔔</button>
-      <div class="profile-chip">
-        <span class="avatar">박</span>
-        <span class="who">
-          <div class="name">박현우 <span class="text-muted">(팀장)</span></div>
-          <div class="team">개발팀 · 책임</div>
+    <!-- ===================== now-working bar ===================== -->
+    <div class="working-bar">
+      <div class="status">
+        <span class="pulse"></span>
+        <span>
+          <div class="label">근무 중 · 08:58 출근</div>
+          <div class="sub">목표 퇴근 17:58</div>
         </span>
       </div>
-    </header>
-
-    <div class="content">
-      <div class="page-head">
-        <div>
-          <div class="eyebrow">Schedule</div>
-          <h1 class="page-title">근무 일정</h1>
-        </div>
+      <div class="track">
+        <span>3h 42m</span>
+        <div class="bar"><div style="width: 45%"></div></div>
+        <span>8h</span>
       </div>
+      <button class="btn btn-primary btn-sm">퇴근하기</button>
+    </div>
 
-      <!-- toolbar -->
-      <div class="spread" style="margin-bottom:16px;">
-        <div class="navigator">
-          <button class="icon-btn">‹</button>
-          <span class="range">2026.07.06 – 07.12</span>
-          <button class="icon-btn">›</button>
-          <button class="btn btn-sm btn-outline">오늘</button>
-        </div>
-        <button class="btn btn-primary">＋ 추가</button>
-      </div>
+    <!-- ===================== modal: 근무 일정 추가 ===================== -->
+    <div class="modal-backdrop">
+      <div class="modal">
+        <div class="modal-title">근무 일정 추가</div>
 
-      <!-- gantt timeline -->
-      <div class="card">
-        <div class="gantt-axis">
-          <span class="axis-label">근무일</span>
-          <div class="hours">
-            <span style="left:0%">00</span>
-            <span style="left:12.5%">03</span>
-            <span style="left:25%">06</span>
-            <span style="left:37.5%">09</span>
-            <span style="left:50%">12</span>
-            <span style="left:62.5%">15</span>
-            <span style="left:75%">18</span>
-            <span style="left:87.5%">21</span>
-            <span style="left:100%">23</span>
+        <div class="field">
+          <label>구분</label>
+          <div class="stack" style="gap: 8px">
+            <div class="type-option"><span>없음</span></div>
+            <div class="type-option selected"><span>연차</span><span class="check">✓</span></div>
+            <div class="type-option"><span>오전 반차</span></div>
+            <div class="type-option"><span>오후 반차</span></div>
           </div>
         </div>
 
-        <!-- 월 07.06 — 완료 -->
-        <div class="gantt-row">
-          <div class="gantt-day">
-            <span class="st st-done">✓</span>
-            <span class="d">07.06</span>
-            <span class="wd">월</span>
-          </div>
-          <div class="gantt-track">
-            <div class="gantt-bar" style="left:37.5%;width:39.6%;">09:02 – 18:32</div>
+        <div class="field" style="margin-top: 20px">
+          <label>일자</label>
+          <button class="btn btn-outline" style="justify-content: flex-start">📅&nbsp; 2026-07-15</button>
+
+          <div class="cal">
+            <div class="cal-head">
+              <button class="icon-btn" style="width: 28px; height: 28px; font-size: 13px">‹</button>
+              <span>2026년 7월</span>
+              <button class="icon-btn" style="width: 28px; height: 28px; font-size: 13px">›</button>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th class="sun">일</th>
+                  <th>월</th>
+                  <th>화</th>
+                  <th>수</th>
+                  <th>목</th>
+                  <th>금</th>
+                  <th class="sat">토</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="sun"></td>
+                  <td></td>
+                  <td></td>
+                  <td><span>1</span></td>
+                  <td><span>2</span></td>
+                  <td><span>3</span></td>
+                  <td class="sat"><span>4</span></td>
+                </tr>
+                <tr>
+                  <td class="sun"><span>5</span></td>
+                  <td><span>6</span></td>
+                  <td><span>7</span></td>
+                  <td><span>8</span></td>
+                  <td><span>9</span></td>
+                  <td><span>10</span></td>
+                  <td class="sat"><span>11</span></td>
+                </tr>
+                <tr>
+                  <td class="sun"><span>12</span></td>
+                  <td><span>13</span></td>
+                  <td><span>14</span></td>
+                  <td><span class="picked">15</span></td>
+                  <td><span>16</span></td>
+                  <td><span>17</span></td>
+                  <td class="sat"><span>18</span></td>
+                </tr>
+                <tr>
+                  <td class="sun"><span>19</span></td>
+                  <td><span>20</span></td>
+                  <td><span>21</span></td>
+                  <td><span>22</span></td>
+                  <td><span>23</span></td>
+                  <td><span>24</span></td>
+                  <td class="sat"><span>25</span></td>
+                </tr>
+                <tr>
+                  <td class="sun"><span>26</span></td>
+                  <td><span>27</span></td>
+                  <td><span>28</span></td>
+                  <td><span>29</span></td>
+                  <td><span>30</span></td>
+                  <td><span>31</span></td>
+                  <td class="sat"></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <!-- 화 07.07 — 오후 반차 (14:00 종료) -->
-        <div class="gantt-row">
-          <div class="gantt-day">
-            <span class="st st-done">✓</span>
-            <span class="d">07.07</span>
-            <span class="wd">화</span>
-            <span class="badge badge-blue">PM 반차</span>
-          </div>
-          <div class="gantt-track">
-            <div class="gantt-bar" style="left:37.1%;width:21.2%;">08:54 – 14:00</div>
-          </div>
-        </div>
-
-        <!-- 수 07.08 — 연차 -->
-        <div class="gantt-row">
-          <div class="gantt-day">
-            <span class="st st-off">😴</span>
-            <span class="d">07.08</span>
-            <span class="wd">수</span>
-            <span class="badge badge-blue">연차</span>
-          </div>
-          <div class="gantt-track"></div>
-        </div>
-
-        <!-- 목 07.09 — 근무 시간 미달 경고 -->
-        <div class="gantt-row">
-          <div class="gantt-day">
-            <span class="st st-warn">⚠</span>
-            <span class="d">07.09</span>
-            <span class="wd">목</span>
-          </div>
-          <div class="gantt-track">
-            <div class="gantt-bar warn" style="left:39.6%;width:33.3%;">09:31 – 17:30 · 7h 34m</div>
-          </div>
-        </div>
-
-        <!-- 금 07.10 — 오늘, 근무 중 -->
-        <div class="gantt-row today">
-          <div class="gantt-day">
-            <span class="st st-done">⏱</span>
-            <span class="d">07.10</span>
-            <span class="wd">금 · 오늘</span>
-          </div>
-          <div class="gantt-track">
-            <div class="gantt-bar live" style="left:37.4%;width:19.9%;">08:58 – 근무 중</div>
-          </div>
-        </div>
-
-        <!-- 토 07.11 -->
-        <div class="gantt-row">
-          <div class="gantt-day">
-            <span class="st st-pending">⏱</span>
-            <span class="d">07.11</span>
-            <span class="wd sat">토</span>
-          </div>
-          <div class="gantt-track"></div>
-        </div>
-
-        <!-- 일 07.12 -->
-        <div class="gantt-row">
-          <div class="gantt-day">
-            <span class="st st-pending">⏱</span>
-            <span class="d">07.12</span>
-            <span class="wd sun">일</span>
-          </div>
-          <div class="gantt-track"></div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost">취소</button>
+          <button class="btn btn-primary">추가</button>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- ===================== now-working bar ===================== -->
-<div class="working-bar">
-  <div class="status">
-    <span class="pulse"></span>
-    <span>
-      <div class="label">근무 중 · 08:58 출근</div>
-      <div class="sub">목표 퇴근 17:58</div>
-    </span>
-  </div>
-  <div class="track">
-    <span>3h 42m</span>
-    <div class="bar"><div style="width:45%"></div></div>
-    <span>8h</span>
-  </div>
-  <button class="btn btn-primary btn-sm">퇴근하기</button>
-</div>
-
-<!-- ===================== modal: 근무 일정 추가 ===================== -->
-<div class="modal-backdrop">
-  <div class="modal">
-    <div class="modal-title">근무 일정 추가</div>
-
-    <div class="field">
-      <label>구분</label>
-      <div class="stack" style="gap:8px;">
-        <div class="type-option"><span>없음</span></div>
-        <div class="type-option selected"><span>연차</span><span class="check">✓</span></div>
-        <div class="type-option"><span>오전 반차</span></div>
-        <div class="type-option"><span>오후 반차</span></div>
-      </div>
-    </div>
-
-    <div class="field" style="margin-top:20px;">
-      <label>일자</label>
-      <button class="btn btn-outline" style="justify-content:flex-start;">📅&nbsp; 2026-07-15</button>
-
-      <div class="cal">
-        <div class="cal-head">
-          <button class="icon-btn" style="width:28px;height:28px;font-size:13px;">‹</button>
-          <span>2026년 7월</span>
-          <button class="icon-btn" style="width:28px;height:28px;font-size:13px;">›</button>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th class="sun">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th class="sat">토</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="sun"></td><td></td><td></td>
-              <td><span>1</span></td><td><span>2</span></td><td><span>3</span></td><td class="sat"><span>4</span></td>
-            </tr>
-            <tr>
-              <td class="sun"><span>5</span></td><td><span>6</span></td><td><span>7</span></td><td><span>8</span></td>
-              <td><span>9</span></td><td><span>10</span></td><td class="sat"><span>11</span></td>
-            </tr>
-            <tr>
-              <td class="sun"><span>12</span></td><td><span>13</span></td><td><span>14</span></td>
-              <td><span class="picked">15</span></td>
-              <td><span>16</span></td><td><span>17</span></td><td class="sat"><span>18</span></td>
-            </tr>
-            <tr>
-              <td class="sun"><span>19</span></td><td><span>20</span></td><td><span>21</span></td><td><span>22</span></td>
-              <td><span>23</span></td><td><span>24</span></td><td class="sat"><span>25</span></td>
-            </tr>
-            <tr>
-              <td class="sun"><span>26</span></td><td><span>27</span></td><td><span>28</span></td><td><span>29</span></td>
-              <td><span>30</span></td><td><span>31</span></td><td class="sat"></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="modal-actions">
-      <button class="btn btn-ghost">취소</button>
-      <button class="btn btn-primary">추가</button>
-    </div>
-  </div>
-</div>
-
-<div class="mock-nav"><a href="index.html">← 목업 인덱스</a></div>
-</body>
+    <div class="mock-nav"><a href="index.html">← 목업 인덱스</a></div>
+  </body>
 </html>

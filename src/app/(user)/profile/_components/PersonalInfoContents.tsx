@@ -62,28 +62,28 @@ export default function PersonalInfoContents() {
 
             <div className="grid flex-1 grid-cols-1 gap-x-6 gap-y-3.5 md:grid-cols-2">
               <div className="flex flex-col gap-1">
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">소속 팀</span>
+                <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">소속 팀</span>
                 <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900">
                   {currentUser?.group.name}
                 </div>
               </div>
 
               <div className="flex flex-col gap-1">
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">직급</span>
+                <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">직급</span>
                 <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900">
                   {currentUser?.position.name}
                 </div>
               </div>
 
               <div className="flex flex-col gap-1">
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">이름</span>
+                <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">이름</span>
                 <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900">
                   {currentUser?.username}
                 </div>
               </div>
 
               <div className="flex flex-col gap-1 md:col-span-2">
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">E-MAIL</span>
+                <span className="text-xs font-semibold tracking-wider text-slate-500 uppercase">E-MAIL</span>
                 <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900">
                   {currentUser?.email}
                 </div>

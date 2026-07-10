@@ -6,7 +6,6 @@ import { FaTimes } from 'react-icons/fa';
 import { PiUploadFill } from 'react-icons/pi';
 
 import { useRequestDocument } from '@/domain/document/query/documents';
-
 import useToast from '@/shared/hooks/useToast';
 
 interface RequestConfirmModalProps {

@@ -68,7 +68,6 @@ type SearchVacationDocumentRequest = {
   endDateTo?: string;
 } & SearchPageParams;
 
-
 /*
  * overtime work
  */
@@ -86,10 +85,10 @@ interface OverTimeWorkTime {
   endDate: string;
   isDayOff: boolean;
   appliedExtraPaymentHours: number;
-  reports: OverTimeWorkTimeReport[]
+  reports: OverTimeWorkTimeReport[];
 }
 
-interface OverTimeWorkTimeReport{
+interface OverTimeWorkTimeReport {
   id: number;
   report: string;
 }

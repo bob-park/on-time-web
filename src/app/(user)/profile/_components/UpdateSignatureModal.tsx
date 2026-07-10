@@ -7,7 +7,6 @@ import { IoCloudUploadOutline } from 'react-icons/io5';
 import { TbArrowsExchange } from 'react-icons/tb';
 
 import { useUpdateUserSignature } from '@/domain/user/query/user';
-
 import useToast from '@/shared/hooks/useToast';
 
 interface UpdateSignatureModalProps {

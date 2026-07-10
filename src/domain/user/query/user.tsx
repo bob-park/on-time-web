@@ -1,3 +1,5 @@
+import { InfiniteData, QueryKey, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+
 import { currentUser } from '@/domain/user/api/session';
 import {
   getAllUserLeaveEntries,
@@ -8,8 +10,6 @@ import {
   updateUserPassword,
   updateUserSignature,
 } from '@/domain/user/api/users';
-
-import { InfiniteData, QueryKey, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 export function useGetCurrentUser() {
   const { data, isLoading } = useQuery<User>({

@@ -2,10 +2,9 @@
 
 import { useState } from 'react';
 
+import { useDocuments } from '@/domain/document/query/documents';
 import Pagination from '@/shared/components/Pagination';
 import PillFilter from '@/shared/components/PillFilter';
-
-import { useDocuments } from '@/domain/document/query/documents';
 
 import DocumentResult from './DocumentResult';
 

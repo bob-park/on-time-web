@@ -8,7 +8,6 @@ import { RiCalendarScheduleLine } from 'react-icons/ri';
 import { useRouter } from 'next/navigation';
 
 import { useAddAttendanceSchedule } from '@/domain/attendance/query/attendanceRecord';
-
 import Dropdown, { DropdownItem } from '@/shared/components/Dropdown';
 import { useStore } from '@/shared/store/rootStore';
 

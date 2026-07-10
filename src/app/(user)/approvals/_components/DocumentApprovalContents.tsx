@@ -3,9 +3,7 @@
 import { useState } from 'react';
 
 import DocumentApprovalResult from '@/app/(user)/approvals/_components/DocumentApprovalResult';
-
 import { useApprovalHistories } from '@/domain/approval/query/approvalHistory';
-
 import Pagination from '@/shared/components/Pagination';
 import PillFilter from '@/shared/components/PillFilter';
 

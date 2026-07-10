@@ -1,6 +1,6 @@
-import { currentUser, logout } from '@/domain/user/api/session';
-
 import { useMutation, useQuery } from '@tanstack/react-query';
+
+import { currentUser, logout } from '@/domain/user/api/session';
 
 export function useLogout(onSuccess: () => void) {
   const { mutate } = useMutation({

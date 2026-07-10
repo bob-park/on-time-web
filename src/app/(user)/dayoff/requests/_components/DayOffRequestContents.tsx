@@ -117,11 +117,11 @@ export default function DayOffRequestContent() {
             {/* 연차 구분 */}
             <div className="mb-5">
               <p className="mb-2 text-xs font-medium text-slate-500">
-              연차 구분
-              {hasAttemptedSubmit && !selectedVacationType && (
-                <span className="ml-2 text-red-500">선택해 주세요</span>
-              )}
-            </p>
+                연차 구분
+                {hasAttemptedSubmit && !selectedVacationType && (
+                  <span className="ml-2 text-red-500">선택해 주세요</span>
+                )}
+              </p>
               <div className="flex flex-col gap-2">
                 {VACATION_TYPES.map((type) => (
                   <button
@@ -155,11 +155,11 @@ export default function DayOffRequestContent() {
             {/* 부가 구분 */}
             <div className="mb-5">
               <p className="mb-2 text-xs font-medium text-slate-500">
-              부가 구분
-              {hasAttemptedSubmit && !selectedVacationSubType && (
-                <span className="ml-2 text-red-500">선택해 주세요</span>
-              )}
-            </p>
+                부가 구분
+                {hasAttemptedSubmit && !selectedVacationSubType && (
+                  <span className="ml-2 text-red-500">선택해 주세요</span>
+                )}
+              </p>
               <div className="flex flex-col gap-2">
                 {VACATION_SUBTYPES.map((sub) => (
                   <button
@@ -216,9 +216,7 @@ export default function DayOffRequestContent() {
             <div>
               <p className="mb-2 text-xs font-medium text-slate-500">
                 사유
-                {hasAttemptedSubmit && !reason && (
-                  <span className="ml-2 text-red-500">입력해 주세요</span>
-                )}
+                {hasAttemptedSubmit && !reason && <span className="ml-2 text-red-500">입력해 주세요</span>}
               </p>
               <input
                 type="text"
@@ -281,7 +279,10 @@ export default function DayOffRequestContent() {
             <div>
               <p className="text-xs text-slate-400">사용 후 잔여</p>
               <p
-                className={cx('mt-0.5 text-sm font-semibold', remainingAfterUse < 0 ? 'text-red-500' : 'text-slate-800')}
+                className={cx(
+                  'mt-0.5 text-sm font-semibold',
+                  remainingAfterUse < 0 ? 'text-red-500' : 'text-slate-800',
+                )}
               >
                 {remainingAfterUse.toFixed(1)} 일
               </p>

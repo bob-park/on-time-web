@@ -6,7 +6,6 @@ import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
 import { useGetResultAttendanceRecord, useRecordAttendance } from '@/domain/attendance/query/attendanceRecord';
 import { useGetCurrentUser } from '@/domain/user/query/user';
-
 import { getDaysOfWeek } from '@/utils/parse';
 
 import cx from 'classnames';

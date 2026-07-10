@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint ./src",
     "mock": "npx tsx watch ./src/mocks/http.ts",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css,html}\""
   },
@@ -37,8 +37,8 @@
     "zustand": "^5.0.14"
   },
   "devDependencies": {
-    "@bob-park/eslint-config-bobpark": "0.2.4-RC1-20251111",
-    "@bob-park/prettier-config-bobpark": "0.3.1-RC1-20250912",
+    "@bob-park/eslint-config-bobpark": "0.3.0-RC4-20260630",
+    "@bob-park/prettier-config-bobpark": "0.4.0-RC4-20260630",
     "@eslint/eslintrc": "^3",
     "@faker-js/faker": "^10.5.0",
     "@mswjs/http-middleware": "^0.10.3",
@@ -55,9 +55,11 @@
     "autoprefixer": "^10.4.27",
     "cors": "^2.8.6",
     "daisyui": "^5.6.5",
+    "eslint": "^9",
     "express": "^5.2.1",
     "msw": "^2.12.14",
     "postcss": "^8",
+    "prettier": "^3",
     "react-icons": "^5.6.0",
     "tailwindcss": "^4.2.2",
     "typescript": "^6"

@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from 'react';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
 import { useRejectDocument } from '@/domain/document/query/documents';
-
 import useToast from '@/shared/hooks/useToast';
 
 interface ApproveModalProps {

@@ -2,6 +2,8 @@
 
 import { memo } from 'react';
 
+import { HiOutlineDocumentText } from 'react-icons/hi';
+
 import { useRouter } from 'next/navigation';
 
 import DocumentStatusBadge from '@/domain/document/components/DocumentStatusBadge';
@@ -9,7 +11,6 @@ import DocumentsTypeBadge from '@/domain/document/components/DocumentTypeBadge';
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { HiOutlineDocumentText } from 'react-icons/hi';
 
 interface DocumentApprovalResultProps {
   items: ApprovalHistory[];
@@ -18,25 +19,23 @@ interface DocumentApprovalResultProps {
 
 export default function DocumentApprovalResult({ items, isLoading }: DocumentApprovalResultProps) {
   return (
-    <div className="w-full select-none overflow-x-auto">
+    <div className="w-full overflow-x-auto select-none">
       <table className="w-full border-collapse">
         <thead>
           <tr className="h-10 border-b border-slate-200 bg-slate-50">
-            <th className="w-[110px] px-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+            <th className="w-[110px] px-3 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase">
               문서번호
             </th>
-            <th className="w-[110px] px-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+            <th className="w-[110px] px-3 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase">
               구분
             </th>
-            <th className="w-[110px] px-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+            <th className="w-[110px] px-3 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase">
               상태
             </th>
-            <th className="w-[140px] px-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+            <th className="w-[140px] px-3 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase">
               신청자
             </th>
-            <th className="px-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
-              요청일
-            </th>
+            <th className="px-3 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase">요청일</th>
             <th className="w-14 px-3" />
           </tr>
         </thead>
@@ -46,9 +45,7 @@ export default function DocumentApprovalResult({ items, isLoading }: DocumentApp
           ) : items.length === 0 ? (
             <EmptyState />
           ) : (
-            items.map((item, index) => (
-              <ApprovalRow key={item.id ?? `row-${index}`} item={item} />
-            ))
+            items.map((item, index) => <ApprovalRow key={item.id ?? `row-${index}`} item={item} />)
           )}
         </tbody>
       </table>
@@ -69,16 +66,14 @@ const ApprovalRow = memo(function ApprovalRow({ item }: { item: ApprovalHistory 
 
   return (
     <tr
-      className="h-[52px] cursor-pointer border-b border-slate-100 transition-colors duration-100 hover:bg-slate-50 last:border-b-0"
+      className="h-[52px] cursor-pointer border-b border-slate-100 transition-colors duration-100 last:border-b-0 hover:bg-slate-50"
       onClick={handleClick}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && handleClick()}
       aria-label={`결재 ${item.id ?? ''} 상세 보기`}
     >
-      <td className="px-3 text-sm font-semibold text-slate-500">
-        {item.id !== undefined ? `#${item.id}` : '—'}
-      </td>
+      <td className="px-3 text-sm font-semibold text-slate-500">{item.id !== undefined ? `#${item.id}` : '—'}</td>
       <td className="px-3">
         <DocumentsTypeBadge type={item.document.type} />
       </td>
@@ -90,9 +85,7 @@ const ApprovalRow = memo(function ApprovalRow({ item }: { item: ApprovalHistory 
         <div className="text-xs text-slate-400">{item.document.user.position.name}</div>
       </td>
       <td className="px-3 text-sm text-slate-500">
-        {item.createdDate
-          ? dayjs(item.createdDate).locale('ko').format('YYYY년 MM월 DD일')
-          : '—'}
+        {item.createdDate ? dayjs(item.createdDate).locale('ko').format('YYYY년 MM월 DD일') : '—'}
       </td>
       <td className="px-3 text-center">
         <button

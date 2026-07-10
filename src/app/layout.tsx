@@ -3,12 +3,11 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
+import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
+
 import CustomerSupport from '@/app/_components/CustomerSupport';
 import NavMenu from '@/app/_components/NavMenu';
-
 import ToastProvider from '@/shared/components/toast/ToastProvider';
-
-import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
 
 import Header from './_components/Header';
 import RQProvider from './_components/RQProvider';

@@ -3,18 +3,15 @@
 import { useState } from 'react';
 
 import { FaFilePdf } from 'react-icons/fa';
-import { GiCancel } from 'react-icons/gi';
 import { IoNotifications } from 'react-icons/io5';
 import { PiUploadFill } from 'react-icons/pi';
 
 import CancelConfirmModal from '@/app/(user)/approvals/[id]/_components/CancelConfirmModal';
 import PressApprovalModal from '@/app/(user)/dayoff/[id]/_components/PressApprovalModal';
 import RequestConfirmModal from '@/app/(user)/dayoff/[id]/_components/RequestConfirmModal';
-
 import ApprovalLines from '@/domain/approval/components/ApprovalLines';
 import OverTimeWorkDocument from '@/domain/document/components/OverTimeWorkDocument';
 import { useOverTimeWorkDocument } from '@/domain/document/query/overtime';
-
 import delay from '@/utils/delay';
 
 import cx from 'classnames';
@@ -49,18 +46,20 @@ export default function OvertimeWorkDocumentContents({ id }: OvertimeWorkDocumen
 
     setIsPdfLoading(true);
 
-    Promise.all([import('html2canvas-pro'), import('jspdf')]).then(async ([{ default: html2canvas }, { default: jsPDF }]) => {
-      const canvas = await html2canvas(docElement);
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      pdf.addImage(canvas, 'JPEG', 0, 0, 210, 297);
-      pdf.save(
-        `휴일근무보고서_${overTimeWorkDocument.user.username}_${dayjs(overTimeWorkDocument.createdDate).format('YYYYMMDD')}.pdf`,
-      );
+    Promise.all([import('html2canvas-pro'), import('jspdf')]).then(
+      async ([{ default: html2canvas }, { default: jsPDF }]) => {
+        const canvas = await html2canvas(docElement);
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        pdf.addImage(canvas, 'JPEG', 0, 0, 210, 297);
+        pdf.save(
+          `휴일근무보고서_${overTimeWorkDocument.user.username}_${dayjs(overTimeWorkDocument.createdDate).format('YYYYMMDD')}.pdf`,
+        );
 
-      await delay(1_000);
+        await delay(1_000);
 
-      setIsPdfLoading(false);
-    });
+        setIsPdfLoading(false);
+      },
+    );
   };
 
   return (

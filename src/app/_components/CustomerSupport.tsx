@@ -9,7 +9,6 @@ import Image from 'next/image';
 import ChatChannel from '@/domain/chat/components/ChatChannel';
 import { useGetCurrentUser, useGetUsers } from '@/domain/user/query/user';
 import { useUserNotification } from '@/domain/user/query/userNotification';
-
 import useToast from '@/shared/hooks/useToast';
 import useWebSocket from '@/shared/hooks/ws/useWebSocket';
 

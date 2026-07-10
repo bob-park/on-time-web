@@ -171,7 +171,6 @@ export default function DayOffHistoryContents() {
               </div>
             ))
         )}
-
       </div>
     </div>
   );
@@ -214,6 +213,8 @@ function DocumentStatusBadge({ status }: { status: DocumentStatus }) {
     case 'CANCELLED':
       return <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">취소됨</span>;
     default:
-      return <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-500">임시저장</span>;
+      return (
+        <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-500">임시저장</span>
+      );
   }
 }

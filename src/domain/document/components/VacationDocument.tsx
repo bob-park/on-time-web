@@ -1,7 +1,6 @@
 'use client';
 
 import UserSignature from '@/domain/user/components/UserSignature';
-
 import { getDaysOfWeek } from '@/utils/parse';
 
 import dayjs from 'dayjs';

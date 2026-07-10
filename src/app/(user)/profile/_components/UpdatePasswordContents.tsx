@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 
 import { useUpdateUserPassword } from '@/domain/user/query/user';
-
 import useToast from '@/shared/hooks/useToast';
 
 export default function UpdatePasswordContents() {
@@ -52,7 +51,7 @@ export default function UpdatePasswordContents() {
       <form onSubmit={handleUpdatePassword}>
         <div className="flex flex-col gap-3.5">
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">새 패스워드</label>
+            <label className="text-xs font-semibold tracking-wider text-slate-500 uppercase">새 패스워드</label>
             <div className="flex items-center rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5">
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -72,9 +71,7 @@ export default function UpdatePasswordContents() {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-              패스워드 확인
-            </label>
+            <label className="text-xs font-semibold tracking-wider text-slate-500 uppercase">패스워드 확인</label>
             <div
               className={`flex items-center rounded-lg border bg-slate-50 px-3 py-2.5 ${isMismatch ? 'border-red-300' : 'border-slate-200'}`}
             >

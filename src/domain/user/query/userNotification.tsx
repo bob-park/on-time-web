@@ -1,6 +1,6 @@
-import { sendMessage } from '@/domain/user/api/userNotification';
-
 import { useMutation } from '@tanstack/react-query';
+
+import { sendMessage } from '@/domain/user/api/userNotification';
 
 export function useUserNotification(onSuccess?: () => void, onError?: () => void) {
   const { mutate, isPending } = useMutation({

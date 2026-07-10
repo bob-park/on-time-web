@@ -2,19 +2,18 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+import { HiOutlineDocumentText } from 'react-icons/hi';
+
 import { useRouter } from 'next/navigation';
 
 import { useCreateOverTimeWorkDocument } from '@/domain/document/query/overtime';
-
 import useToast from '@/shared/hooks/useToast';
-
 import { getDaysOfWeek } from '@/utils/parse';
 
 import dayjs from 'dayjs';
 import { DayPicker } from 'react-day-picker';
 import { ko } from 'react-day-picker/locale';
 import 'react-day-picker/style.css';
-import { HiOutlineDocumentText } from 'react-icons/hi';
 
 import SelectUserModal from './SelectUserModal';
 
@@ -99,8 +98,7 @@ export default function OvertimeRequestContents() {
       return;
     }
 
-    const isOvernight =
-      endHour < startHour || (endHour === startHour && endMinutes < startMinutes);
+    const isOvernight = endHour < startHour || (endHour === startHour && endMinutes < startMinutes);
     const endDateBase = isOvernight ? dayjs(date).add(1, 'day').toDate() : date;
 
     setWorkTimes((prev) => [
@@ -157,7 +155,7 @@ export default function OvertimeRequestContents() {
             <div className="flex flex-wrap gap-2">
               <button
                 type="button"
-                className="rounded-full bg-slate-100 px-2.5 py-1.5 text-xs font-medium text-slate-400 transition-colors duration-100 hover:bg-slate-200 cursor-pointer"
+                className="cursor-pointer rounded-full bg-slate-100 px-2.5 py-1.5 text-xs font-medium text-slate-400 transition-colors duration-100 hover:bg-slate-200"
                 onClick={() => {
                   setIsRegisteredUser(undefined);
                   setUsername(undefined);
@@ -237,17 +235,11 @@ export default function OvertimeRequestContents() {
           <div className="flex items-start gap-3">
             <span className={fieldLabel}>근무일</span>
             <div className="relative" ref={datePickerRef}>
-              <button
-                type="button"
-                className={inputClass}
-                onClick={() => setShowDatePicker((v) => !v)}
-              >
-                {date
-                  ? `${dayjs(date).format('YYYY-MM-DD')} (${getDaysOfWeek(dayjs(date).day())})`
-                  : '날짜 선택'}
+              <button type="button" className={inputClass} onClick={() => setShowDatePicker((v) => !v)}>
+                {date ? `${dayjs(date).format('YYYY-MM-DD')} (${getDaysOfWeek(dayjs(date).day())})` : '날짜 선택'}
               </button>
               {showDatePicker && (
-                <div className="absolute left-0 top-full z-50 mt-1 rounded-xl border border-slate-200 bg-white shadow-lg">
+                <div className="absolute top-full left-0 z-50 mt-1 rounded-xl border border-slate-200 bg-white shadow-lg">
                   <DayPicker
                     className="react-day-picker"
                     locale={ko}
@@ -271,11 +263,7 @@ export default function OvertimeRequestContents() {
             <span className={fieldLabel}>근무 시간</span>
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-xs text-slate-400">시작</span>
-              <select
-                value={startHour}
-                onChange={(e) => setStartHour(Number(e.target.value))}
-                className={selectClass}
-              >
+              <select value={startHour} onChange={(e) => setStartHour(Number(e.target.value))} className={selectClass}>
                 {Array.from({ length: 24 }, (_, i) => (
                   <option key={i} value={i}>
                     {String(i).padStart(2, '0')} 시
@@ -292,11 +280,7 @@ export default function OvertimeRequestContents() {
               </select>
               <span className="text-xs text-slate-400">—</span>
               <span className="text-xs text-slate-400">종료</span>
-              <select
-                value={endHour}
-                onChange={(e) => setEndHour(Number(e.target.value))}
-                className={selectClass}
-              >
+              <select value={endHour} onChange={(e) => setEndHour(Number(e.target.value))} className={selectClass}>
                 {Array.from({ length: 24 }, (_, i) => (
                   <option key={i} value={i}>
                     {String(i).padStart(2, '0')} 시
@@ -345,26 +329,26 @@ export default function OvertimeRequestContents() {
 
         {/* List zone */}
         <div>
-          <p className="px-5 pb-2 pt-4 text-xs font-semibold uppercase tracking-wider text-slate-400">
+          <p className="px-5 pt-4 pb-2 text-xs font-semibold tracking-wider text-slate-400 uppercase">
             추가된 근무 내역 ({workTimes.length}건)
           </p>
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
                 <tr className="h-10 border-b border-slate-200 bg-slate-50">
-                  <th className="px-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  <th className="px-4 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase">
                     근무일
                   </th>
-                  <th className="px-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  <th className="px-4 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase">
                     근무 시간
                   </th>
-                  <th className="px-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  <th className="px-4 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase">
                     근무 목적
                   </th>
-                  <th className="px-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  <th className="px-4 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase">
                     근무자
                   </th>
-                  <th className="px-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  <th className="px-4 text-left text-xs font-semibold tracking-wider text-slate-500 uppercase">
                     보상휴가
                   </th>
                   <th className="w-12 px-4" />

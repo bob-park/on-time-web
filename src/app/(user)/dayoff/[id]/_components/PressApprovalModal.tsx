@@ -8,7 +8,6 @@ import Image from 'next/image';
 
 import { useGetCurrentUser } from '@/domain/user/query/user';
 import { useUserNotification } from '@/domain/user/query/userNotification';
-
 import useToast from '@/shared/hooks/useToast';
 
 interface PressApprovalModalProps {

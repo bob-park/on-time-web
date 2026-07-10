@@ -1,176 +1,190 @@
 <!doctype html>
 <html lang="ko">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>On Time — 결재 처리 (목업)</title>
-<link rel="stylesheet" href="tokens.css">
-</head>
-<body>
-<div class="app">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>On Time — 결재 처리 (목업)</title>
+    <link rel="stylesheet" href="tokens.css" />
+  </head>
+  <body>
+    <div class="app">
+      <!-- ===================== sidebar ===================== -->
+      <aside class="sidebar">
+        <a class="logo" href="index.html"><span class="logo-dot"></span>OnTime</a>
+        <nav class="nav">
+          <a class="nav-item" href="dashboard.html"><span class="ico">◧</span>대시보드</a>
+          <a class="nav-item" href="schedule.html"><span class="ico">🗓</span>근무 일정</a>
 
-  <!-- ===================== sidebar ===================== -->
-  <aside class="sidebar">
-    <a class="logo" href="index.html"><span class="logo-dot"></span>OnTime</a>
-    <nav class="nav">
-      <a class="nav-item" href="dashboard.html"><span class="ico">◧</span>대시보드</a>
-      <a class="nav-item" href="schedule.html"><span class="ico">🗓</span>근무 일정</a>
+          <div class="nav-group">전자 결재</div>
+          <a class="nav-item" href="dayoff-requests.html"><span class="ico">✚</span>휴가 신청</a>
+          <a class="nav-item" href="dayoff-used.html"><span class="ico">↺</span>휴가 사용 내역</a>
+          <a class="nav-item" href="overtime-requests.html"><span class="ico">✚</span>휴일근무보고서 신청</a>
+          <a class="nav-item" href="expense-requests.html"><span class="ico">✚</span>지출결의서 신청</a>
+          <a class="nav-item" href="documents.html"><span class="ico">▤</span>결재 신청 목록</a>
+          <a class="nav-item active" href="approvals.html"
+            ><span class="ico">✓</span>결재 처리 대기 목록<span class="count">3</span></a
+          >
 
-      <div class="nav-group">전자 결재</div>
-      <a class="nav-item" href="dayoff-requests.html"><span class="ico">✚</span>휴가 신청</a>
-      <a class="nav-item" href="dayoff-used.html"><span class="ico">↺</span>휴가 사용 내역</a>
-      <a class="nav-item" href="overtime-requests.html"><span class="ico">✚</span>휴일근무보고서 신청</a>
-      <a class="nav-item" href="expense-requests.html"><span class="ico">✚</span>지출결의서 신청</a>
-      <a class="nav-item" href="documents.html"><span class="ico">▤</span>결재 신청 목록</a>
-      <a class="nav-item active" href="approvals.html"><span class="ico">✓</span>결재 처리 대기 목록<span class="count">3</span></a>
+          <div class="nav-group">관리자</div>
+          <a class="nav-item" href="manager-vacations.html"><span class="ico">☰</span>임직원 휴가 사용 현황</a>
+          <a class="nav-item" href="manager-compensatory.html"><span class="ico">☰</span>임직원 보상 휴가 현황</a>
+          <a class="nav-item" href="manager-attendance.html"><span class="ico">▦</span>임직원 근무 현황</a>
+          <a class="nav-item" href="manager-schedules.html"><span class="ico">🗓</span>임직원 근무 일정 등록</a>
+          <a class="nav-item" href="manager-chat.html"><span class="ico">💬</span>임직원과의 소통</a>
+        </nav>
+        <div class="logout">
+          <a class="nav-item" href="#"><span class="ico">⎋</span>로그아웃</a>
+        </div>
+      </aside>
 
-      <div class="nav-group">관리자</div>
-      <a class="nav-item" href="manager-vacations.html"><span class="ico">☰</span>임직원 휴가 사용 현황</a>
-      <a class="nav-item" href="manager-compensatory.html"><span class="ico">☰</span>임직원 보상 휴가 현황</a>
-      <a class="nav-item" href="manager-attendance.html"><span class="ico">▦</span>임직원 근무 현황</a>
-      <a class="nav-item" href="manager-schedules.html"><span class="ico">🗓</span>임직원 근무 일정 등록</a>
-      <a class="nav-item" href="manager-chat.html"><span class="ico">💬</span>임직원과의 소통</a>
-    </nav>
-    <div class="logout">
-      <a class="nav-item" href="#"><span class="ico">⎋</span>로그아웃</a>
+      <!-- ===================== main ===================== -->
+      <div class="main">
+        <header class="header">
+          <button class="icon-btn" title="알림">🔔</button>
+          <div class="profile-chip">
+            <span class="avatar">박</span>
+            <span class="who">
+              <div class="name">박현우 <span class="text-muted">(팀장)</span></div>
+              <div class="team">개발팀 · 책임</div>
+            </span>
+          </div>
+        </header>
+
+        <div class="content">
+          <div class="page-head">
+            <div>
+              <div class="eyebrow">Approvals</div>
+              <h1 class="page-title">결재 처리</h1>
+              <p class="page-sub">결재 요청 목록을 조회하고 처리합니다</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <!-- filters -->
+            <div class="stack" style="gap: 10px; margin-bottom: 20px">
+              <div class="row">
+                <span
+                  class="text-muted"
+                  style="font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; width: 44px"
+                  >구분</span
+                >
+                <div class="pill-filter">
+                  <button class="pill active">전체</button>
+                  <button class="pill">휴가계</button>
+                  <button class="pill">휴일근무보고서</button>
+                </div>
+              </div>
+              <div class="row">
+                <span
+                  class="text-muted"
+                  style="font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; width: 44px"
+                  >상태</span
+                >
+                <div class="pill-filter">
+                  <button class="pill active">전체</button>
+                  <button class="pill">진행</button>
+                  <button class="pill">승인</button>
+                  <button class="pill">반려</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- table -->
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>문서번호</th>
+                  <th>구분</th>
+                  <th>상태</th>
+                  <th>신청자</th>
+                  <th>요청일</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>#231</strong></td>
+                  <td>휴가계</td>
+                  <td><span class="badge badge-orange">● 진행</span></td>
+                  <td>김민수 <span class="muted">· 대리</span></td>
+                  <td class="muted">2026.07.10</td>
+                  <td style="text-align: right"><button class="btn btn-ghost btn-sm">···</button></td>
+                </tr>
+                <tr>
+                  <td><strong>#230</strong></td>
+                  <td>휴일근무보고서</td>
+                  <td><span class="badge badge-orange">● 진행</span></td>
+                  <td>이서연 <span class="muted">· 과장</span></td>
+                  <td class="muted">2026.07.09</td>
+                  <td style="text-align: right"><button class="btn btn-ghost btn-sm">···</button></td>
+                </tr>
+                <tr>
+                  <td><strong>#229</strong></td>
+                  <td>휴가계</td>
+                  <td><span class="badge badge-green">● 승인</span></td>
+                  <td>최지훈 <span class="muted">· 사원</span></td>
+                  <td class="muted">2026.07.08</td>
+                  <td style="text-align: right"><button class="btn btn-ghost btn-sm">···</button></td>
+                </tr>
+                <tr>
+                  <td><strong>#228</strong></td>
+                  <td>휴가계</td>
+                  <td><span class="badge badge-red">● 반려</span></td>
+                  <td>정하늘 <span class="muted">· 주임</span></td>
+                  <td class="muted">2026.07.07</td>
+                  <td style="text-align: right"><button class="btn btn-ghost btn-sm">···</button></td>
+                </tr>
+                <tr>
+                  <td><strong>#227</strong></td>
+                  <td>휴일근무보고서</td>
+                  <td><span class="badge badge-green">● 승인</span></td>
+                  <td>김민수 <span class="muted">· 대리</span></td>
+                  <td class="muted">2026.07.06</td>
+                  <td style="text-align: right"><button class="btn btn-ghost btn-sm">···</button></td>
+                </tr>
+                <tr>
+                  <td><strong>#226</strong></td>
+                  <td>휴가계</td>
+                  <td><span class="badge badge-green">● 승인</span></td>
+                  <td>박지은 <span class="muted">· 차장</span></td>
+                  <td class="muted">2026.07.03</td>
+                  <td style="text-align: right"><button class="btn btn-ghost btn-sm">···</button></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- pagination -->
+            <div class="spread" style="margin-top: 16px">
+              <span class="text-muted" style="font-size: 13px">총 18건</span>
+              <span class="row" style="gap: 6px">
+                <button class="btn btn-ghost btn-sm btn-circle" style="width: 32px">‹</button>
+                <button class="btn btn-primary btn-sm btn-circle" style="width: 32px">1</button>
+                <button class="btn btn-ghost btn-sm btn-circle" style="width: 32px">2</button>
+                <button class="btn btn-ghost btn-sm btn-circle" style="width: 32px">›</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </aside>
 
-  <!-- ===================== main ===================== -->
-  <div class="main">
-    <header class="header">
-      <button class="icon-btn" title="알림">🔔</button>
-      <div class="profile-chip">
-        <span class="avatar">박</span>
-        <span class="who">
-          <div class="name">박현우 <span class="text-muted">(팀장)</span></div>
-          <div class="team">개발팀 · 책임</div>
+    <!-- ===================== now-working bar ===================== -->
+    <div class="working-bar">
+      <div class="status">
+        <span class="pulse"></span>
+        <span>
+          <div class="label">근무 중 · 08:58 출근</div>
+          <div class="sub">목표 퇴근 17:58</div>
         </span>
       </div>
-    </header>
-
-    <div class="content">
-      <div class="page-head">
-        <div>
-          <div class="eyebrow">Approvals</div>
-          <h1 class="page-title">결재 처리</h1>
-          <p class="page-sub">결재 요청 목록을 조회하고 처리합니다</p>
-        </div>
+      <div class="track">
+        <span>3h 42m</span>
+        <div class="bar"><div style="width: 45%"></div></div>
+        <span>8h</span>
       </div>
-
-      <div class="card">
-        <!-- filters -->
-        <div class="stack" style="gap:10px;margin-bottom:20px;">
-          <div class="row">
-            <span class="text-muted" style="font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;width:44px;">구분</span>
-            <div class="pill-filter">
-              <button class="pill active">전체</button>
-              <button class="pill">휴가계</button>
-              <button class="pill">휴일근무보고서</button>
-            </div>
-          </div>
-          <div class="row">
-            <span class="text-muted" style="font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;width:44px;">상태</span>
-            <div class="pill-filter">
-              <button class="pill active">전체</button>
-              <button class="pill">진행</button>
-              <button class="pill">승인</button>
-              <button class="pill">반려</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- table -->
-        <table class="table">
-          <thead>
-            <tr>
-              <th>문서번호</th><th>구분</th><th>상태</th><th>신청자</th><th>요청일</th><th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>#231</strong></td>
-              <td>휴가계</td>
-              <td><span class="badge badge-orange">● 진행</span></td>
-              <td>김민수 <span class="muted">· 대리</span></td>
-              <td class="muted">2026.07.10</td>
-              <td style="text-align:right;"><button class="btn btn-ghost btn-sm">···</button></td>
-            </tr>
-            <tr>
-              <td><strong>#230</strong></td>
-              <td>휴일근무보고서</td>
-              <td><span class="badge badge-orange">● 진행</span></td>
-              <td>이서연 <span class="muted">· 과장</span></td>
-              <td class="muted">2026.07.09</td>
-              <td style="text-align:right;"><button class="btn btn-ghost btn-sm">···</button></td>
-            </tr>
-            <tr>
-              <td><strong>#229</strong></td>
-              <td>휴가계</td>
-              <td><span class="badge badge-green">● 승인</span></td>
-              <td>최지훈 <span class="muted">· 사원</span></td>
-              <td class="muted">2026.07.08</td>
-              <td style="text-align:right;"><button class="btn btn-ghost btn-sm">···</button></td>
-            </tr>
-            <tr>
-              <td><strong>#228</strong></td>
-              <td>휴가계</td>
-              <td><span class="badge badge-red">● 반려</span></td>
-              <td>정하늘 <span class="muted">· 주임</span></td>
-              <td class="muted">2026.07.07</td>
-              <td style="text-align:right;"><button class="btn btn-ghost btn-sm">···</button></td>
-            </tr>
-            <tr>
-              <td><strong>#227</strong></td>
-              <td>휴일근무보고서</td>
-              <td><span class="badge badge-green">● 승인</span></td>
-              <td>김민수 <span class="muted">· 대리</span></td>
-              <td class="muted">2026.07.06</td>
-              <td style="text-align:right;"><button class="btn btn-ghost btn-sm">···</button></td>
-            </tr>
-            <tr>
-              <td><strong>#226</strong></td>
-              <td>휴가계</td>
-              <td><span class="badge badge-green">● 승인</span></td>
-              <td>박지은 <span class="muted">· 차장</span></td>
-              <td class="muted">2026.07.03</td>
-              <td style="text-align:right;"><button class="btn btn-ghost btn-sm">···</button></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- pagination -->
-        <div class="spread" style="margin-top:16px;">
-          <span class="text-muted" style="font-size:13px;">총 18건</span>
-          <span class="row" style="gap:6px;">
-            <button class="btn btn-ghost btn-sm btn-circle" style="width:32px;">‹</button>
-            <button class="btn btn-primary btn-sm btn-circle" style="width:32px;">1</button>
-            <button class="btn btn-ghost btn-sm btn-circle" style="width:32px;">2</button>
-            <button class="btn btn-ghost btn-sm btn-circle" style="width:32px;">›</button>
-          </span>
-        </div>
-      </div>
+      <button class="btn btn-primary btn-sm">퇴근하기</button>
     </div>
-  </div>
-</div>
 
-<!-- ===================== now-working bar ===================== -->
-<div class="working-bar">
-  <div class="status">
-    <span class="pulse"></span>
-    <span>
-      <div class="label">근무 중 · 08:58 출근</div>
-      <div class="sub">목표 퇴근 17:58</div>
-    </span>
-  </div>
-  <div class="track">
-    <span>3h 42m</span>
-    <div class="bar"><div style="width:45%"></div></div>
-    <span>8h</span>
-  </div>
-  <button class="btn btn-primary btn-sm">퇴근하기</button>
-</div>
-
-<div class="mock-nav"><a href="index.html">← 목업 인덱스</a></div>
-</body>
+    <div class="mock-nav"><a href="index.html">← 목업 인덱스</a></div>
+  </body>
 </html>

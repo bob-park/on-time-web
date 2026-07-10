@@ -21,9 +21,7 @@ const pillClass = (active: boolean) =>
 export default function PillFilter<T>({ label, options, value, onChange, ariaLabel }: PillFilterProps<T>) {
   return (
     <div role="group" aria-label={ariaLabel} className="flex flex-wrap items-center gap-2">
-      <span className="w-[72px] flex-none text-xs font-semibold uppercase tracking-wider text-slate-400">
-        {label}
-      </span>
+      <span className="w-[72px] flex-none text-xs font-semibold tracking-wider text-slate-400 uppercase">{label}</span>
       {options.map((opt) => (
         <button
           key={opt.label}

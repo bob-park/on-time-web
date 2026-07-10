@@ -7,11 +7,9 @@ import { IoNotifications } from 'react-icons/io5';
 import { PiUploadFill } from 'react-icons/pi';
 
 import RequestConfirmModal from '@/app/(user)/dayoff/[id]/_components/RequestConfirmModal';
-
 import ApprovalLines from '@/domain/approval/components/ApprovalLines';
 import VacationDocument from '@/domain/document/components/VacationDocument';
 import { useVacationDocument } from '@/domain/document/query/vacation';
-
 import delay from '@/utils/delay';
 
 import cx from 'classnames';
@@ -48,16 +46,20 @@ export default function DayOffDetailContents({ id }: DayOffDetailContentsProps) 
 
     setIsPdfLoading(true);
 
-    Promise.all([import('html2canvas-pro'), import('jspdf')]).then(async ([{ default: html2canvas }, { default: jsPDF }]) => {
-      const canvas = await html2canvas(docElement);
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      pdf.addImage(canvas, 'JPEG', 0, 0, 210, 297);
-      pdf.save(`휴가계_${vacationDocument.user.username}_${dayjs(vacationDocument.startDate).format('YYYYMMDD')}.pdf`);
+    Promise.all([import('html2canvas-pro'), import('jspdf')]).then(
+      async ([{ default: html2canvas }, { default: jsPDF }]) => {
+        const canvas = await html2canvas(docElement);
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        pdf.addImage(canvas, 'JPEG', 0, 0, 210, 297);
+        pdf.save(
+          `휴가계_${vacationDocument.user.username}_${dayjs(vacationDocument.startDate).format('YYYYMMDD')}.pdf`,
+        );
 
-      await delay(1_000);
+        await delay(1_000);
 
-      setIsPdfLoading(false);
-    });
+        setIsPdfLoading(false);
+      },
+    );
   };
 
   return (

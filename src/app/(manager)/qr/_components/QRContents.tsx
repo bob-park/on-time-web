@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { useGenerateCurrentCheck, useGetCurrentCheck } from '@/domain/attendance/query/attendanceCheck';
-
 import { getDaysOfWeek } from '@/utils/parse';
 
 import cx from 'classnames';
