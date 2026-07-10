@@ -50,7 +50,7 @@
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
     "@types/sockjs-client": "^1.5.4",
-    "autoprefixer": "^10.4.27",
+    "autoprefixer": "^10.5.2",
     "daisyui": "^5.6.5",
     "eslint": "^9",
     "miragejs": "^0.1.48",
