@@ -134,5 +134,80 @@
     "moreAria": "결재 상세 보기",
     "emptyTitle": "결재 문서가 없습니다",
     "emptyDescription": "조건에 맞는 문서가 없습니다"
+  },
+  "dayoff": {
+    "request": {
+      "eyebrow": "Day Off",
+      "title": "휴가 신청",
+      "viewHistory": "휴가 내역 보기",
+      "unit": "일",
+      "stat": {
+        "total": "전체 연차",
+        "totalCaption": "{year}년 기준",
+        "used": "사용 연차",
+        "usedCaption": "누적 사용",
+        "remaining": "잔여 연차",
+        "remainingCaption": "사용 가능",
+        "comp": "보상 휴가",
+        "compCaption": "잔여 기준"
+      },
+      "settings": {
+        "typeLabel": "휴가 구분",
+        "subTypeLabel": "부가 구분",
+        "compLabel": "보상 휴가 선택",
+        "reasonLabel": "사유",
+        "reasonPlaceholder": "개인 사유",
+        "selectRequired": "선택해 주세요",
+        "inputRequired": "입력해 주세요",
+        "compSelect": "보상 휴가 선택",
+        "compSelected": "보상 휴가 선택 완료"
+      },
+      "type": {
+        "general": "연차",
+        "generalDesc": "일반 연차 휴가",
+        "compensatory": "보상 휴가",
+        "compensatoryDesc": "휴일 근무 대체 휴가",
+        "official": "공가",
+        "officialDesc": "예비군 / 민방위 등"
+      },
+      "subType": {
+        "allDay": "종일",
+        "amHalf": "오전 반차",
+        "pmHalf": "오후 반차",
+        "days": "{days}일"
+      },
+      "calendar": {
+        "title": "날짜 선택",
+        "rangeBadge": "{days}일 선택됨"
+      },
+      "summary": {
+        "selectedDate": "선택 날짜",
+        "usedDays": "사용 기간",
+        "remainingAfter": "사용 후 잔여",
+        "approval": "승인 예상",
+        "approvalValue": "즉시",
+        "days": "{days}일"
+      },
+      "actions": {
+        "cancel": "취소",
+        "submit": "초안 생성",
+        "submitting": "초안 생성 중"
+      },
+      "toast": {
+        "created": "휴가 신청 문서의 초안이 생성되었습니다.",
+        "error": "신청 중 오류가 발생했습니다.",
+        "required": "필수 항목을 입력해주세요"
+      },
+      "comp": {
+        "modalTitle": "보상 휴가 선택",
+        "modalDescription": "사용할 보상 휴가를 선택해 주세요.",
+        "colCreatedDate": "보상 휴가 생성일",
+        "colContents": "내용",
+        "colLeaveDays": "보상 휴가일",
+        "colRemainingDays": "잔여 휴가일",
+        "cancel": "취소",
+        "confirm": "선택 완료"
+      }
+    }
   }
 }

@@ -213,3 +213,34 @@ dialog.modal[open] .modal-box {
   color: var(--color-base-content);
   border-radius: 0.5rem;
 }
+
+/* range selection — soft band with solid rounded endpoints */
+.rdp-dark {
+  --rdp-range_middle-background-color: color-mix(in oklab, var(--color-primary) 16%, transparent);
+  --rdp-range_start-background: linear-gradient(
+    90deg,
+    transparent 50%,
+    var(--rdp-range_middle-background-color) 50%
+  );
+  --rdp-range_end-background: linear-gradient(
+    90deg,
+    var(--rdp-range_middle-background-color) 50%,
+    transparent 50%
+  );
+}
+.rdp-dark .rdp-range_start.rdp-range_end {
+  background: revert;
+}
+.rdp-dark .rdp-range_start .rdp-day_button,
+.rdp-dark .rdp-range_end .rdp-day_button {
+  background: var(--color-primary);
+  color: var(--color-primary-content);
+  border-radius: 9999px;
+  font-weight: 700;
+}
+.rdp-dark .rdp-range_middle .rdp-day_button {
+  background: transparent;
+  color: var(--color-primary);
+  border-radius: 0;
+  font-weight: 700;
+}
