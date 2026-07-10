@@ -73,5 +73,24 @@
     "working": "근무 중…",
     "prevWeek": "지난 주",
     "nextWeek": "다음 주"
+  },
+  "schedule": {
+    "eyebrow": "Schedule",
+    "title": "근무 일정",
+    "add": "추가",
+    "workingDay": "근무일",
+    "todaySuffix": "오늘",
+    "working": "근무 중",
+    "scheduled": "근무 예정",
+    "addTitle": "근무 일정 추가",
+    "category": "구분",
+    "date": "일자",
+    "categoryNone": "없음",
+    "categoryDayOff": "연차",
+    "categoryAmHalfDayOff": "오전 반차",
+    "categoryPmHalfDayOff": "오후 반차",
+    "cancel": "취소",
+    "addAction": "추가",
+    "adding": "추가중"
   }
 }

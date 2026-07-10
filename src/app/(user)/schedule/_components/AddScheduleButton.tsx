@@ -6,7 +6,12 @@ import { useRouter } from 'next/navigation';
 
 import { useStore } from '@/shared/store/rootStore';
 
+import { useTranslations } from 'next-intl';
+
 export default function AddScheduleButton() {
+  // hooks
+  const t = useTranslations('schedule');
+
   // router
   const router = useRouter();
 
@@ -23,7 +28,7 @@ export default function AddScheduleButton() {
   return (
     <button className="btn btn-primary" type="button" onClick={handleClick}>
       <IoAddCircle className="size-6" />
-      추가
+      {t('add')}
     </button>
   );
 }

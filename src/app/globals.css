@@ -158,3 +158,58 @@ dialog.modal[open] .modal-box {
   outline: 2px solid oklch(45% 0.24 277.023);
   outline-offset: 2px;
 }
+
+/* react-day-picker — dark theme for schedule 일정 추가 modal */
+.rdp-dark {
+  --rdp-accent-color: var(--color-primary);
+  --rdp-accent-background-color: color-mix(in oklab, var(--color-primary) 12%, transparent);
+  --rdp-today-color: var(--color-primary);
+  margin: 0;
+  color: var(--color-base-content);
+}
+.rdp-dark .rdp-month_caption,
+.rdp-dark .rdp-caption_label {
+  color: var(--color-base-content);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.rdp-dark .rdp-weekday {
+  color: color-mix(in oklab, var(--color-base-content) 55%, transparent);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.rdp-dark .rdp-chevron {
+  fill: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+}
+.rdp-dark .rdp-button_previous:hover,
+.rdp-dark .rdp-button_next:hover {
+  background: color-mix(in oklab, var(--color-base-content) 8%, transparent);
+  border-radius: 9999px;
+}
+.rdp-dark .rdp-day_button {
+  border: none;
+  border-radius: 9999px;
+  color: var(--color-base-content);
+}
+.rdp-dark .rdp-day_button:hover {
+  background: color-mix(in oklab, var(--color-base-content) 8%, transparent);
+}
+.rdp-dark .rdp-today:not(.rdp-outside) .rdp-day_button {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+.rdp-dark .rdp-selected .rdp-day_button {
+  background: var(--color-primary);
+  color: var(--color-primary-content);
+  font-weight: 700;
+}
+.rdp-dark .rdp-outside .rdp-day_button {
+  color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+}
+.rdp-dark .rdp-dropdown,
+.rdp-dark .rdp-dropdowns select {
+  background: var(--color-base-100);
+  color: var(--color-base-content);
+  border-radius: 0.5rem;
+}
