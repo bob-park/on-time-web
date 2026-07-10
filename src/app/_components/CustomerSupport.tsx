@@ -125,7 +125,7 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
   };
 
   return (
-    <div className="fixed right-5 bottom-5">
+    <div className="fixed right-5 bottom-24 z-[60] max-md:bottom-[128px]">
       {!show && (
         <div className="size-20 cursor-pointer hover:animate-bounce" onClick={() => setShow(true)}>
           <Image
