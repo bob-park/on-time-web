@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>On Time — 임직원 휴가 사용 현황 (목업)</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  .vac-wrap { overflow-x: auto; }
+  .vac-table { min-width: 1280px; font-size: 13px; }
+  .vac-table thead th { white-space: nowrap; padding: 10px 12px; }
+  .vac-table tbody td { padding: 12px; white-space: nowrap; }
+  .vac-table td.num, .vac-table th.num { text-align: center; }
+  .comp { color: var(--warning); font-size: 12px; }
+  .vac-table td.total-col { font-weight: 700; }
+  .vac-table td.remain-col { font-weight: 700; color: var(--accent); }
+  .vac-table td.zero { color: rgba(179,179,179,0.5); }
+  .emp-name { font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ===================== sidebar ===================== -->
+  <aside class="sidebar">
+    <a class="logo" href="index.html"><span class="logo-dot"></span>OnTime</a>
+    <nav class="nav">
+      <a class="nav-item" href="dashboard.html"><span class="ico">◧</span>대시보드</a>
+      <a class="nav-item" href="schedule.html"><span class="ico">🗓</span>근무 일정</a>
+
+      <div class="nav-group">전자 결재</div>
+      <a class="nav-item" href="dayoff-requests.html"><span class="ico">✚</span>휴가 신청</a>
+      <a class="nav-item" href="dayoff-used.html"><span class="ico">↺</span>휴가 사용 내역</a>
+      <a class="nav-item" href="overtime-requests.html"><span class="ico">✚</span>휴일근무보고서 신청</a>
+      <a class="nav-item" href="expense-requests.html"><span class="ico">✚</span>지출결의서 신청</a>
+      <a class="nav-item" href="documents.html"><span class="ico">▤</span>결재 신청 목록</a>
+      <a class="nav-item" href="approvals.html"><span class="ico">✓</span>결재 처리 대기 목록<span class="count">3</span></a>
+
+      <div class="nav-group">관리자</div>
+      <a class="nav-item active" href="manager-vacations.html"><span class="ico">☰</span>임직원 휴가 사용 현황</a>
+      <a class="nav-item" href="manager-compensatory.html"><span class="ico">☰</span>임직원 보상 휴가 현황</a>
+      <a class="nav-item" href="manager-attendance.html"><span class="ico">▦</span>임직원 근무 현황</a>
+      <a class="nav-item" href="manager-schedules.html"><span class="ico">🗓</span>임직원 근무 일정 등록</a>
+      <a class="nav-item" href="manager-chat.html"><span class="ico">💬</span>임직원과의 소통</a>
+    </nav>
+    <div class="logout">
+      <a class="nav-item" href="#"><span class="ico">⎋</span>로그아웃</a>
+    </div>
+  </aside>
+
+  <!-- ===================== main ===================== -->
+  <div class="main">
+    <header class="header">
+      <button class="icon-btn" title="알림">🔔</button>
+      <div class="profile-chip">
+        <span class="avatar">박</span>
+        <span class="who">
+          <div class="name">박현우 <span class="text-muted">(팀장)</span></div>
+          <div class="team">개발팀 · 책임</div>
+        </span>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">Manage</div>
+          <h1 class="page-title">임직원 휴가 사용 현황</h1>
+        </div>
+        <div class="navigator">
+          <button class="icon-btn">‹</button>
+          <span class="range" style="min-width:100px;">2026년</span>
+          <button class="icon-btn">›</button>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+        <span class="text-muted" style="font-size:11px;">괄호 안 숫자는 <span class="text-orange">보상휴가</span> 사용분입니다 · 단위: 일</span>
+      </div>
+
+      <div class="card" style="padding:8px 4px;">
+        <div class="vac-wrap">
+          <table class="table vac-table">
+            <thead>
+              <tr>
+                <th class="num">순번</th>
+                <th>성명</th>
+                <th>입사일</th>
+                <th class="num">연차(보상)</th>
+                <th class="num">사용가능</th>
+                <th class="num">1월</th>
+                <th class="num">2월</th>
+                <th class="num">3월</th>
+                <th class="num">4월</th>
+                <th class="num">5월</th>
+                <th class="num">6월</th>
+                <th class="num">7월</th>
+                <th class="num">8월</th>
+                <th class="num">9월</th>
+                <th class="num">10월</th>
+                <th class="num">11월</th>
+                <th class="num">12월</th>
+                <th class="num">합계</th>
+                <th class="num">잔여</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="num muted">1</td>
+                <td><span class="emp-name">박현우</span> <span class="muted">개발팀</span></td>
+                <td class="muted">2018.03.02</td>
+                <td class="num">15<span class="comp">(3)</span></td>
+                <td class="num">18</td>
+                <td class="num">1</td>
+                <td class="num zero">—</td>
+                <td class="num">2</td>
+                <td class="num zero">—</td>
+                <td class="num">1<span class="comp">(1)</span></td>
+                <td class="num">0.5</td>
+                <td class="num">1.5</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num total-col">6<span class="comp">(1)</span></td>
+                <td class="num remain-col">11</td>
+              </tr>
+              <tr>
+                <td class="num muted">2</td>
+                <td><span class="emp-name">김민수</span> <span class="muted">마케팅팀</span></td>
+                <td class="muted">2021.07.12</td>
+                <td class="num">15<span class="comp">(1)</span></td>
+                <td class="num">16</td>
+                <td class="num zero">—</td>
+                <td class="num">1</td>
+                <td class="num zero">—</td>
+                <td class="num">2</td>
+                <td class="num zero">—</td>
+                <td class="num">1<span class="comp">(1)</span></td>
+                <td class="num">1</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num total-col">5<span class="comp">(1)</span></td>
+                <td class="num remain-col">10</td>
+              </tr>
+              <tr>
+                <td class="num muted">3</td>
+                <td><span class="emp-name">이서연</span> <span class="muted">개발팀</span></td>
+                <td class="muted">2019.11.04</td>
+                <td class="num">15<span class="comp">(2)</span></td>
+                <td class="num">17</td>
+                <td class="num">2</td>
+                <td class="num zero">—</td>
+                <td class="num">1</td>
+                <td class="num zero">—</td>
+                <td class="num">2</td>
+                <td class="num zero">—</td>
+                <td class="num">2</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num total-col">7</td>
+                <td class="num remain-col">10</td>
+              </tr>
+              <tr>
+                <td class="num muted">4</td>
+                <td><span class="emp-name">최지훈</span> <span class="muted">경영지원팀</span></td>
+                <td class="muted">2016.05.23</td>
+                <td class="num">17<span class="comp">(4)</span></td>
+                <td class="num">21</td>
+                <td class="num">1</td>
+                <td class="num">1</td>
+                <td class="num zero">—</td>
+                <td class="num">1<span class="comp">(2)</span></td>
+                <td class="num zero">—</td>
+                <td class="num">2</td>
+                <td class="num">0.5</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num total-col">5.5<span class="comp">(2)</span></td>
+                <td class="num remain-col">13.5</td>
+              </tr>
+              <tr>
+                <td class="num muted">5</td>
+                <td><span class="emp-name">정하늘</span> <span class="muted">디자인팀</span></td>
+                <td class="muted">2023.02.01</td>
+                <td class="num">15</td>
+                <td class="num">15</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num">1</td>
+                <td class="num zero">—</td>
+                <td class="num">1</td>
+                <td class="num zero">—</td>
+                <td class="num">1</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num total-col">3</td>
+                <td class="num remain-col">12</td>
+              </tr>
+              <tr>
+                <td class="num muted">6</td>
+                <td><span class="emp-name">박지은</span> <span class="muted">마케팅팀</span></td>
+                <td class="muted">2024.09.16</td>
+                <td class="num">11</td>
+                <td class="num">11</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num">0.5</td>
+                <td class="num">1</td>
+                <td class="num">0.5</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num zero">—</td>
+                <td class="num total-col">2</td>
+                <td class="num remain-col">9</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== now-working bar ===================== -->
+<div class="working-bar">
+  <div class="status">
+    <span class="pulse"></span>
+    <span>
+      <div class="label">근무 중 · 08:58 출근</div>
+      <div class="sub">목표 퇴근 17:58</div>
+    </span>
+  </div>
+  <div class="track">
+    <span>3h 42m</span>
+    <div class="bar"><div style="width:45%"></div></div>
+    <span>8h</span>
+  </div>
+  <button class="btn btn-primary btn-sm">퇴근하기</button>
+</div>
+
+<div class="mock-nav"><a href="index.html">← 목업 인덱스</a></div>
+</body>
+</html>

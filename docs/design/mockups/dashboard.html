@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>On Time — 대시보드 (목업)</title>
+<link rel="stylesheet" href="tokens.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ===================== sidebar ===================== -->
+  <aside class="sidebar">
+    <a class="logo" href="index.html"><span class="logo-dot"></span>OnTime</a>
+    <nav class="nav">
+      <a class="nav-item active" href="dashboard.html"><span class="ico">◧</span>대시보드</a>
+      <a class="nav-item" href="schedule.html"><span class="ico">🗓</span>근무 일정</a>
+
+      <div class="nav-group">전자 결재</div>
+      <a class="nav-item" href="dayoff-requests.html"><span class="ico">✚</span>휴가 신청</a>
+      <a class="nav-item" href="dayoff-used.html"><span class="ico">↺</span>휴가 사용 내역</a>
+      <a class="nav-item" href="overtime-requests.html"><span class="ico">✚</span>휴일근무보고서 신청</a>
+      <a class="nav-item" href="expense-requests.html"><span class="ico">✚</span>지출결의서 신청</a>
+      <a class="nav-item" href="documents.html"><span class="ico">▤</span>결재 신청 목록</a>
+      <a class="nav-item" href="approvals.html"><span class="ico">✓</span>결재 처리 대기 목록<span class="count">3</span></a>
+
+      <div class="nav-group">관리자</div>
+      <a class="nav-item" href="manager-vacations.html"><span class="ico">☰</span>임직원 휴가 사용 현황</a>
+      <a class="nav-item" href="manager-compensatory.html"><span class="ico">☰</span>임직원 보상 휴가 현황</a>
+      <a class="nav-item" href="manager-attendance.html"><span class="ico">▦</span>임직원 근무 현황</a>
+      <a class="nav-item" href="manager-schedules.html"><span class="ico">🗓</span>임직원 근무 일정 등록</a>
+      <a class="nav-item" href="manager-chat.html"><span class="ico">💬</span>임직원과의 소통</a>
+    </nav>
+    <div class="logout">
+      <a class="nav-item" href="#"><span class="ico">⎋</span>로그아웃</a>
+    </div>
+  </aside>
+
+  <!-- ===================== main ===================== -->
+  <div class="main">
+    <header class="header">
+      <button class="icon-btn" title="알림">🔔</button>
+      <div class="profile-chip">
+        <span class="avatar">박</span>
+        <span class="who">
+          <div class="name">박현우 <span class="text-muted">(팀장)</span></div>
+          <div class="team">개발팀 · 책임</div>
+        </span>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">Dashboard</div>
+          <h1 class="page-title">근로 시간</h1>
+        </div>
+        <div class="navigator">
+          <button class="icon-btn">‹</button>
+          <span class="range">2026.07.06 – 07.12</span>
+          <button class="icon-btn">›</button>
+          <button class="btn btn-sm btn-outline">오늘</button>
+        </div>
+      </div>
+
+      <!-- summary row -->
+      <div class="grid" style="grid-template-columns: 2fr 1fr;">
+        <!-- hero -->
+        <div class="hero">
+          <div class="spread">
+            <div class="stat-label" style="font-size:12px;font-weight:600;color:var(--text-secondary);letter-spacing:1px;text-transform:uppercase;">이번 주 누적 근무</div>
+            <span class="badge badge-green">● 순항 중</span>
+          </div>
+          <div style="font-size:44px;font-weight:700;letter-spacing:-0.03em;margin:14px 0 4px;">
+            27<span style="font-size:20px;color:var(--text-secondary);font-weight:400;">h</span> 30<span style="font-size:20px;color:var(--text-secondary);font-weight:400;">m</span>
+            <span style="font-size:16px;color:var(--text-secondary);font-weight:400;"> / 40h</span>
+          </div>
+          <div style="margin-top:20px;">
+            <div class="spread" style="margin-bottom:8px;">
+              <span class="text-muted" style="font-size:12px;">누적 근무 시간</span>
+              <span style="font-size:12px;font-weight:700;">69%</span>
+            </div>
+            <div class="progress"><div style="width:69%"></div></div>
+          </div>
+          <div style="margin-top:14px;">
+            <div class="spread" style="margin-bottom:8px;">
+              <span class="text-muted" style="font-size:12px;">예상 근무 시간</span>
+              <span style="font-size:12px;font-weight:700;color:var(--text-secondary);">100%</span>
+            </div>
+            <div class="progress"><div style="width:100%;background:rgba(255,255,255,0.35);"></div></div>
+          </div>
+        </div>
+
+        <!-- comp leave -->
+        <div class="stat highlight">
+          <div class="stat-label">보상휴가 잔여</div>
+          <div class="stat-value">+12<span class="unit">h</span></div>
+          <div class="stat-caption">이번 달 기준</div>
+          <button class="btn btn-outline btn-sm" style="margin-top:18px;">사용 내역 보기</button>
+        </div>
+      </div>
+
+      <!-- weekly table -->
+      <div class="card" style="margin-top:16px;">
+        <div class="card-header">
+          <span class="section-title">주간 근태 상세 내역</span>
+          <span class="text-muted" style="font-size:13px;">해당 주 5건</span>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>근무일</th><th>구분</th><th>출근</th><th>목표 퇴근</th><th>퇴근</th><th>근무 시간</th><th>상태</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>07.06</strong> <span class="muted">월</span></td>
+              <td><span class="badge badge-gray">Work</span></td>
+              <td>09:02</td><td class="muted">18:02</td><td>18:41</td>
+              <td><span class="mini-track"><div style="width:100%"></div></span> <span class="muted">8h 39m</span></td>
+              <td><span class="dot dot-green"></span></td>
+            </tr>
+            <tr>
+              <td><strong>07.07</strong> <span class="muted">화</span></td>
+              <td><span class="badge badge-gray">Work</span></td>
+              <td>08:55</td><td class="muted">17:55</td><td>19:10</td>
+              <td><span class="mini-track"><div style="width:100%"></div></span> <span class="muted">9h 15m</span></td>
+              <td><span class="dot dot-green"></span></td>
+            </tr>
+            <tr>
+              <td><strong>07.08</strong> <span class="muted">수</span></td>
+              <td><span class="badge badge-blue">연차</span></td>
+              <td class="muted">—</td><td class="muted">—</td><td class="muted">—</td>
+              <td class="muted">—</td>
+              <td><span class="dot dot-gray"></span></td>
+            </tr>
+            <tr>
+              <td><strong>07.09</strong> <span class="muted">목</span></td>
+              <td><span class="badge badge-gray">Work</span></td>
+              <td>09:31</td><td class="muted">18:31</td><td>18:35</td>
+              <td><span class="mini-track warn"><div style="width:90%"></div></span> <span class="muted">7h 34m</span></td>
+              <td><span class="dot dot-red"></span></td>
+            </tr>
+            <tr class="active-row">
+              <td><strong>07.10</strong> <span class="muted">금 · 오늘</span></td>
+              <td><span class="badge badge-gray">Work</span></td>
+              <td>08:58</td><td class="muted">17:58</td>
+              <td><span class="text-green" style="font-weight:700;">근무 중…</span></td>
+              <td><span class="mini-track"><div style="width:45%"></div></span> <span class="muted">3h 42m</span></td>
+              <td><span class="dot dot-green"></span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="spread" style="margin-top:14px;">
+          <span></span>
+          <span class="row">
+            <button class="btn btn-ghost btn-sm">‹ 지난 주</button>
+            <button class="btn btn-ghost btn-sm">다음 주 ›</button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== now-working bar ===================== -->
+<div class="working-bar">
+  <div class="status">
+    <span class="pulse"></span>
+    <span>
+      <div class="label">근무 중 · 08:58 출근</div>
+      <div class="sub">목표 퇴근 17:58</div>
+    </span>
+  </div>
+  <div class="track">
+    <span>3h 42m</span>
+    <div class="bar"><div style="width:45%"></div></div>
+    <span>8h</span>
+  </div>
+  <button class="btn btn-primary btn-sm">퇴근하기</button>
+</div>
+
+<div class="mock-nav"><a href="index.html">← 목업 인덱스</a></div>
+</body>
+</html>

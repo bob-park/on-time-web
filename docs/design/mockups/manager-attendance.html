@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>On Time — 임직원 근무 현황 (목업)</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  .att-wrap { overflow-x: auto; }
+  .att-table { min-width: 1080px; }
+  .att-table thead th { white-space: nowrap; }
+  .att-table thead th.today { color: var(--accent); }
+  .att-table thead th.weekend { color: rgba(179,179,179,0.55); }
+  .att-table th.emp-col, .att-table td.emp-col {
+    position: sticky;
+    left: 0;
+    background: var(--bg-raised);
+    z-index: 1;
+    min-width: 170px;
+  }
+  .att-table tbody tr:hover td.emp-col { background: #232323; }
+  .emp .name { font-weight: 700; font-size: 14px; }
+  .emp .meta { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+  .att-cell { display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; white-space: nowrap; }
+  .att-cell .line { display: inline-flex; align-items: center; gap: 6px; }
+  .att-cell .line .t { color: var(--text-primary); }
+  .att-cell .line.out .t { color: var(--text-secondary); }
+  td.warn-cell { background: rgba(243, 114, 127, 0.07); }
+  .working-now { color: var(--accent); font-weight: 700; font-size: 13px; }
+  .holiday { color: rgba(179,179,179,0.45); font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ===================== sidebar ===================== -->
+  <aside class="sidebar">
+    <a class="logo" href="index.html"><span class="logo-dot"></span>OnTime</a>
+    <nav class="nav">
+      <a class="nav-item" href="dashboard.html"><span class="ico">◧</span>대시보드</a>
+      <a class="nav-item" href="schedule.html"><span class="ico">🗓</span>근무 일정</a>
+
+      <div class="nav-group">전자 결재</div>
+      <a class="nav-item" href="dayoff-requests.html"><span class="ico">✚</span>휴가 신청</a>
+      <a class="nav-item" href="dayoff-used.html"><span class="ico">↺</span>휴가 사용 내역</a>
+      <a class="nav-item" href="overtime-requests.html"><span class="ico">✚</span>휴일근무보고서 신청</a>
+      <a class="nav-item" href="expense-requests.html"><span class="ico">✚</span>지출결의서 신청</a>
+      <a class="nav-item" href="documents.html"><span class="ico">▤</span>결재 신청 목록</a>
+      <a class="nav-item" href="approvals.html"><span class="ico">✓</span>결재 처리 대기 목록<span class="count">3</span></a>
+
+      <div class="nav-group">관리자</div>
+      <a class="nav-item" href="manager-vacations.html"><span class="ico">☰</span>임직원 휴가 사용 현황</a>
+      <a class="nav-item" href="manager-compensatory.html"><span class="ico">☰</span>임직원 보상 휴가 현황</a>
+      <a class="nav-item active" href="manager-attendance.html"><span class="ico">▦</span>임직원 근무 현황</a>
+      <a class="nav-item" href="manager-schedules.html"><span class="ico">🗓</span>임직원 근무 일정 등록</a>
+      <a class="nav-item" href="manager-chat.html"><span class="ico">💬</span>임직원과의 소통</a>
+    </nav>
+    <div class="logout">
+      <a class="nav-item" href="#"><span class="ico">⎋</span>로그아웃</a>
+    </div>
+  </aside>
+
+  <!-- ===================== main ===================== -->
+  <div class="main">
+    <header class="header">
+      <button class="icon-btn" title="알림">🔔</button>
+      <div class="profile-chip">
+        <span class="avatar">박</span>
+        <span class="who">
+          <div class="name">박현우 <span class="text-muted">(팀장)</span></div>
+          <div class="team">개발팀 · 책임</div>
+        </span>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">Attendance</div>
+          <h1 class="page-title">임직원 근무 현황</h1>
+        </div>
+        <div class="navigator">
+          <button class="icon-btn">‹</button>
+          <span class="range">2026.07.06 – 07.12</span>
+          <button class="icon-btn">›</button>
+          <button class="btn btn-sm btn-outline">오늘</button>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+        <span class="text-muted" style="font-size:11px;">최근 갱신: 14:32:08</span>
+      </div>
+
+      <div class="card" style="padding:8px 4px;">
+        <div class="att-wrap">
+          <table class="table att-table">
+            <thead>
+              <tr>
+                <th class="emp-col">임직원</th>
+                <th>월 <span style="font-weight:400;">07/06</span></th>
+                <th>화 <span style="font-weight:400;">07/07</span></th>
+                <th>수 <span style="font-weight:400;">07/08</span></th>
+                <th>목 <span style="font-weight:400;">07/09</span></th>
+                <th class="today">금 <span style="font-weight:400;">07/10</span> · 오늘</th>
+                <th class="weekend">토 <span style="font-weight:400;">07/11</span></th>
+                <th class="weekend">일 <span style="font-weight:400;">07/12</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="emp-col"><div class="emp"><div class="name">박현우</div><div class="meta">개발팀 · 책임</div></div></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">09:02</span></span>
+                  <span class="line out">퇴근 <span class="t">18:41</span></span>
+                </div></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">08:55</span></span>
+                  <span class="line out">퇴근 <span class="t">19:10</span></span>
+                </div></td>
+                <td><span class="badge badge-blue">연차</span></td>
+                <td class="warn-cell"><div class="att-cell">
+                  <span class="line"><span class="dot dot-red"></span>출근 <span class="t">09:31</span></span>
+                  <span class="line out">퇴근 <span class="t">18:35</span></span>
+                </div></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">08:58</span></span>
+                  <span class="working-now">근무 중</span>
+                </div></td>
+                <td><span class="holiday">휴일</span></td>
+                <td><span class="holiday">휴일</span></td>
+              </tr>
+              <tr>
+                <td class="emp-col"><div class="emp"><div class="name">김민수</div><div class="meta">마케팅팀 · 대리</div></div></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">08:47</span></span>
+                  <span class="line out">퇴근 <span class="t">18:20</span></span>
+                </div></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">09:12</span></span>
+                  <span class="line out">퇴근 <span class="t">18:30</span></span>
+                </div></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">09:05</span></span>
+                  <span class="line out">퇴근 <span class="t">18:45</span></span>
+                </div></td>
+                <td><div class="att-cell">
+                  <span><span class="badge badge-blue">오후반차</span></span>
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">08:58</span></span>
+                </div></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">09:04</span></span>
+                  <span class="working-now">근무 중</span>
+                </div></td>
+                <td><span class="holiday">휴일</span></td>
+                <td><span class="holiday">휴일</span></td>
+              </tr>
+              <tr>
+                <td class="emp-col"><div class="emp"><div class="name">이서연</div><div class="meta">개발팀 · 선임</div></div></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">09:00</span></span>
+                  <span class="line out">퇴근 <span class="t">18:05</span></span>
+                </div></td>
+                <td><span class="badge badge-blue">연차</span></td>
+                <td><span class="badge badge-blue">연차</span></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">08:52</span></span>
+                  <span class="line out">퇴근 <span class="t">19:22</span></span>
+                </div></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">08:49</span></span>
+                  <span class="working-now">근무 중</span>
+                </div></td>
+                <td><span class="holiday">휴일</span></td>
+                <td><span class="holiday">휴일</span></td>
+              </tr>
+              <tr>
+                <td class="emp-col"><div class="emp"><div class="name">최지훈</div><div class="meta">경영지원팀 · 과장</div></div></td>
+                <td class="warn-cell"><div class="att-cell">
+                  <span class="line"><span class="dot dot-red"></span>출근 <span class="t">09:41</span></span>
+                  <span class="line out">퇴근 <span class="t">18:50</span></span>
+                </div></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">08:58</span></span>
+                  <span class="line out">퇴근 <span class="t">18:12</span></span>
+                </div></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">09:03</span></span>
+                  <span class="line out">퇴근 <span class="t">18:33</span></span>
+                </div></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">09:00</span></span>
+                  <span class="line out">퇴근 <span class="t">18:01</span></span>
+                </div></td>
+                <td><div class="att-cell">
+                  <span><span class="badge badge-blue">오전반차</span></span>
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">13:58</span></span>
+                </div></td>
+                <td><span class="holiday">휴일</span></td>
+                <td><span class="holiday">휴일</span></td>
+              </tr>
+              <tr>
+                <td class="emp-col"><div class="emp"><div class="name">정하늘</div><div class="meta">디자인팀 · 주임</div></div></td>
+                <td><span class="text-muted">—</span></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">08:50</span></span>
+                  <span class="line out">퇴근 <span class="t">18:10</span></span>
+                </div></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">09:10</span></span>
+                  <span class="line out">퇴근 <span class="t">19:02</span></span>
+                </div></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">09:07</span></span>
+                  <span class="line out">퇴근 <span class="t">18:40</span></span>
+                </div></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">09:11</span></span>
+                  <span class="working-now">근무 중</span>
+                </div></td>
+                <td><span class="holiday">휴일</span></td>
+                <td><span class="holiday">휴일</span></td>
+              </tr>
+              <tr>
+                <td class="emp-col"><div class="emp"><div class="name">박지은</div><div class="meta">마케팅팀 · 사원</div></div></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">09:05</span></span>
+                  <span class="line out">퇴근 <span class="t">18:15</span></span>
+                </div></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">09:00</span></span>
+                  <span class="line out">퇴근 <span class="t">18:03</span></span>
+                </div></td>
+                <td><div class="att-cell">
+                  <span><span class="badge badge-blue">오후반차</span></span>
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">09:01</span></span>
+                  <span class="line out">퇴근 <span class="t">14:02</span></span>
+                </div></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">08:59</span></span>
+                  <span class="line out">퇴근 <span class="t">18:22</span></span>
+                </div></td>
+                <td><div class="att-cell">
+                  <span class="line"><span class="dot dot-green"></span>출근 <span class="t">09:00</span></span>
+                  <span class="working-now">근무 중</span>
+                </div></td>
+                <td><span class="holiday">휴일</span></td>
+                <td><span class="holiday">휴일</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:14px;gap:16px;">
+        <span class="row" style="gap:6px;font-size:12px;color:var(--text-secondary);"><span class="dot dot-green"></span>정상</span>
+        <span class="row" style="gap:6px;font-size:12px;color:var(--text-secondary);"><span class="dot dot-red"></span>지각 / 근무시간 미달</span>
+        <span class="row" style="gap:6px;font-size:12px;color:var(--text-secondary);"><span class="badge badge-blue">연차</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== now-working bar ===================== -->
+<div class="working-bar">
+  <div class="status">
+    <span class="pulse"></span>
+    <span>
+      <div class="label">근무 중 · 08:58 출근</div>
+      <div class="sub">목표 퇴근 17:58</div>
+    </span>
+  </div>
+  <div class="track">
+    <span>3h 42m</span>
+    <div class="bar"><div style="width:45%"></div></div>
+    <span>8h</span>
+  </div>
+  <button class="btn btn-primary btn-sm">퇴근하기</button>
+</div>
+
+<div class="mock-nav"><a href="index.html">← 목업 인덱스</a></div>
+</body>
+</html>

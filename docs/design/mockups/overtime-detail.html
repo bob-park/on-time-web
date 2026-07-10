@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>On Time — 휴일 근무 보고서 신청 정보 (목업)</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  /* ---- approval steps ---- */
+  .steps {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    max-width: 640px;
+    margin: 8px auto 4px;
+  }
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 120px;
+    text-align: center;
+  }
+  .step .circle {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .step.done .circle { background: var(--accent); color: #000; }
+  .step.now .circle {
+    color: var(--warning);
+    border: 3px solid var(--warning);
+    border-top-color: rgba(255, 164, 43, 0.25);
+    animation: spin 1.6s linear infinite;
+  }
+  .step.now .circle span { animation: spin-rev 1.6s linear infinite; display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes spin-rev { to { transform: rotate(-360deg); } }
+  .step.todo .circle {
+    border: 2px solid var(--border-strong);
+    color: var(--text-secondary);
+  }
+  .step .s-label { font-size: 13px; font-weight: 700; }
+  .step .s-sub { font-size: 12px; color: var(--text-secondary); }
+  .step.todo .s-label { color: var(--text-secondary); font-weight: 400; }
+  .step-line {
+    flex: 1;
+    height: 2px;
+    margin-top: 22px;
+    background: var(--border-strong);
+    border-radius: 1px;
+  }
+  .step-line.done { background: var(--accent); }
+
+  /* ---- A4 paper ---- */
+  .paper-wrap { display: flex; justify-content: center; padding: 32px 0 8px; }
+  .paper {
+    width: 640px;
+    max-width: 100%;
+    aspect-ratio: 1 / 1.414;
+    background: #fdfdfd;
+    color: #111;
+    box-shadow: rgba(0,0,0,0.6) 0px 20px 50px, rgba(0,0,0,0.4) 0px 4px 12px;
+    padding: 48px 48px;
+    font-size: 13px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .paper .watermark {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .paper .watermark span {
+    font-size: 120px;
+    font-weight: 700;
+    letter-spacing: 40px;
+    text-indent: 40px;
+    color: rgba(52, 197, 235, 0.14);
+    border: 6px solid rgba(52, 197, 235, 0.12);
+    border-radius: 12px;
+    padding: 12px 32px;
+    transform: rotate(-24deg);
+    white-space: nowrap;
+  }
+  .paper .made-date {
+    text-align: right;
+    font-size: 12px;
+    color: #333;
+    margin-bottom: 6px;
+  }
+  .paper h2.doc-title {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 10px;
+    text-indent: 10px;
+    margin: 18px 0 32px;
+    text-decoration: underline;
+    text-underline-offset: 10px;
+    text-decoration-thickness: 1.5px;
+  }
+  .paper table.form {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1.5px solid #333;
+    table-layout: fixed;
+  }
+  .paper table.form th, .paper table.form td {
+    border: 1px solid #333;
+    padding: 9px 8px;
+    font-size: 12px;
+    text-align: center;
+    vertical-align: middle;
+    height: 40px;
+    word-break: keep-all;
+  }
+  .paper table.form thead th {
+    background: #f0f0ec;
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ===================== sidebar ===================== -->
+  <aside class="sidebar">
+    <a class="logo" href="index.html"><span class="logo-dot"></span>OnTime</a>
+    <nav class="nav">
+      <a class="nav-item" href="dashboard.html"><span class="ico">◧</span>대시보드</a>
+      <a class="nav-item" href="schedule.html"><span class="ico">🗓</span>근무 일정</a>
+
+      <div class="nav-group">전자 결재</div>
+      <a class="nav-item" href="dayoff-requests.html"><span class="ico">✚</span>휴가 신청</a>
+      <a class="nav-item" href="dayoff-used.html"><span class="ico">↺</span>휴가 사용 내역</a>
+      <a class="nav-item" href="overtime-requests.html"><span class="ico">✚</span>휴일근무보고서 신청</a>
+      <a class="nav-item" href="expense-requests.html"><span class="ico">✚</span>지출결의서 신청</a>
+      <a class="nav-item active" href="documents.html"><span class="ico">▤</span>결재 신청 목록</a>
+      <a class="nav-item" href="approvals.html"><span class="ico">✓</span>결재 처리 대기 목록<span class="count">3</span></a>
+
+      <div class="nav-group">관리자</div>
+      <a class="nav-item" href="manager-vacations.html"><span class="ico">☰</span>임직원 휴가 사용 현황</a>
+      <a class="nav-item" href="manager-compensatory.html"><span class="ico">☰</span>임직원 보상 휴가 현황</a>
+      <a class="nav-item" href="manager-attendance.html"><span class="ico">▦</span>임직원 근무 현황</a>
+      <a class="nav-item" href="manager-schedules.html"><span class="ico">🗓</span>임직원 근무 일정 등록</a>
+      <a class="nav-item" href="manager-chat.html"><span class="ico">💬</span>임직원과의 소통</a>
+    </nav>
+    <div class="logout">
+      <a class="nav-item" href="#"><span class="ico">⎋</span>로그아웃</a>
+    </div>
+  </aside>
+
+  <!-- ===================== main ===================== -->
+  <div class="main">
+    <header class="header">
+      <button class="icon-btn" title="알림">🔔</button>
+      <div class="profile-chip">
+        <span class="avatar">박</span>
+        <span class="who">
+          <div class="name">박현우 <span class="text-muted">(팀장)</span></div>
+          <div class="team">개발팀 · 책임</div>
+        </span>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">Approval</div>
+          <h1 class="page-title">휴일 근무 보고서 신청 정보</h1>
+        </div>
+        <a class="btn btn-ghost" href="documents.html">‹ 결재 목록으로</a>
+      </div>
+
+      <!-- card 1 : approval status -->
+      <div class="card">
+        <div class="card-header">
+          <span class="section-title">현재 결재 상태</span>
+          <span class="badge badge-orange">결재 진행 중</span>
+        </div>
+        <div class="steps">
+          <div class="step done">
+            <span class="circle">✓</span>
+            <div>
+              <div class="s-label">신청</div>
+              <div class="s-sub">박현우 · 07.10</div>
+            </div>
+          </div>
+          <div class="step-line done"></div>
+          <div class="step now">
+            <span class="circle"><span>⋯</span></span>
+            <div>
+              <div class="s-label text-orange">팀장 승인</div>
+              <div class="s-sub">이서연 팀장</div>
+              <span class="badge badge-orange" style="margin-top:6px;">현재</span>
+            </div>
+          </div>
+          <div class="step-line"></div>
+          <div class="step todo">
+            <span class="circle"></span>
+            <div>
+              <div class="s-label">최종 승인</div>
+              <div class="s-sub">김도현 이사</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- card 2 : actions -->
+      <div class="card" style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <button class="btn btn-outline" style="color:var(--warning);box-shadow:0 0 0 1px rgba(255,164,43,0.5) inset;">빨리 진행시켜줘 🔔</button>
+        <div class="row">
+          <button class="btn" disabled>신청하기</button>
+          <button class="btn btn-outline">PDF 다운로드</button>
+        </div>
+      </div>
+
+      <!-- card 3 : document preview -->
+      <div class="card" style="margin-top:16px;background:var(--bg-surface);">
+        <div class="card-header" style="margin-bottom:0;">
+          <span class="section-title">문서 미리보기</span>
+          <span class="text-muted" style="font-size:13px;">휴일 근무 보고서 · A4</span>
+        </div>
+        <div class="paper-wrap">
+          <div class="paper">
+            <div class="watermark"><span>초 안</span></div>
+
+            <div class="made-date">작성일 : 2026년 07월 10일</div>
+            <h2 class="doc-title">휴일 근무 보고서</h2>
+
+            <table class="form">
+              <colgroup>
+                <col style="width:14%">
+                <col style="width:17%">
+                <col style="width:22%">
+                <col style="width:12%">
+                <col style="width:20%">
+                <col style="width:15%">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th rowspan="2">근무일</th>
+                  <th rowspan="2">근무 시간</th>
+                  <th rowspan="2">근무 목적</th>
+                  <th rowspan="2">근무자</th>
+                  <th colspan="1">휴가 대체</th>
+                  <th rowspan="2">본인 확인</th>
+                </tr>
+                <tr>
+                  <th style="font-weight:400;font-size:11px;">유 · 무 (수당 시간)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>07.12 (일)</td>
+                  <td>09:00 ~ 14:30</td>
+                  <td>배포 대응</td>
+                  <td>김민수</td>
+                  <td>유 ( — )</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>07.13 (월)</td>
+                  <td>10:00 ~ 15:00</td>
+                  <td>장애 대응</td>
+                  <td>박현우</td>
+                  <td>무 ( 5.0h )</td>
+                  <td></td>
+                </tr>
+                <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== now-working bar ===================== -->
+<div class="working-bar">
+  <div class="status">
+    <span class="pulse"></span>
+    <span>
+      <div class="label">근무 중 · 08:58 출근</div>
+      <div class="sub">목표 퇴근 17:58</div>
+    </span>
+  </div>
+  <div class="track">
+    <span>3h 42m</span>
+    <div class="bar"><div style="width:45%"></div></div>
+    <span>8h</span>
+  </div>
+  <button class="btn btn-primary btn-sm">퇴근하기</button>
+</div>
+
+<div class="mock-nav"><a href="index.html">← 목업 인덱스</a></div>
+</body>
+</html>

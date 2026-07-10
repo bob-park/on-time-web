@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>On Time — 휴일 근무 보고서 신청 (목업)</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  .form-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .form-row > label {
+    width: 120px;
+    flex: none;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+  .pick-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 44px;
+    padding: 0 20px;
+    border: none;
+    border-radius: 9999px;
+    background: var(--bg-card);
+    box-shadow: var(--shadow-inset);
+    color: var(--text-primary);
+    font-family: var(--font);
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .pick-btn:hover { background: var(--bg-card-alt); }
+  .pick-btn .hint { color: var(--text-secondary); font-size: 13px; }
+  .time-sep { color: var(--text-secondary); font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ===================== sidebar ===================== -->
+  <aside class="sidebar">
+    <a class="logo" href="index.html"><span class="logo-dot"></span>OnTime</a>
+    <nav class="nav">
+      <a class="nav-item" href="dashboard.html"><span class="ico">◧</span>대시보드</a>
+      <a class="nav-item" href="schedule.html"><span class="ico">🗓</span>근무 일정</a>
+
+      <div class="nav-group">전자 결재</div>
+      <a class="nav-item" href="dayoff-requests.html"><span class="ico">✚</span>휴가 신청</a>
+      <a class="nav-item" href="dayoff-used.html"><span class="ico">↺</span>휴가 사용 내역</a>
+      <a class="nav-item active" href="overtime-requests.html"><span class="ico">✚</span>휴일근무보고서 신청</a>
+      <a class="nav-item" href="expense-requests.html"><span class="ico">✚</span>지출결의서 신청</a>
+      <a class="nav-item" href="documents.html"><span class="ico">▤</span>결재 신청 목록</a>
+      <a class="nav-item" href="approvals.html"><span class="ico">✓</span>결재 처리 대기 목록<span class="count">3</span></a>
+
+      <div class="nav-group">관리자</div>
+      <a class="nav-item" href="manager-vacations.html"><span class="ico">☰</span>임직원 휴가 사용 현황</a>
+      <a class="nav-item" href="manager-compensatory.html"><span class="ico">☰</span>임직원 보상 휴가 현황</a>
+      <a class="nav-item" href="manager-attendance.html"><span class="ico">▦</span>임직원 근무 현황</a>
+      <a class="nav-item" href="manager-schedules.html"><span class="ico">🗓</span>임직원 근무 일정 등록</a>
+      <a class="nav-item" href="manager-chat.html"><span class="ico">💬</span>임직원과의 소통</a>
+    </nav>
+    <div class="logout">
+      <a class="nav-item" href="#"><span class="ico">⎋</span>로그아웃</a>
+    </div>
+  </aside>
+
+  <!-- ===================== main ===================== -->
+  <div class="main">
+    <header class="header">
+      <button class="icon-btn" title="알림">🔔</button>
+      <div class="profile-chip">
+        <span class="avatar">박</span>
+        <span class="who">
+          <div class="name">박현우 <span class="text-muted">(팀장)</span></div>
+          <div class="team">개발팀 · 책임</div>
+        </span>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-head">
+        <div>
+          <div class="eyebrow">Overtime</div>
+          <h1 class="page-title">휴일 근무 보고서 신청</h1>
+        </div>
+      </div>
+
+      <!-- form card -->
+      <div class="card" style="max-width:800px;">
+        <div class="card-header">
+          <span class="section-title">근무 내역 입력</span>
+          <span class="text-muted" style="font-size:13px;">한 건씩 추가할 수 있어요</span>
+        </div>
+
+        <div class="stack" style="gap:20px;">
+          <div class="form-row">
+            <label>등록 여부</label>
+            <div class="pill-filter">
+              <button class="pill">×</button>
+              <button class="pill active">등록 직원</button>
+              <button class="pill">미등록 직원</button>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label>인원</label>
+            <button class="pick-btn"><span class="hint">직원 선택 —</span> 김민수</button>
+          </div>
+
+          <div class="form-row">
+            <label>근무 목적</label>
+            <input class="input" style="max-width:420px;" value="배포 대응">
+          </div>
+
+          <div class="form-row">
+            <label>근무일</label>
+            <button class="pick-btn">2026-07-12 (일) 📅</button>
+          </div>
+
+          <div class="form-row">
+            <label>근무 시간</label>
+            <div class="row" style="gap:8px;">
+              <select class="select"><option>09시</option></select>
+              <select class="select"><option>00분</option></select>
+              <span class="time-sep">~</span>
+              <select class="select"><option>14시</option></select>
+              <select class="select"><option>30분</option></select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label>보상휴가</label>
+            <div class="row">
+              <button class="toggle on" aria-label="보상휴가로 처리"></button>
+              <span style="font-size:14px;">보상휴가로 처리</span>
+            </div>
+          </div>
+
+          <button class="btn btn-outline" style="width:100%;">+ 목록에 추가</button>
+        </div>
+      </div>
+
+      <!-- added list -->
+      <div class="card" style="max-width:800px;margin-top:16px;">
+        <div class="card-header">
+          <span class="section-title">추가된 근무 내역 <span class="text-green">(2건)</span></span>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>근무일</th>
+              <th>근무 시간</th>
+              <th>근무 목적</th>
+              <th>근무자</th>
+              <th>보상휴가</th>
+              <th style="width:56px;">삭제</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>07.12</strong> <span class="muted">일</span></td>
+              <td>09:00 – 14:30</td>
+              <td>배포 대응</td>
+              <td>김민수</td>
+              <td><span class="badge badge-green">적용</span></td>
+              <td><button class="icon-btn" style="width:28px;height:28px;font-size:13px;" title="삭제">×</button></td>
+            </tr>
+            <tr>
+              <td><strong>07.13</strong> <span class="muted">월 · 대체공휴일</span></td>
+              <td>10:00 – 15:00</td>
+              <td>장애 대응</td>
+              <td>박현우</td>
+              <td class="muted">—</td>
+              <td><button class="icon-btn" style="width:28px;height:28px;font-size:13px;" title="삭제">×</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- footer actions -->
+      <div class="row" style="max-width:800px;margin-top:20px;justify-content:flex-end;">
+        <button class="btn btn-ghost">취소</button>
+        <button class="btn btn-primary">초안 생성</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== now-working bar ===================== -->
+<div class="working-bar">
+  <div class="status">
+    <span class="pulse"></span>
+    <span>
+      <div class="label">근무 중 · 08:58 출근</div>
+      <div class="sub">목표 퇴근 17:58</div>
+    </span>
+  </div>
+  <div class="track">
+    <span>3h 42m</span>
+    <div class="bar"><div style="width:45%"></div></div>
+    <span>8h</span>
+  </div>
+  <button class="btn btn-primary btn-sm">퇴근하기</button>
+</div>
+
+<div class="mock-nav"><a href="index.html">← 목업 인덱스</a></div>
+</body>
+</html>
