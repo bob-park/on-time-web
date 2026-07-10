@@ -54,8 +54,8 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html lang="ko" data-theme="light">
-      <body className="relative font-[Pretendard,system-ui,-apple-system,sans-serif]">
+    <html lang="ko" data-theme="ontime-dark">
+      <body className="relative">
         <NextIntlClientProvider locale="ko" messages={messages}>
           <RQProvider>
             <HydrationBoundary state={dehydratedState}>
