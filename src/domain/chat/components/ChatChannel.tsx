@@ -6,6 +6,8 @@ import { IoSend } from 'react-icons/io5';
 
 import { useGetCurrentUser } from '@/domain/user/query/user';
 
+import { useTranslations } from 'next-intl';
+
 import ChatMessage, { ChatMessageProps } from './ChatMessage';
 
 interface ChatChannelProps {
@@ -15,6 +17,9 @@ interface ChatChannelProps {
 }
 
 export default function ChatChannel({ loading = false, messages, onSend }: ChatChannelProps) {
+  // i18n
+  const t = useTranslations('chat');
+
   // ref
   const chatMessageRef = useRef<HTMLDivElement>(null);
 
@@ -41,59 +46,58 @@ export default function ChatChannel({ loading = false, messages, onSend }: ChatC
   };
 
   return (
-    <div className="relative flex size-full flex-col gap-2">
+    <div className="flex size-full flex-col">
       {/* chat list */}
-      <div className="flex h-[calc(100%-40px)] flex-col gap-2 overflow-auto p-3" ref={chatMessageRef}>
+      <div className="flex flex-1 flex-col gap-3.5 overflow-auto p-4" ref={chatMessageRef}>
         <MemorizedChatMessage messages={messages} />
       </div>
 
-      {/* send message from */}
-      <form
-        className="absolute bottom-0 flex w-full flex-row-reverse items-center justify-center gap-2 px-4"
-        onSubmit={handleSend}
-      >
-        <div className="w-20 flex-none">
-          <button className="btn btn-neutral w-full text-xs" type="submit" disabled={loading || !message}>
-            {loading ? <span className="loading loading-spinner loading-xs" /> : <IoSend className="size-4" />}
-            전송
-          </button>
-        </div>
-        <div className="flex-1">
-          <input
-            className="input w-full"
-            placeholder="메세지를 입력해주세요"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-        </div>
+      {/* send message form */}
+      <form className="flex flex-none items-center gap-2.5 border-t border-white/[0.08] p-3" onSubmit={handleSend}>
+        <input
+          className="input flex-1 rounded-full"
+          placeholder={t('inputPlaceholder')}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+        <button
+          className="btn btn-circle btn-primary flex-none"
+          type="submit"
+          disabled={loading || !message}
+          aria-label={t('send')}
+          title={t('send')}
+        >
+          {loading ? <span className="loading loading-spinner loading-xs" /> : <IoSend className="size-4" />}
+        </button>
       </form>
     </div>
   );
 }
 
 function ChatMessages({ messages }: { messages: ChatMessageProps[] }) {
+  // i18n
+  const t = useTranslations('chat');
+
   // query
   const { currentUser } = useGetCurrentUser();
 
   return (
     <>
-      {messages.map((message, index) => (
+      {messages.map((message) => (
         <div key={`chat_message_${message.id}`}>
           {message.type === 'ENTER' && (
             <div className="flex flex-row items-center justify-center">
-              <div className="badge badge-ghost">
-                {message.userUniqueId === currentUser?.id ? '고객지원에 연결되었습니다.' : '담당자와 연결되었습니다.'}
-              </div>
+              <span className="text-base-content/60 rounded-full bg-white/10 px-3.5 py-1 text-[11px]">
+                {message.userUniqueId === currentUser?.id ? t('system.enterMe') : t('system.enterOther')}
+              </span>
             </div>
           )}
           {message.type === 'MESSAGE' && <ChatMessage {...message} />}
           {message.type === 'LEAVE' && (
             <div className="flex flex-row items-center justify-center">
-              <div className="badge badge-ghost">
-                {message.userUniqueId === currentUser?.id
-                  ? '고객지원에 연결 해제되었습니다.'
-                  : '담당자가 나가부렀습니다.'}
-              </div>
+              <span className="text-base-content/60 rounded-full bg-white/10 px-3.5 py-1 text-[11px]">
+                {message.userUniqueId === currentUser?.id ? t('system.leaveMe') : t('system.leaveOther')}
+              </span>
             </div>
           )}
         </div>

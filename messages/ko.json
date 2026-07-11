@@ -502,5 +502,19 @@
       "noEmployees": "직원 데이터가 없습니다",
       "noEmployeesHint": "연도를 변경하거나 직원 데이터를 확인해 주세요."
     }
+  },
+  "chat": {
+    "eyebrow": "Support",
+    "title": "임직원과의 소통",
+    "subtitle": "임직원을 선택해 1:1 대화를 시작합니다",
+    "back": "목록으로",
+    "inputPlaceholder": "메세지를 입력해주세요",
+    "send": "전송",
+    "system": {
+      "enterMe": "고객지원에 연결되었습니다.",
+      "enterOther": "담당자와 연결되었습니다.",
+      "leaveMe": "고객지원에 연결 해제되었습니다.",
+      "leaveOther": "담당자가 나가부렀습니다."
+    }
   }
 }

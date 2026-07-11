@@ -139,7 +139,7 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
 
       <div
         className={cx(
-          'relative flex h-[600px] w-[400px] flex-col gap-4 rounded-xl bg-[#252525] shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-all duration-300',
+          'bg-base-200 relative flex h-[600px] w-[400px] flex-col gap-4 rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-all duration-300',
           {
             'translate-y-0 opacity-100': show,
             'hidden translate-y-6 opacity-0': !show,

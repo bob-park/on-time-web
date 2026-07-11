@@ -1,17 +1,19 @@
-import ChatUserContents from './_components/ChatUsersContents';
+import PageHeader from '@/shared/components/PageHeader';
 
-export default function ChatUsersPage() {
+import { getTranslations } from 'next-intl/server';
+
+import ChatUsersContents from './_components/ChatUsersContents';
+
+export default async function ChatUsersPage() {
+  const t = await getTranslations('chat');
+
   return (
-    <div className="flex size-full flex-col gap-3">
-      {/* title */}
-      <div className="">
-        <h2 className="text-2xl font-bold">임직원들과의 소통</h2>
-      </div>
+    <div className="animate-fade-up flex size-full flex-col gap-4">
+      {/* eyebrow + title */}
+      <PageHeader eyebrow={t('eyebrow')} title={t('title')} subtitle={t('subtitle')} />
 
-      {/* contents */}
-      <div className="mt-10 max-w-max">
-        <ChatUserContents />
-      </div>
+      {/* people list */}
+      <ChatUsersContents />
     </div>
   );
 }

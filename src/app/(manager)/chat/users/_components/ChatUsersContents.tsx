@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 
 import { useGetUsers } from '@/domain/user/query/user';
 
-export default function ChatUserContents() {
+export default function ChatUsersContents() {
   // hooks
   const router = useRouter();
 
@@ -14,28 +14,35 @@ export default function ChatUserContents() {
   const users = mergePageUsers(pages.map((page) => page.content));
 
   return (
-    <div className="flex size-full flex-col items-center justify-start gap-1">
-      {/* headers */}
-      <div className="flex h-12 flex-row items-center justify-center gap-4 border-b border-slate-300 text-center text-base font-semibold">
-        <div className="w-40 flex-none">팀(부서)</div>
-        <div className="w-32 flex-none">직급</div>
-        <div className="w-40 flex-none">이름</div>
-        <div className="w-20 flex-none">비고</div>
-      </div>
+    <div className="bg-base-300 w-full max-w-2xl rounded-lg p-2">
+      <div className="flex flex-col">
+        {users.map((user) => (
+          <button
+            key={`user-item-${user.id}`}
+            type="button"
+            className="group flex items-center gap-3.5 rounded-lg px-3.5 py-3 text-left transition-colors hover:cursor-pointer hover:bg-white/[0.04]"
+            onClick={() => router.push(`/chat/users/${user.id}`)}
+          >
+            {/* avatar */}
+            <span className="from-info to-primary flex size-11 flex-none items-center justify-center rounded-full bg-gradient-to-br text-base font-bold text-black select-none">
+              {user.username?.substring(0, 1)}
+            </span>
 
-      {/* contents */}
-      {users.map((user) => (
-        <div
-          key={`user-item-${user.id}`}
-          className="hover:bg-base-200 flex h-12 flex-row items-center justify-center gap-4 rounded-2xl text-center text-base transition-all duration-150 hover:cursor-pointer"
-          onClick={() => router.push(`/chat/users/${user.id}`)}
-        >
-          <div className="w-40 flex-none">{user.group?.name}</div>
-          <div className="w-32 flex-none">{user.position?.name}</div>
-          <div className="w-40 flex-none">{user.username}</div>
-          <div className="w-20 flex-none"></div>
-        </div>
-      ))}
+            {/* info */}
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-sm font-bold">{user.username}</span>
+              <span className="text-base-content/60 mt-0.5 block truncate text-xs">
+                {[user.group?.name, user.position?.name].filter(Boolean).join(' · ')}
+              </span>
+            </span>
+
+            {/* chevron */}
+            <span className="text-base-content/40 group-hover:text-base-content flex-none text-lg leading-none transition-colors">
+              ›
+            </span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
