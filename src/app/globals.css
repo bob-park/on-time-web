@@ -196,7 +196,7 @@ dialog.modal[open] .modal-box {
   background: color-mix(in oklab, var(--color-base-content) 8%, transparent);
 }
 .rdp-dark .rdp-today:not(.rdp-outside) .rdp-day_button {
-  color: var(--color-primary);
+  color: var(--color-warning);
   font-weight: 700;
 }
 .rdp-dark .rdp-selected .rdp-day_button {
@@ -214,8 +214,11 @@ dialog.modal[open] .modal-box {
   border-radius: 0.5rem;
 }
 
-/* range selection — soft band with solid rounded endpoints */
-.rdp-dark {
+/* range selection — black band with solid rounded endpoints.
+   .rdp-dark.rdp-root(2클래스)로 라이브러리 .rdp-root 변수 선언(1클래스, 늦게 로드)을 이긴다 */
+.rdp-dark.rdp-root {
+  --rdp-accent-color: var(--color-primary);
+  --rdp-accent-background-color: color-mix(in oklab, var(--color-primary) 12%, transparent);
   --rdp-range_middle-background-color: #000000;
   --rdp-range_start-background: linear-gradient(90deg, transparent 50%, var(--rdp-range_middle-background-color) 50%);
   --rdp-range_end-background: linear-gradient(90deg, var(--rdp-range_middle-background-color) 50%, transparent 50%);
@@ -232,7 +235,14 @@ dialog.modal[open] .modal-box {
 }
 .rdp-dark .rdp-range_middle .rdp-day_button {
   background: transparent;
-  color: var(--color-primary);
+  color: var(--color-base-content);
   border-radius: 0;
   font-weight: 700;
+}
+
+/* 오늘이 선택(단일/range 양끝)된 경우 — '오늘' 글자색 규칙보다 우선해 배경 대비 확보 */
+.rdp-dark .rdp-selected.rdp-today:not(.rdp-outside) .rdp-day_button,
+.rdp-dark .rdp-range_start.rdp-today:not(.rdp-outside) .rdp-day_button,
+.rdp-dark .rdp-range_end.rdp-today:not(.rdp-outside) .rdp-day_button {
+  color: var(--color-primary-content);
 }
