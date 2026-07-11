@@ -216,7 +216,7 @@ dialog.modal[open] .modal-box {
 
 /* range selection — soft band with solid rounded endpoints */
 .rdp-dark {
-  --rdp-range_middle-background-color: color-mix(in oklab, var(--color-primary) 16%, transparent);
+  --rdp-range_middle-background-color: #000000;
   --rdp-range_start-background: linear-gradient(90deg, transparent 50%, var(--rdp-range_middle-background-color) 50%);
   --rdp-range_end-background: linear-gradient(90deg, var(--rdp-range_middle-background-color) 50%, transparent 50%);
 }
