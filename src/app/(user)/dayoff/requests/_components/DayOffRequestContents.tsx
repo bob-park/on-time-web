@@ -102,7 +102,15 @@ export default function DayOffRequestContent() {
   const businessDays = selectedDate.from && selectedDate.to ? countBusinessDays(selectedDate.from, selectedDate.to) : 0;
   const usedDays = isHalfDay ? 0.5 : businessDays;
   const freeLeaveDays = (currentUser?.leaveEntry?.totalLeaveDays ?? 0) - (currentUser?.leaveEntry?.usedLeaveDays ?? 0);
+  const freeCompLeaveDays =
+    (currentUser?.leaveEntry?.totalCompLeaveDays ?? 0) - (currentUser?.leaveEntry?.usedCompLeaveDays ?? 0);
   const remainingAfterUse = freeLeaveDays - usedDays;
+
+  // 휴가 구분별 잔여일 (연차 / 보상 휴가는 카드 설명에 라이브 표시, 공가는 잔여 개념 없음)
+  const typeRemaining: Partial<Record<VacationType, number>> = {
+    GENERAL: freeLeaveDays,
+    COMPENSATORY: freeCompLeaveDays,
+  };
 
   const canSubmit = !!selectedVacationType && !!selectedVacationSubType && !!reason;
 
@@ -124,6 +132,7 @@ export default function DayOffRequestContent() {
               <div className="flex flex-col gap-2">
                 {VACATION_TYPES.map((type) => {
                   const selected = selectedVacationType === type.value;
+                  const remaining = typeRemaining[type.value];
                   return (
                     <button
                       key={type.value}
@@ -140,7 +149,12 @@ export default function DayOffRequestContent() {
                       <span className={cx('text-sm font-bold', selected && 'text-primary')}>
                         {t(`type.${type.labelKey}`)}
                       </span>
-                      <span className="text-base-content/50 text-xs">{t(`type.${type.descKey}`)}</span>
+                      <span className="text-base-content/50 text-xs">
+                        {t(`type.${type.descKey}`)}
+                        {remaining !== undefined && (
+                          <span className="text-base-content/70"> · {t('type.remaining', { days: remaining })}</span>
+                        )}
+                      </span>
                     </button>
                   );
                 })}
@@ -233,7 +247,10 @@ export default function DayOffRequestContent() {
               <p className="text-base-content text-base font-semibold">{t('calendar.title')}</p>
               {selectedDate.from && selectedDate.to && (
                 <span className="bg-primary/15 text-primary inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold">
-                  {t('calendar.rangeBadge', { days: usedDays })}
+                  {dayjs(selectedDate.from).format('MM.DD')}
+                  {!dayjs(selectedDate.from).isSame(selectedDate.to, 'day') &&
+                    ` – ${dayjs(selectedDate.to).format('MM.DD')}`}
+                  {` · ${t('calendar.rangeBadge', { days: usedDays })}`}
                 </span>
               )}
             </div>

@@ -31,11 +31,6 @@ export default function NowWorkingBar() {
   // 근무 중일 때 경과 시간을 갱신하기 위한 1분 틱
   const [now, setNow] = useState<Date>(() => new Date());
 
-  useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 60_000);
-    return () => clearInterval(id);
-  }, []);
-
   // query — 대시보드와 동일한 오늘-근태 조회 소스 재사용
   const { currentUser } = useGetCurrentUser();
   const today = dayjs().format('YYYY-MM-DD');
@@ -45,11 +40,6 @@ export default function NowWorkingBar() {
     endDate: today,
   });
 
-  // 로딩/유저 미확정 시 렌더하지 않음
-  if (!currentUser || isLoading) {
-    return null;
-  }
-
   const record = attendanceRecords.find((item) => dayjs(item.workingDate).format('YYYY-MM-DD') === today);
 
   const clockInTime = record?.clockInTime;
@@ -58,6 +48,20 @@ export default function NowWorkingBar() {
 
   const isDone = !!clockInTime && !!clockOutTime;
   const isWorking = !!clockInTime && !clockOutTime;
+
+  // 근무 중일 때만 1분 틱을 돌린다 — 출근 전/퇴근 완료 상태에서는 불필요한 타이머 방지
+  useEffect(() => {
+    if (!isWorking) {
+      return;
+    }
+    const id = setInterval(() => setNow(new Date()), 60_000);
+    return () => clearInterval(id);
+  }, [isWorking]);
+
+  // 로딩/유저 미확정 시 렌더하지 않음
+  if (!currentUser || isLoading) {
+    return null;
+  }
 
   // 상태별 표시 값
   let label: string;

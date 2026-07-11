@@ -25,7 +25,7 @@ frontmatter (`title`, `scope`, `applies_to`, `related`) 와 TL;DR blockquote 로
 - [ky + React Query](docs/agents/libs/ky-react-query.md) — 공유 `api`, query key, mutation, Server fetch+cache, RQProvider, HydrationBoundary
 - [Tailwind 4 + daisyUI 5](docs/agents/libs/tailwind-daisyui.md) — `classnames`, theme cookie
 - [next-intl v4](docs/agents/libs/next-intl.md) — wiring, locale resolution, server/client usage
-- [Theme](docs/agents/libs/theme.md) — `data-theme` cookie + `setTheme` server action
+- [Theme](docs/agents/libs/theme.md) — 단일 다크 `ontime-dark` 고정 (토글/쿠키 없음)
 - [overlay-kit](docs/agents/libs/overlay-kit.md) — `overlay.open` + `close`/`unmount` cleanup timing
 
 ### Workflows

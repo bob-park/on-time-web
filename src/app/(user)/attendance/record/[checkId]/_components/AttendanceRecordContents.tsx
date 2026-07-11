@@ -61,8 +61,7 @@ function AttendanceRecordResult({ result }: AttendanceRecordResultProps) {
                 label={t('workingDate')}
                 value={
                   <>
-                    {dayjs(result.workingDate).format('YYYY년 MM월 DD일')} (
-                    {getDaysOfWeek(dayjs(result.workingDate).day())})
+                    {dayjs(result.workingDate).format('YYYY.MM.DD')} ({getDaysOfWeek(dayjs(result.workingDate).day())})
                   </>
                 }
               />

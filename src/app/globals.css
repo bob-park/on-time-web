@@ -155,7 +155,7 @@ dialog.modal[open] .modal-box {
 
 /* Focus ring for keyboard users */
 :focus-visible {
-  outline: 2px solid oklch(45% 0.24 277.023);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 

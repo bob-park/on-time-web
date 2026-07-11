@@ -91,7 +91,6 @@
     "add": "추가",
     "workingDay": "근무일",
     "todaySuffix": "오늘",
-    "working": "근무 중",
     "scheduled": "근무 예정",
     "addTitle": "근무 일정 추가",
     "category": "구분",
@@ -168,7 +167,8 @@
         "compensatory": "보상 휴가",
         "compensatoryDesc": "휴일 근무 대체 휴가",
         "official": "공가",
-        "officialDesc": "예비군 / 민방위 등"
+        "officialDesc": "예비군 / 민방위 등",
+        "remaining": "{days}일 남음"
       },
       "subType": {
         "allDay": "종일",

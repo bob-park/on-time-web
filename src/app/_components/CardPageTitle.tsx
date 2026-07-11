@@ -14,13 +14,13 @@ export default function CardPageTitle({ children, placeholder }: CardPageTitlePr
 
   return (
     <div
-      className="relative flex cursor-default flex-col items-center justify-center text-9xl font-bold text-slate-400 select-none"
+      className="text-base-content/30 relative flex cursor-default flex-col items-center justify-center text-9xl font-bold select-none"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
       <div
-        className={cx('rounded-2xl bg-white p-5 transition-all duration-500', {
-          '-translate-y-20 scale-110 text-black shadow-2xl': hover,
+        className={cx('bg-base-300 rounded-2xl p-5 transition-all duration-500', {
+          'text-primary -translate-y-20 scale-110 shadow-2xl': hover,
         })}
       >
         {children}
