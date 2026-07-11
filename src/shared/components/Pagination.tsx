@@ -1,5 +1,7 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
+
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
@@ -30,24 +32,27 @@ function getPaginationPages(currentPage: number, totalPages: number): (number | 
 
 const pageBtnClass = (active: boolean, isDisabled: boolean) => {
   if (isDisabled) {
-    return 'flex h-8 min-w-[32px] items-center justify-center rounded-md border border-slate-100 bg-white px-1.5 text-sm text-slate-300 cursor-not-allowed';
+    return 'flex h-8 min-w-8 items-center justify-center rounded-full bg-base-300 px-2 text-sm text-base-content/30 cursor-not-allowed';
   }
   if (active) {
-    return 'flex h-8 min-w-[32px] items-center justify-center rounded-md border border-slate-800 bg-slate-800 px-2 text-sm text-white';
+    return 'flex h-8 min-w-8 items-center justify-center rounded-full bg-primary px-2 text-sm font-bold text-primary-content';
   }
-  return 'flex h-8 min-w-[32px] items-center justify-center rounded-md border border-slate-200 bg-white px-2 text-sm text-slate-600 hover:bg-slate-50 active:scale-95 transition-[colors,transform] duration-100';
+  return 'flex h-8 min-w-8 items-center justify-center rounded-full bg-base-300 px-2 text-sm text-base-content hover:bg-base-content/10 active:scale-95 transition-[colors,transform] duration-100';
 };
 
 export default function Pagination({ currentPage, totalPages, total, pageSize, onPageChange }: PaginationProps) {
+  // hooks
+  const t = useTranslations('common');
+
   const startItem = total === 0 ? 0 : currentPage * pageSize + 1;
   const endItem = Math.min((currentPage + 1) * pageSize, total);
 
   if (totalPages <= 1) return null;
 
   return (
-    <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-4">
-      <span className="text-sm text-slate-500">
-        총 {total.toLocaleString()}건 중 {startItem}~{endItem}건 표시
+    <div className="border-base-content/10 mt-4 flex items-center justify-between border-t pt-4">
+      <span className="text-base-content/60 text-sm">
+        {t('total', { count: total })} · {startItem}–{endItem}
       </span>
       <div className="flex items-center gap-1">
         <button
@@ -61,7 +66,7 @@ export default function Pagination({ currentPage, totalPages, total, pageSize, o
         </button>
         {getPaginationPages(currentPage, totalPages).map((p, i) =>
           p === '...' ? (
-            <span key={`ellipsis-${i}`} className="px-1 text-sm text-slate-400">
+            <span key={`ellipsis-${i}`} className="text-base-content/40 px-1 text-sm">
               ···
             </span>
           ) : (

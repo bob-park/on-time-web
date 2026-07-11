@@ -2,90 +2,82 @@
 
 import { useEffect } from 'react';
 
-import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { FaCheck, FaTimes } from 'react-icons/fa';
 
 import { useGetResultAttendanceRecord, useRecordAttendance } from '@/domain/attendance/query/attendanceRecord';
 import { useGetCurrentUser } from '@/domain/user/query/user';
-
 import { getDaysOfWeek } from '@/utils/parse';
 
 import cx from 'classnames';
 import dayjs from 'dayjs';
+import { useTranslations } from 'next-intl';
+
+interface InfoRowProps {
+  label: string;
+  value: React.ReactNode;
+  accent?: boolean;
+}
+
+function InfoRow({ label, value, accent }: InfoRowProps) {
+  return (
+    <div className="flex items-center justify-between py-3">
+      <span className="text-base-content/60 text-[13px]">{label}</span>
+      <span className={cx('text-[15px] font-bold', { 'text-primary': accent })}>{value}</span>
+    </div>
+  );
+}
 
 interface AttendanceRecordResultProps {
   result?: AttendanceRecord;
 }
 
 function AttendanceRecordResult({ result }: AttendanceRecordResultProps) {
+  const t = useTranslations('attendance.record');
+  const success = !!result;
+
   return (
-    <div className="flex flex-col items-center justify-center gap-3">
+    <div className="animate-fade-up flex flex-col items-center gap-7 pt-16 pb-10 text-center">
       {/* icon */}
-      <div className={cx(result ? 'text-green-600' : 'text-red-600')}>
-        {result ? <FaCheckCircle className="h-24 w-24" /> : <FaTimesCircle className="h-24 w-24" />}
-      </div>
+      <span
+        className={cx('flex size-20 items-center justify-center rounded-full text-4xl', {
+          'bg-primary text-primary-content shadow-[0_0_40px_rgba(30,215,96,0.35)]': success,
+          'bg-error text-error-content shadow-[0_0_40px_rgba(243,114,127,0.35)]': !success,
+        })}
+      >
+        {success ? <FaCheck /> : <FaTimes />}
+      </span>
 
       {/* contents */}
-      <div className="w-full">
-        {result ? (
-          <div className="flex w-full flex-col items-center justify-start gap-2">
-            {/* 출근 / 퇴근 */}
-            <div className="">
-              <h2 className="text-lg font-bold">
-                {result.clockInTime && !result.clockOutTime && '출근 처리되었습니다.'}
-                {result.clockInTime && result.clockOutTime && '퇴근 처리되었습니다.'}
-              </h2>
-            </div>
+      {success ? (
+        <>
+          <h2 className="text-2xl font-bold tracking-tight">
+            {result.clockInTime && !result.clockOutTime && t('clockInDone')}
+            {result.clockInTime && result.clockOutTime && t('clockOutDone')}
+          </h2>
 
-            {/* 근무일 */}
-            <div className="flex w-full items-center justify-start gap-3">
-              <div className="w-32 flex-none text-right">근무일 : </div>
-              <div className="text-left">
-                <span>{dayjs(result.workingDate).format('YYYY년 MM월 DD일')}</span>
-                <span className="ml-1">({getDaysOfWeek(dayjs(result.workingDate).day())})</span>
-              </div>
+          <div className="bg-base-300 w-full max-w-[420px] rounded-lg px-5 text-left">
+            <div className="divide-y divide-white/10">
+              <InfoRow
+                label={t('workingDate')}
+                value={
+                  <>
+                    {dayjs(result.workingDate).format('YYYY.MM.DD')} ({getDaysOfWeek(dayjs(result.workingDate).day())})
+                  </>
+                }
+              />
+              <InfoRow accent label={t('clockInTime')} value={dayjs(result.clockInTime).format('HH:mm:ss')} />
+              <InfoRow label={t('leaveWorkAt')} value={dayjs(result.leaveWorkAt).format('HH:mm:ss')} />
+              {result.clockOutTime && (
+                <InfoRow accent label={t('clockOutTime')} value={dayjs(result.clockOutTime).format('HH:mm:ss')} />
+              )}
             </div>
-
-            {/* 출근 시간 */}
-            <div className="flex w-full items-center justify-start gap-3">
-              <div className="w-32 flex-none text-right">출근 시간 : </div>
-              <div className="text-left">
-                <span>{dayjs(result.clockInTime).format('YYYY년 MM월 DD일')}</span>
-                <span className="ml-1">({getDaysOfWeek(dayjs(result.clockInTime).day())})</span>
-                <span> </span>
-                <span className="">{dayjs(result.clockInTime).format('HH:mm:ss')}</span>
-              </div>
-            </div>
-
-            {/* 퇴근 예정 시간 */}
-            <div className="flex w-full items-center justify-start gap-3">
-              <div className="w-32 flex-none text-right">퇴근 예정 시간 : </div>
-              <div className="text-left">
-                <span>{dayjs(result.leaveWorkAt).format('YYYY년 MM월 DD일')}</span>
-                <span className="ml-1">({getDaysOfWeek(dayjs(result.leaveWorkAt).day())})</span>
-                <span> </span>
-                <span className="">{dayjs(result.leaveWorkAt).format('HH:mm:ss')}</span>
-              </div>
-            </div>
-
-            {/* 퇴근 시간 */}
-            {result.clockOutTime && (
-              <div className="flex items-center justify-start gap-3">
-                <div className="w-32 flex-none text-right">퇴근 시간 : </div>
-                <div className="text-left">
-                  <span>{dayjs(result.clockOutTime).format('YYYY년 MM월 DD일')}</span>
-                  <span className="ml-1">({getDaysOfWeek(dayjs(result.clockOutTime).day())})</span>
-                  <span> </span>
-                  <span className="">{dayjs(result.clockOutTime).format('HH:mm:ss')}</span>
-                </div>
-              </div>
-            )}
           </div>
-        ) : (
-          <div className="">
-            <h3 className="text-lg font-bold">잘못된 접근입니다.</h3>
-          </div>
-        )}
-      </div>
+
+          <span className="text-base-content/50 text-[13px]">{t('closeHint')}</span>
+        </>
+      ) : (
+        <h2 className="text-2xl font-bold tracking-tight">{t('invalidAccess')}</h2>
+      )}
     </div>
   );
 }
@@ -106,17 +98,15 @@ export default function AttendanceRecordContents({ checkId }: AttendanceRecordCo
   }, [currentUser]);
 
   return (
-    <div className="flex size-full flex-col items-center justify-center gap-3">
-      <div className="mt-6">
-        {/* 처리 결과 표시 */}
-        {isLoading && !result && (
-          <div className="mt-10 flex h-56 flex-col items-center justify-center gap-3">
-            <span className="loading loading-infinity loading-lg"></span>
-          </div>
-        )}
+    <div className="flex w-full flex-col items-center justify-center">
+      {/* 처리 결과 표시 */}
+      {isLoading && !result && (
+        <div className="flex h-56 flex-col items-center justify-center pt-16">
+          <span className="loading loading-infinity loading-lg text-primary"></span>
+        </div>
+      )}
 
-        {!isLoading && currentUser && <AttendanceRecordResult result={result} />}
-      </div>
+      {!isLoading && currentUser && <AttendanceRecordResult result={result} />}
     </div>
   );
 }

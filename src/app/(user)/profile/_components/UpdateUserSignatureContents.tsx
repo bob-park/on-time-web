@@ -6,9 +6,14 @@ import Image from 'next/image';
 
 import { useGetCurrentUser } from '@/domain/user/query/user';
 
+import { useTranslations } from 'next-intl';
+
 import UpdateSignatureModal from './UpdateSignatureModal';
 
 export default function UpdateUserSignatureContents() {
+  // i18n
+  const t = useTranslations('profile.signature');
+
   // state
   const [isError, setIsError] = useState<boolean>(false);
   const [showUpdateSignatureModal, setShowUpdateSignatureModal] = useState<boolean>(false);
@@ -20,36 +25,34 @@ export default function UpdateUserSignatureContents() {
 
   return (
     <>
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h3 className="mb-5 border-b border-slate-100 pb-3 text-lg font-semibold text-slate-900">결재 서명</h3>
+      <div className="animate-fade-up bg-base-300 w-full rounded-lg p-5">
+        <div className="mb-5 border-b border-white/10 pb-4">
+          <h3 className="text-lg font-semibold">{t('title')}</h3>
+        </div>
 
         <div className="flex flex-col gap-4">
-          <div className="relative h-[160px] w-full max-w-[400px] overflow-hidden rounded-xl border border-dashed border-slate-300 bg-slate-50">
+          <div className="relative h-[160px] w-full max-w-[400px] overflow-hidden rounded-lg border border-dashed border-white/20">
             {currentUser && !isError ? (
+              // 서명 PNG 는 검정 잉크 + 투명 배경이라 다크 배경에서 안 보이므로 프리뷰 내부만 밝게 유지
               <Image
-                className="object-contain"
+                className="bg-white object-contain"
                 src={`/api/users/${currentUser.id}/signature`}
-                alt="user signature"
+                alt={t('alt')}
                 fill
                 onError={() => setIsError(true)}
               />
             ) : (
               <div className="flex size-full items-center justify-center">
-                <span className="text-sm text-slate-400">서명이 등록되지 않았습니다</span>
+                <span className="text-base-content/40 text-sm">{t('empty')}</span>
               </div>
             )}
           </div>
 
-          {hasSignature && (
-            <p className="text-sm text-red-500">⚠ 배경이 투명해야 정상적으로 서명이 보입니다.</p>
-          )}
+          {hasSignature && <p className="text-warning text-xs">{t('transparentWarning')}</p>}
 
           <div className="flex justify-end">
-            <button
-              className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
-              onClick={() => setShowUpdateSignatureModal(true)}
-            >
-              {hasSignature ? '서명 변경' : '서명 등록'}
+            <button className="btn btn-outline rounded-full" onClick={() => setShowUpdateSignatureModal(true)}>
+              {hasSignature ? t('change') : t('register')}
             </button>
           </div>
         </div>

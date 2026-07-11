@@ -1,3 +1,5 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
 import {
   approveDocument,
   cancelDocument,
@@ -6,8 +8,6 @@ import {
   requestDocument,
   searchDocument,
 } from '@/domain/document/api/documents';
-
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export function useDocuments(req: SearchDocumentRequest) {
   const { data, isLoading } = useQuery<Page<Document>>({

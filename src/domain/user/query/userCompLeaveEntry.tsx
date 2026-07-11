@@ -1,6 +1,6 @@
-import { getUserCompLeaveEntries } from '@/domain/user/api/userCompLeaveEntry';
-
 import { useQuery } from '@tanstack/react-query';
+
+import { getUserCompLeaveEntries } from '@/domain/user/api/userCompLeaveEntry';
 
 export function useUserCompLeaveEntries() {
   const { data, isLoading } = useQuery<UserCompLeaveEntry[]>({

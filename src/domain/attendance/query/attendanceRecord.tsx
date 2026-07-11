@@ -1,6 +1,6 @@
-import { addSchedule, getAllRecords, record } from '@/domain/attendance/api/attendanceRecord';
-
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+import { addSchedule, getAllRecords, record } from '@/domain/attendance/api/attendanceRecord';
 
 export function useGetResultAttendanceRecord({ checkId }: { checkId: string }) {
   const { data, isLoading } = useQuery<AttendanceRecord>({

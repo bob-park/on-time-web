@@ -5,12 +5,15 @@ import { useContext } from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
-
-import { getDaysOfWeek, getWeekStartDate } from '@/utils/parse';
+import { getWeekStartDate } from '@/utils/parse';
 
 import dayjs from 'dayjs';
+import { useTranslations } from 'next-intl';
 
 export default function WorkingTimeView() {
+  // hooks
+  const t = useTranslations('common');
+
   // context
   const { selectDate, updateSelectDate } = useContext(WorkingTimeContext);
 
@@ -38,28 +41,25 @@ export default function WorkingTimeView() {
   return (
     <div className="flex w-full flex-row items-center justify-end gap-2">
       <button
-        className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 active:scale-95 transition-[colors,transform] duration-150"
+        className="bg-base-300 text-base-content hover:bg-base-content/10 flex h-9 w-9 items-center justify-center rounded-full transition-[colors,transform] duration-150 active:scale-95"
         onClick={handlePrevWeekClick}
       >
         <IoIosArrowBack className="h-4 w-4" />
       </button>
 
-      <span className="min-w-[220px] text-center text-sm font-medium text-slate-700">
+      <span className="min-w-[180px] text-center text-sm font-bold">
         {`${dayjs(selectDate.startDate).format('YYYY.MM.DD')} – ${dayjs(selectDate.endDate).format('MM.DD')}`}
       </span>
 
       <button
-        className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 active:scale-95 transition-[colors,transform] duration-150"
+        className="bg-base-300 text-base-content hover:bg-base-content/10 flex h-9 w-9 items-center justify-center rounded-full transition-[colors,transform] duration-150 active:scale-95"
         onClick={handleNextWeekClick}
       >
         <IoIosArrowForward className="h-4 w-4" />
       </button>
 
-      <button
-        className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 active:scale-95 transition-[colors,transform] duration-150"
-        onClick={handleTodayClick}
-      >
-        오늘
+      <button className="btn btn-sm btn-outline" onClick={handleTodayClick}>
+        {t('today')}
       </button>
     </div>
   );

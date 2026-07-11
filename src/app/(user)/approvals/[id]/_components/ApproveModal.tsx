@@ -5,8 +5,9 @@ import { useEffect, useRef } from 'react';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
 import { useApproveDocument } from '@/domain/document/query/documents';
-
 import useToast from '@/shared/hooks/useToast';
+
+import { useTranslations } from 'next-intl';
 
 interface ApproveModalProps {
   show: boolean;
@@ -17,6 +18,9 @@ interface ApproveModalProps {
 export default function ApproveModal({ show, id, onClose }: ApproveModalProps) {
   // ref
   const ref = useRef<HTMLDialogElement>(null);
+
+  // i18n
+  const t = useTranslations('approval.detail.approve');
 
   // hooks
   const { push } = useToast();
@@ -58,35 +62,35 @@ export default function ApproveModal({ show, id, onClose }: ApproveModalProps) {
 
   return (
     <dialog ref={ref} className="modal" onKeyDownCapture={handleKeyboardDown}>
-      <div className="modal-box">
+      <div className="modal-box rounded-xl bg-[#252525] shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
         <div className="flex w-full flex-col items-start justify-start gap-3">
           {/* header */}
           <div className="">
-            <h3 className="text-lg font-bold">결재 승인</h3>
+            <h3 className="text-lg font-bold">{t('title')}</h3>
           </div>
         </div>
 
         {/* content */}
         <div className="m-3 flex flex-col items-start justify-center gap-4">
-          <p className="text-base">이 문서를 승인하시겠습니까?</p>
+          <p className="text-base">{t('body')}</p>
         </div>
 
         {/* action */}
         <div className="modal-action">
-          <button className="btn w-32" onClick={handleClose}>
+          <button className="btn btn-ghost w-32" onClick={handleClose}>
             <FaTimes className="size-6" />
-            취소
+            {t('cancel')}
           </button>
           <button className="btn btn-primary w-32" disabled={isLoading} onClick={handleApprove}>
             {isLoading ? (
               <>
                 <span className="loading loading-spinner loading-xs" />
-                승인 중
+                {t('confirming')}
               </>
             ) : (
               <>
                 <FaCheck className="size-5" />
-                승인
+                {t('confirm')}
               </>
             )}
           </button>

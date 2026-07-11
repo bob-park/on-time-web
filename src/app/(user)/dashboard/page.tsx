@@ -1,29 +1,26 @@
 import WorkingTimeProvider from '@/domain/attendance/components/WorkingTimeProvider';
 import WorkingTimeView from '@/domain/attendance/components/WorkingTimeView';
+import PageHeader from '@/shared/components/PageHeader';
+
+import { getTranslations } from 'next-intl/server';
 
 import WeeklySummaryCards from './_componets/WeeklySummaryCards';
 import WorkingRecordContents from './_componets/WorkingRecordContents';
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const t = await getTranslations('dashboard');
+
   return (
-    <div className="flex size-full flex-col items-start justify-start gap-2">
+    <div className="w-full">
       <WorkingTimeProvider>
-        {/* breadcrumb + title + date nav */}
-        <div className="flex w-full items-end justify-between">
-          <div className="w-full">
-            <p className="text-xs font-semibold tracking-widest text-slate-400 uppercase">Dashboard</p>
-            <h2 className="mt-1 text-4xl font-extrabold tracking-tight text-slate-900">근로 시간</h2>
-          </div>
-          <WorkingTimeView />
-        </div>
+        {/* eyebrow + title + week navigator */}
+        <PageHeader eyebrow={t('eyebrow')} title={t('title')} actions={<WorkingTimeView />} />
 
-        {/* summary cards */}
-        <div className="mt-6 w-full">
-          <WeeklySummaryCards />
-        </div>
+        {/* summary row: hero + comp leave */}
+        <WeeklySummaryCards />
 
-        {/* attendance table */}
-        <div className="w-full">
+        {/* weekly attendance table */}
+        <div className="mt-4 w-full">
           <WorkingRecordContents />
         </div>
       </WorkingTimeProvider>

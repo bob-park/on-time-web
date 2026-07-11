@@ -1,6 +1,6 @@
-import { currentCheck } from '@/domain/attendance/api/attendanceCheck';
-
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+import { currentCheck } from '@/domain/attendance/api/attendanceCheck';
 
 export function useGetCurrentCheck() {
   const { data, isLoading } = useQuery<AttendanceCheck>({ queryKey: ['current', 'attendance', 'check'] });

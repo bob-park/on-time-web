@@ -1,5 +1,6 @@
 'use client';
 
+import cx from 'classnames';
 import dayjs from 'dayjs';
 
 interface DayOffViewContentsProps {
@@ -8,61 +9,75 @@ interface DayOffViewContentsProps {
   usedVacations: UsedVacation[];
 }
 
-function DualValue({ value, comp }: { value: number; comp: number }) {
+// 본값(연차) white / 괄호 보상값 warning, 둘 다 0 이면 "—" muted
+function DualValue({ value, comp, valueClassName }: { value: number; comp: number; valueClassName?: string }) {
   if (value === 0 && comp === 0) {
-    return <span className="text-xs text-slate-300">—</span>;
+    return <span className="text-base-content/30">—</span>;
   }
   return (
     <>
-      <span className="text-sm text-slate-600">{value}</span>
-      <span className="text-xs text-slate-400"> (</span>
-      <span className="text-xs text-blue-400">{comp}</span>
-      <span className="text-xs text-slate-400">)</span>
+      <span className={cx('text-base-content', valueClassName)}>{value}</span>
+      {comp > 0 && <span className="text-warning ml-0.5 text-xs">({comp})</span>}
     </>
   );
 }
 
+const cellClass = 'px-3 py-3 text-center whitespace-nowrap';
+
 export default function DayOffViewContents({ order, user, usedVacations }: DayOffViewContentsProps) {
+  const remaining = user.leaveEntry.totalLeaveDays - user.leaveEntry.usedLeaveDays;
+  const remainingComp = user.leaveEntry.totalCompLeaveDays - user.leaveEntry.usedCompLeaveDays;
+
   return (
-    <tr className="h-[52px] border-b border-slate-100 last:border-b-0 group hover:bg-slate-50">
-      <td className="sticky left-0 z-10 bg-white px-3 group-hover:bg-slate-50 text-xs text-slate-400 text-center w-12">
+    <tr className="group border-base-content/[0.06] hover:bg-base-content/[0.04] border-b transition-colors duration-100 last:border-b-0">
+      {/* 순번 (sticky) */}
+      <td className="bg-base-300 text-base-content/40 sticky left-0 z-10 px-3 py-3 text-center whitespace-nowrap group-hover:bg-[#232323]">
         {order}
       </td>
-      <td className="sticky left-[48px] z-10 bg-white px-3 group-hover:bg-slate-50 border-r border-slate-200 text-sm font-medium text-slate-800 text-center w-20">
-        {user.username}
+
+      {/* 성명 (sticky) */}
+      <td className="bg-base-300 border-base-content/[0.08] sticky left-[48px] z-10 border-r px-3 py-3 whitespace-nowrap group-hover:bg-[#232323]">
+        <div className="font-bold">{user.username}</div>
+        {user.group?.name && <div className="text-base-content/50 mt-0.5 text-xs">{user.group.name}</div>}
       </td>
-      <td className="px-3 text-sm text-slate-500 text-center w-28">
-        {user.employment ? dayjs(user.employment.effectiveDate).format('YYYY-MM-DD') : '—'}
+
+      {/* 입사일 */}
+      <td className="text-base-content/50 px-3 py-3 text-center whitespace-nowrap">
+        {user.employment ? dayjs(user.employment.effectiveDate).format('YYYY.MM.DD') : '—'}
       </td>
-      <td className="px-3 text-sm text-center w-24">
-        <DualValue value={user.leaveEntry.totalLeaveDays} comp={user.leaveEntry.totalCompLeaveDays} />
-      </td>
-      <td className="px-3 text-sm text-slate-500 text-center w-24">0</td>
-      <td className="px-3 text-sm text-center border-r border-slate-200 w-24">
+
+      {/* 연차(보상) */}
+      <td className={cellClass}>
         <DualValue value={user.leaveEntry.totalLeaveDays} comp={user.leaveEntry.totalCompLeaveDays} />
       </td>
 
-      {/* months */}
-      {new Array(12).fill(null).map((_, index) => {
+      {/* 사용가능 */}
+      <td className={cx(cellClass, 'border-base-content/[0.08] border-r')}>
+        <DualValue value={user.leaveEntry.totalLeaveDays} comp={user.leaveEntry.totalCompLeaveDays} />
+      </td>
+
+      {/* 월별 */}
+      {Array.from({ length: 12 }).map((_, index) => {
         const monthData = usedVacations.find((item) => item.month === index + 1);
         return (
-          <td key={`month-${index}`} className="px-3 text-sm text-center w-16">
+          <td key={`month-${index}`} className={cellClass}>
             <DualValue value={monthData?.used ?? 0} comp={monthData?.usedComp ?? 0} />
           </td>
         );
       })}
 
       {/* 합계 */}
-      <td className="px-3 text-sm text-center border-l border-slate-200 w-24">
-        <DualValue value={user.leaveEntry.usedLeaveDays} comp={user.leaveEntry.usedCompLeaveDays} />
+      <td className={cx(cellClass, 'border-base-content/[0.08] border-l')}>
+        <DualValue
+          value={user.leaveEntry.usedLeaveDays}
+          comp={user.leaveEntry.usedCompLeaveDays}
+          valueClassName="font-bold"
+        />
       </td>
 
       {/* 잔여 */}
-      <td className="px-3 text-sm text-center w-24">
-        <DualValue
-          value={user.leaveEntry.totalLeaveDays - user.leaveEntry.usedLeaveDays}
-          comp={user.leaveEntry.totalCompLeaveDays - user.leaveEntry.usedCompLeaveDays}
-        />
+      <td className={cellClass}>
+        <DualValue value={remaining} comp={remainingComp} valueClassName="text-primary font-bold" />
       </td>
     </tr>
   );

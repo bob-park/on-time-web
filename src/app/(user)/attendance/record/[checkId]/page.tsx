@@ -1,19 +1,20 @@
+import PageHeader from '@/shared/components/PageHeader';
+
+import { getTranslations } from 'next-intl/server';
+
 import AttendanceRecordContents from './_components/AttendanceRecordContents';
 
 export default async function AttendanceRecordPage({ params }: { params: Promise<{ checkId: string }> }) {
   const checkId = (await params).checkId;
+  const t = await getTranslations('attendance.record');
 
   return (
-    <div className="flex size-full flex-col gap-3">
-      {/* title */}
-      <div className="">
-        <h2 className="text-2xl font-bold">근태 처리</h2>
-      </div>
+    <div className="w-full">
+      {/* eyebrow + title */}
+      <PageHeader eyebrow={t('eyebrow')} title={t('title')} />
 
       {/* content */}
-      <div className="">
-        <AttendanceRecordContents checkId={checkId} />
-      </div>
+      <AttendanceRecordContents checkId={checkId} />
     </div>
   );
 }

@@ -8,8 +8,9 @@ import Image from 'next/image';
 
 import { useGetCurrentUser } from '@/domain/user/query/user';
 import { useUserNotification } from '@/domain/user/query/userNotification';
-
 import useToast from '@/shared/hooks/useToast';
+
+import { useTranslations } from 'next-intl';
 
 interface PressApprovalModalProps {
   show: boolean;
@@ -20,6 +21,9 @@ interface PressApprovalModalProps {
 export default function PressApprovalModal({ show, approvalUserUniqueId, onClose }: PressApprovalModalProps) {
   // ref
   const ref = useRef<HTMLDialogElement>(null);
+
+  // i18n
+  const t = useTranslations('approval.detail.press');
 
   // hooks
   const { push } = useToast();
@@ -72,11 +76,11 @@ export default function PressApprovalModal({ show, approvalUserUniqueId, onClose
 
   return (
     <dialog ref={ref} className="modal" onKeyDownCapture={handleKeyboardDown}>
-      <div className="modal-box">
+      <div className="modal-box rounded-xl bg-[#252525] shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
         <div className="flex w-full flex-col items-start justify-start gap-3">
           {/* header */}
           <div className="">
-            <h3 className="text-lg font-bold">결재 독촉 알림</h3>
+            <h3 className="text-lg font-bold">{t('title')}</h3>
           </div>
         </div>
 
@@ -93,20 +97,20 @@ export default function PressApprovalModal({ show, approvalUserUniqueId, onClose
 
         {/* action */}
         <div className="modal-action">
-          <button className="btn w-36" onClick={handleClose}>
+          <button className="btn btn-ghost w-36" onClick={handleClose}>
             <FaTimes className="size-6" />
-            취소
+            {t('cancel')}
           </button>
           <button className="btn btn-primary w-36" disabled={isLoading} onClick={handlePressApproval}>
             {isLoading ? (
               <>
                 <span className="loading loading-spinner loading-xs" />
-                전송 중
+                {t('sending')}
               </>
             ) : (
               <>
                 <FaCheck className="size-5" />
-                알림 보내기
+                {t('send')}
               </>
             )}
           </button>

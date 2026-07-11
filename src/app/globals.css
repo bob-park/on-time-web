@@ -1,16 +1,11 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
 @import 'tailwindcss';
-@plugin "daisyui";
-
-@font-face {
-  font-family: 'Pretendard';
-  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
-  font-display: swap;
-}
-
-/*@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');*/
+@plugin 'daisyui';
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -18,39 +13,62 @@
   }
 }
 
-@plugin "daisyui/theme" {
-  name: 'light';
+@plugin 'daisyui/theme' {
+  name: 'ontime-dark';
   default: true;
-  prefersdark: false;
-  color-scheme: 'light';
-  --color-base-100: oklch(100% 0 0);
-  --color-base-200: oklch(98% 0.003 277);
-  --color-base-300: oklch(95% 0.005 277);
-  --color-base-content: oklch(21% 0.006 285.885);
-  --color-primary: oklch(45% 0.24 277.023);
-  --color-primary-content: oklch(93% 0.034 272.788);
-  --color-secondary: oklch(65% 0.241 354.308);
-  --color-secondary-content: oklch(94% 0.028 342.258);
-  --color-accent: oklch(77% 0.152 181.912);
-  --color-accent-content: oklch(38% 0.063 188.416);
-  --color-neutral: oklch(14% 0.005 285.823);
-  --color-neutral-content: oklch(92% 0.004 286.32);
-  --color-info: oklch(74% 0.16 232.661);
-  --color-info-content: oklch(29% 0.066 243.157);
-  --color-success: oklch(76% 0.177 163.223);
-  --color-success-content: oklch(37% 0.077 168.94);
-  --color-warning: oklch(82% 0.189 84.429);
-  --color-warning-content: oklch(41% 0.112 45.904);
-  --color-error: oklch(71% 0.194 13.428);
-  --color-error-content: oklch(27% 0.105 12.094);
-  --radius-selector: 0.5rem;
-  --radius-field: 0.5rem;
+  prefersdark: true;
+  color-scheme: 'dark';
+  --color-base-100: #121212;
+  --color-base-200: #181818;
+  --color-base-300: #1f1f1f;
+  --color-base-content: #ffffff;
+  --color-primary: #1ed760;
+  --color-primary-content: #000000;
+  --color-secondary: #252525;
+  --color-secondary-content: #ffffff;
+  --color-accent: #1ed760;
+  --color-accent-content: #000000;
+  --color-neutral: #1f1f1f;
+  --color-neutral-content: #ffffff;
+  --color-info: #539df5;
+  --color-info-content: #000000;
+  --color-success: #1ed760;
+  --color-success-content: #000000;
+  --color-warning: #ffa42b;
+  --color-warning-content: #000000;
+  --color-error: #f3727f;
+  --color-error-content: #000000;
+  --radius-selector: 2rem;
+  --radius-field: 2rem;
   --radius-box: 0.5rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
   --depth: 1;
   --noise: 0;
+}
+
+:root {
+  --shadow-heavy: rgba(0, 0, 0, 0.5) 0px 8px 24px;
+  --shadow-medium: rgba(0, 0, 0, 0.3) 0px 8px 8px;
+}
+
+body {
+  font-family:
+    'Pretendard Variable',
+    Pretendard,
+    -apple-system,
+    system-ui,
+    sans-serif;
+  background: #121212;
+}
+
+@utility eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #1ed760;
 }
 
 /* Entrance animations */
@@ -66,8 +84,12 @@
 }
 
 @keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes scale-in {
@@ -133,6 +155,94 @@ dialog.modal[open] .modal-box {
 
 /* Focus ring for keyboard users */
 :focus-visible {
-  outline: 2px solid oklch(45% 0.24 277.023);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
+}
+
+/* react-day-picker — dark theme for schedule 일정 추가 modal */
+.rdp-dark {
+  --rdp-accent-color: var(--color-primary);
+  --rdp-accent-background-color: color-mix(in oklab, var(--color-primary) 12%, transparent);
+  --rdp-today-color: var(--color-primary);
+  margin: 0;
+  color: var(--color-base-content);
+}
+.rdp-dark .rdp-month_caption,
+.rdp-dark .rdp-caption_label {
+  color: var(--color-base-content);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.rdp-dark .rdp-weekday {
+  color: color-mix(in oklab, var(--color-base-content) 55%, transparent);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.rdp-dark .rdp-chevron {
+  fill: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+}
+.rdp-dark .rdp-button_previous:hover,
+.rdp-dark .rdp-button_next:hover {
+  background: color-mix(in oklab, var(--color-base-content) 8%, transparent);
+  border-radius: 9999px;
+}
+.rdp-dark .rdp-day_button {
+  border: none;
+  border-radius: 9999px;
+  color: var(--color-base-content);
+}
+.rdp-dark .rdp-day_button:hover {
+  background: color-mix(in oklab, var(--color-base-content) 8%, transparent);
+}
+.rdp-dark .rdp-today:not(.rdp-outside) .rdp-day_button {
+  color: var(--color-warning);
+  font-weight: 700;
+}
+.rdp-dark .rdp-selected .rdp-day_button {
+  background: var(--color-primary);
+  color: var(--color-primary-content);
+  font-weight: 700;
+}
+.rdp-dark .rdp-outside .rdp-day_button {
+  color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+}
+.rdp-dark .rdp-dropdown,
+.rdp-dark .rdp-dropdowns select {
+  background: var(--color-base-100);
+  color: var(--color-base-content);
+  border-radius: 0.5rem;
+}
+
+/* range selection — black band with solid rounded endpoints.
+   .rdp-dark.rdp-root(2클래스)로 라이브러리 .rdp-root 변수 선언(1클래스, 늦게 로드)을 이긴다 */
+.rdp-dark.rdp-root {
+  --rdp-accent-color: var(--color-primary);
+  --rdp-accent-background-color: color-mix(in oklab, var(--color-primary) 12%, transparent);
+  --rdp-range_middle-background-color: #000000;
+  --rdp-range_start-background: linear-gradient(90deg, transparent 50%, var(--rdp-range_middle-background-color) 50%);
+  --rdp-range_end-background: linear-gradient(90deg, var(--rdp-range_middle-background-color) 50%, transparent 50%);
+}
+.rdp-dark .rdp-range_start.rdp-range_end {
+  background: revert;
+}
+.rdp-dark .rdp-range_start .rdp-day_button,
+.rdp-dark .rdp-range_end .rdp-day_button {
+  background: var(--color-primary);
+  color: var(--color-primary-content);
+  border-radius: 9999px;
+  font-weight: 700;
+}
+.rdp-dark .rdp-range_middle .rdp-day_button {
+  background: transparent;
+  color: var(--color-base-content);
+  border-radius: 0;
+  font-weight: 700;
+}
+
+/* 오늘이 선택(단일/range 양끝)된 경우 — '오늘' 글자색 규칙보다 우선해 배경 대비 확보 */
+.rdp-dark .rdp-selected.rdp-today:not(.rdp-outside) .rdp-day_button,
+.rdp-dark .rdp-range_start.rdp-today:not(.rdp-outside) .rdp-day_button,
+.rdp-dark .rdp-range_end.rdp-today:not(.rdp-outside) .rdp-day_button {
+  color: var(--color-primary-content);
 }

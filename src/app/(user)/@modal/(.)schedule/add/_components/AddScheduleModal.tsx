@@ -2,39 +2,42 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import { GiCancel } from 'react-icons/gi';
+import { FaCheck } from 'react-icons/fa';
 import { RiCalendarScheduleLine } from 'react-icons/ri';
 
 import { useRouter } from 'next/navigation';
 
 import { useAddAttendanceSchedule } from '@/domain/attendance/query/attendanceRecord';
-
-import Dropdown, { DropdownItem } from '@/shared/components/Dropdown';
 import { useStore } from '@/shared/store/rootStore';
 
+import cx from 'classnames';
 import dayjs from 'dayjs';
+import { useTranslations } from 'next-intl';
 import { DayPicker } from 'react-day-picker';
 import { ko } from 'react-day-picker/locale';
 import 'react-day-picker/style.css';
 
 interface AttendanceOption {
-  id: DayOffType;
-  text: string;
+  id?: DayOffType;
+  key: string;
 }
 
 const SELECT_OPTIONS_ATTENDANCE: AttendanceOption[] = [
-  { id: 'DAY_OFF', text: '연차' },
-  { id: 'AM_HALF_DAY_OFF', text: '오전 반차' },
-  { id: 'PM_HALF_DAY_OFF', text: '오후 반차' },
+  { id: undefined, key: 'categoryNone' },
+  { id: 'DAY_OFF', key: 'categoryDayOff' },
+  { id: 'AM_HALF_DAY_OFF', key: 'categoryAmHalfDayOff' },
+  { id: 'PM_HALF_DAY_OFF', key: 'categoryPmHalfDayOff' },
 ];
 
 export default function AddScheduleModal() {
+  // hooks
+  const t = useTranslations('schedule');
+
   // router
   const router = useRouter();
 
   // ref
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const selectDatePickerRef = useRef<HTMLDialogElement>(null);
 
   // state
   const [selectDate, setSelectDate] = useState<Date>(dayjs().toDate());
@@ -62,14 +65,6 @@ export default function AddScheduleModal() {
       dialogRef.current.close();
     }
   }, [show]);
-
-  useEffect(() => {
-    if (!selectDatePickerRef.current) {
-      return;
-    }
-
-    showDatePicker ? selectDatePickerRef.current.showModal() : selectDatePickerRef.current.close();
-  }, [showDatePicker]);
 
   // handle
   const handleBackdrop = () => {
@@ -102,89 +97,79 @@ export default function AddScheduleModal() {
 
   return (
     <dialog ref={dialogRef} className="modal" onKeyDownCapture={handleKeyboardDown}>
-      <div className="modal-box h-[600px] w-[600px]">
-        <div className="flex h-[480px] w-full flex-col items-start justify-start gap-3">
-          {/* header */}
-          <div className="">
-            <h3 className="text-lg font-bold">근무 일정 추가</h3>
-          </div>
+      <div className="modal-box w-[520px] max-w-[calc(100vw-48px)] rounded-xl bg-[#252525] p-7 shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+        {/* header */}
+        <h3 className="text-lg font-bold">{t('addTitle')}</h3>
 
-          {/* content */}
-          <div className="m-3 flex w-full flex-col items-start justify-center gap-4">
-            {/* 구분 */}
-            <div className="flex flex-row items-center justify-center gap-4">
-              <div className="w-24 flex-none text-right">
-                <h4 className="text-base font-semibold">구분 :</h4>
-              </div>
-              <div className="w-[252px]">
-                {/* dropdown */}
-                <Dropdown
-                  text={SELECT_OPTIONS_ATTENDANCE.find((item) => item.id === selectedDayOffType)?.text || '없음'}
-                  onChange={(value) => setSelectedDayOffType(value as DayOffType)}
+        {/* 구분 */}
+        <div className="mt-6 flex flex-col gap-2">
+          <label className="text-base-content/60 text-xs font-semibold tracking-wider uppercase">{t('category')}</label>
+          <div className="flex flex-col gap-2">
+            {SELECT_OPTIONS_ATTENDANCE.map((option) => {
+              const selected = selectedDayOffType === option.id;
+
+              return (
+                <button
+                  key={`select-attendance-${option.key}`}
+                  type="button"
+                  className={cx(
+                    'flex items-center justify-between rounded-full px-5 py-3 text-sm transition-colors duration-150',
+                    selected
+                      ? 'bg-primary/10 ring-primary font-bold ring-1'
+                      : 'bg-base-300 hover:bg-base-content/[0.06]',
+                  )}
+                  onClick={() => setSelectedDayOffType(option.id)}
                 >
-                  {/* default item */}
-                  <DropdownItem text="없음" active={!selectedDayOffType} />
-
-                  {/* items */}
-                  {SELECT_OPTIONS_ATTENDANCE.map((item) => (
-                    <DropdownItem
-                      key={`select-dropdown-item-${item.id}`}
-                      value={item.id.toString()}
-                      text={item.text}
-                      active={selectedDayOffType === item.id}
-                    />
-                  ))}
-                </Dropdown>
-              </div>
-            </div>
-
-            {/* 날짜 */}
-            <div className="flex flex-row items-center justify-center gap-4">
-              <div className="w-24 flex-none text-right">
-                <h4 className="text-base font-semibold">일자 :</h4>
-              </div>
-              <div className="relative">
-                <button className="input input-border w-[252px]" onClick={() => setShowDatePicker(true)}>
-                  <div className="w-full text-center text-base font-semibold">
-                    {dayjs(selectDate).format('YYYY-MM-DD')}
-                  </div>
+                  <span>{t(option.key)}</span>
+                  {selected && <FaCheck className="text-primary size-3.5" />}
                 </button>
-                <dialog ref={selectDatePickerRef} className="modal">
-                  <DayPicker
-                    className="react-day-picker"
-                    animate
-                    locale={ko}
-                    mode="single"
-                    captionLayout="dropdown-years"
-                    selected={selectDate}
-                    onSelect={handleChangeDate}
-                  />
-                </dialog>
-              </div>
-            </div>
+              );
+            })}
           </div>
         </div>
 
-        {/* action */}
-        <div className="modal-action">
-          <button className="btn w-24" onClick={handleBackdrop}>
-            <GiCancel className="size-6" />
-            취소
-          </button>
+        {/* 일자 */}
+        <div className="mt-5 flex flex-col gap-2">
+          <label className="text-base-content/60 text-xs font-semibold tracking-wider uppercase">{t('date')}</label>
           <button
-            className="btn btn-neutral w-24"
-            disabled={isLoading || !selectedDayOffType}
-            onClick={handleAddSchedule}
+            type="button"
+            className="btn btn-outline justify-start"
+            onClick={() => setShowDatePicker((prev) => !prev)}
           >
+            <RiCalendarScheduleLine className="size-5" />
+            {dayjs(selectDate).format('YYYY-MM-DD')}
+          </button>
+
+          {showDatePicker && (
+            <div className="bg-base-300 mt-1 flex justify-center rounded-xl p-4">
+              <DayPicker
+                className="rdp-dark"
+                animate
+                locale={ko}
+                mode="single"
+                captionLayout="dropdown-years"
+                selected={selectDate}
+                onSelect={handleChangeDate}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* action */}
+        <div className="modal-action mt-7">
+          <button className="btn btn-ghost" onClick={handleBackdrop}>
+            {t('cancel')}
+          </button>
+          <button className="btn btn-primary" disabled={isLoading || !selectedDayOffType} onClick={handleAddSchedule}>
             {isLoading ? (
               <>
                 <span className="loading loading-spinner loading-xs" />
-                추가중
+                {t('adding')}
               </>
             ) : (
               <>
-                <RiCalendarScheduleLine className="size-6" />
-                추가
+                <RiCalendarScheduleLine className="size-5" />
+                {t('addAction')}
               </>
             )}
           </button>

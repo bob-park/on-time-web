@@ -5,8 +5,9 @@ import { useEffect, useRef } from 'react';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
 import { useCancelDocument } from '@/domain/document/query/documents';
-
 import useToast from '@/shared/hooks/useToast';
+
+import { useTranslations } from 'next-intl';
 
 interface CancelConfirmModalProps {
   show: boolean;
@@ -17,6 +18,9 @@ interface CancelConfirmModalProps {
 export default function CancelConfirmModal({ show, documentId, onClose }: CancelConfirmModalProps) {
   // ref
   const ref = useRef<HTMLDialogElement>(null);
+
+  // i18n
+  const t = useTranslations('approval.detail.cancelModal');
 
   // hooks
   const { push } = useToast();
@@ -58,35 +62,35 @@ export default function CancelConfirmModal({ show, documentId, onClose }: Cancel
 
   return (
     <dialog ref={ref} className="modal" onKeyDownCapture={handleKeyboardDown}>
-      <div className="modal-box">
+      <div className="modal-box rounded-xl bg-[#252525] shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
         <div className="flex w-full flex-col items-start justify-start gap-3">
           {/* header */}
           <div className="">
-            <h3 className="text-lg font-bold">취소하기</h3>
+            <h3 className="text-lg font-bold">{t('title')}</h3>
           </div>
         </div>
 
         {/* content */}
         <div className="m-3 flex flex-col items-start justify-center gap-4">
-          <p className="text-base">이 문서를 취소하면 폐기됩니다. 계속하시겠습니까?</p>
+          <p className="text-base">{t('body')}</p>
         </div>
 
         {/* action */}
         <div className="modal-action">
-          <button className="btn w-32" onClick={handleClose}>
+          <button className="btn btn-ghost w-32" onClick={handleClose}>
             <FaTimes className="size-6" />
-            돌아가기
+            {t('back')}
           </button>
           <button className="btn btn-error w-36" disabled={isLoading} onClick={handleCancel}>
             {isLoading ? (
               <>
                 <span className="loading loading-spinner loading-xs" />
-                취소 중
+                {t('confirming')}
               </>
             ) : (
               <>
                 <FaCheck className="size-5" />
-                문서 취소
+                {t('confirm')}
               </>
             )}
           </button>

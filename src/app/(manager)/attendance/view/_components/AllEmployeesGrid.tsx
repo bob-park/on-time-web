@@ -11,29 +11,30 @@ import { getDaysOfWeek } from '@/utils/parse';
 
 import cx from 'classnames';
 import dayjs from 'dayjs';
+import { useTranslations } from 'next-intl';
 
 const DEFAULT_WEEKENDS = [0, 6];
 const SKELETON_ROW_COUNT = 5;
 
 // ── Skeleton ──────────────────────────────────────────────────────────────
 
-function SkeletonCell() {
+function SkeletonCell({ label }: { label: string }) {
   return (
-    <td className="px-2 py-3 text-center align-middle" aria-label="데이터 로딩 중">
-      <div className="mx-auto h-3 w-12 animate-pulse rounded bg-slate-200" />
+    <td className="px-2 py-3 text-center align-middle" aria-label={label}>
+      <div className="bg-base-content/10 mx-auto h-3 w-12 animate-pulse rounded" />
     </td>
   );
 }
 
-function SkeletonRow() {
+function SkeletonRow({ label }: { label: string }) {
   return (
-    <tr className="border-b border-slate-100 last:border-b-0">
-      <td className="sticky left-0 z-10 min-w-[140px] bg-white px-3 py-3 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)]">
-        <div className="mb-1 h-3 w-20 animate-pulse rounded bg-slate-200" />
-        <div className="h-2 w-14 animate-pulse rounded bg-slate-100" />
+    <tr className="border-base-content/[0.08] border-b last:border-b-0">
+      <td className="bg-base-300 sticky left-0 z-10 min-w-[170px] px-3 py-3">
+        <div className="bg-base-content/10 mb-1 h-3 w-20 animate-pulse rounded" />
+        <div className="bg-base-content/[0.06] h-2 w-14 animate-pulse rounded" />
       </td>
       {Array.from({ length: 7 }).map((_, i) => (
-        <SkeletonCell key={i} />
+        <SkeletonCell key={i} label={label} />
       ))}
     </tr>
   );
@@ -46,29 +47,29 @@ interface DayCellProps {
   record?: AttendanceRecord;
   isLoading: boolean;
   isError: boolean;
+  t: ReturnType<typeof useTranslations>;
 }
 
-function DayCell({ date, record, isLoading, isError }: DayCellProps) {
+function DayCell({ date, record, isLoading, isError, t }: DayCellProps) {
   const isToday = dayjs().isSame(date, 'day');
   const isWeekend = DEFAULT_WEEKENDS.includes(dayjs(date).day());
 
   const cellClass = cx('px-2 py-3 text-center align-middle', {
-    'bg-blue-50': isToday && record?.status !== 'WARNING',
-    'bg-red-50': record?.status === 'WARNING',
+    'bg-error/[0.06]': record?.status === 'WARNING',
   });
 
   if (isLoading) {
     return (
-      <td className={cellClass} aria-label="데이터 로딩 중">
-        <div className="mx-auto h-3 w-12 animate-pulse rounded bg-slate-200" />
+      <td className={cellClass} aria-label={t('loadingLabel')}>
+        <div className="bg-base-content/10 mx-auto h-3 w-12 animate-pulse rounded" />
       </td>
     );
   }
 
   if (isError) {
     return (
-      <td className={cellClass} aria-label="데이터 오류">
-        <span className="text-xs text-red-400">오류</span>
+      <td className={cellClass} aria-label={t('errorLabel')}>
+        <span className="text-error text-xs">{t('loadError')}</span>
       </td>
     );
   }
@@ -76,7 +77,7 @@ function DayCell({ date, record, isLoading, isError }: DayCellProps) {
   if (isWeekend) {
     return (
       <td className={cellClass}>
-        <span className="text-xs text-slate-300">휴일</span>
+        <span className="text-base-content/40 text-xs">{t('holiday')}</span>
       </td>
     );
   }
@@ -84,7 +85,7 @@ function DayCell({ date, record, isLoading, isError }: DayCellProps) {
   if (!record) {
     return (
       <td className={cellClass}>
-        <span className="text-slate-300">—</span>
+        <span className="text-base-content/30">—</span>
       </td>
     );
   }
@@ -92,7 +93,7 @@ function DayCell({ date, record, isLoading, isError }: DayCellProps) {
   if (record.dayOffType === 'DAY_OFF') {
     return (
       <td className={cellClass}>
-        <span className="rounded-full bg-purple-100 px-2 py-0.5 text-xs font-semibold text-purple-700">연차</span>
+        <span className="bg-info/15 text-info rounded-full px-2 py-0.5 text-xs font-semibold">{t('dayOff')}</span>
       </td>
     );
   }
@@ -100,7 +101,7 @@ function DayCell({ date, record, isLoading, isError }: DayCellProps) {
   if (record.dayOffType === 'AM_HALF_DAY_OFF') {
     return (
       <td className={cellClass}>
-        <span className="rounded-full bg-purple-100 px-2 py-0.5 text-xs font-semibold text-purple-700">오전반차</span>
+        <span className="bg-info/15 text-info rounded-full px-2 py-0.5 text-xs font-semibold">{t('amHalfDayOff')}</span>
       </td>
     );
   }
@@ -108,7 +109,7 @@ function DayCell({ date, record, isLoading, isError }: DayCellProps) {
   if (record.dayOffType === 'PM_HALF_DAY_OFF') {
     return (
       <td className={cellClass}>
-        <span className="rounded-full bg-purple-100 px-2 py-0.5 text-xs font-semibold text-purple-700">오후반차</span>
+        <span className="bg-info/15 text-info rounded-full px-2 py-0.5 text-xs font-semibold">{t('pmHalfDayOff')}</span>
       </td>
     );
   }
@@ -118,44 +119,38 @@ function DayCell({ date, record, isLoading, isError }: DayCellProps) {
   const leaveWorkAt = record.leaveWorkAt ? dayjs(record.leaveWorkAt).format('HH:mm') : null;
   const isInProgress = isToday && clockIn && !clockOut;
 
-  const timeColor = record.status === 'WARNING' ? 'text-red-600' : 'text-slate-800';
+  const isWarning = record.status === 'WARNING';
+  const timeColor = isWarning ? 'text-error' : 'text-base-content';
 
   return (
     <td className={cellClass}>
-      <div className="space-y-0.5 text-sm leading-snug">
+      <div className="inline-flex flex-col gap-1 text-left text-[12.5px] leading-snug whitespace-nowrap">
         {clockIn && (
-          <div className={timeColor}>
-            <span className="text-xs text-slate-400">출근· </span>
-            {clockIn}
-          </div>
+          <span className="inline-flex items-center gap-1.5">
+            <span
+              className={cx('inline-block h-2 w-2 rounded-full', isWarning ? 'bg-error' : 'bg-primary')}
+              aria-hidden="true"
+            />
+            <span className="sr-only">{isWarning ? t('statusWarning') : t('statusDone')}</span>
+            <span className="text-base-content/50">{t('clockIn')}</span>
+            <span className={timeColor}>{clockIn}</span>
+          </span>
         )}
         {leaveWorkAt && (
-          <div className="text-slate-500">
-            <span className="text-xs text-slate-400">예정· </span>
-            {leaveWorkAt}
-          </div>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="text-base-content/40">{t('scheduled')}</span>
+            <span className="text-base-content/60">{leaveWorkAt}</span>
+          </span>
         )}
         {clockOut && (
-          <div className="text-slate-600">
-            <span className="text-xs text-slate-400">퇴근· </span>
-            {clockOut}
-          </div>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="text-base-content/40">{t('clockOut')}</span>
+            <span className="text-base-content/60">{clockOut}</span>
+          </span>
         )}
-        {isInProgress && <div className="text-xs text-blue-500">근무중</div>}
-        {!clockIn && !clockOut && <span className="text-slate-300">—</span>}
+        {isInProgress && <span className="text-primary text-[13px] font-bold">{t('working')}</span>}
+        {!clockIn && !clockOut && <span className="text-base-content/30">—</span>}
       </div>
-      {record.status === 'SUCCESS' && (
-        <>
-          <span className="ml-1 inline-block h-2 w-2 rounded-full bg-green-500" aria-hidden="true" />
-          <span className="sr-only">완료</span>
-        </>
-      )}
-      {record.status === 'WARNING' && (
-        <>
-          <span className="ml-1 inline-block h-2 w-2 rounded-full bg-red-500" aria-hidden="true" />
-          <span className="sr-only">경고</span>
-        </>
-      )}
     </td>
   );
 }
@@ -168,17 +163,15 @@ interface EmployeeRowProps {
   records: AttendanceRecord[];
   isLoading: boolean;
   isError: boolean;
+  t: ReturnType<typeof useTranslations>;
 }
 
-const EmployeeRow = memo(function EmployeeRow({ user, dates, records, isLoading, isError }: EmployeeRowProps) {
+const EmployeeRow = memo(function EmployeeRow({ user, dates, records, isLoading, isError, t }: EmployeeRowProps) {
   return (
-    <tr className="group border-b border-slate-100 transition-colors duration-100 last:border-b-0 hover:bg-slate-50">
-      <td
-        scope="row"
-        className="sticky left-0 z-10 min-w-[140px] bg-white px-3 py-3 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)] group-hover:bg-slate-50"
-      >
-        <div className="max-w-[130px] truncate font-medium text-slate-900">{user.username}</div>
-        <div className="max-w-[130px] truncate text-xs text-slate-500">
+    <tr className="group border-base-content/[0.08] hover:bg-base-content/[0.04] border-b transition-colors duration-100 last:border-b-0">
+      <td scope="row" className="bg-base-300 sticky left-0 z-10 min-w-[170px] px-3 py-3 group-hover:bg-[#232323]">
+        <div className="max-w-[150px] truncate text-sm font-bold">{user.username}</div>
+        <div className="text-base-content/60 mt-0.5 max-w-[150px] truncate text-xs">
           {user.group?.name}
           {user.group?.name && user.position?.name && ' · '}
           {user.position?.name}
@@ -195,6 +188,7 @@ const EmployeeRow = memo(function EmployeeRow({ user, dates, records, isLoading,
             record={record}
             isLoading={isLoading}
             isError={isError}
+            t={t}
           />
         );
       })}
@@ -209,6 +203,9 @@ function buildDates(startDate: Date): Date[] {
 }
 
 export default function AllEmployeesGrid() {
+  const t = useTranslations('manager.attendance');
+  const tCommon = useTranslations('common');
+
   const { selectDate } = useContext(WorkingTimeContext);
 
   const startDateStr = dayjs(selectDate.startDate).format('YYYY-MM-DD');
@@ -240,75 +237,103 @@ export default function AllEmployeesGrid() {
   const colHeaderClass = (date: Date) => {
     const isToday = dayjs().isSame(date, 'day');
     const isWeekend = DEFAULT_WEEKENDS.includes(dayjs(date).day());
-    return cx('sticky top-0  bg-slate-50 min-w-[110px] py-3 px-2 text-center text-xs font-semibold', {
-      'text-blue-600 font-semibold': isToday,
-      'text-slate-400': isWeekend && !isToday,
-      'text-slate-500': !isWeekend && !isToday,
+    return cx('bg-base-300 sticky top-0 min-w-[110px] px-2 py-3 text-center text-xs font-semibold', {
+      'text-primary font-bold': isToday,
+      'text-base-content/40': isWeekend && !isToday,
+      'text-base-content/60': !isWeekend && !isToday,
     });
   };
 
   return (
-    <div className="size-full overflow-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div className="flex size-full flex-col gap-2">
       {lastUpdatedAt && (
-        <div className="flex justify-end border-b border-slate-100 px-4 py-2">
-          <span className="text-xs text-slate-400">최근 갱신: {dayjs(lastUpdatedAt).format('HH:mm:ss')}</span>
+        <div className="flex justify-end">
+          <span className="text-base-content/40 text-xs">
+            {t('lastUpdated', { time: dayjs(lastUpdatedAt).format('HH:mm:ss') })}
+          </span>
         </div>
       )}
-      <table className="table" role="table" aria-label="임직원 근무 현황">
-        <thead>
-          <tr className="border-b border-slate-100 bg-slate-50">
-            <th
-              scope="col"
-              className="sticky top-0 left-0 z-30 min-w-[140px] bg-slate-50 py-3 pl-4 text-left text-xs font-semibold text-slate-500"
-            >
-              임직원
-            </th>
-            {dates.map((date) => (
-              <th key={dayjs(date).format('YYYY-MM-DD')} scope="col" className={colHeaderClass(date)}>
-                {getDaysOfWeek(dayjs(date).day())} {dayjs(date).format('MM/DD')}
+
+      <div className="border-base-content/10 bg-base-300 min-h-0 flex-1 overflow-auto rounded-2xl border shadow-sm">
+        <table className="table" role="table" aria-label={t('gridLabel')}>
+          <thead>
+            <tr className="border-base-content/[0.08] border-b">
+              <th
+                scope="col"
+                className="bg-base-300 text-base-content/60 sticky top-0 left-0 z-30 min-w-[170px] py-3 pl-4 text-left text-xs font-semibold"
+              >
+                {t('employee')}
               </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {usersLoading && Array.from({ length: SKELETON_ROW_COUNT }).map((_, i) => <SkeletonRow key={i} />)}
-
-          {!usersLoading && usersError && (
-            <tr>
-              <td colSpan={8}>
-                <div className="flex h-32 items-center justify-center text-sm text-red-400">
-                  직원 목록을 불러오지 못했습니다. 페이지를 새로 고침해주세요.
-                </div>
-              </td>
+              {dates.map((date) => {
+                const isToday = dayjs().isSame(date, 'day');
+                return (
+                  <th key={dayjs(date).format('YYYY-MM-DD')} scope="col" className={colHeaderClass(date)}>
+                    {getDaysOfWeek(dayjs(date).day())}{' '}
+                    <span className="font-normal">{dayjs(date).format('MM/DD')}</span>
+                    {isToday && ` · ${tCommon('today')}`}
+                  </th>
+                );
+              })}
             </tr>
-          )}
+          </thead>
+          <tbody>
+            {usersLoading &&
+              Array.from({ length: SKELETON_ROW_COUNT }).map((_, i) => (
+                <SkeletonRow key={i} label={t('loadingLabel')} />
+              ))}
 
-          {!usersLoading && !usersError && users.length === 0 && (
-            <tr>
-              <td colSpan={8}>
-                <div className="flex h-32 items-center justify-center text-sm text-slate-400">임직원이 없습니다.</div>
-              </td>
-            </tr>
-          )}
+            {!usersLoading && usersError && (
+              <tr>
+                <td colSpan={8}>
+                  <div className="text-error flex h-32 items-center justify-center text-sm">{t('usersError')}</div>
+                </td>
+              </tr>
+            )}
 
-          {!usersLoading &&
-            !usersError &&
-            users.map((user, idx) => {
-              const result = attendanceResults[idx];
-              const records: AttendanceRecord[] = (result?.data as AttendanceRecord[]) || [];
-              return (
-                <EmployeeRow
-                  key={user.id}
-                  user={user}
-                  dates={dates}
-                  records={records}
-                  isLoading={result?.isLoading ?? false}
-                  isError={result?.isError ?? false}
-                />
-              );
-            })}
-        </tbody>
-      </table>
+            {!usersLoading && !usersError && users.length === 0 && (
+              <tr>
+                <td colSpan={8}>
+                  <div className="text-base-content/50 flex h-32 items-center justify-center text-sm">
+                    {t('noEmployees')}
+                  </div>
+                </td>
+              </tr>
+            )}
+
+            {!usersLoading &&
+              !usersError &&
+              users.map((user, idx) => {
+                const result = attendanceResults[idx];
+                const records: AttendanceRecord[] = (result?.data as AttendanceRecord[]) || [];
+                return (
+                  <EmployeeRow
+                    key={user.id}
+                    user={user}
+                    dates={dates}
+                    records={records}
+                    isLoading={result?.isLoading ?? false}
+                    isError={result?.isError ?? false}
+                    t={t}
+                  />
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="text-base-content/60 mt-1.5 flex flex-wrap items-center gap-4 text-xs">
+        <span className="inline-flex items-center gap-1.5">
+          <span className="bg-primary inline-block h-2 w-2 rounded-full" />
+          {t('legendNormal')}
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <span className="bg-error inline-block h-2 w-2 rounded-full" />
+          {t('legendWarning')}
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <span className="bg-info/15 text-info rounded-full px-2 py-0.5 font-semibold">{t('legendDayOff')}</span>
+        </span>
+      </div>
     </div>
   );
 }

@@ -7,6 +7,7 @@ import { FaCheck, FaTimes } from 'react-icons/fa';
 import { useGetUsers } from '@/domain/user/query/user';
 
 import cx from 'classnames';
+import { useTranslations } from 'next-intl';
 
 interface SelectedUserModalProps {
   show: boolean;
@@ -15,6 +16,8 @@ interface SelectedUserModalProps {
 }
 
 export default function SelectUserModal({ show, onClose, onSelect }: SelectedUserModalProps) {
+  const t = useTranslations('overtime.request.modal');
+
   // ref
   const ref = useRef<HTMLDialogElement>(null);
 
@@ -63,55 +66,56 @@ export default function SelectUserModal({ show, onClose, onSelect }: SelectedUse
 
   return (
     <dialog ref={ref} className="modal" onKeyDownCapture={handleKeyboardDown}>
-      <div className="modal-box">
-        <div className="flex w-full flex-col items-start justify-start gap-3">
-          {/* header */}
-          <div className="">
-            <h3 className="text-lg font-bold">인원 선택</h3>
-          </div>
-        </div>
+      <div className="modal-box rounded-xl bg-[#252525] shadow-2xl">
+        {/* header */}
+        <h3 className="text-base-content text-lg font-bold">{t('title')}</h3>
 
         {/* content */}
-        <div className="m-3 flex flex-col items-start justify-center gap-4 overflow-auto">
-          <table className="table">
-            {/* head */}
-            <thead>
-              <tr>
-                <th className="text-center font-bold">팀</th>
-                <th className="text-center font-bold">직급</th>
-                <th className="text-center font-bold">이름</th>
-              </tr>
-            </thead>
-            <tbody className="">
-              {users.map((user) => (
-                <tr
-                  key={`user-item-${user.id}`}
-                  className={cx('hover:bg-base-200 hover:cursor-pointer', {
-                    'bg-base-200': user.id === selectedUserUniqueId,
-                  })}
-                  onClick={() => setSelectedUserUniqueId(user.id)}
-                >
-                  <td className="text-center">{user.group?.name}</td>
-                  <td className="text-center">{user.position?.name}</td>
-                  <td className="text-center">{user.username}</td>
+        <div className="mt-4 flex flex-col items-start justify-center gap-4 overflow-auto">
+          <div className="bg-base-300 w-full overflow-x-auto rounded-lg">
+            <table className="table">
+              {/* head */}
+              <thead>
+                <tr className="text-base-content/60">
+                  <th className="text-center">{t('colTeam')}</th>
+                  <th className="text-center">{t('colPosition')}</th>
+                  <th className="text-center">{t('colName')}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {users.map((user) => (
+                  <tr
+                    key={`user-item-${user.id}`}
+                    className={cx('hover:bg-base-200/60 cursor-pointer', {
+                      'bg-base-200': user.id === selectedUserUniqueId,
+                    })}
+                    onClick={() => setSelectedUserUniqueId(user.id)}
+                  >
+                    <td className="text-center">{user.group?.name}</td>
+                    <td className="text-center">{user.position?.name}</td>
+                    <td className="text-center">{user.username}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* action */}
         <div className="modal-action">
-          <button className="btn w-32" onClick={handleClose}>
-            <FaTimes className="size-6" />
-            취소
+          <button className="btn btn-ghost" onClick={handleClose}>
+            <FaTimes className="size-4" />
+            {t('cancel')}
           </button>
-          <button className="btn btn-primary w-32" disabled={!selectedUserUniqueId} onClick={handleSelectUser}>
-            <FaCheck className="size-5" />
-            선택
+          <button className="btn btn-primary" disabled={!selectedUserUniqueId} onClick={handleSelectUser}>
+            <FaCheck className="size-4" />
+            {t('confirm')}
           </button>
         </div>
       </div>
+      <form method="dialog" className="modal-backdrop">
+        <button onClick={handleClose}>close</button>
+      </form>
     </dialog>
   );
 }

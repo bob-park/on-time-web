@@ -7,11 +7,43 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 import { useUserLeaveEntries, useUsersUsedVacations } from '@/domain/user/query/user';
 
+import cx from 'classnames';
 import dayjs from 'dayjs';
+import { useTranslations } from 'next-intl';
 
 import DayOffViewContents from './DayOffViewContents';
 
+const COLUMN_COUNT = 19;
+const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
+const SKELETON_ROW_COUNT = 5;
+
+const headerCellClass = 'text-base-content/50 px-3 py-2.5 text-center text-xs font-semibold whitespace-nowrap';
+
+// ── Skeleton ────────────────────────────────────────────────────────────────
+
+function SkeletonRow() {
+  return (
+    <tr className="border-base-content/[0.06] border-b last:border-b-0">
+      <td className="bg-base-300 sticky left-0 z-10 px-3 py-3">
+        <div className="bg-base-content/10 mx-auto h-3 w-4 animate-pulse rounded" />
+      </td>
+      <td className="bg-base-300 border-base-content/[0.08] sticky left-[48px] z-10 border-r px-3 py-3">
+        <div className="bg-base-content/10 h-3 w-16 animate-pulse rounded" />
+        <div className="bg-base-content/[0.06] mt-1 h-2 w-10 animate-pulse rounded" />
+      </td>
+      {Array.from({ length: COLUMN_COUNT - 2 }).map((_, i) => (
+        <td key={i} className="px-3 py-3">
+          <div className="bg-base-content/10 mx-auto h-3 w-8 animate-pulse rounded" />
+        </td>
+      ))}
+    </tr>
+  );
+}
+
+// ── Main component ────────────────────────────────────────────────────────────
+
 export default function DayOffManageContents() {
+  const t = useTranslations('manager.vacations');
   const [year, setYear] = useState<number>(dayjs().year());
 
   const { users, isLoading: isLoadingLeave } = useUserLeaveEntries({ year });
@@ -23,22 +55,29 @@ export default function DayOffManageContents() {
   );
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-      {/* Header zone */}
-      <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
-        <span className="text-sm font-semibold text-slate-800">임직원 휴가 사용 현황</span>
+    <div className="border-base-content/10 bg-base-300 overflow-hidden rounded-2xl border shadow-sm">
+      {/* Header zone — 타이틀 + 연도 navigator */}
+      <div className="border-base-content/[0.08] flex items-center justify-between gap-4 border-b px-5 py-4">
+        <div>
+          <div className="eyebrow">{t('eyebrow')}</div>
+          <h2 className="mt-0.5 text-base font-bold tracking-tight">{t('title')}</h2>
+        </div>
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-600 transition-colors hover:bg-slate-50"
+            aria-label={t('prevYear')}
+            className="border-base-content/10 text-base-content/70 hover:bg-base-content/10 flex h-8 w-8 items-center justify-center rounded-full border transition-colors"
             onClick={() => setYear(year - 1)}
           >
             <IoIosArrowBack className="size-4" />
           </button>
-          <span className="min-w-[64px] text-center text-sm font-semibold text-slate-800">{year}년</span>
+          <span className="min-w-[72px] text-center text-sm font-semibold">
+            {t('yearLabel', { year: String(year) })}
+          </span>
           <button
             type="button"
-            className="flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-600 transition-colors hover:bg-slate-50"
+            aria-label={t('nextYear')}
+            className="border-base-content/10 text-base-content/70 hover:bg-base-content/10 flex h-8 w-8 items-center justify-center rounded-full border transition-colors"
             onClick={() => setYear(year + 1)}
           >
             <IoIosArrowForward className="size-4" />
@@ -46,61 +85,56 @@ export default function DayOffManageContents() {
         </div>
       </div>
 
-      {/* Matrix zone */}
-      <div className="overflow-x-auto">
-        <table className="w-max border-collapse">
+      {/* Hint */}
+      <div className="flex justify-end px-5 pt-3">
+        <span className="text-base-content/40 text-[11px]">
+          {t.rich('hint', { comp: (chunks) => <span className="text-warning">{chunks}</span> })}
+        </span>
+      </div>
+
+      {/* Matrix zone — 가로 스크롤 13px 테이블 */}
+      <div className="overflow-x-auto p-2">
+        <table className="w-max border-collapse text-[13px]" aria-label={t('gridLabel')}>
           <thead>
-            <tr className="h-10 border-b border-slate-200 bg-slate-50">
-              <th className="sticky left-0 z-20 w-12 bg-slate-50 px-3 text-center text-xs font-semibold tracking-wider text-slate-500 uppercase">
-                순번
+            <tr className="border-base-content/[0.08] border-b">
+              <th className={cx(headerCellClass, 'bg-base-300 sticky left-0 z-20 min-w-[48px]')}>{t('colOrder')}</th>
+              <th
+                className={cx(
+                  headerCellClass,
+                  'bg-base-300 border-base-content/[0.08] sticky left-[48px] z-20 min-w-[120px] border-r text-left',
+                )}
+              >
+                {t('colName')}
               </th>
-              <th className="sticky left-[48px] z-20 w-20 border-r border-slate-200 bg-slate-50 px-3 text-center text-xs font-semibold tracking-wider text-slate-500 uppercase">
-                성명
+              <th className={cx(headerCellClass, 'min-w-[110px]')}>{t('colEffectiveDate')}</th>
+              <th className={cx(headerCellClass, 'min-w-[96px]')}>
+                {t('colAnnual')}
+                <span className="text-warning">{t('colAnnualComp')}</span>
               </th>
-              <th className="w-28 px-3 text-center text-xs font-semibold tracking-wider text-slate-500 uppercase">
-                입사일
+              <th className={cx(headerCellClass, 'border-base-content/[0.08] min-w-[88px] border-r')}>
+                {t('colAvailable')}
               </th>
-              <th className="w-24 px-3 text-center text-xs font-semibold tracking-wider text-slate-500 uppercase">
-                연차<span className="text-blue-400">(보상)</span>
-              </th>
-              <th className="w-24 px-3 text-center text-xs font-semibold tracking-wider text-slate-500 uppercase">
-                전년차감
-              </th>
-              <th className="w-24 border-r border-slate-200 px-3 text-center text-xs font-semibold tracking-wider text-slate-500 uppercase">
-                사용가능
-              </th>
-              {new Array(12).fill(null).map((_, i) => (
-                <th
-                  key={`th-month-${i}`}
-                  className="w-16 px-3 text-center text-xs font-semibold tracking-wider text-slate-500 uppercase"
-                >
-                  {i + 1}월
+              {MONTHS.map((m) => (
+                <th key={`th-month-${m}`} className={cx(headerCellClass, 'min-w-[60px]')}>
+                  {t('colMonth', { month: m })}
                 </th>
               ))}
-              <th className="w-24 border-l border-slate-200 px-3 text-center text-xs font-semibold tracking-wider text-slate-500 uppercase">
-                합계
+              <th className={cx(headerCellClass, 'border-base-content/[0.08] min-w-[80px] border-l')}>
+                {t('colTotal')}
               </th>
-              <th className="w-24 px-3 text-center text-xs font-semibold tracking-wider text-slate-500 uppercase">
-                잔여
-              </th>
+              <th className={cx(headerCellClass, 'min-w-[80px]')}>{t('colRemaining')}</th>
             </tr>
           </thead>
           <tbody>
             {isLoading ? (
-              <tr>
-                <td colSpan={20} className="py-8 text-center">
-                  <div className="flex justify-center">
-                    <div className="h-4 w-48 animate-pulse rounded bg-slate-200" />
-                  </div>
-                </td>
-              </tr>
+              Array.from({ length: SKELETON_ROW_COUNT }).map((_, i) => <SkeletonRow key={i} />)
             ) : sortedUsers.length === 0 ? (
               <tr>
-                <td colSpan={20} className="py-16 text-center">
+                <td colSpan={COLUMN_COUNT} className="py-16 text-center">
                   <div className="flex flex-col items-center gap-2">
-                    <HiOutlineDocumentText className="size-10 text-slate-300" />
-                    <p className="text-sm font-semibold text-slate-500">직원 데이터가 없습니다</p>
-                    <p className="text-sm text-slate-400">연도를 변경하거나 직원 데이터를 확인해 주세요.</p>
+                    <HiOutlineDocumentText className="text-base-content/20 size-10" />
+                    <p className="text-base-content/60 text-sm font-semibold">{t('noEmployees')}</p>
+                    <p className="text-base-content/40 text-sm">{t('noEmployeesHint')}</p>
                   </div>
                 </td>
               </tr>

@@ -15,13 +15,13 @@ interface PillFilterProps<T> {
 
 const pillClass = (active: boolean) =>
   active
-    ? 'bg-slate-800 text-white rounded-full px-3.5 py-1.5 text-sm font-medium transition-[colors,transform] duration-100 cursor-pointer active:scale-95'
-    : 'bg-slate-100 text-slate-600 rounded-full px-3.5 py-1.5 text-sm font-medium hover:bg-slate-200 transition-[colors,transform] duration-100 cursor-pointer active:scale-95';
+    ? 'bg-primary text-primary-content flex h-8 items-center rounded-full px-4 text-sm font-bold transition-[colors,transform] duration-100 cursor-pointer active:scale-95'
+    : 'bg-base-300 text-base-content flex h-8 items-center rounded-full px-4 text-sm font-normal hover:bg-base-content/10 transition-[colors,transform] duration-100 cursor-pointer active:scale-95';
 
 export default function PillFilter<T>({ label, options, value, onChange, ariaLabel }: PillFilterProps<T>) {
   return (
     <div role="group" aria-label={ariaLabel} className="flex flex-wrap items-center gap-2">
-      <span className="w-[72px] flex-none text-xs font-semibold uppercase tracking-wider text-slate-400">
+      <span className="text-base-content/60 w-[72px] flex-none text-xs font-semibold tracking-wider uppercase">
         {label}
       </span>
       {options.map((opt) => (

@@ -1,5 +1,4 @@
 import index from '@/shared/api';
-
 import delay from '@/utils/delay';
 
 export async function record(req: RecordAttendanceRequest) {

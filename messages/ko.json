@@ -1,0 +1,532 @@
+{
+  "metadata": {
+    "title": "On Time",
+    "description": "전자 근태 관리 시스템"
+  },
+  "common": {
+    "today": "오늘",
+    "cancel": "취소",
+    "confirm": "확인",
+    "total": "총 {count}건",
+    "filter": {
+      "categoryLabel": "구분",
+      "statusLabel": "상태",
+      "all": "전체",
+      "typeVacation": "휴가계",
+      "typeOvertime": "휴일근무보고서",
+      "statusDraft": "초안",
+      "statusWaiting": "진행",
+      "statusApproved": "승인",
+      "statusRejected": "반려"
+    }
+  },
+  "preparing": {
+    "title": "준비중",
+    "descriptionExpense": "지출결의서 기능을 준비하고 있어요 — 조금만 기다려 주세요",
+    "descriptionSchedules": "임직원 근무 일정 등록 기능을 준비하고 있어요",
+    "descriptionCompensatory": "임직원 보상 휴가 현황 기능을 준비하고 있어요",
+    "backToDocuments": "결재 목록으로",
+    "backToDashboard": "대시보드로"
+  },
+  "nav": {
+    "dashboard": "대시보드",
+    "schedule": "근무 일정",
+    "groupApproval": "전자 결재",
+    "dayoffRequest": "휴가 신청",
+    "dayoffUsed": "휴가 사용 내역",
+    "overtimeRequest": "휴일근무보고서 신청",
+    "expenseRequest": "지출결의서 신청",
+    "documents": "결재 신청 목록",
+    "approvals": "결재 처리 대기 목록",
+    "groupManager": "관리자",
+    "managerVacations": "임직원 휴가 사용 현황",
+    "managerCompensatory": "임직원 보상 휴가 현황",
+    "managerAttendance": "임직원 근무 현황",
+    "managerSchedules": "임직원 근무 일정 등록",
+    "managerChat": "임직원과의 소통",
+    "logout": "로그아웃",
+    "profile": "프로필"
+  },
+  "workingBar": {
+    "working": "근무 중 · {time} 출근",
+    "leaveTarget": "목표 퇴근 {time}",
+    "beforeWork": "출근 전",
+    "done": "오늘 근무 완료 · {duration}",
+    "clockOut": "퇴근하기",
+    "clockIn": "출근하기"
+  },
+  "dashboard": {
+    "eyebrow": "Dashboard",
+    "title": "근로 시간",
+    "heroLabel": "이번 주 누적 근무",
+    "statusOnTrack": "순항 중",
+    "statusBehind": "분발 필요",
+    "cumulativeHours": "누적 근무 시간",
+    "expectedHours": "예상 근무 시간",
+    "expectedTarget": "목표 100%",
+    "compLeaveLabel": "보상휴가 잔여",
+    "compLeaveCaption": "이번 달 기준",
+    "viewUsage": "사용 내역 보기",
+    "sectionTitle": "주간 근태 상세 내역",
+    "weekCount": "해당 주 {count}건",
+    "colDate": "근무일",
+    "colCategory": "구분",
+    "colClockIn": "출근",
+    "colTargetClockOut": "목표 퇴근",
+    "colClockOut": "퇴근",
+    "colWorkTime": "근무 시간",
+    "colStatus": "상태",
+    "categoryWork": "Work",
+    "categoryDayOff": "연차",
+    "categoryHalfDayOff": "반차",
+    "categoryHoliday": "휴일",
+    "todaySuffix": "오늘",
+    "working": "근무 중…",
+    "prevWeek": "지난 주",
+    "nextWeek": "다음 주"
+  },
+  "schedule": {
+    "eyebrow": "Schedule",
+    "title": "근무 일정",
+    "add": "추가",
+    "workingDay": "근무일",
+    "todaySuffix": "오늘",
+    "scheduled": "근무 예정",
+    "addTitle": "근무 일정 추가",
+    "category": "구분",
+    "date": "일자",
+    "categoryNone": "없음",
+    "categoryDayOff": "연차",
+    "categoryAmHalfDayOff": "오전 반차",
+    "categoryPmHalfDayOff": "오후 반차",
+    "cancel": "취소",
+    "addAction": "추가",
+    "adding": "추가중"
+  },
+  "documents": {
+    "eyebrow": "Documents",
+    "title": "내 결재 문서",
+    "subtitle": "결재 신청 내역을 조회하고 상태를 확인합니다",
+    "categoryFilterAria": "문서 구분 필터",
+    "statusFilterAria": "문서 상태 필터",
+    "colDocNo": "문서번호",
+    "colCategory": "구분",
+    "colStatus": "상태",
+    "colDate": "요청일",
+    "rowAria": "문서 {id} 상세 보기",
+    "moreAria": "문서 상세 보기",
+    "emptyTitle": "결재 문서가 없습니다",
+    "emptyDescription": "조건에 맞는 문서가 없습니다"
+  },
+  "approvals": {
+    "eyebrow": "Approvals",
+    "title": "결재 처리",
+    "subtitle": "결재 요청 목록을 조회하고 처리합니다",
+    "categoryFilterAria": "문서 구분 필터",
+    "statusFilterAria": "문서 상태 필터",
+    "colDocNo": "문서번호",
+    "colCategory": "구분",
+    "colStatus": "상태",
+    "colApplicant": "신청자",
+    "colDate": "요청일",
+    "rowAria": "결재 {id} 상세 보기",
+    "moreAria": "결재 상세 보기",
+    "emptyTitle": "결재 문서가 없습니다",
+    "emptyDescription": "조건에 맞는 문서가 없습니다"
+  },
+  "dayoff": {
+    "request": {
+      "eyebrow": "Day Off",
+      "title": "휴가 신청",
+      "viewHistory": "휴가 내역 보기",
+      "unit": "일",
+      "stat": {
+        "total": "전체 연차",
+        "totalCaption": "{year}년 기준",
+        "used": "사용 연차",
+        "usedCaption": "누적 사용",
+        "remaining": "잔여 연차",
+        "remainingCaption": "사용 가능",
+        "comp": "보상 휴가",
+        "compCaption": "잔여 기준"
+      },
+      "settings": {
+        "typeLabel": "휴가 구분",
+        "subTypeLabel": "부가 구분",
+        "compLabel": "보상 휴가 선택",
+        "reasonLabel": "사유",
+        "reasonPlaceholder": "개인 사유",
+        "selectRequired": "선택해 주세요",
+        "inputRequired": "입력해 주세요",
+        "compSelect": "보상 휴가 선택",
+        "compSelected": "보상 휴가 선택 완료"
+      },
+      "type": {
+        "general": "연차",
+        "generalDesc": "일반 연차 휴가",
+        "compensatory": "보상 휴가",
+        "compensatoryDesc": "휴일 근무 대체 휴가",
+        "official": "공가",
+        "officialDesc": "예비군 / 민방위 등",
+        "remaining": "{days}일 남음"
+      },
+      "subType": {
+        "allDay": "종일",
+        "amHalf": "오전 반차",
+        "pmHalf": "오후 반차",
+        "days": "{days}일"
+      },
+      "calendar": {
+        "title": "날짜 선택",
+        "rangeBadge": "{days}일 선택됨"
+      },
+      "summary": {
+        "selectedDate": "선택 날짜",
+        "usedDays": "사용 기간",
+        "remainingAfter": "사용 후 잔여",
+        "approval": "승인 예상",
+        "approvalValue": "즉시",
+        "days": "{days}일"
+      },
+      "actions": {
+        "cancel": "취소",
+        "submit": "초안 생성",
+        "submitting": "초안 생성 중"
+      },
+      "toast": {
+        "created": "휴가 신청 문서의 초안이 생성되었습니다.",
+        "error": "신청 중 오류가 발생했습니다.",
+        "required": "필수 항목을 입력해주세요"
+      },
+      "comp": {
+        "modalTitle": "보상 휴가 선택",
+        "modalDescription": "사용할 보상 휴가를 선택해 주세요.",
+        "colCreatedDate": "보상 휴가 생성일",
+        "colContents": "내용",
+        "colLeaveDays": "보상 휴가일",
+        "colRemainingDays": "잔여 휴가일",
+        "cancel": "취소",
+        "confirm": "선택 완료"
+      }
+    },
+    "used": {
+      "eyebrow": "History",
+      "title": "휴가 내역",
+      "requestAction": "+ 휴가 신청",
+      "unit": "일",
+      "year": "{year}년",
+      "prevYear": "이전 연도",
+      "nextYear": "다음 연도",
+      "stat": {
+        "totalUsed": "총 사용일",
+        "generalChip": "연차 {days}일",
+        "compChip": "보상 {days}일",
+        "noneUsed": "사용 내역 없음",
+        "remaining": "잔여 연차",
+        "expireCaption": "만료일 {year}년 12월 31일"
+      },
+      "table": {
+        "title": "상세 내역",
+        "count": "{year}년 · {count}건",
+        "colNo": "번호",
+        "colType": "종류",
+        "colSubType": "구분",
+        "colDate": "사용일",
+        "colDays": "사용일수",
+        "colNote": "비고",
+        "colStatus": "상태",
+        "days": "{days}일"
+      },
+      "type": {
+        "general": "연차",
+        "compensatory": "보상휴가",
+        "official": "공가"
+      },
+      "subType": {
+        "allDay": "종일",
+        "amHalf": "오전 반차",
+        "pmHalf": "오후 반차"
+      },
+      "empty": "{year}년 휴가 사용 내역이 없습니다."
+    }
+  },
+  "approval": {
+    "detail": {
+      "eyebrow": "Approval",
+      "proceedEyebrow": "Approvals",
+      "dayoffTitle": "휴가 신청 정보",
+      "overtimeTitle": "휴일 근무 보고서 신청 정보",
+      "proceedTitle": "결재 처리 정보",
+      "statusTitle": "현재 결재 상태",
+      "stepCurrent": "현재",
+      "actions": {
+        "press": "빨리 진행시켜줘",
+        "request": "신청하기",
+        "pdf": "PDF 다운로드",
+        "pdfLoading": "생성중",
+        "approve": "승인",
+        "reject": "반려",
+        "cancel": "취소"
+      },
+      "tooltip": {
+        "alreadyRequested": "이미 신청된 문서입니다.",
+        "draftNoDownload": "초안인 경우 다운로드 받을 수 없습니다. 문서를 신청해주세요"
+      },
+      "press": {
+        "title": "결재 독촉 알림",
+        "cancel": "취소",
+        "send": "알림 보내기",
+        "sending": "전송 중"
+      },
+      "request": {
+        "title": "신청하기",
+        "body": "이 문서를 결재 신청하시겠습니까?",
+        "cancel": "취소",
+        "submit": "신청하기",
+        "submitting": "신청 중"
+      },
+      "approve": {
+        "title": "결재 승인",
+        "body": "이 문서를 승인하시겠습니까?",
+        "cancel": "취소",
+        "confirm": "승인",
+        "confirming": "승인 중"
+      },
+      "reject": {
+        "title": "결재 반려",
+        "reasonLabel": "사유",
+        "reasonPlaceholder": "반려 사유를 입력해 주세요",
+        "required": "필수",
+        "cancel": "취소",
+        "confirm": "반려",
+        "confirming": "반려 중"
+      },
+      "cancelModal": {
+        "title": "취소하기",
+        "body": "이 문서를 취소하면 폐기됩니다. 계속하시겠습니까?",
+        "back": "돌아가기",
+        "confirm": "문서 취소",
+        "confirming": "취소 중"
+      }
+    }
+  },
+  "overtime": {
+    "request": {
+      "eyebrow": "Overtime",
+      "title": "휴일 근무 보고서 신청",
+      "viewDocuments": "결재 신청 목록",
+      "formTitle": "근무 내역 입력",
+      "formHint": "한 건씩 추가할 수 있어요",
+      "registeredLabel": "등록 여부",
+      "clearAria": "선택 해제",
+      "registered": "등록 직원",
+      "unregistered": "미등록 직원",
+      "personLabel": "인원",
+      "selectPerson": "인원 선택",
+      "selectPersonPlaceholder": "직원을 선택하세요",
+      "namePlaceholder": "성명",
+      "purposeLabel": "근무 목적",
+      "purposePlaceholder": "근무 목적 입력",
+      "workDateLabel": "근무일",
+      "selectDate": "날짜 선택",
+      "workTimeLabel": "근무 시간",
+      "start": "시작",
+      "end": "종료",
+      "timeSep": "~",
+      "hourUnit": "{value}시",
+      "minuteUnit": "{value}분",
+      "compLabel": "보상휴가",
+      "compToggle": "보상휴가로 처리",
+      "addButton": "+ 목록에 추가",
+      "listTitle": "추가된 근무 내역",
+      "listCount": "({count}건)",
+      "colDate": "근무일",
+      "colTime": "근무 시간",
+      "colPurpose": "근무 목적",
+      "colWorker": "근무자",
+      "colComp": "보상휴가",
+      "colDelete": "삭제",
+      "compApplied": "적용",
+      "deleteAria": "삭제",
+      "emptyTitle": "추가된 항목이 없습니다",
+      "emptyDescription": "위 양식을 작성한 후 추가 버튼을 클릭하세요.",
+      "cancel": "취소",
+      "submit": "초안 생성",
+      "submitting": "처리 중...",
+      "toast": {
+        "created": "휴일 근무 보고서 초안이 작성되었습니다.",
+        "error": "문서 생성에 실패했습니다. 다시 시도해 주세요.",
+        "selectRegistered": "등록 여부를 선택해 주세요.",
+        "selectPerson": "인원을 선택하거나 이름을 입력해 주세요.",
+        "inputPurpose": "근무 목적을 입력해 주세요.",
+        "selectDate": "근무일을 선택해 주세요."
+      },
+      "modal": {
+        "title": "인원 선택",
+        "colTeam": "팀",
+        "colPosition": "직급",
+        "colName": "이름",
+        "cancel": "취소",
+        "confirm": "선택"
+      }
+    }
+  },
+  "profile": {
+    "eyebrow": "Profile",
+    "title": "프로필",
+    "personalInfo": {
+      "title": "개인 정보",
+      "changeAvatar": "아바타 변경",
+      "labelTeam": "소속 팀",
+      "labelPosition": "직급",
+      "labelName": "이름",
+      "labelEmail": "E-MAIL"
+    },
+    "password": {
+      "title": "패스워드 변경",
+      "newLabel": "새 패스워드",
+      "newPlaceholder": "새 패스워드를 입력하세요",
+      "confirmLabel": "패스워드 확인",
+      "confirmPlaceholder": "한 번 더 입력하세요",
+      "mismatch": "패스워드가 일치하지 않습니다",
+      "hint": "8자 이상, 영문/숫자/특수문자 조합",
+      "toggleAria": "패스워드 표시 전환",
+      "submit": "변경",
+      "submitting": "변경중",
+      "successToast": "패스워드가 변경되었습니다. 다음 로그인 시 적용됩니다.",
+      "errorToast": "패스워드 변경에 실패했습니다. 다시 시도해 주세요."
+    },
+    "signature": {
+      "title": "결재 서명",
+      "empty": "서명이 등록되지 않았습니다",
+      "transparentWarning": "⚠ 배경이 투명해야 정상적으로 서명이 보입니다.",
+      "register": "서명 등록",
+      "change": "서명 변경",
+      "alt": "결재 서명"
+    },
+    "avatarModal": {
+      "title": "아바타 수정",
+      "dropzone": "클릭 또는 드래그하여 이미지를 업로드하세요",
+      "cancel": "취소",
+      "submit": "변경",
+      "submitting": "변경중",
+      "successToast": "사용자의 아바타가 변경되었습니다. 화면에 보이는 아바타는 추후 변경됩니다.",
+      "errorToast": "아바타 변경에 실패했습니다. 다시 시도해 주세요.",
+      "previewAlt": "변경할 아바타"
+    },
+    "signatureModal": {
+      "title": "결재 서명 수정",
+      "dropzone": "클릭 또는 드래그하여 이미지를 업로드하세요",
+      "transparentWarning": "배경이 투명해야 정상적으로 서명이 보입니다.",
+      "cancel": "취소",
+      "submit": "변경",
+      "submitting": "변경중",
+      "successToast": "결재 서명이 변경되었습니다. 화면에 보이는 결재 서명은 추후 변경됩니다.",
+      "errorToast": "서명 변경에 실패했습니다. 다시 시도해 주세요.",
+      "previewAlt": "변경할 서명"
+    }
+  },
+  "attendance": {
+    "record": {
+      "eyebrow": "Attendance",
+      "title": "근태 처리",
+      "clockInDone": "출근 처리되었습니다.",
+      "clockOutDone": "퇴근 처리되었습니다.",
+      "invalidAccess": "잘못된 접근입니다.",
+      "closeHint": "이 창은 닫으셔도 됩니다.",
+      "workingDate": "근무일",
+      "clockInTime": "출근 시간",
+      "leaveWorkAt": "퇴근 예정 시간",
+      "clockOutTime": "퇴근 시간",
+      "gps": {
+        "eyebrow": "GPS Check",
+        "title": "근태 처리 (GPS)",
+        "subtitle": "현재 위치를 기준으로 출퇴근을 처리합니다",
+        "locationLabel": "장소",
+        "typeLabel": "출 / 퇴근",
+        "clockIn": "출근",
+        "clockOut": "퇴근",
+        "createdDate": "생성일",
+        "expiredDate": "만료일",
+        "autoRefresh": "토큰 자동 갱신 중",
+        "proceed": "진행하기",
+        "proceeding": "진행중",
+        "tooltip": "현재 위치에서 처리할 수 없지만, 너굴맨이 처리함",
+        "errorTitle": "무언가 잘못되었는디?"
+      }
+    }
+  },
+  "manager": {
+    "attendance": {
+      "eyebrow": "Attendance",
+      "title": "임직원 근무 현황",
+      "gridLabel": "임직원 근무 현황",
+      "employee": "임직원",
+      "lastUpdated": "최근 갱신: {time}",
+      "clockIn": "출근",
+      "clockOut": "퇴근",
+      "scheduled": "예정",
+      "working": "근무 중",
+      "dayOff": "연차",
+      "amHalfDayOff": "오전반차",
+      "pmHalfDayOff": "오후반차",
+      "holiday": "휴일",
+      "loadError": "오류",
+      "loadingLabel": "데이터 로딩 중",
+      "errorLabel": "데이터 오류",
+      "statusDone": "완료",
+      "statusWarning": "경고",
+      "usersError": "직원 목록을 불러오지 못했습니다. 페이지를 새로 고침해주세요.",
+      "noEmployees": "임직원이 없습니다.",
+      "legendNormal": "정상",
+      "legendWarning": "지각 / 근무시간 미달",
+      "legendDayOff": "연차"
+    },
+    "vacations": {
+      "eyebrow": "Manage",
+      "title": "임직원 휴가 사용 현황",
+      "gridLabel": "임직원 휴가 사용 현황",
+      "prevYear": "이전 연도",
+      "nextYear": "다음 연도",
+      "yearLabel": "{year}년",
+      "hint": "괄호 안 숫자는 <comp>보상휴가</comp> 사용분입니다 · 단위: 일",
+      "colOrder": "순번",
+      "colName": "성명",
+      "colEffectiveDate": "입사일",
+      "colAnnual": "연차",
+      "colAnnualComp": "(보상)",
+      "colAvailable": "사용가능",
+      "colMonth": "{month}월",
+      "colTotal": "합계",
+      "colRemaining": "잔여",
+      "noEmployees": "직원 데이터가 없습니다",
+      "noEmployeesHint": "연도를 변경하거나 직원 데이터를 확인해 주세요."
+    },
+    "qr": {
+      "eyebrow": "QR Check-in",
+      "title": "QR 코드 생성",
+      "clockIn": "출근",
+      "clockOut": "퇴근",
+      "workingDate": "근무일",
+      "createdDate": "생성일",
+      "expiredDate": "만료일",
+      "autoRefresh": "자동 갱신 중",
+      "caption": "스캔하면 {type} 처리 페이지로 이동합니다",
+      "qrAlt": "{type} QR 코드"
+    }
+  },
+  "chat": {
+    "eyebrow": "Support",
+    "title": "임직원과의 소통",
+    "subtitle": "임직원을 선택해 1:1 대화를 시작합니다",
+    "back": "목록으로",
+    "inputPlaceholder": "메세지를 입력해주세요",
+    "send": "전송",
+    "system": {
+      "enterMe": "고객지원에 연결되었습니다.",
+      "enterOther": "담당자와 연결되었습니다.",
+      "leaveMe": "고객지원에 연결 해제되었습니다.",
+      "leaveOther": "담당자가 나가부렀습니다."
+    }
+  }
+}

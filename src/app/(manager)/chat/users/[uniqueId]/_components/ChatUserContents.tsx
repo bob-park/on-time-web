@@ -4,10 +4,7 @@ import { useState } from 'react';
 
 import ChatChannel from '@/domain/chat/components/ChatChannel';
 import { useGetCurrentUser } from '@/domain/user/query/user';
-
 import useWebSocket from '@/shared/hooks/ws/useWebSocket';
-
-import cx from 'classnames';
 
 interface ChatUserContentsProps {
   wsHost: string;
@@ -50,29 +47,22 @@ export default function ChatUserContents({ wsHost, user }: ChatUserContentsProps
   };
 
   return (
-    <div className="flex size-full flex-col items-center justify-start gap-1">
-      <div
-        className={cx(
-          'relative flex h-[calc(100vh-300px)] w-[500px] flex-col gap-4 rounded-2xl border border-slate-300 bg-white shadow-2xl',
-        )}
-      >
-        {/* contents */}
-        <div className="size-full p-2">
-          <ChatChannel
-            messages={messages.map((message) => ({
-              id: message.id,
-              type: message.type,
-              me: message.user?.id === currentUser?.id,
-              avatar: `/api/users/${message.user?.id}/avatar`,
-              userUniqueId: message.user.id,
-              message: message.message,
-              name: message.user.username,
-              displayName: `${message.user.group?.name || ''} ${message.user.username || ''} ${message.user.position?.name || ''}`,
-              createdDate: message.createdDate,
-            }))}
-            onSend={handleSendMessage}
-          />
-        </div>
+    <div className="flex size-full flex-col items-start justify-start">
+      <div className="bg-base-300 flex h-[calc(100vh-300px)] w-full max-w-xl flex-col overflow-hidden rounded-lg">
+        <ChatChannel
+          messages={messages.map((message) => ({
+            id: message.id,
+            type: message.type,
+            me: message.user?.id === currentUser?.id,
+            avatar: `/api/users/${message.user?.id}/avatar`,
+            userUniqueId: message.user.id,
+            message: message.message,
+            name: message.user.username,
+            displayName: `${message.user.group?.name || ''} ${message.user.username || ''} ${message.user.position?.name || ''}`,
+            createdDate: message.createdDate,
+          }))}
+          onSend={handleSendMessage}
+        />
       </div>
     </div>
   );

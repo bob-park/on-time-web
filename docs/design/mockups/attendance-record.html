@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>On Time — 근태 처리 (목업)</title>
+    <link rel="stylesheet" href="tokens.css" />
+    <style>
+      .success-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 28px;
+        padding: 88px 0 40px;
+        text-align: center;
+      }
+      .success-circle {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: var(--accent);
+        color: #000;
+        font-size: 36px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 40px rgba(30, 215, 96, 0.35);
+      }
+      .success-heading {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .success-card {
+        width: 100%;
+        max-width: 420px;
+        text-align: left;
+      }
+      .success-card .info-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 0;
+      }
+      .success-card .info-row + .info-row {
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .success-card .info-row .k {
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+      .success-card .info-row .v {
+        font-size: 15px;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <!-- ===================== sidebar ===================== -->
+      <aside class="sidebar">
+        <a class="logo" href="index.html"><span class="logo-dot"></span>OnTime</a>
+        <nav class="nav">
+          <a class="nav-item" href="dashboard.html"><span class="ico">◧</span>대시보드</a>
+          <a class="nav-item" href="schedule.html"><span class="ico">🗓</span>근무 일정</a>
+
+          <div class="nav-group">전자 결재</div>
+          <a class="nav-item" href="dayoff-requests.html"><span class="ico">✚</span>휴가 신청</a>
+          <a class="nav-item" href="dayoff-used.html"><span class="ico">↺</span>휴가 사용 내역</a>
+          <a class="nav-item" href="overtime-requests.html"><span class="ico">✚</span>휴일근무보고서 신청</a>
+          <a class="nav-item" href="expense-requests.html"><span class="ico">✚</span>지출결의서 신청</a>
+          <a class="nav-item" href="documents.html"><span class="ico">▤</span>결재 신청 목록</a>
+          <a class="nav-item" href="approvals.html"
+            ><span class="ico">✓</span>결재 처리 대기 목록<span class="count">3</span></a
+          >
+
+          <div class="nav-group">관리자</div>
+          <a class="nav-item" href="manager-vacations.html"><span class="ico">☰</span>임직원 휴가 사용 현황</a>
+          <a class="nav-item" href="manager-compensatory.html"><span class="ico">☰</span>임직원 보상 휴가 현황</a>
+          <a class="nav-item" href="manager-attendance.html"><span class="ico">▦</span>임직원 근무 현황</a>
+          <a class="nav-item" href="manager-schedules.html"><span class="ico">🗓</span>임직원 근무 일정 등록</a>
+          <a class="nav-item" href="manager-chat.html"><span class="ico">💬</span>임직원과의 소통</a>
+        </nav>
+        <div class="logout">
+          <a class="nav-item" href="#"><span class="ico">⎋</span>로그아웃</a>
+        </div>
+      </aside>
+
+      <!-- ===================== main ===================== -->
+      <div class="main">
+        <header class="header">
+          <button class="icon-btn" title="알림">🔔</button>
+          <div class="profile-chip">
+            <span class="avatar">박</span>
+            <span class="who">
+              <div class="name">박현우 <span class="text-muted">(팀장)</span></div>
+              <div class="team">개발팀 · 책임</div>
+            </span>
+          </div>
+        </header>
+
+        <div class="content">
+          <div class="page-head">
+            <div>
+              <div class="eyebrow">Attendance</div>
+              <h1 class="page-title">근태 처리</h1>
+            </div>
+          </div>
+
+          <div class="success-wrap">
+            <span class="success-circle">✓</span>
+            <div class="success-heading">출근 처리되었습니다.</div>
+
+            <div class="card success-card">
+              <div class="info-row">
+                <span class="k">근무일</span>
+                <span class="v">2026년 07월 10일 (금)</span>
+              </div>
+              <div class="info-row">
+                <span class="k">출근 시간</span>
+                <span class="v text-green">08:58</span>
+              </div>
+              <div class="info-row">
+                <span class="k">퇴근 예정 시간</span>
+                <span class="v">17:58</span>
+              </div>
+            </div>
+
+            <span class="text-muted" style="font-size: 13px">이 창은 닫으셔도 됩니다.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== now-working bar ===================== -->
+    <div class="working-bar">
+      <div class="status">
+        <span class="pulse"></span>
+        <span>
+          <div class="label">근무 중 · 08:58 출근</div>
+          <div class="sub">목표 퇴근 17:58</div>
+        </span>
+      </div>
+      <div class="track">
+        <span>3h 42m</span>
+        <div class="bar"><div style="width: 45%"></div></div>
+        <span>8h</span>
+      </div>
+      <button class="btn btn-primary btn-sm">퇴근하기</button>
+    </div>
+
+    <div class="mock-nav"><a href="index.html">← 목업 인덱스</a></div>
+  </body>
+</html>

@@ -1,7 +1,6 @@
 'use client';
 
 import UserSignature from '@/domain/user/components/UserSignature';
-
 import { getDaysOfWeek } from '@/utils/parse';
 
 import dayjs from 'dayjs';
@@ -29,7 +28,7 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
   ];
 
   return (
-    <div id={id} className="relative flex size-full flex-col items-center gap-3">
+    <div id={id} className="relative flex size-full flex-col items-center gap-3 bg-white text-black">
       {/* 결재 정보 */}
       <div className="mt-16 mr-32 flex w-full flex-row items-center justify-end gap-2">
         <DocumentApprovalLine lines={lines} />

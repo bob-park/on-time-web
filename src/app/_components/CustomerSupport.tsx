@@ -9,7 +9,6 @@ import Image from 'next/image';
 import ChatChannel from '@/domain/chat/components/ChatChannel';
 import { useGetCurrentUser, useGetUsers } from '@/domain/user/query/user';
 import { useUserNotification } from '@/domain/user/query/userNotification';
-
 import useToast from '@/shared/hooks/useToast';
 import useWebSocket from '@/shared/hooks/ws/useWebSocket';
 
@@ -126,7 +125,7 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
   };
 
   return (
-    <div className="fixed right-5 bottom-5">
+    <div className="fixed right-5 bottom-24 z-[60] max-md:bottom-[128px]">
       {!show && (
         <div className="size-20 cursor-pointer hover:animate-bounce" onClick={() => setShow(true)}>
           <Image
@@ -140,7 +139,7 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
 
       <div
         className={cx(
-          'relative flex h-[600px] w-[400px] flex-col gap-4 rounded-2xl border border-slate-300 bg-white shadow-2xl transition-all duration-300',
+          'bg-base-200 relative flex h-[600px] w-[400px] flex-col gap-4 rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-all duration-300',
           {
             'translate-y-0 opacity-100': show,
             'hidden translate-y-6 opacity-0': !show,
@@ -172,7 +171,7 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
                 <p className="text-base font-bold">고객지원</p>
               </div>
               <div className="">
-                <p className="text-sm text-slate-400">문의사항을 남겨 주세요.</p>
+                <p className="text-base-content/60 text-sm">문의사항을 남겨 주세요.</p>
               </div>
             </div>
           </div>

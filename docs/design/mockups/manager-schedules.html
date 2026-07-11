@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>On Time — 임직원 근무 일정 등록 (목업)</title>
+    <link rel="stylesheet" href="tokens.css" />
+    <style>
+      .coming {
+        min-height: calc(100vh - 220px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 18px;
+      }
+      .coming .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2.4px;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+      }
+      .coming h2 {
+        font-size: 84px;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        line-height: 1;
+        background: linear-gradient(180deg, #ffffff 30%, rgba(255, 255, 255, 0.35) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .coming .sub {
+        font-size: 15px;
+        color: var(--text-secondary);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <!-- ===================== sidebar ===================== -->
+      <aside class="sidebar">
+        <a class="logo" href="index.html"><span class="logo-dot"></span>OnTime</a>
+        <nav class="nav">
+          <a class="nav-item" href="dashboard.html"><span class="ico">◧</span>대시보드</a>
+          <a class="nav-item" href="schedule.html"><span class="ico">🗓</span>근무 일정</a>
+
+          <div class="nav-group">전자 결재</div>
+          <a class="nav-item" href="dayoff-requests.html"><span class="ico">✚</span>휴가 신청</a>
+          <a class="nav-item" href="dayoff-used.html"><span class="ico">↺</span>휴가 사용 내역</a>
+          <a class="nav-item" href="overtime-requests.html"><span class="ico">✚</span>휴일근무보고서 신청</a>
+          <a class="nav-item" href="expense-requests.html"><span class="ico">✚</span>지출결의서 신청</a>
+          <a class="nav-item" href="documents.html"><span class="ico">▤</span>결재 신청 목록</a>
+          <a class="nav-item" href="approvals.html"
+            ><span class="ico">✓</span>결재 처리 대기 목록<span class="count">3</span></a
+          >
+
+          <div class="nav-group">관리자</div>
+          <a class="nav-item" href="manager-vacations.html"><span class="ico">☰</span>임직원 휴가 사용 현황</a>
+          <a class="nav-item" href="manager-compensatory.html"><span class="ico">☰</span>임직원 보상 휴가 현황</a>
+          <a class="nav-item" href="manager-attendance.html"><span class="ico">▦</span>임직원 근무 현황</a>
+          <a class="nav-item active" href="manager-schedules.html"><span class="ico">🗓</span>임직원 근무 일정 등록</a>
+          <a class="nav-item" href="manager-chat.html"><span class="ico">💬</span>임직원과의 소통</a>
+        </nav>
+        <div class="logout">
+          <a class="nav-item" href="#"><span class="ico">⎋</span>로그아웃</a>
+        </div>
+      </aside>
+
+      <!-- ===================== main ===================== -->
+      <div class="main">
+        <header class="header">
+          <button class="icon-btn" title="알림">🔔</button>
+          <div class="profile-chip">
+            <span class="avatar">박</span>
+            <span class="who">
+              <div class="name">박현우 <span class="text-muted">(팀장)</span></div>
+              <div class="team">개발팀 · 책임</div>
+            </span>
+          </div>
+        </header>
+
+        <div class="content">
+          <div class="coming">
+            <span class="tag"
+              ><span class="pulse" style="width: 8px; height: 8px; border-radius: 50%; background: var(--accent)"></span
+              >Coming Soon</span
+            >
+            <h2>준비중</h2>
+            <p class="sub">임직원 근무 일정 등록 기능을 준비하고 있어요</p>
+            <a class="btn btn-outline" href="dashboard.html" style="margin-top: 10px">대시보드로</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== now-working bar ===================== -->
+    <div class="working-bar">
+      <div class="status">
+        <span class="pulse"></span>
+        <span>
+          <div class="label">근무 중 · 08:58 출근</div>
+          <div class="sub">목표 퇴근 17:58</div>
+        </span>
+      </div>
+      <div class="track">
+        <span>3h 42m</span>
+        <div class="bar"><div style="width: 45%"></div></div>
+        <span>8h</span>
+      </div>
+      <button class="btn btn-primary btn-sm">퇴근하기</button>
+    </div>
+
+    <div class="mock-nav"><a href="index.html">← 목업 인덱스</a></div>
+  </body>
+</html>

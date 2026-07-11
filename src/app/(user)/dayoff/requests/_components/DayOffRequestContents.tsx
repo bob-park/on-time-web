@@ -13,6 +13,7 @@ import useToast from '@/shared/hooks/useToast';
 
 import cx from 'classnames';
 import dayjs from 'dayjs';
+import { useTranslations } from 'next-intl';
 import { DateRange, DayPicker } from 'react-day-picker';
 import { ko } from 'react-day-picker/locale';
 import 'react-day-picker/style.css';
@@ -31,26 +32,28 @@ function countBusinessDays(from: Date, to: Date): number {
 
 interface VacationTypeOption {
   value: VacationType;
-  label: string;
-  description: string;
+  labelKey: string;
+  descKey: string;
 }
 
 const VACATION_TYPES: VacationTypeOption[] = [
-  { value: 'GENERAL', label: '연차', description: '일반 연차 휴가' },
-  { value: 'COMPENSATORY', label: '보상 휴가', description: '휴일 근무 대체 휴가' },
-  { value: 'OFFICIAL', label: '공가', description: '예비군 / 민방위 등' },
+  { value: 'GENERAL', labelKey: 'general', descKey: 'generalDesc' },
+  { value: 'COMPENSATORY', labelKey: 'compensatory', descKey: 'compensatoryDesc' },
+  { value: 'OFFICIAL', labelKey: 'official', descKey: 'officialDesc' },
 ];
 
 const VACATION_SUBTYPES = [
-  { value: 'ALL_DAY_OFF' as const, label: '종일', days: 1 },
-  { value: 'AM_HALF_DAY_OFF' as VacationSubType, label: '오전 반차', days: 0.5 },
-  { value: 'PM_HALF_DAY_OFF' as VacationSubType, label: '오후 반차', days: 0.5 },
+  { value: 'ALL_DAY_OFF' as const, labelKey: 'allDay', days: 1 },
+  { value: 'AM_HALF_DAY_OFF' as VacationSubType, labelKey: 'amHalf', days: 0.5 },
+  { value: 'PM_HALF_DAY_OFF' as VacationSubType, labelKey: 'pmHalf', days: 0.5 },
 ];
 
 export default function DayOffRequestContent() {
+  const t = useTranslations('dayoff.request');
+
   const [selectedVacationType, setSelectedVacationType] = useState<VacationType>();
   const [selectedVacationSubType, setSelectedVacationSubType] = useState<VacationSubType | 'ALL_DAY_OFF'>();
-  const [reason, setReason] = useState<string>('개인 사유');
+  const [reason, setReason] = useState<string>(t('settings.reasonPlaceholder'));
   const [selectedDate, setSelectedDate] = useState<DateRange>(() => ({
     from: dayjs().toDate(),
     to: dayjs().toDate(),
@@ -65,11 +68,11 @@ export default function DayOffRequestContent() {
 
   const { createVacation, isLoading } = useCreateVacation(
     (data) => {
-      push('휴가 신청 문서의 초안이 생성되었습니다.', 'info');
+      push(t('toast.created'), 'info');
       router.push(`/dayoff/${data.id}`);
     },
     () => {
-      push('신청 중 오류가 발생했습니다.', 'error');
+      push(t('toast.error'), 'error');
     },
   );
 
@@ -81,7 +84,7 @@ export default function DayOffRequestContent() {
     setHasAttemptedSubmit(true);
 
     if (!selectedVacationType || !selectedVacationSubType || !reason) {
-      push('필수 항목을 입력해주세요', 'error');
+      push(t('toast.required'), 'error');
       return;
     }
     createVacation({
@@ -99,7 +102,15 @@ export default function DayOffRequestContent() {
   const businessDays = selectedDate.from && selectedDate.to ? countBusinessDays(selectedDate.from, selectedDate.to) : 0;
   const usedDays = isHalfDay ? 0.5 : businessDays;
   const freeLeaveDays = (currentUser?.leaveEntry?.totalLeaveDays ?? 0) - (currentUser?.leaveEntry?.usedLeaveDays ?? 0);
+  const freeCompLeaveDays =
+    (currentUser?.leaveEntry?.totalCompLeaveDays ?? 0) - (currentUser?.leaveEntry?.usedCompLeaveDays ?? 0);
   const remainingAfterUse = freeLeaveDays - usedDays;
+
+  // 휴가 구분별 잔여일 (연차 / 보상 휴가는 카드 설명에 라이브 표시, 공가는 잔여 개념 없음)
+  const typeRemaining: Partial<Record<VacationType, number>> = {
+    GENERAL: freeLeaveDays,
+    COMPENSATORY: freeCompLeaveDays,
+  };
 
   const canSubmit = !!selectedVacationType && !!selectedVacationSubType && !!reason;
 
@@ -107,106 +118,100 @@ export default function DayOffRequestContent() {
     <>
       <div className="flex w-full flex-col gap-4">
         {/* 2-column layout */}
-        <div className="flex w-full flex-row gap-4">
+        <div className="flex w-full flex-col gap-4 lg:flex-row">
           {/* Left — 휴가 구분 설정 */}
-          <div className="w-80 flex-none rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <p className="mb-4 text-sm font-semibold text-slate-800">
-              휴가 구분 <span className="font-normal text-slate-400">Settings</span>
-            </p>
-
-            {/* 연차 구분 */}
-            <div className="mb-5">
-              <p className="mb-2 text-xs font-medium text-slate-500">
-              연차 구분
-              {hasAttemptedSubmit && !selectedVacationType && (
-                <span className="ml-2 text-red-500">선택해 주세요</span>
-              )}
-            </p>
+          <div className="bg-base-300 flex w-full flex-none flex-col gap-5 rounded-lg p-6 lg:w-80">
+            {/* 휴가 구분 */}
+            <div>
+              <p className="text-base-content/60 mb-2 text-xs font-medium">
+                {t('settings.typeLabel')}
+                {hasAttemptedSubmit && !selectedVacationType && (
+                  <span className="text-error ml-2">{t('settings.selectRequired')}</span>
+                )}
+              </p>
               <div className="flex flex-col gap-2">
-                {VACATION_TYPES.map((type) => (
-                  <button
-                    key={type.value}
-                    type="button"
-                    onClick={() => {
-                      setSelectedVacationType(type.value);
-                      if (type.value !== 'COMPENSATORY') setUsedCompLeaveEntries([]);
-                    }}
-                    className={cx(
-                      'flex flex-col items-start rounded-xl border px-4 py-3 text-left transition-colors duration-150',
-                      selectedVacationType === type.value
-                        ? 'border-slate-800 bg-slate-800 text-white'
-                        : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100',
-                    )}
-                  >
-                    <span className="text-sm font-semibold">{type.label}</span>
-                    <span
+                {VACATION_TYPES.map((type) => {
+                  const selected = selectedVacationType === type.value;
+                  const remaining = typeRemaining[type.value];
+                  return (
+                    <button
+                      key={type.value}
+                      type="button"
+                      onClick={() => {
+                        setSelectedVacationType(type.value);
+                        if (type.value !== 'COMPENSATORY') setUsedCompLeaveEntries([]);
+                      }}
                       className={cx(
-                        'text-xs',
-                        selectedVacationType === type.value ? 'text-slate-300' : 'text-slate-400',
+                        'flex flex-col items-start gap-1 rounded-lg px-4 py-3 text-left transition-colors duration-150',
+                        selected ? 'ring-primary bg-primary/10 ring-1 ring-inset' : 'bg-secondary hover:bg-[#2e2e2e]',
                       )}
                     >
-                      {type.description}
-                    </span>
-                  </button>
-                ))}
+                      <span className={cx('text-sm font-bold', selected && 'text-primary')}>
+                        {t(`type.${type.labelKey}`)}
+                      </span>
+                      <span className="text-base-content/50 text-xs">
+                        {t(`type.${type.descKey}`)}
+                        {remaining !== undefined && (
+                          <span className="text-base-content/70"> · {t('type.remaining', { days: remaining })}</span>
+                        )}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
             {/* 부가 구분 */}
-            <div className="mb-5">
-              <p className="mb-2 text-xs font-medium text-slate-500">
-              부가 구분
-              {hasAttemptedSubmit && !selectedVacationSubType && (
-                <span className="ml-2 text-red-500">선택해 주세요</span>
-              )}
-            </p>
+            <div>
+              <p className="text-base-content/60 mb-2 text-xs font-medium">
+                {t('settings.subTypeLabel')}
+                {hasAttemptedSubmit && !selectedVacationSubType && (
+                  <span className="text-error ml-2">{t('settings.selectRequired')}</span>
+                )}
+              </p>
               <div className="flex flex-col gap-2">
-                {VACATION_SUBTYPES.map((sub) => (
-                  <button
-                    key={sub.value}
-                    type="button"
-                    onClick={() => setSelectedVacationSubType(sub.value)}
-                    className={cx(
-                      'flex items-center justify-between rounded-xl border px-4 py-2.5 text-sm transition-colors duration-150',
-                      selectedVacationSubType === sub.value
-                        ? 'border-slate-800 bg-slate-800 text-white'
-                        : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100',
-                    )}
-                  >
-                    <span className="font-medium">{sub.label}</span>
-                    <span
+                {VACATION_SUBTYPES.map((sub) => {
+                  const selected = selectedVacationSubType === sub.value;
+                  return (
+                    <button
+                      key={sub.value}
+                      type="button"
+                      onClick={() => setSelectedVacationSubType(sub.value)}
                       className={cx(
-                        'text-xs',
-                        selectedVacationSubType === sub.value ? 'text-slate-300' : 'text-slate-400',
+                        'flex h-10 items-center justify-between rounded-full px-4 text-[13px] transition-colors duration-150',
+                        selected ? 'bg-primary text-primary-content font-bold' : 'bg-secondary hover:bg-[#2e2e2e]',
                       )}
                     >
-                      {sub.days}일
-                    </span>
-                  </button>
-                ))}
+                      <span>{t(`subType.${sub.labelKey}`)}</span>
+                      <span className={cx('text-xs', selected ? 'text-primary-content/65' : 'text-base-content/50')}>
+                        {t('subType.days', { days: sub.days })}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
             {/* 보상 휴가 선택 (COMPENSATORY 시에만) */}
             {selectedVacationType === 'COMPENSATORY' && (
-              <div className="mb-5">
-                <p className="mb-2 text-xs font-medium text-slate-500">보상 휴가 선택</p>
+              <div>
+                <p className="text-base-content/60 mb-2 text-xs font-medium">{t('settings.compLabel')}</p>
                 <button
                   type="button"
                   onClick={() => setShowSelectCompLeaveEntries(true)}
                   className={cx(
-                    'flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors duration-150',
+                    'flex w-full items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium transition-colors duration-150',
                     usedCompLeaveEntries.length !== 0
-                      ? 'border-slate-800 bg-slate-800 text-white'
-                      : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100',
+                      ? 'ring-primary bg-primary/10 text-primary ring-1 ring-inset'
+                      : 'bg-secondary hover:bg-[#2e2e2e]',
                   )}
                 >
                   {usedCompLeaveEntries.length !== 0 ? (
                     <>
-                      <FaCheck className="size-3.5" /> 보상 휴가 선택 완료
+                      <FaCheck className="size-3.5" /> {t('settings.compSelected')}
                     </>
                   ) : (
-                    '보상 휴가 선택'
+                    t('settings.compSelect')
                   )}
                 </button>
               </div>
@@ -214,20 +219,22 @@ export default function DayOffRequestContent() {
 
             {/* 사유 */}
             <div>
-              <p className="mb-2 text-xs font-medium text-slate-500">
-                사유
+              <p className="text-base-content/60 mb-2 text-xs font-medium">
+                {t('settings.reasonLabel')}
                 {hasAttemptedSubmit && !reason && (
-                  <span className="ml-2 text-red-500">입력해 주세요</span>
+                  <span className="text-error ml-2">{t('settings.inputRequired')}</span>
                 )}
               </p>
               <input
                 type="text"
                 maxLength={200}
                 className={cx(
-                  'w-full rounded-xl border bg-slate-50 px-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 transition-[border-color,background-color] duration-150 focus:border-slate-400 focus:bg-white focus:outline-none',
-                  hasAttemptedSubmit && !reason ? 'border-red-300' : 'border-slate-200',
+                  'bg-base-300 text-base-content placeholder:text-base-content/40 w-full rounded-full px-4 py-2.5 text-sm transition-shadow duration-150 focus:outline-none',
+                  hasAttemptedSubmit && !reason
+                    ? 'shadow-[inset_0_0_0_1px_#f3727f]'
+                    : 'shadow-[inset_0_0_0_1px_#7c7c7c] focus:shadow-[inset_0_0_0_1px_#1ed760]',
                 )}
-                placeholder="개인 사유"
+                placeholder={t('settings.reasonPlaceholder')}
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
               />
@@ -235,13 +242,21 @@ export default function DayOffRequestContent() {
           </div>
 
           {/* Right — 날짜 선택 */}
-          <div className="flex flex-1 flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <p className="mb-4 text-sm font-semibold text-slate-800">
-              날짜 선택 <span className="font-normal text-slate-400">Select Dates</span>
-            </p>
+          <div className="bg-base-300 flex flex-1 flex-col rounded-lg p-6">
+            <div className="mb-4 flex items-center justify-between">
+              <p className="text-base-content text-base font-semibold">{t('calendar.title')}</p>
+              {selectedDate.from && selectedDate.to && (
+                <span className="bg-primary/15 text-primary inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold">
+                  {dayjs(selectedDate.from).format('MM.DD')}
+                  {!dayjs(selectedDate.from).isSame(selectedDate.to, 'day') &&
+                    ` – ${dayjs(selectedDate.to).format('MM.DD')}`}
+                  {` · ${t('calendar.rangeBadge', { days: usedDays })}`}
+                </span>
+              )}
+            </div>
             <div className="flex flex-1 items-start justify-center">
               <DayPicker
-                className="react-day-picker"
+                className="rdp-dark"
                 locale={ko}
                 mode="range"
                 selected={selectedDate}
@@ -252,18 +267,14 @@ export default function DayOffRequestContent() {
         </div>
 
         {/* Bottom — 신청 요약 패널 */}
-        <div className="w-full rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-semibold text-slate-800">
-              신청 요약 <span className="font-normal text-slate-400">Summary</span>
-            </p>
-          </div>
-
-          <div className="mt-4 flex flex-wrap items-center gap-8">
+        <div className="bg-base-300 w-full rounded-lg p-6">
+          <div className="flex flex-wrap items-center gap-8">
             {/* 선택 날짜 */}
             <div>
-              <p className="text-xs text-slate-400">선택 날짜</p>
-              <p className="mt-0.5 text-sm font-semibold text-slate-800">
+              <p className="text-base-content/50 text-[11px] font-semibold tracking-wider uppercase">
+                {t('summary.selectedDate')}
+              </p>
+              <p className="text-base-content mt-1 text-base font-bold">
                 {dayjs(selectedDate.from).format('YYYY.MM.DD')}
                 {selectedDate.to && !dayjs(selectedDate.from).isSame(selectedDate.to, 'day') && (
                   <> — {dayjs(selectedDate.to).format('YYYY.MM.DD')}</>
@@ -273,54 +284,60 @@ export default function DayOffRequestContent() {
 
             {/* 사용 기간 */}
             <div>
-              <p className="text-xs text-slate-400">사용 기간</p>
-              <p className="mt-0.5 text-sm font-semibold text-slate-800">{usedDays.toFixed(1)} 일</p>
+              <p className="text-base-content/50 text-[11px] font-semibold tracking-wider uppercase">
+                {t('summary.usedDays')}
+              </p>
+              <p className="text-base-content mt-1 text-base font-bold">
+                {t('summary.days', { days: usedDays.toFixed(1) })}
+              </p>
             </div>
 
             {/* 사용 후 잔여 */}
             <div>
-              <p className="text-xs text-slate-400">사용 후 잔여</p>
-              <p
-                className={cx('mt-0.5 text-sm font-semibold', remainingAfterUse < 0 ? 'text-red-500' : 'text-slate-800')}
-              >
-                {remainingAfterUse.toFixed(1)} 일
+              <p className="text-base-content/50 text-[11px] font-semibold tracking-wider uppercase">
+                {t('summary.remainingAfter')}
+              </p>
+              <p className={cx('mt-1 text-base font-bold', remainingAfterUse < 0 ? 'text-error' : 'text-base-content')}>
+                {t('summary.days', { days: remainingAfterUse.toFixed(1) })}
               </p>
             </div>
 
             {/* 승인 예상 */}
             <div>
-              <p className="text-xs text-slate-400">승인 예상</p>
-              <p className="mt-0.5 text-sm font-semibold text-slate-800">→ 즉시</p>
+              <p className="text-base-content/50 text-[11px] font-semibold tracking-wider uppercase">
+                {t('summary.approval')}
+              </p>
+              <p className="text-base-content mt-1 text-base font-bold">{t('summary.approvalValue')}</p>
             </div>
 
             {/* 버튼 (우측 정렬) */}
             <div className="ml-auto flex gap-3">
               <button
                 type="button"
-                className="rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-medium text-slate-600 transition-colors duration-150 hover:bg-slate-50"
+                className="btn btn-ghost"
                 onClick={() => {
                   setSelectedVacationType(undefined);
                   setSelectedVacationSubType(undefined);
-                  setReason('개인 사유');
+                  setReason(t('settings.reasonPlaceholder'));
                   setSelectedDate({ from: dayjs().toDate(), to: dayjs().toDate() });
                   setUsedCompLeaveEntries([]);
                 }}
               >
-                취소 (Cancel)
+                {t('actions.cancel')}
               </button>
               <button
                 type="button"
                 disabled={isLoading || !canSubmit}
                 onClick={handleRequestClick}
-                className="rounded-xl bg-slate-800 px-5 py-2.5 text-sm font-medium text-white transition-colors duration-150 hover:bg-slate-700 disabled:opacity-40"
+                className="btn btn-primary"
               >
                 {isLoading ? (
                   <span className="flex items-center gap-2">
                     <span className="loading loading-spinner loading-xs" />
-                    초안 생성 중
+                    {t('actions.submitting')}
                   </span>
                 ) : (
-                  '초안 생성 (Create Draft)'
+                  t('actions.submit')
                 )}
               </button>
             </div>

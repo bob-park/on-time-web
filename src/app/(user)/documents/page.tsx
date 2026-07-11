@@ -1,3 +1,7 @@
+import PageHeader from '@/shared/components/PageHeader';
+
+import { getTranslations } from 'next-intl/server';
+
 import DocumentListContents from './_components/DocumentListContents';
 
 export default async function DocumentListPage({
@@ -6,6 +10,7 @@ export default async function DocumentListPage({
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }) {
   const { page, type, status } = await searchParams;
+  const t = await getTranslations('documents');
 
   const params: SearchDocumentRequest = {
     page: parseInt(page || '0', 0),
@@ -15,16 +20,12 @@ export default async function DocumentListPage({
   };
 
   return (
-    <div className="flex size-full flex-col gap-3">
-      {/* title */}
-      <div>
-        <p className="text-xs font-semibold tracking-widest text-slate-400 uppercase">Documents</p>
-        <h2 className="mt-1 text-3xl font-extrabold tracking-tight text-slate-900">내 결재 문서</h2>
-        <p className="mt-1 text-sm text-slate-500">결재 신청 내역을 조회하고 상태를 확인합니다</p>
-      </div>
+    <div className="w-full">
+      {/* eyebrow + title */}
+      <PageHeader eyebrow={t('eyebrow')} title={t('title')} subtitle={t('subtitle')} />
 
       {/* content */}
-      <div className="size-full min-w-[600px]">
+      <div className="w-full min-w-[600px]">
         <DocumentListContents params={params} />
       </div>
     </div>

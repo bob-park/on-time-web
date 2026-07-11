@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>On Time — 결재 처리 정보 (목업)</title>
+    <link rel="stylesheet" href="tokens.css" />
+    <style>
+      /* --- approval steps --- */
+      .steps {
+        display: flex;
+        align-items: center;
+        gap: 0;
+      }
+      .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        min-width: 120px;
+        text-align: center;
+      }
+      .step .step-dot {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .step.done .step-dot {
+        background: var(--accent);
+        color: #000;
+      }
+      .step.current .step-dot {
+        background: transparent;
+        color: var(--warning);
+        box-shadow: 0 0 0 2px var(--warning) inset;
+      }
+      .step.pending .step-dot {
+        background: transparent;
+        color: var(--text-secondary);
+        box-shadow: 0 0 0 1px var(--border-strong) inset;
+      }
+      .step .step-name {
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .step.pending .step-name {
+        color: var(--text-secondary);
+        font-weight: 400;
+      }
+      .step .step-sub {
+        font-size: 11px;
+        color: var(--text-secondary);
+      }
+      .step-line {
+        flex: 1;
+        height: 2px;
+        background: var(--border-strong);
+        margin: 0 8px 44px;
+        min-width: 40px;
+      }
+      .step-line.done {
+        background: var(--accent);
+      }
+
+      /* --- A4 paper document --- */
+      .paper {
+        width: 640px;
+        max-width: 100%;
+        aspect-ratio: 1 / 1.414;
+        margin: 0 auto;
+        background: var(--text-bright);
+        color: #111;
+        box-shadow: var(--shadow-heavy);
+        padding: 56px 52px;
+        font-size: 13px;
+        display: flex;
+        flex-direction: column;
+      }
+      .paper .stamp-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 28px;
+      }
+      .paper .stamps {
+        display: flex;
+        border: 1px solid #111;
+      }
+      .paper .stamps .stamp {
+        width: 64px;
+        text-align: center;
+        border-right: 1px solid #111;
+      }
+      .paper .stamps .stamp:last-child {
+        border-right: none;
+      }
+      .paper .stamps .stamp .stamp-role {
+        border-bottom: 1px solid #111;
+        padding: 4px 0;
+        font-size: 11px;
+        background: #f2f2f2;
+      }
+      .paper .stamps .stamp .stamp-sign {
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: #1a9c4b;
+        font-weight: 700;
+      }
+      .paper .doc-title {
+        text-align: center;
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: 0.5em;
+        text-indent: 0.5em;
+        margin: 8px 0 40px;
+      }
+      .paper table.doc {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .paper table.doc th,
+      .paper table.doc td {
+        border: 1px solid #111;
+        padding: 12px 14px;
+        text-align: left;
+      }
+      .paper table.doc th {
+        width: 120px;
+        background: #f2f2f2;
+        font-weight: 700;
+        text-align: center;
+      }
+      .paper .closing {
+        text-align: center;
+        margin-top: 48px;
+        font-size: 14px;
+        letter-spacing: 0.06em;
+      }
+      .paper .sign-block {
+        margin-top: auto;
+        text-align: center;
+        line-height: 2;
+        font-size: 13px;
+      }
+      .paper .sign-block .signer {
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <!-- ===================== sidebar ===================== -->
+      <aside class="sidebar">
+        <a class="logo" href="index.html"><span class="logo-dot"></span>OnTime</a>
+        <nav class="nav">
+          <a class="nav-item" href="dashboard.html"><span class="ico">◧</span>대시보드</a>
+          <a class="nav-item" href="schedule.html"><span class="ico">🗓</span>근무 일정</a>
+
+          <div class="nav-group">전자 결재</div>
+          <a class="nav-item" href="dayoff-requests.html"><span class="ico">✚</span>휴가 신청</a>
+          <a class="nav-item" href="dayoff-used.html"><span class="ico">↺</span>휴가 사용 내역</a>
+          <a class="nav-item" href="overtime-requests.html"><span class="ico">✚</span>휴일근무보고서 신청</a>
+          <a class="nav-item" href="expense-requests.html"><span class="ico">✚</span>지출결의서 신청</a>
+          <a class="nav-item" href="documents.html"><span class="ico">▤</span>결재 신청 목록</a>
+          <a class="nav-item active" href="approvals.html"
+            ><span class="ico">✓</span>결재 처리 대기 목록<span class="count">3</span></a
+          >
+
+          <div class="nav-group">관리자</div>
+          <a class="nav-item" href="manager-vacations.html"><span class="ico">☰</span>임직원 휴가 사용 현황</a>
+          <a class="nav-item" href="manager-compensatory.html"><span class="ico">☰</span>임직원 보상 휴가 현황</a>
+          <a class="nav-item" href="manager-attendance.html"><span class="ico">▦</span>임직원 근무 현황</a>
+          <a class="nav-item" href="manager-schedules.html"><span class="ico">🗓</span>임직원 근무 일정 등록</a>
+          <a class="nav-item" href="manager-chat.html"><span class="ico">💬</span>임직원과의 소통</a>
+        </nav>
+        <div class="logout">
+          <a class="nav-item" href="#"><span class="ico">⎋</span>로그아웃</a>
+        </div>
+      </aside>
+
+      <!-- ===================== main ===================== -->
+      <div class="main">
+        <header class="header">
+          <button class="icon-btn" title="알림">🔔</button>
+          <div class="profile-chip">
+            <span class="avatar">박</span>
+            <span class="who">
+              <div class="name">박현우 <span class="text-muted">(팀장)</span></div>
+              <div class="team">개발팀 · 책임</div>
+            </span>
+          </div>
+        </header>
+
+        <div class="content">
+          <div class="page-head">
+            <div>
+              <div class="eyebrow">Approvals</div>
+              <h1 class="page-title">결재 처리 정보</h1>
+              <p class="page-sub">#231 · 휴가계 · 김민수 (마케팅팀 · 대리)</p>
+            </div>
+            <a class="btn btn-ghost btn-sm" href="approvals.html">‹ 목록으로</a>
+          </div>
+
+          <div class="stack">
+            <!-- card 1: current approval status -->
+            <div class="card">
+              <div class="card-header">
+                <span class="section-title">현재 결재 상태</span>
+                <span class="badge badge-orange">● 진행</span>
+              </div>
+              <div class="steps" style="padding: 8px 12px 0">
+                <div class="step done">
+                  <span class="step-dot">✓</span>
+                  <span class="step-name">신청</span>
+                  <span class="step-sub">김민수 · 07.10 09:12</span>
+                </div>
+                <div class="step-line done"></div>
+                <div class="step current">
+                  <span class="step-dot">2</span>
+                  <span class="step-name"
+                    >팀장 승인 <span class="badge badge-orange" style="margin-left: 4px">현재</span></span
+                  >
+                  <span class="step-sub">박현우 · 대기 중</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step pending">
+                  <span class="step-dot">3</span>
+                  <span class="step-name">최종 승인</span>
+                  <span class="step-sub">한상원 · 이사</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- card 2: actions -->
+            <div class="card">
+              <div class="spread">
+                <button class="btn btn-ghost">취소</button>
+                <span class="row" style="gap: 10px">
+                  <button
+                    class="btn btn-outline"
+                    style="color: var(--negative); box-shadow: 0 0 0 1px var(--negative) inset"
+                  >
+                    반려
+                  </button>
+                  <button class="btn btn-primary">승인</button>
+                </span>
+              </div>
+            </div>
+
+            <!-- card 3: A4 document -->
+            <div class="card" style="padding: 36px 20px; background: var(--bg-surface)">
+              <div class="paper">
+                <div class="stamp-row">
+                  <div class="stamps">
+                    <div class="stamp">
+                      <div class="stamp-role">담당</div>
+                      <div class="stamp-sign">✓</div>
+                    </div>
+                    <div class="stamp">
+                      <div class="stamp-role">팀장</div>
+                      <div class="stamp-sign"></div>
+                    </div>
+                    <div class="stamp">
+                      <div class="stamp-role">최종</div>
+                      <div class="stamp-sign"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="doc-title">휴 가 계</div>
+
+                <table class="doc">
+                  <tr>
+                    <th>성명</th>
+                    <td>김민수</td>
+                  </tr>
+                  <tr>
+                    <th>부서</th>
+                    <td>마케팅팀</td>
+                  </tr>
+                  <tr>
+                    <th>직위</th>
+                    <td>대리</td>
+                  </tr>
+                  <tr>
+                    <th>휴가 기간</th>
+                    <td>2026.07.24 (금) · 1일</td>
+                  </tr>
+                  <tr>
+                    <th>휴가 구분</th>
+                    <td>오후 반차</td>
+                  </tr>
+                  <tr>
+                    <th>사유</th>
+                    <td>개인 사유</td>
+                  </tr>
+                </table>
+
+                <div class="closing">위와 같이 신청하오니 재가 바랍니다.</div>
+
+                <div class="sign-block">
+                  <div>2026년 07월 10일</div>
+                  <div class="signer">신청자 : 김민수 (서명)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== now-working bar ===================== -->
+    <div class="working-bar">
+      <div class="status">
+        <span class="pulse"></span>
+        <span>
+          <div class="label">근무 중 · 08:58 출근</div>
+          <div class="sub">목표 퇴근 17:58</div>
+        </span>
+      </div>
+      <div class="track">
+        <span>3h 42m</span>
+        <div class="bar"><div style="width: 45%"></div></div>
+        <span>8h</span>
+      </div>
+      <button class="btn btn-primary btn-sm">퇴근하기</button>
+    </div>
+
+    <div class="mock-nav"><a href="index.html">← 목업 인덱스</a></div>
+  </body>
+</html>

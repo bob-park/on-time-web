@@ -7,6 +7,7 @@ import { FaCheck, FaTimes } from 'react-icons/fa';
 import { useUserCompLeaveEntries } from '@/domain/user/query/userCompLeaveEntry';
 
 import dayjs from 'dayjs';
+import { useTranslations } from 'next-intl';
 
 interface SelectUserCompLeaveEntriesModalProps {
   show: boolean;
@@ -19,6 +20,8 @@ export default function SelectUserCompLeaveEntriesModal({
   onClose,
   onSelect,
 }: SelectUserCompLeaveEntriesModalProps) {
+  const t = useTranslations('dayoff.request.comp');
+
   // ref
   const ref = useRef<HTMLDialogElement>(null);
 
@@ -61,87 +64,84 @@ export default function SelectUserCompLeaveEntriesModal({
 
   return (
     <dialog ref={ref} className="modal" onKeyDownCapture={handleKeyboardDown}>
-      <div className="modal-box max-w-5xl">
-        <div className="flex w-full flex-col items-start justify-start gap-3">
-          {/* header */}
-          <div className="">
-            <h3 className="text-lg font-bold">보상 휴가 선택</h3>
-          </div>
-        </div>
+      <div className="modal-box bg-base-200 max-w-5xl">
+        {/* header */}
+        <h3 className="text-base-content text-lg font-bold">{t('modalTitle')}</h3>
 
         {/* content */}
-        <div className="m-3 flex flex-col items-start justify-center gap-4">
-          <p className="text-base">사용할 보상 휴가를 선택해 주세요.</p>
+        <div className="mt-4 flex flex-col items-start justify-center gap-4">
+          <p className="text-base-content/70 text-sm">{t('modalDescription')}</p>
 
-          <table className="table">
-            {/* head */}
-            <thead>
-              <tr>
-                <th className="text-center">
-                  <label>
-                    <input type="checkbox" className="checkbox" />
-                  </label>
-                </th>
-                <th className="text-center">보상 휴가 생성일</th>
-                <th className="text-center">내용</th>
-                <th className="text-center">보상 휴가일</th>
-                <th className="text-center">잔여 휴가일</th>
-              </tr>
-            </thead>
-            <tbody>
-              {compLeaveEntries.map((compLeaveEntry) => (
-                <tr key={`select-user-comp-leave-entry-${compLeaveEntry.id}`} className="">
-                  <td className="text-center">
-                    <label>
-                      <input
-                        type="checkbox"
-                        className="checkbox"
-                        checked={selectedItems.some((item) => item.compLeaveEntryId === compLeaveEntry.id)}
-                        onChange={(e) => {
-                          setSelectedItems((prev) => {
-                            const newSelectedItems = prev.slice();
-
-                            if (e.target.checked) {
-                              newSelectedItems.push({
-                                compLeaveEntryId: compLeaveEntry.id,
-                                usedDays: compLeaveEntry.usedDays,
-                              });
-                            } else {
-                              const index = newSelectedItems.findIndex(
-                                (item) => item.compLeaveEntryId === compLeaveEntry.id,
-                              );
-
-                              index >= 0 && newSelectedItems.splice(index, 1);
-                            }
-
-                            return newSelectedItems;
-                          });
-                        }}
-                      />
-                    </label>
-                  </td>
-                  <td>{dayjs(compLeaveEntry.effectiveDate).format('YYYY-MM-DD')}</td>
-                  <td>{compLeaveEntry.contents}</td>
-                  <td className="text-center">{compLeaveEntry.leaveDays}</td>
-                  <td className="text-center">{compLeaveEntry.leaveDays - compLeaveEntry.usedDays}</td>
+          <div className="bg-base-300 w-full overflow-x-auto rounded-lg">
+            <table className="table">
+              {/* head */}
+              <thead>
+                <tr className="text-base-content/60">
+                  <th className="text-center"></th>
+                  <th className="text-center">{t('colCreatedDate')}</th>
+                  <th className="text-center">{t('colContents')}</th>
+                  <th className="text-center">{t('colLeaveDays')}</th>
+                  <th className="text-center">{t('colRemainingDays')}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {compLeaveEntries.map((compLeaveEntry) => (
+                  <tr key={`select-user-comp-leave-entry-${compLeaveEntry.id}`} className="hover:bg-base-200/60">
+                    <td className="text-center">
+                      <label>
+                        <input
+                          type="checkbox"
+                          className="checkbox checkbox-primary"
+                          checked={selectedItems.some((item) => item.compLeaveEntryId === compLeaveEntry.id)}
+                          onChange={(e) => {
+                            setSelectedItems((prev) => {
+                              const newSelectedItems = prev.slice();
+
+                              if (e.target.checked) {
+                                newSelectedItems.push({
+                                  compLeaveEntryId: compLeaveEntry.id,
+                                  usedDays: compLeaveEntry.usedDays,
+                                });
+                              } else {
+                                const index = newSelectedItems.findIndex(
+                                  (item) => item.compLeaveEntryId === compLeaveEntry.id,
+                                );
+
+                                index >= 0 && newSelectedItems.splice(index, 1);
+                              }
+
+                              return newSelectedItems;
+                            });
+                          }}
+                        />
+                      </label>
+                    </td>
+                    <td className="text-center">{dayjs(compLeaveEntry.effectiveDate).format('YYYY-MM-DD')}</td>
+                    <td>{compLeaveEntry.contents}</td>
+                    <td className="text-center">{compLeaveEntry.leaveDays}</td>
+                    <td className="text-center">{compLeaveEntry.leaveDays - compLeaveEntry.usedDays}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* action */}
         <div className="modal-action">
-          <button className="btn w-32" onClick={handleClose}>
-            <FaTimes className="size-6" />
-            취소
+          <button className="btn btn-ghost" onClick={handleClose}>
+            <FaTimes className="size-4" />
+            {t('cancel')}
           </button>
-          <button className="btn btn-primary w-32" disabled={selectedItems.length === 0} onClick={handleSelect}>
-            <FaCheck className="size-5" />
-            선택 완료
+          <button className="btn btn-primary" disabled={selectedItems.length === 0} onClick={handleSelect}>
+            <FaCheck className="size-4" />
+            {t('confirm')}
           </button>
         </div>
       </div>
+      <form method="dialog" className="modal-backdrop">
+        <button onClick={handleClose}>close</button>
+      </form>
     </dialog>
   );
 }

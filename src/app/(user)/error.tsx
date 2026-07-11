@@ -14,8 +14,8 @@ export default function UserError({ error, reset }: { error: Error & { digest?: 
   return (
     <div className="flex size-full flex-col items-center justify-center gap-4 p-8">
       <div className="flex flex-col items-center gap-2">
-        <h2 className="text-2xl font-bold text-slate-900">문제가 발생했습니다</h2>
-        <p className="text-sm text-slate-500">
+        <h2 className="text-base-content text-2xl font-bold">문제가 발생했습니다</h2>
+        <p className="text-base-content/60 text-sm">
           일시적인 오류가 발생했습니다. 다시 시도하거나 대시보드로 돌아가 주세요.
         </p>
       </div>

@@ -3,12 +3,15 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
+import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
+
 import CustomerSupport from '@/app/_components/CustomerSupport';
 import NavMenu from '@/app/_components/NavMenu';
-
+import NowWorkingBar from '@/app/_components/NowWorkingBar';
 import ToastProvider from '@/shared/components/toast/ToastProvider';
 
-import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages, getTranslations } from 'next-intl/server';
 
 import Header from './_components/Header';
 import RQProvider from './_components/RQProvider';
@@ -16,10 +19,14 @@ import './globals.css';
 
 const { WEB_SERVICE_HOST, WS_HOST } = process.env;
 
-export const metadata: Metadata = {
-  title: 'On Time ',
-  description: '전자 근태 관리 시스템',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('metadata');
+
+  return {
+    title: t('title'),
+    description: t('description'),
+  };
+}
 
 export default async function RootLayout({
   children,
@@ -45,34 +52,33 @@ export default async function RootLayout({
 
   const dehydratedState = dehydrate(queryClient);
 
+  const messages = await getMessages();
+
   return (
-    <html lang="ko" data-theme="light">
-      <body className="relative font-[Pretendard,system-ui,-apple-system,sans-serif]">
-        <RQProvider>
-          <HydrationBoundary state={dehydratedState}>
-            <ToastProvider limit={5} timeout={5}>
-              <div className="flex h-screen overflow-hidden">
-                {/* sidebar */}
-                <div className="w-64 flex-none">
+    <html lang="ko" data-theme="ontime-dark">
+      <body className="relative">
+        <NextIntlClientProvider locale="ko" messages={messages}>
+          <RQProvider>
+            <HydrationBoundary state={dehydratedState}>
+              <ToastProvider limit={5} timeout={5}>
+                <div className="bg-base-100 flex h-screen gap-2 overflow-hidden p-2">
+                  {/* sidebar (desktop) + mobile dock rendered inside NavMenu */}
                   <NavMenu />
-                </div>
 
-                {/* main area */}
-                <div className="flex flex-1 flex-col overflow-hidden">
-                  {/* header */}
-                  <div className="flex-none">
+                  {/* main area — floating surface card */}
+                  <div className="to-base-200 flex min-w-0 flex-1 flex-col overflow-hidden rounded-lg bg-gradient-to-b from-[#1c1c1c]">
                     <Header />
+                    <main className="flex-1 overflow-y-auto px-6 pb-[120px]">{children}</main>
                   </div>
-
-                  {/* content */}
-                  <div className="flex-1 overflow-y-auto bg-slate-50/50 p-6">{children}</div>
                 </div>
-              </div>
 
-              <CustomerSupport wsHost={WS_HOST || '/api/ws'} userUniqueId={user.id} />
-            </ToastProvider>
-          </HydrationBoundary>
-        </RQProvider>
+                <NowWorkingBar />
+
+                {/*<CustomerSupport wsHost={WS_HOST || '/api/ws'} userUniqueId={user.id} />*/}
+              </ToastProvider>
+            </HydrationBoundary>
+          </RQProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

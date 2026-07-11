@@ -1,6 +1,6 @@
-import { createVacation, getVacationDocument, searchVacationDocuments } from '@/domain/document/api/vacation';
-
 import { useMutation, useQuery } from '@tanstack/react-query';
+
+import { createVacation, getVacationDocument, searchVacationDocuments } from '@/domain/document/api/vacation';
 
 export function useCreateVacation(onSuccess?: (data: VacationDocument) => void, onError?: () => void) {
   const { mutate, isPending } = useMutation({

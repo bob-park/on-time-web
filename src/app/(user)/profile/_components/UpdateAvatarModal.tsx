@@ -7,8 +7,9 @@ import { IoCloudUploadOutline } from 'react-icons/io5';
 import { TbArrowsExchange } from 'react-icons/tb';
 
 import { useUpdateUserAvatar } from '@/domain/user/query/user';
-
 import useToast from '@/shared/hooks/useToast';
+
+import { useTranslations } from 'next-intl';
 
 interface UpdateAvatarModalProps {
   show: boolean;
@@ -16,6 +17,9 @@ interface UpdateAvatarModalProps {
 }
 
 export default function UpdateAvatarModal({ show, onClose }: UpdateAvatarModalProps) {
+  // i18n
+  const t = useTranslations('profile.avatarModal');
+
   // ref
   const ref = useRef<HTMLDialogElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -29,12 +33,12 @@ export default function UpdateAvatarModal({ show, onClose }: UpdateAvatarModalPr
   // query
   const { updateAvatar, isLoading } = useUpdateUserAvatar(
     () => {
-      push('사용자의 아바타가 변경되었습니다. 화면에 보이는 아바타는 추후 변경됩니다.', 'success');
+      push(t('successToast'), 'success');
 
       handleClose();
     },
     () => {
-      push('아바타 변경에 실패했습니다. 다시 시도해 주세요.', 'error');
+      push(t('errorToast'), 'error');
     },
   );
 
@@ -95,18 +99,18 @@ export default function UpdateAvatarModal({ show, onClose }: UpdateAvatarModalPr
 
   return (
     <dialog ref={ref} className="modal" onKeyDownCapture={handleKeyboardDown}>
-      <div className="modal-box">
+      <div className="modal-box rounded-xl bg-[#252525] shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
         <div className="flex w-full flex-col items-start justify-start gap-3">
           {/* header */}
           <div className="">
-            <h3 className="text-lg font-bold">아바타 수정</h3>
+            <h3 className="text-lg font-bold">{t('title')}</h3>
           </div>
         </div>
 
         {/* content */}
         <div className="m-3 flex flex-col items-start justify-center gap-4">
           <div
-            className="bg-base-300 h-[200px] w-full cursor-pointer rounded-xl"
+            className="hover:border-primary flex h-[200px] w-full cursor-pointer items-center justify-center rounded-xl border border-dashed border-white/20 transition-colors"
             onClick={handleClick}
             onDragEnter={handlePreventDragEvent}
             onMouseLeave={handlePreventDragEvent}
@@ -115,14 +119,12 @@ export default function UpdateAvatarModal({ show, onClose }: UpdateAvatarModalPr
           >
             {avatarFile ? (
               <div className="flex size-full flex-col items-center justify-center gap-5">
-                <img className="size-48 rounded-full" src={URL.createObjectURL(avatarFile)} alt="change avatar" />
+                <img className="size-48 rounded-full" src={URL.createObjectURL(avatarFile)} alt={t('previewAlt')} />
               </div>
             ) : (
-              <div className="flex size-full flex-col items-center justify-center gap-5">
-                <div>
-                  <IoCloudUploadOutline className="size-10" />
-                </div>
-                <span>클릭 또는 드래그하여 이미지를 업로드하세요</span>
+              <div className="text-base-content/60 flex size-full flex-col items-center justify-center gap-4">
+                <IoCloudUploadOutline className="size-10" />
+                <span className="text-sm">{t('dropzone')}</span>
               </div>
             )}
 
@@ -137,20 +139,20 @@ export default function UpdateAvatarModal({ show, onClose }: UpdateAvatarModalPr
 
         {/* action */}
         <div className="modal-action">
-          <button className="btn w-32" onClick={handleClose}>
+          <button className="btn btn-ghost w-32" onClick={handleClose}>
             <GiCancel className="size-6" />
-            취소
+            {t('cancel')}
           </button>
           <button className="btn btn-primary w-32" disabled={isLoading || !avatarFile} onClick={handleUpdateAvatar}>
             {isLoading ? (
               <>
                 <span className="loading loading-spinner loading-xs" />
-                변경중
+                {t('submitting')}
               </>
             ) : (
               <>
                 <TbArrowsExchange className="size-6" />
-                변경
+                {t('submit')}
               </>
             )}
           </button>

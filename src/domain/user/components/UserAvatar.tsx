@@ -7,7 +7,7 @@ import Image from 'next/image';
 import cx from 'classnames';
 
 interface UserAvatarProps {
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'profile';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'profile';
   avatar?: string;
   alt: string;
   isOnline?: boolean;
@@ -21,6 +21,7 @@ export default function UserAvatar({ size = 'sm', avatar, alt, isOnline = true }
     <div className={cx('avatar', isOnline && 'avatar-online', !avatar && 'avatar-placeholder')}>
       <div
         className={cx('bg-neutral text-neutral-content rounded-full', {
+          'w-8': size === 'xs',
           'w-12': size === 'sm',
           'w-24': size === 'profile',
           'w-36': size === 'md',
@@ -30,7 +31,13 @@ export default function UserAvatar({ size = 'sm', avatar, alt, isOnline = true }
       >
         {isError ? (
           <div className="flex size-full items-center justify-center select-none">
-            <span className={cx({ 'text-xl': size === 'profile', 'text-3xl': size !== 'profile' })}>
+            <span
+              className={cx({
+                'text-sm': size === 'xs',
+                'text-xl': size === 'profile',
+                'text-3xl': size !== 'profile' && size !== 'xs',
+              })}
+            >
               {alt.substring(0, 1).toUpperCase()}
             </span>
           </div>
