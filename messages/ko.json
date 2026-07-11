@@ -501,6 +501,18 @@
       "colRemaining": "잔여",
       "noEmployees": "직원 데이터가 없습니다",
       "noEmployeesHint": "연도를 변경하거나 직원 데이터를 확인해 주세요."
+    },
+    "qr": {
+      "eyebrow": "QR Check-in",
+      "title": "QR 코드 생성",
+      "clockIn": "출근",
+      "clockOut": "퇴근",
+      "workingDate": "근무일",
+      "createdDate": "생성일",
+      "expiredDate": "만료일",
+      "autoRefresh": "자동 갱신 중",
+      "caption": "스캔하면 {type} 처리 페이지로 이동합니다",
+      "qrAlt": "{type} QR 코드"
     }
   },
   "chat": {
