@@ -32,7 +32,7 @@ export default function OverTimeWorkDocument({ id, document }: OverTimeWorkDocum
   ];
 
   return (
-    <div id={id} className="relative flex size-full flex-col items-center gap-3">
+    <div id={id} className="relative flex size-full flex-col items-center gap-3 bg-white text-black">
       {/* 결재 정보 */}
       <div className="mt-16 mr-32 flex w-full flex-row items-center justify-end gap-2">
         <DocumentApprovalLine lines={lines} />
@@ -178,7 +178,10 @@ function WorkTimeItem({ item }: { item: OverTimeWorkTime }) {
 
           <div className={cx('absolute top-12 z-[100]', { hidden: !hoverHour })}>
             {item.reports.map((report) => (
-              <div key={`work-time-item-${item.id}-report-${report.id}`} className="bg-base-200 rounded-2xl p-4">
+              <div
+                key={`work-time-item-${item.id}-report-${report.id}`}
+                className="rounded-2xl bg-[#252525] p-4 text-white shadow-[0_8px_24px_rgba(0,0,0,0.5)]"
+              >
                 {report.report.split('\n').map((line, index) => (
                   <div
                     key={`work-time-item-${item.id}-report-${report.id}-index-${index}`}
