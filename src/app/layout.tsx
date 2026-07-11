@@ -74,7 +74,7 @@ export default async function RootLayout({
 
                 <NowWorkingBar />
 
-                <CustomerSupport wsHost={WS_HOST || '/api/ws'} userUniqueId={user.id} />
+                {/*<CustomerSupport wsHost={WS_HOST || '/api/ws'} userUniqueId={user.id} />*/}
               </ToastProvider>
             </HydrationBoundary>
           </RQProvider>
