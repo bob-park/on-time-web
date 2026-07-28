@@ -15,7 +15,7 @@ interface User {
   cellPhone?: string;
   role: Role;
   position: Position;
-  groups: Team[];
+  groups: UserGroup[];
   leaveEntry: UserLeaveEntry;
   createdDate: Date;
   createdBy: string;
@@ -73,4 +73,11 @@ interface UsedVacation {
   month: number;
   used: number;
   usedComp: number;
+}
+
+interface UserGroup {
+  id: string;
+  isLeader: boolean;
+  description?: string;
+  group: Team;
 }

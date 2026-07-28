@@ -38,7 +38,9 @@ export default function DayOffViewContents({ order, user, usedVacations }: DayOf
       {/* 성명 (sticky) */}
       <td className="bg-base-300 border-base-content/[0.08] sticky left-[48px] z-10 border-r px-3 py-3 whitespace-nowrap group-hover:bg-[#232323]">
         <div className="font-bold">{user.username}</div>
-        {user.group?.name && <div className="text-base-content/50 mt-0.5 text-xs">{user.group.name}</div>}
+        {user.groups?.[0]?.group.name && (
+          <div className="text-base-content/50 mt-0.5 text-xs">{user.groups?.[0]?.group.name}</div>
+        )}
       </td>
 
       {/* 입사일 */}

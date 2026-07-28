@@ -30,7 +30,9 @@ export default async function ChatUserPage({ params }: { params: Promise<{ uniqu
         <div>
           <div className="eyebrow">{t('eyebrow')}</div>
           <h1 className="mt-1 text-2xl font-bold tracking-tight">
-            {user.group && <span className="text-base-content/50 font-normal">{user.group.name} </span>}
+            {user.groups?.[0].group.name && (
+              <span className="text-base-content/50 font-normal">{user.groups[0].group.name} </span>
+            )}
             {user.username}
             {user.position && <span className="text-base-content/50 font-normal"> {user.position.name}</span>}
           </h1>

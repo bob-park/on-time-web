@@ -172,8 +172,8 @@ const EmployeeRow = memo(function EmployeeRow({ user, dates, records, isLoading,
       <td scope="row" className="bg-base-300 sticky left-0 z-10 min-w-[170px] px-3 py-3 group-hover:bg-[#232323]">
         <div className="max-w-[150px] truncate text-sm font-bold">{user.username}</div>
         <div className="text-base-content/60 mt-0.5 max-w-[150px] truncate text-xs">
-          {user.group?.name}
-          {user.group?.name && user.position?.name && ' · '}
+          {user.groups?.[0]?.group.name}
+          {user.groups?.[0]?.group.name && user.position?.name && ' · '}
           {user.position?.name}
         </div>
       </td>

@@ -32,7 +32,7 @@ export default function ChatUsersContents() {
             <span className="min-w-0 flex-1">
               <span className="block truncate text-sm font-bold">{user.username}</span>
               <span className="text-base-content/60 mt-0.5 block truncate text-xs">
-                {[user.group?.name, user.position?.name].filter(Boolean).join(' · ')}
+                {[user.groups?.[0]?.group.name, user.position?.name].filter(Boolean).join(' · ')}
               </span>
             </span>
 

@@ -68,7 +68,7 @@ export default function PressApprovalModal({ show, approvalUserUniqueId, onClose
     sendMessage({
       userUniqueId: approvalUserUniqueId,
       body: {
-        displayMessage: `${currentUser.group?.name || ''} ${currentUser.username} ${currentUser.position?.name || ''} 이(가) 결재 버튼 살짝 눌러달라고 요청했습니다.`,
+        displayMessage: `${currentUser.groups?.[0]?.group.name || ''} ${currentUser.username} ${currentUser.position?.name || ''} 이(가) 결재 버튼 살짝 눌러달라고 요청했습니다.`,
         fields: [],
       },
     });

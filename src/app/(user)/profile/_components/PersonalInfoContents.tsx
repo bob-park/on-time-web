@@ -72,7 +72,7 @@ export default function PersonalInfoContents() {
             </div>
 
             <div className="grid flex-1 grid-cols-1 gap-x-8 gap-y-5 md:grid-cols-2">
-              <InfoField label={t('labelTeam')} value={currentUser?.group.name} />
+              <InfoField label={t('labelTeam')} value={currentUser?.groups?.[0]?.group.name} />
               <InfoField label={t('labelPosition')} value={currentUser?.position.name} />
               <InfoField label={t('labelName')} value={currentUser?.username} />
               <InfoField label={t('labelEmail')} value={currentUser?.email} />

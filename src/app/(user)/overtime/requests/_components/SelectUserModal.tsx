@@ -91,7 +91,7 @@ export default function SelectUserModal({ show, onClose, onSelect }: SelectedUse
                     })}
                     onClick={() => setSelectedUserUniqueId(user.id)}
                   >
-                    <td className="text-center">{user.group?.name}</td>
+                    <td className="text-center">{user.groups?.[0]?.group.name}</td>
                     <td className="text-center">{user.position?.name}</td>
                     <td className="text-center">{user.username}</td>
                   </tr>

@@ -65,7 +65,7 @@ export default function VacationDocument({ id, document }: VacationDocumentProps
           <span>:</span>
         </div>
         <div className="">
-          <span className="ml-16 text-2xl tracking-widest">{document.user.groups[0].name}</span>
+          <span className="ml-16 text-2xl tracking-widest">{document.user.groups?.[0].group.name}</span>
         </div>
       </div>
 

@@ -51,10 +51,15 @@ export default function Header() {
           <div className="hidden text-left leading-tight select-none md:block">
             <div className="text-[13px] font-bold">
               {currentUser?.username}
-              {currentUser?.group?.isLeader && <span className="text-base-content/60 ml-1 font-normal">(팀장)</span>}
+              {currentUser?.groups?.[0]?.isLeader && (
+                <span className="text-base-content/60 ml-1 font-normal">(팀장)</span>
+              )}
             </div>
             <div className="text-base-content/60 text-[11px]">
-              {[currentUser?.group?.name, currentUser?.position?.name || currentUser?.group?.teamUserDescription]
+              {[
+                currentUser?.groups?.[0]?.group.name,
+                currentUser?.position?.name || currentUser?.groups?.[0].description,
+              ]
                 .filter(Boolean)
                 .join(' · ')}
             </div>

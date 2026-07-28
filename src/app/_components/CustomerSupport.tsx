@@ -78,7 +78,7 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
         sendMessage({
           userUniqueId: admin.id,
           body: {
-            displayMessage: `${currentUser.group?.name || ''} ${currentUser.username} ${currentUser.position?.name || ''} 이(가) 불편한 메세지를 보냈습니다.`,
+            displayMessage: `${currentUser.groups?.[0]?.group.name || ''} ${currentUser.username} ${currentUser.position?.name || ''} 이(가) 불편한 메세지를 보냈습니다.`,
             fields: [
               {
                 field: '내용',
@@ -212,5 +212,5 @@ function mergePageUsers(pages: User[][]) {
 }
 
 function parseDisplayName(user: User) {
-  return `${user.group?.name || ''} ${user.username || ''} ${user.position?.name || ''}`;
+  return `${user.groups?.[0]?.group.name || ''} ${user.username || ''} ${user.position?.name || ''}`;
 }

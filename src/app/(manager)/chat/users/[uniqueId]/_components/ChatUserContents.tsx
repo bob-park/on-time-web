@@ -58,7 +58,7 @@ export default function ChatUserContents({ wsHost, user }: ChatUserContentsProps
             userUniqueId: message.user.id,
             message: message.message,
             name: message.user.username,
-            displayName: `${message.user.group?.name || ''} ${message.user.username || ''} ${message.user.position?.name || ''}`,
+            displayName: `${message.user.groups?.[0]?.group.name || ''} ${message.user.username || ''} ${message.user.position?.name || ''}`,
             createdDate: message.createdDate,
           }))}
           onSend={handleSendMessage}
