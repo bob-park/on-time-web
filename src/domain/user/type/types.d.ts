@@ -15,7 +15,7 @@ interface User {
   cellPhone?: string;
   role: Role;
   position: Position;
-  group: Team;
+  groups: Team[];
   leaveEntry: UserLeaveEntry;
   createdDate: Date;
   createdBy: string;

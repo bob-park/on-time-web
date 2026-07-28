@@ -36,9 +36,7 @@ export async function requestDocument(id: number) {
 }
 
 export async function cancelDocument(id: number) {
-  const result = await api.delete(`/api/documents/${id}/cancel`).json<{ id: number }>();
+  await api.delete(`/api/documents/${id}/cancel`);
 
   await delay(1_000);
-
-  return result;
 }
