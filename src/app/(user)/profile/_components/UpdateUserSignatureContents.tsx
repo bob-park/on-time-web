@@ -36,7 +36,7 @@ export default function UpdateUserSignatureContents() {
               // 서명 PNG 는 검정 잉크 + 투명 배경이라 다크 배경에서 안 보이므로 프리뷰 내부만 밝게 유지
               <Image
                 className="bg-white object-contain"
-                src={`/api/users/${currentUser.id}/signature`}
+                src={`/api/v1/users/${currentUser.id}/signature`}
                 alt={t('alt')}
                 fill
                 onError={() => setIsError(true)}

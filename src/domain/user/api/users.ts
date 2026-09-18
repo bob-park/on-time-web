@@ -1,12 +1,13 @@
 import api from '@/shared/api';
+import { PagedModel } from '@/shared/api/common.dto';
 import delay from '@/utils/delay';
 
 export async function getUsers(params: SearchPageParams) {
-  return api.get('/api/users', { searchParams: { ...params, sort: 'username,asc' } }).json<Page<User>>();
+  return api.get('/api/v1/users', { searchParams: { ...params, sort: 'username,asc' } }).json<PagedModel<User>>();
 }
 
 export async function updateUserPassword(req: UpdateUserPasswordRequest) {
-  const result = await api.post('/api/users/password', { json: req }).json<User>();
+  const result = await api.post('/api/v1/users/password', { json: req }).json<User>();
 
   await delay(1_000);
 
@@ -18,7 +19,7 @@ export async function updateUserAvatar(avatar: File) {
 
   formData.append('avatar', avatar);
 
-  const result = await api.post('/api/users/avatar', { body: formData }).json<User>();
+  const result = await api.post('/api/v1/users/avatar', { body: formData }).json<User>();
 
   await delay(1_000);
 
@@ -26,7 +27,7 @@ export async function updateUserAvatar(avatar: File) {
 }
 
 export async function resetUserAvatar() {
-  const result = await api.post('/api/users/avatar/reset').json<User>();
+  const result = await api.post('/api/v1/users/avatar/reset').json<User>();
 
   await delay(1_000);
 
@@ -38,7 +39,7 @@ export async function updateUserSignature(signature: File) {
 
   formData.append('signature', signature);
 
-  const result = await api.post('/api/users/signature', { body: formData }).json<User>();
+  const result = await api.post('/api/v1/users/signature', { body: formData }).json<User>();
 
   await delay(1_000);
 
@@ -46,9 +47,9 @@ export async function updateUserSignature(signature: File) {
 }
 
 export async function getAllUserLeaveEntries(req: SearchUserLeaveEntryRequest) {
-  return api.get('/api/users/leave/entries', { searchParams: req }).json<User[]>();
+  return api.get('/api/v1/users/leave/entries', { searchParams: req }).json<User[]>();
 }
 
 export async function getUsersUsedVacations(req: SearchUserLeaveEntryRequest) {
-  return api.get('/api/users/used/vacations', { searchParams: req }).json<UserUsedVacation[]>();
+  return api.get('/api/v1/users/used/vacations', { searchParams: req }).json<UserUsedVacation[]>();
 }

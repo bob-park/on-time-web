@@ -62,7 +62,7 @@ export default function PersonalInfoContents() {
             <div className="flex flex-shrink-0 flex-col items-center gap-3.5">
               <UserAvatar
                 alt={currentUser?.username || ''}
-                avatar={currentUser && `/api/users/${currentUser.id}/avatar`}
+                avatar={currentUser && `/api/v1/users/${currentUser.id}/avatar`}
                 size="profile"
                 isOnline={false}
               />

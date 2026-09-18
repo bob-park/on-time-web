@@ -184,7 +184,7 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
               id: message.id,
               type: message.type,
               me: message.user.id === currentUser?.id,
-              avatar: `/api/users/${message.user?.id}/avatar`,
+              avatar: `/api/v1/users/${message.user?.id}/avatar`,
               userUniqueId: message.user.id,
               message: message.message,
               name: message.user.username,

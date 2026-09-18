@@ -16,7 +16,7 @@ export default function UserSignature({ userUniqueId }: UserSignatureProps) {
     <div className="flex size-full flex-col items-center justify-center gap-1">
       {!isError && (
         <Image
-          src={`/api/users/${userUniqueId}/signature`}
+          src={`/api/v1/users/${userUniqueId}/signature`}
           alt="user signature"
           width={90}
           height={90}

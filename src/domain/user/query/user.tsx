@@ -10,6 +10,8 @@ import {
   updateUserPassword,
   updateUserSignature,
 } from '@/domain/user/api/users';
+import { getNextPageParams } from '@/shared/api';
+import { PagedModel } from '@/shared/api/common.dto';
 
 export function useGetCurrentUser() {
   const { data, isLoading } = useQuery<User>({
@@ -22,9 +24,9 @@ export function useGetCurrentUser() {
 
 export function useGetUsers(params: SearchPageParams) {
   const { data, fetchNextPage, isLoading, isError, refetch } = useInfiniteQuery<
-    Page<User>,
+    PagedModel<User>,
     unknown,
-    InfiniteData<Page<User>>,
+    InfiniteData<PagedModel<User>>,
     QueryKey,
     SearchPageParams
   >({
@@ -34,30 +36,13 @@ export function useGetUsers(params: SearchPageParams) {
       size: 100,
       page: 0,
     },
-    getNextPageParam: (lastPage, allPages) => {
-      let totalPage = Math.ceil(lastPage.total / lastPage.pageable.pageSize);
-
-      if (lastPage.total % lastPage.pageable.pageSize > 0) {
-        totalPage = totalPage + 1;
-      }
-
-      const page = {
-        size: lastPage.pageable.pageSize,
-        page: lastPage.pageable.pageNumber,
-      };
-      const nextPage = page.page + 1;
-
-      return {
-        size: page.size,
-        page: page.page + 1 > totalPage ? totalPage : nextPage,
-      };
-    },
+    getNextPageParam: (lastPage) => getNextPageParams<User>(lastPage),
     staleTime: 60 * 1_000,
     gcTime: 5 * 60 * 1_000,
   });
 
   return {
-    pages: data?.pages || ([] as Page<User>[]),
+    pages: data?.pages || ([] as PagedModel<User>[]),
     isLoading,
     isError,
     fetchNextPage,

@@ -1,22 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { searchApprovalHistories } from '@/domain/approval/api/approvalHistory';
+import { PagedModel } from '@/shared/api/common.dto';
 
 export function useApprovalHistories(req: SearchDocumentApprovalHistoryRequest) {
-  const { data, isLoading } = useQuery<Page<ApprovalHistory>>({
+  const { data, isLoading } = useQuery<PagedModel<ApprovalHistory>>({
     queryKey: ['documents', 'approval', 'histories', req],
     queryFn: () => searchApprovalHistories(req),
   });
 
   return {
-    page: data || {
-      content: [],
-      total: 0,
-      pageable: {
-        pageNumber: 0,
-        pageSize: 25,
-      },
-    },
+    page: data,
     isLoading,
   };
 }

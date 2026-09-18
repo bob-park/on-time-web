@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { createVacation, getVacationDocument, searchVacationDocuments } from '@/domain/document/api/vacation';
+import { PagedModel } from '@/shared/api/common.dto';
 
 export function useCreateVacation(onSuccess?: (data: VacationDocument) => void, onError?: () => void) {
   const { mutate, isPending } = useMutation({
@@ -27,10 +28,10 @@ export function useVacationDocument(id: number) {
 }
 
 export function useVacationDocuments(req: SearchVacationDocumentRequest) {
-  const { data, isLoading } = useQuery<Page<VacationDocument>>({
+  const { data, isLoading } = useQuery<PagedModel<VacationDocument>>({
     queryKey: ['documents', 'vacations', req],
     queryFn: () => searchVacationDocuments(req),
   });
 
-  return { vacationDocuments: data?.content || [], total: data?.total ?? 0, isLoading };
+  return { vacationDocuments: data?.content || [], total: data?.page.totalElements ?? 0, isLoading };
 }

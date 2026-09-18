@@ -44,7 +44,7 @@ export default function DocumentApprovalContents({ params }: DocumentApprovalCon
     size: PAGE_SIZE,
   });
 
-  const total = page?.total ?? 0;
+  const total = page?.page.totalElements ?? 0;
   const totalPages = total === 0 ? 0 : Math.ceil(total / PAGE_SIZE);
 
   const handleTypeChange = (value: DocumentsType | undefined) => {

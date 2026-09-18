@@ -8,9 +8,10 @@ import {
   requestDocument,
   searchDocument,
 } from '@/domain/document/api/documents';
+import { PagedModel } from '@/shared/api/common.dto';
 
 export function useDocuments(req: SearchDocumentRequest) {
-  const { data, isLoading } = useQuery<Page<Document>>({
+  const { data, isLoading } = useQuery<PagedModel<Document>>({
     queryKey: ['documents', req],
     queryFn: () => searchDocument(req),
   });
