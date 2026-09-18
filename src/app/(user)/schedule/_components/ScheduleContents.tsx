@@ -198,17 +198,17 @@ interface StatusChipProps {
 
 const StatusChip = ({ dayOffType, status }: StatusChipProps) => {
   let background = 'var(--neutral-soft)';
-  let icon = <IoIosTime className="text-3 size-3.5" />;
+  let icon = <IoIosTime className="text-2 size-3.5" />;
 
   if (dayOffType === 'DAY_OFF') {
     background = 'var(--primary-subtle)';
     icon = <GiNightSleep className="text-primary size-3.5" />;
   } else if (status === 'WARNING') {
     background = 'var(--warning-soft)';
-    icon = <IoIosWarning className="text-warning size-3.5" />;
+    icon = <IoIosWarning className="size-3.5" style={{ color: 'var(--warning-text)' }} />;
   } else if (status === 'SUCCESS') {
     background = 'var(--success-soft)';
-    icon = <FaCheckCircle className="text-success size-3.5" />;
+    icon = <FaCheckCircle className="size-3.5" style={{ color: 'var(--success-text)' }} />;
   }
 
   return (

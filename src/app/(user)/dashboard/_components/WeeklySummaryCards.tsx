@@ -14,7 +14,6 @@ import StatCard from '@/shared/components/StatCard';
 import { isIncludeTime } from '@/utils/dataUtils';
 import { getDuration } from '@/utils/parse';
 
-import cx from 'classnames';
 import dayjs from 'dayjs';
 import { useTranslations } from 'next-intl';
 
@@ -72,7 +71,10 @@ export default function WeeklySummaryCards() {
         <div className="flex items-center justify-between gap-3">
           <p className="text-2 text-xs font-semibold tracking-widest uppercase">{t('heroLabel')}</p>
           <Badge variant={isOnTrack ? 'primary' : 'wait'}>
-            <span className={cx('h-2 w-2 rounded-full', isOnTrack ? 'bg-primary' : 'bg-warning')} />
+            <span
+              className="h-2 w-2 rounded-full"
+              style={{ background: isOnTrack ? 'var(--color-primary)' : 'var(--warning-text)' }}
+            />
             {isOnTrack ? t('statusOnTrack') : t('statusBehind')}
           </Badge>
         </div>

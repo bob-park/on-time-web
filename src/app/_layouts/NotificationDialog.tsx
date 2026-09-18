@@ -26,7 +26,7 @@ export default function NotificationDialog({ open, onClose }: Readonly<{ open: b
 
   return (
     <dialog ref={dialogRef} className="modal modal-bottom sm:modal-middle">
-      <div className="modal-box">
+      <div className="modal-box bg-base-100 border-base-300 rounded-box border">
         <h3 className="text-lg font-bold">On Time 앱 설치 방법</h3>
         <div className="mt-12 flex w-full flex-row items-center justify-center gap-4">
           <Link
