@@ -93,6 +93,7 @@
   --success-soft: rgba(20, 158, 97, 0.16);
   --success-text: #026b3f;
   --warning-soft: rgba(217, 119, 6, 0.14);
+  --warning-text: #92400e;
   --error-soft: rgba(220, 38, 38, 0.12);
   --neutral-soft: rgba(104, 107, 130, 0.12);
   --shadow-whisper: rgba(0, 0, 0, 0.03) 0px 4px 24px;
@@ -109,6 +110,7 @@
   --success-soft: rgba(34, 197, 94, 0.18);
   --success-text: #86efac;
   --warning-soft: rgba(245, 158, 11, 0.2);
+  --warning-text: #fcd34d;
   --error-soft: rgba(239, 68, 68, 0.2);
   --neutral-soft: rgba(167, 169, 184, 0.14);
   --shadow-whisper: rgba(0, 0, 0, 0.35) 0px 4px 24px;

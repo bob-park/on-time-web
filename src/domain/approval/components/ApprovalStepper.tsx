@@ -29,7 +29,7 @@ export default function ApprovalStepper({ steps }: ApprovalStepperProps) {
             className={cx(
               'z-[1] flex size-8 flex-none items-center justify-center rounded-full border-2 text-xs font-bold',
               {
-                'border-success text-success-content': step.status === 'ok',
+                'border-success': step.status === 'ok',
                 'border-primary bg-primary text-primary-content': step.status === 'current',
                 'border-error bg-error text-error-content': step.status === 'rejected',
                 'border-base-300 bg-base-100 text-3': step.status === 'pending',
@@ -66,8 +66,10 @@ export function toApprovalSteps(histories: ApprovalHistory[], names: (userUnique
     let status: ApprovalStep['status'] = 'pending';
 
     if (h.status === 'APPROVED') status = 'ok';
-    else if (h.status === 'REJECTED') status = 'rejected';
-    else if (!currentFound) {
+    else if (h.status === 'REJECTED') {
+      status = 'rejected';
+      currentFound = true;
+    } else if (!currentFound) {
       status = 'current';
       currentFound = true;
     }

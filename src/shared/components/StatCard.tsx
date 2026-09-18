@@ -27,7 +27,7 @@ export default function StatCard({ label, value, unit, caption, ring, children }
           }}
         >
           <span className="bg-base-100 flex size-[42px] items-center justify-center rounded-full text-xs font-bold">
-            {ring}%
+            {Math.round(ring)}%
           </span>
         </div>
       )}

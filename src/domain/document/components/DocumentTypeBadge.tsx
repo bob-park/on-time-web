@@ -3,7 +3,7 @@ import Badge, { BadgeVariant } from '@/shared/components/Badge';
 
 const VARIANTS: Record<DocumentsType, BadgeVariant> = {
   VACATION: 'primary',
-  OVERTIME_WORK: 'wait',
+  OVERTIME_WORK: 'neutral',
 };
 
 const LABELS: Record<DocumentsType, string> = {

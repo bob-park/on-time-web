@@ -10,7 +10,7 @@ interface BadgeProps {
 
 const STYLES: Record<BadgeVariant, React.CSSProperties> = {
   ok: { background: 'var(--success-soft)', color: 'var(--success-text)' },
-  wait: { background: 'var(--warning-soft)', color: 'var(--color-warning)' },
+  wait: { background: 'var(--warning-soft)', color: 'var(--warning-text)' },
   no: { background: 'var(--error-soft)', color: 'var(--color-error)' },
   neutral: { background: 'var(--neutral-soft)', color: 'var(--text-2)' },
   primary: { background: 'var(--primary-subtle)', color: 'var(--color-primary)' },

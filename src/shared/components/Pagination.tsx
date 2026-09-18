@@ -42,7 +42,7 @@ export default function Pagination({ currentPage, totalPages, total, pageSize, o
   // hooks
   const t = useTranslations('common');
 
-  const startItem = total === 0 ? 0 : currentPage * pageSize + 1;
+  const startItem = currentPage * pageSize + 1;
   const endItem = Math.min((currentPage + 1) * pageSize, total);
 
   if (total === 0) return null;

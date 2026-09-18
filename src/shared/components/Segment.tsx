@@ -27,7 +27,7 @@ export default function Segment<T>({ options, value, onChange, ariaLabel }: Segm
           type="button"
           aria-pressed={value === opt.value}
           className={cx(
-            'rounded-lg px-3 py-1.5 text-[13px] transition-colors',
+            'cursor-pointer rounded-lg px-3 py-1.5 text-[13px] transition-colors',
             value === opt.value
               ? 'bg-primary-subtle text-primary font-semibold'
               : 'text-2 hover:text-base-content font-medium',
