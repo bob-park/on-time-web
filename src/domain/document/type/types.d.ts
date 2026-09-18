@@ -8,6 +8,7 @@ interface Document {
   id: number;
   type: DocumentsType;
   status: DocumentStatus;
+  userUniqueId?: string;
   user: User;
   approvalHistories: ApprovalHistory[];
   createdDate: Date;

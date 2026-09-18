@@ -1,18 +1,23 @@
 import { NextRequest } from 'next/server';
 
-import { currentSub, forward, unauthorized } from '@/shared/api/server';
+import { PagedModel } from '@/shared/api/common.dto';
+import { currentSub, forward, handle, serverApi, unauthorized } from '@/shared/api/server';
 
 export async function GET(req: NextRequest) {
-  const sub = await currentSub();
+  return handle(async (sub) => {
+    const searchParams = new URLSearchParams(req.nextUrl.searchParams);
+    searchParams.set('userUniqueId', sub);
 
-  if (!sub) {
-    return unauthorized();
-  }
+    const page = await serverApi
+      .get('api/v1/documents/vacations', { searchParams })
+      .json<PagedModel<VacationDocument>>();
 
-  const searchParams = new URLSearchParams(req.nextUrl.searchParams);
-  searchParams.set('userUniqueId', sub);
+    const content = await Promise.all(
+      page.content.map((item) => serverApi.get(`api/v1/documents/vacations/${item.id}`).json<VacationDocument>()),
+    );
 
-  return forward(req, { searchParams });
+    return { ...page, content };
+  });
 }
 
 export async function POST(req: NextRequest) {

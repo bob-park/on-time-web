@@ -1,16 +1,23 @@
 import { NextRequest } from 'next/server';
 
-import { currentSub, forward, unauthorized } from '@/shared/api/server';
+import { PagedModel } from '@/shared/api/common.dto';
+import { handle, serverApi } from '@/shared/api/server';
 
 export async function GET(req: NextRequest) {
-  const sub = await currentSub();
+  return handle(async (sub) => {
+    const searchParams = new URLSearchParams(req.nextUrl.searchParams);
+    searchParams.set('userUniqueId', sub);
 
-  if (!sub) {
-    return unauthorized();
-  }
+    const page = await serverApi.get('api/v1/documents/approval', { searchParams }).json<PagedModel<ApprovalHistory>>();
 
-  const searchParams = new URLSearchParams(req.nextUrl.searchParams);
-  searchParams.set('userUniqueId', sub);
+    const content = await Promise.all(
+      page.content.map(async (item) => {
+        const user = await serverApi.get(`api/v1/users/${item.document.userUniqueId}/summary`).json<User>();
 
-  return forward(req, { searchParams });
+        return { ...item, document: { ...item.document, user } };
+      }),
+    );
+
+    return { ...page, content };
+  });
 }
