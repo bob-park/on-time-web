@@ -13,7 +13,7 @@ export default async function SchedulePage() {
   return (
     <div className="w-full">
       {/* eyebrow + title */}
-      <PageHeader eyebrow={t('eyebrow')} title={t('title')} actions={<AddScheduleButton />} />
+      <PageHeader title={t('title')} actions={<AddScheduleButton />} />
 
       <WorkingTimeProvider>
         {/* toolbar: week navigator */}

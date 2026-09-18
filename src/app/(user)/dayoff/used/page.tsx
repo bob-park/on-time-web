@@ -13,7 +13,6 @@ export default async function DayOffHistoryPage() {
     <div className="animate-fade-up flex size-full flex-col gap-4">
       {/* eyebrow + title + action */}
       <PageHeader
-        eyebrow={t('eyebrow')}
         title={t('title')}
         description={t('description')}
         actions={

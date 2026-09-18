@@ -10,7 +10,7 @@ export default async function AttendanceRecordGpsPage() {
   return (
     <div className="w-full">
       {/* eyebrow + title */}
-      <PageHeader eyebrow={t('eyebrow')} title={t('title')} description={t('subtitle')} />
+      <PageHeader title={t('title')} description={t('subtitle')} />
 
       {/* content */}
       <AttendanceRecordGpsContents />

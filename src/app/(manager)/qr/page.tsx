@@ -10,7 +10,7 @@ export default async function QRPage() {
   return (
     <div className="animate-fade-up flex size-full flex-col gap-4">
       {/* eyebrow + title */}
-      <PageHeader eyebrow={t('eyebrow')} title={t('title')} />
+      <PageHeader title={t('title')} />
 
       {/* contents */}
       <QRContents />

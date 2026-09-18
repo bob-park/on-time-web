@@ -11,7 +11,7 @@ export default async function AttendanceRecordPage({ params }: { params: Promise
   return (
     <div className="w-full">
       {/* eyebrow + title */}
-      <PageHeader eyebrow={t('eyebrow')} title={t('title')} />
+      <PageHeader title={t('title')} />
 
       {/* content */}
       <AttendanceRecordContents checkId={checkId} />

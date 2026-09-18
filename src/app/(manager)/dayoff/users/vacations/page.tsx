@@ -10,7 +10,7 @@ export default async function DayoffManagePage() {
   return (
     <div className="flex size-full flex-col">
       {/* eyebrow + title */}
-      <PageHeader eyebrow={t('eyebrow')} title={t('title')} />
+      <PageHeader title={t('title')} />
 
       <div className="w-full max-w-[1500px]">
         <DayOffManageContents />

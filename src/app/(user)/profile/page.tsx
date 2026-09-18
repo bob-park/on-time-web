@@ -13,7 +13,7 @@ export default async function ProfilePage() {
   return (
     <div className="w-full">
       {/* eyebrow + title */}
-      <PageHeader eyebrow={t('eyebrow')} title={t('title')} />
+      <PageHeader title={t('title')} />
 
       {/* contents */}
       <div className="grid gap-4 lg:grid-cols-2">

@@ -13,7 +13,6 @@ export default async function OvertimeRequestsPage() {
     <div className="animate-fade-up flex size-full flex-col">
       {/* eyebrow + title + action */}
       <PageHeader
-        eyebrow={t('eyebrow')}
         title={t('title')}
         description={t('description')}
         actions={

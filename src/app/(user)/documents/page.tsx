@@ -10,7 +10,7 @@ export default async function DocumentListPage() {
   return (
     <div className="w-full">
       {/* eyebrow + title */}
-      <PageHeader eyebrow={t('eyebrow')} title={t('title')} description={t('description')} />
+      <PageHeader title={t('title')} description={t('description')} />
 
       {/* content */}
       <DocumentListContents />
