@@ -73,11 +73,11 @@ export default function SelectUserCompLeaveEntriesModal({
         <div className="mt-4 flex flex-col items-start justify-center gap-4">
           <p className="text-2 text-sm">{t('modalDescription')}</p>
 
-          <div className="bg-base-200 border-base-300 w-full overflow-x-auto rounded-lg border">
+          <div className="border-soft w-full overflow-x-auto rounded-lg border">
             <table className="table">
               {/* head */}
               <thead>
-                <tr className="text-2">
+                <tr className="text-3 text-xs">
                   <th className="text-center"></th>
                   <th className="text-center">{t('colCreatedDate')}</th>
                   <th className="text-center">{t('colContents')}</th>

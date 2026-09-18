@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 
 // 목록 응답은 base Document 로 타이핑되어 있어, 실제 payload 에 하위 타입 필드가 있는지로 좁힌다.
 function isVacationDocument(doc: Document): doc is VacationDocument {
-  return doc.type === 'VACATION' && 'startDate' in doc;
+  return doc.type === 'VACATION' && 'startDate' in doc && doc.startDate != null;
 }
 
 function isOverTimeWorkDocument(doc: Document): doc is OverTimeWorkDocument {

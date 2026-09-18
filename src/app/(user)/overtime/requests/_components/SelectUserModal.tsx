@@ -73,11 +73,11 @@ export default function SelectUserModal({ show, onClose, onSelect }: SelectedUse
 
         {/* content */}
         <div className="mt-4 flex flex-col items-start justify-center gap-4 overflow-auto">
-          <div className="bg-base-200 border-base-300 w-full overflow-x-auto rounded-lg border">
+          <div className="border-soft w-full overflow-x-auto rounded-lg border">
             <table className="table">
               {/* head */}
               <thead>
-                <tr className="text-2">
+                <tr className="text-3 text-xs">
                   <th className="text-center">{t('colTeam')}</th>
                   <th className="text-center">{t('colPosition')}</th>
                   <th className="text-center">{t('colName')}</th>

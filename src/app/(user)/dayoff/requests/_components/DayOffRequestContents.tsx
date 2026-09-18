@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from 'react';
 
-import { FaCheck } from 'react-icons/fa6';
-
 import { useRouter } from 'next/navigation';
 
 import SelectUserCompLeaveEntriesModal from '@/app/(user)/dayoff/requests/_components/SelectUserCompLeaveEntriesModal';
 import { UsedCompLeaveEntryRequest, VacationSubType, VacationType } from '@/domain/document/apis/document.dto';
 import { useCreateVacation } from '@/domain/document/queries/vacation';
 import { useUserLeaveEntry } from '@/domain/users/queries/user';
-import Badge from '@/shared/components/Badge';
+import { useUserCompLeaveEntries } from '@/domain/users/queries/userCompLeaveEntry';
+import Card from '@/shared/components/Card';
+import FormSection from '@/shared/components/FormSection';
 import useToast from '@/shared/hooks/useToast';
 
 import cx from 'classnames';
@@ -32,22 +32,20 @@ function countBusinessDays(from: Date, to: Date): number {
   return count;
 }
 
-interface VacationTypeOption {
-  value: VacationType;
+interface VacationChip {
+  key: string;
   labelKey: string;
-  descKey: string;
+  vacationType: VacationType;
+  vacationSubType: VacationSubType | 'ALL_DAY_OFF';
 }
 
-const VACATION_TYPES: VacationTypeOption[] = [
-  { value: 'GENERAL', labelKey: 'general', descKey: 'generalDesc' },
-  { value: 'COMPENSATORY', labelKey: 'compensatory', descKey: 'compensatoryDesc' },
-  { value: 'OFFICIAL', labelKey: 'official', descKey: 'officialDesc' },
-];
-
-const VACATION_SUBTYPES = [
-  { value: 'ALL_DAY_OFF' as const, labelKey: 'allDay', days: 1 },
-  { value: 'AM_HALF_DAY_OFF' as VacationSubType, labelKey: 'amHalf', days: 0.5 },
-  { value: 'PM_HALF_DAY_OFF' as VacationSubType, labelKey: 'pmHalf', days: 0.5 },
+// 칩 = 기존 (휴가 구분 × 부가 구분) 조합을 그대로 펼친 것 — 새로운 타입은 없다.
+const VACATION_CHIPS: VacationChip[] = [
+  { key: 'general', labelKey: 'type.general', vacationType: 'GENERAL', vacationSubType: 'ALL_DAY_OFF' },
+  { key: 'amHalf', labelKey: 'subType.amHalf', vacationType: 'GENERAL', vacationSubType: 'AM_HALF_DAY_OFF' },
+  { key: 'pmHalf', labelKey: 'subType.pmHalf', vacationType: 'GENERAL', vacationSubType: 'PM_HALF_DAY_OFF' },
+  { key: 'comp', labelKey: 'type.compensatory', vacationType: 'COMPENSATORY', vacationSubType: 'ALL_DAY_OFF' },
+  { key: 'official', labelKey: 'type.official', vacationType: 'OFFICIAL', vacationSubType: 'ALL_DAY_OFF' },
 ];
 
 export default function DayOffRequestContent() {
@@ -55,7 +53,7 @@ export default function DayOffRequestContent() {
 
   const [selectedVacationType, setSelectedVacationType] = useState<VacationType>();
   const [selectedVacationSubType, setSelectedVacationSubType] = useState<VacationSubType | 'ALL_DAY_OFF'>();
-  const [reason, setReason] = useState<string>(t('settings.reasonPlaceholder'));
+  const [reason, setReason] = useState<string>(t('reasonDefault'));
   const [selectedDate, setSelectedDate] = useState<DateRange>(() => ({
     from: dayjs().toDate(),
     to: dayjs().toDate(),
@@ -67,6 +65,7 @@ export default function DayOffRequestContent() {
   const router = useRouter();
   const { push } = useToast();
   const { leaveEntry } = useUserLeaveEntry(new Date().getFullYear());
+  const { compLeaveEntries } = useUserCompLeaveEntries();
 
   const { createVacation, isLoading } = useCreateVacation(
     (data) => {
@@ -104,156 +103,84 @@ export default function DayOffRequestContent() {
   const businessDays = selectedDate.from && selectedDate.to ? countBusinessDays(selectedDate.from, selectedDate.to) : 0;
   const usedDays = isHalfDay ? 0.5 : businessDays;
   const freeLeaveDays = (leaveEntry?.totalLeaveDays ?? 0) - (leaveEntry?.usedLeaveDays ?? 0);
-  const freeCompLeaveDays = (leaveEntry?.totalCompLeaveDays ?? 0) - (leaveEntry?.usedCompLeaveDays ?? 0);
   const remainingAfterUse = freeLeaveDays - usedDays;
 
-  // 휴가 구분별 잔여일 (연차 / 보상 휴가는 카드 설명에 라이브 표시, 공가는 잔여 개념 없음)
-  const typeRemaining: Partial<Record<VacationType, number>> = {
-    GENERAL: freeLeaveDays,
-    COMPENSATORY: freeCompLeaveDays,
+  // 보상 휴가 잔여 = 보유한 보상 휴가 항목의 (부여일 - 사용일) 합
+  const freeCompLeaveDays = compLeaveEntries.reduce((sum, entry) => sum + (entry.leaveDays - entry.usedDays), 0);
+
+  // 칩 설명에 라이브로 붙는 잔여일 (공가는 잔여 개념 없음)
+  const chipRemaining: Partial<Record<string, number>> = {
+    general: freeLeaveDays,
+    comp: freeCompLeaveDays,
   };
+
+  const selectedChip = VACATION_CHIPS.find(
+    (chip) => chip.vacationType === selectedVacationType && chip.vacationSubType === selectedVacationSubType,
+  );
+
+  const period =
+    selectedDate.from && selectedDate.to && !dayjs(selectedDate.from).isSame(selectedDate.to, 'day')
+      ? `${dayjs(selectedDate.from).format('MM/DD')} – ${dayjs(selectedDate.to).format('MM/DD')}`
+      : dayjs(selectedDate.from).format('MM/DD');
 
   const canSubmit = !!selectedVacationType && !!selectedVacationSubType && !!reason;
 
   return (
     <>
-      <div className="flex w-full flex-col gap-4">
-        {/* 2-column layout */}
-        <div className="flex w-full flex-col gap-4 lg:flex-row">
-          {/* Left — 휴가 구분 설정 */}
-          <div className="bg-base-100 border-base-300 rounded-box shadow-whisper flex w-full flex-none flex-col gap-5 border p-6 lg:w-80">
-            {/* 휴가 구분 */}
-            <div>
-              <p className="text-2 mb-2 text-xs font-medium">
-                {t('settings.typeLabel')}
-                {hasAttemptedSubmit && !selectedVacationType && (
-                  <span className="text-error ml-2">{t('settings.selectRequired')}</span>
-                )}
-              </p>
-              <div className="flex flex-col gap-2">
-                {VACATION_TYPES.map((type) => {
-                  const selected = selectedVacationType === type.value;
-                  const remaining = typeRemaining[type.value];
-                  return (
-                    <button
-                      key={type.value}
-                      type="button"
-                      onClick={() => {
-                        setSelectedVacationType(type.value);
-                        if (type.value !== 'COMPENSATORY') setUsedCompLeaveEntries([]);
-                      }}
-                      className={cx(
-                        'flex flex-col items-start gap-1 rounded-lg px-4 py-3 text-left transition-colors duration-150',
-                        selected ? 'ring-primary bg-primary-subtle ring-1 ring-inset' : 'bg-base-200 hover:bg-base-300',
-                      )}
-                    >
-                      <span className={cx('text-sm font-bold', selected && 'text-primary')}>
-                        {t(`type.${type.labelKey}`)}
-                      </span>
-                      <span className="text-3 text-xs">
-                        {t(`type.${type.descKey}`)}
-                        {remaining !== undefined && (
-                          <span className="text-2"> · {t('type.remaining', { days: remaining })}</span>
-                        )}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_340px] lg:items-start">
+        <Card>
+          {/* 1 — 휴가 종류 */}
+          <FormSection
+            step={1}
+            title={t('step1')}
+            description={t('step1Desc')}
+            error={hasAttemptedSubmit && !selectedVacationType ? t('selectRequired') : undefined}
+          >
+            <div className="flex flex-wrap gap-2">
+              {VACATION_CHIPS.map((chip) => {
+                const selected = selectedChip?.key === chip.key;
+                const remaining = chipRemaining[chip.key];
+                return (
+                  <button
+                    key={chip.key}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => {
+                      setSelectedVacationType(chip.vacationType);
+                      setSelectedVacationSubType(chip.vacationSubType);
+                      if (chip.vacationType === 'COMPENSATORY') {
+                        setShowSelectCompLeaveEntries(true);
+                      } else {
+                        setUsedCompLeaveEntries([]);
+                      }
+                    }}
+                    className={cx(
+                      'flex cursor-pointer items-center gap-2 rounded-[10px] border px-3.5 py-2 text-[13px] font-medium transition-colors duration-150',
+                      selected
+                        ? 'border-primary bg-primary-soft text-primary font-semibold'
+                        : 'border-base-300 bg-base-100 text-2 hover:bg-base-200',
+                    )}
+                  >
+                    {t(chip.labelKey)}
+                    {remaining !== undefined && (
+                      <small className={cx('font-normal', selected ? 'text-primary' : 'text-3')}>
+                        {t('type.remaining', { days: remaining })}
+                      </small>
+                    )}
+                  </button>
+                );
+              })}
             </div>
-
-            {/* 부가 구분 */}
-            <div>
-              <p className="text-2 mb-2 text-xs font-medium">
-                {t('settings.subTypeLabel')}
-                {hasAttemptedSubmit && !selectedVacationSubType && (
-                  <span className="text-error ml-2">{t('settings.selectRequired')}</span>
-                )}
-              </p>
-              <div className="flex flex-col gap-2">
-                {VACATION_SUBTYPES.map((sub) => {
-                  const selected = selectedVacationSubType === sub.value;
-                  return (
-                    <button
-                      key={sub.value}
-                      type="button"
-                      onClick={() => setSelectedVacationSubType(sub.value)}
-                      className={cx(
-                        'flex h-10 items-center justify-between rounded-[10px] px-4 text-[13px] transition-colors duration-150',
-                        selected ? 'bg-primary text-primary-content font-bold' : 'bg-base-200 hover:bg-base-300',
-                      )}
-                    >
-                      <span>{t(`subType.${sub.labelKey}`)}</span>
-                      <span className={cx('text-xs', selected ? 'text-primary-content/65' : 'text-3')}>
-                        {t('subType.days', { days: sub.days })}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* 보상 휴가 선택 (COMPENSATORY 시에만) */}
             {selectedVacationType === 'COMPENSATORY' && (
-              <div>
-                <p className="text-2 mb-2 text-xs font-medium">{t('settings.compLabel')}</p>
-                <button
-                  type="button"
-                  onClick={() => setShowSelectCompLeaveEntries(true)}
-                  className={cx(
-                    'flex w-full items-center justify-center gap-2 rounded-[10px] px-4 py-2.5 text-sm font-medium transition-colors duration-150',
-                    usedCompLeaveEntries.length !== 0
-                      ? 'ring-primary bg-primary-subtle text-primary ring-1 ring-inset'
-                      : 'bg-base-200 hover:bg-base-300',
-                  )}
-                >
-                  {usedCompLeaveEntries.length !== 0 ? (
-                    <>
-                      <FaCheck className="size-3.5" /> {t('settings.compSelected')}
-                    </>
-                  ) : (
-                    t('settings.compSelect')
-                  )}
-                </button>
-              </div>
-            )}
-
-            {/* 사유 */}
-            <div>
-              <p className="text-2 mb-2 text-xs font-medium">
-                {t('settings.reasonLabel')}
-                {hasAttemptedSubmit && !reason && (
-                  <span className="text-error ml-2">{t('settings.inputRequired')}</span>
-                )}
+              <p className="text-3 pt-3 text-xs">
+                {usedCompLeaveEntries.length !== 0 ? t('compSelected') : t('compSelectHint')}
               </p>
-              <input
-                type="text"
-                maxLength={200}
-                className={cx(
-                  'bg-base-100 text-base-content placeholder:text-3 w-full rounded-[10px] border px-4 py-2.5 text-sm transition-colors duration-150 focus:outline-none',
-                  hasAttemptedSubmit && !reason ? 'border-error' : 'border-base-300 focus:border-primary',
-                )}
-                placeholder={t('settings.reasonPlaceholder')}
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-              />
-            </div>
-          </div>
+            )}
+          </FormSection>
 
-          {/* Right — 날짜 선택 */}
-          <div className="bg-base-100 border-base-300 rounded-box shadow-whisper flex flex-1 flex-col border p-6">
-            <div className="mb-4 flex items-center justify-between">
-              <p className="text-base-content text-base font-semibold">{t('calendar.title')}</p>
-              {selectedDate.from && selectedDate.to && (
-                <Badge variant="primary">
-                  {dayjs(selectedDate.from).format('MM.DD')}
-                  {!dayjs(selectedDate.from).isSame(selectedDate.to, 'day') &&
-                    ` – ${dayjs(selectedDate.to).format('MM.DD')}`}
-                  {` · ${t('calendar.rangeBadge', { days: usedDays })}`}
-                </Badge>
-              )}
-            </div>
-            <div className="flex flex-1 items-start justify-center">
+          {/* 2 — 기간 */}
+          <FormSection step={2} title={t('step2')} description={t('step2Desc')}>
+            <div className="flex justify-center">
               <DayPicker
                 className="rdp-theme"
                 locale={ko}
@@ -262,78 +189,66 @@ export default function DayOffRequestContent() {
                 onSelect={(value) => value && setSelectedDate(value)}
               />
             </div>
+            <p className="text-3 pt-3 text-xs">{t('usedHint', { days: usedDays.toFixed(1) })}</p>
+          </FormSection>
+
+          {/* 3 — 사유 */}
+          <FormSection
+            step={3}
+            title={t('step3')}
+            error={hasAttemptedSubmit && !reason ? t('inputRequired') : undefined}
+          >
+            <textarea
+              maxLength={200}
+              rows={3}
+              className={cx(
+                'bg-base-100 text-base-content placeholder:text-3 w-full resize-none rounded-[10px] border px-4 py-2.5 text-sm transition-colors duration-150 focus:outline-none',
+                hasAttemptedSubmit && !reason ? 'border-error' : 'border-base-300 focus:border-primary',
+              )}
+              placeholder={t('reasonDefault')}
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+            />
+          </FormSection>
+        </Card>
+
+        {/* 신청 요약 */}
+        <Card className="p-5 lg:sticky lg:top-0">
+          <h3 className="text-[15px] font-semibold">{t('summaryTitle')}</h3>
+          <div className="border-soft text-2 flex justify-between border-b py-2.5 text-sm">
+            {t('summaryType')}
+            <b className="text-base-content">{selectedChip ? t(selectedChip.labelKey) : t('empty')}</b>
           </div>
-        </div>
-
-        {/* Bottom — 신청 요약 패널 */}
-        <div className="bg-base-100 border-base-300 rounded-box shadow-whisper w-full border p-6">
-          <div className="flex flex-wrap items-center gap-8">
-            {/* 선택 날짜 */}
-            <div>
-              <p className="text-3 text-[11px] font-semibold tracking-wider uppercase">{t('summary.selectedDate')}</p>
-              <p className="text-base-content mt-1 text-base font-bold">
-                {dayjs(selectedDate.from).format('YYYY.MM.DD')}
-                {selectedDate.to && !dayjs(selectedDate.from).isSame(selectedDate.to, 'day') && (
-                  <> — {dayjs(selectedDate.to).format('YYYY.MM.DD')}</>
-                )}
-              </p>
-            </div>
-
-            {/* 사용 기간 */}
-            <div>
-              <p className="text-3 text-[11px] font-semibold tracking-wider uppercase">{t('summary.usedDays')}</p>
-              <p className="text-base-content mt-1 text-base font-bold">
-                {t('summary.days', { days: usedDays.toFixed(1) })}
-              </p>
-            </div>
-
-            {/* 사용 후 잔여 */}
-            <div>
-              <p className="text-3 text-[11px] font-semibold tracking-wider uppercase">{t('summary.remainingAfter')}</p>
-              <p className={cx('mt-1 text-base font-bold', remainingAfterUse < 0 ? 'text-error' : 'text-base-content')}>
-                {t('summary.days', { days: remainingAfterUse.toFixed(1) })}
-              </p>
-            </div>
-
-            {/* 승인 예상 */}
-            <div>
-              <p className="text-3 text-[11px] font-semibold tracking-wider uppercase">{t('summary.approval')}</p>
-              <p className="text-base-content mt-1 text-base font-bold">{t('summary.approvalValue')}</p>
-            </div>
-
-            {/* 버튼 (우측 정렬) */}
-            <div className="ml-auto flex gap-3">
-              <button
-                type="button"
-                className="btn btn-ghost"
-                onClick={() => {
-                  setSelectedVacationType(undefined);
-                  setSelectedVacationSubType(undefined);
-                  setReason(t('settings.reasonPlaceholder'));
-                  setSelectedDate({ from: dayjs().toDate(), to: dayjs().toDate() });
-                  setUsedCompLeaveEntries([]);
-                }}
-              >
-                {t('actions.cancel')}
-              </button>
-              <button
-                type="button"
-                disabled={isLoading || !canSubmit}
-                onClick={handleRequestClick}
-                className="btn btn-primary"
-              >
-                {isLoading ? (
-                  <span className="flex items-center gap-2">
-                    <span className="loading loading-spinner loading-xs" />
-                    {t('actions.submitting')}
-                  </span>
-                ) : (
-                  t('actions.submit')
-                )}
-              </button>
-            </div>
+          <div className="border-soft text-2 flex justify-between border-b py-2.5 text-sm">
+            {t('summaryPeriod')}
+            <b className="text-base-content">{period}</b>
           </div>
-        </div>
+          <div className="border-soft text-2 flex justify-between border-b py-2.5 text-sm">
+            {t('summaryUsed')}
+            <b className="text-base-content">{t('days', { days: usedDays.toFixed(1) })}</b>
+          </div>
+          <div className="text-2 flex items-baseline justify-between pt-3.5 pb-1 text-sm">
+            {t('summaryRemaining')}
+            <b className={cx('text-[22px] font-bold', remainingAfterUse < 0 ? 'text-error' : 'text-primary')}>
+              {t('days', { days: remainingAfterUse.toFixed(1) })}
+            </b>
+          </div>
+          <button
+            type="button"
+            className="btn btn-primary mt-3.5 w-full"
+            disabled={isLoading || !canSubmit}
+            onClick={handleRequestClick}
+          >
+            {isLoading ? (
+              <span className="flex items-center gap-2">
+                <span className="loading loading-spinner loading-xs" />
+                {t('submitting')}
+              </span>
+            ) : (
+              t('submit')
+            )}
+          </button>
+        </Card>
       </div>
 
       <SelectUserCompLeaveEntriesModal

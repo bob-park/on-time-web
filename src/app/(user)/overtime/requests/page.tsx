@@ -10,11 +10,12 @@ export default async function OvertimeRequestsPage() {
   const t = await getTranslations('overtime.request');
 
   return (
-    <div className="animate-fade-up flex size-full flex-col gap-4">
+    <div className="animate-fade-up flex size-full flex-col">
       {/* eyebrow + title + action */}
       <PageHeader
         eyebrow={t('eyebrow')}
         title={t('title')}
+        description={t('description')}
         actions={
           <Link href="/documents" className="btn btn-ghost btn-sm">
             {t('viewDocuments')} ›
@@ -23,9 +24,7 @@ export default async function OvertimeRequestsPage() {
       />
 
       {/* request form */}
-      <div className="w-full max-w-[800px]">
-        <OvertimeRequestContents />
-      </div>
+      <OvertimeRequestContents />
     </div>
   );
 }
