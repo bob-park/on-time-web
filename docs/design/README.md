@@ -7,7 +7,8 @@ agents (see `CLAUDE.md` → "Design Prompt 템플릿 위치").
 
 ## Templates
 
-- [`kraken-design.md`](spotify-design.md) — 디자인 시스템 분석 / 추출 prompt 예시.
+- [`kraken-design.md`](kraken-design.md) — 디자인 시스템 분석 / 추출 prompt 예시.
   새 템플릿 작성 시 형식 참고.
+  적용 결과: `docs/superpowers/specs/2026-09-18-ui-redesign-kraken-design.md`
 
 새 템플릿을 추가하면 본 README 의 목록도 함께 업데이트한다.

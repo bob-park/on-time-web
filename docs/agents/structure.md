@@ -17,7 +17,7 @@ related:
 ```text
 src/
 ├── app/                # Next.js App Router (pages, layouts, api routes)
-│   ├── _layouts/       # Root layout 의 sub-components (Header, Contents, Footer) — see "App Router `_layouts/`" section below
+│   ├── _layouts/       # Root layout 의 sub-components (Sidebar, Header, MobileDock, ...) — see "App Router `_layouts/`" section below
 │   └── api/            # Route handlers (e.g. /api/health)
 ├── domain/             # Business domains — each domain owns its full slice
 │   └── <domain>/
@@ -27,7 +27,7 @@ src/
 │       └── store/      # Zustand slice + types
 ├── shared/             # Reusable across domains
 │   ├── api/            # ky instance, common dto (PagedModel, PageRequest)
-│   ├── components/     # Cross-cutting components (toast, timeago, timecode, queries)
+│   ├── components/     # Cross-cutting UI primitives (PageHeader, Card, Table, Badge, ...) + toast / theme / queries
 │   ├── hooks/          # Reusable hooks (useModal, useWebSocket, ...)
 │   ├── i18n/           # next-intl config, locale resolution, server action — see [next-intl](./libs/next-intl.md)
 │   ├── providers/      # React context providers (theme, ...)
@@ -59,7 +59,7 @@ Cross-domain reuse moves to `src/shared/`. `src/utils/` is for **pure functions 
 ### Core rule
 
 - 어떤 디렉토리든 `layout.tsx` 가 sub-component 를 필요로 하면, **같은 디렉토리에 `_layouts/` private folder** 를 만들어 그 안에 sub-component 를 둔다. underscore prefix 는 Next.js 가 라우트에서 제외하는 [private folder](https://nextjs.org/docs/app/building-your-application/routing/colocation#private-folders) 규약이다.
-- 파일명은 [File Naming](./conventions/naming.md) 그대로 `PascalCase.tsx`. 예: `Header.tsx`, `Contents.tsx`, `Footer.tsx`, `Sidebar.tsx`.
+- 파일명은 [File Naming](./conventions/naming.md) 그대로 `PascalCase.tsx`. 예: `Header.tsx`, `Sidebar.tsx`, `MobileDock.tsx`.
 - `layout.tsx` 에서 import 할 때는 같은 폴더이므로 **상대경로** (`./_layouts/Header`) 를 사용한다.
 - 다른 layout 의 `_layouts/` 컴포넌트는 import 하지 않는다 — 각 `_layouts/` 은 그 layout 전용이다.
 - Cross-layout 으로 재사용해야 하는 컴포넌트는 `_layouts/` 이 아니라 `src/shared/components/<area>/` 로 승격한다 (see "Directory tree" section above).
@@ -67,26 +67,48 @@ Cross-domain reuse moves to `src/shared/`. `src/utils/` is for **pure functions 
 
 ### Directory example
 
+현재 root shell (`src/app/_layouts/`):
+
 ```text
 src/app/
 ├── _layouts/
-│   ├── Header.tsx
-│   ├── Contents.tsx
-│   └── Footer.tsx
-├── admin/
-│   ├── _layouts/
-│   │   └── Sidebar.tsx
-│   ├── layout.tsx
-│   └── page.tsx
+│   ├── Sidebar.tsx           # 데스크톱 좌측 네비게이션 (NAV_GROUPS 렌더링 + ClockCard)
+│   ├── ClockCard.tsx         # Sidebar 하단 출퇴근 카드
+│   ├── Header.tsx            # breadcrumb + ThemeSwitcher + 알림 + 아바타
+│   ├── MobileDock.tsx        # 모바일 하단 도크
+│   ├── NotificationDialog.tsx
+│   ├── nav.ts                # NAV_GROUPS / NavItem / NavGroup / isActive / findNavItem — 네비게이션 테이블
+│   └── breadcrumb.ts         # useBreadcrumbTitle — 상세 페이지가 breadcrumb 끝에 제목을 거는 모듈 store
 ├── layout.tsx
 └── page.tsx
 ```
 
-이 예시에서:
+- `src/app/layout.tsx` 는 `./_layouts/Sidebar`, `./_layouts/Header`, `./_layouts/MobileDock` 를 사용한다.
+- `_layouts/` 에는 `.tsx` sub-component 외에 그 layout 전용 데이터/훅 모듈 (`nav.ts`, `breadcrumb.ts`) 도 둘 수 있다. 파일명은 [File Naming](./conventions/naming.md) 대로 컴포넌트는 `PascalCase.tsx`, 모듈은 `camelCase.ts`.
+- 네비게이션 항목을 추가/삭제할 때는 `nav.ts` 의 `NAV_GROUPS` 만 수정한다 — `Sidebar` 가 이 테이블을 렌더링하고, `Header` 는 같은 파일의 `findNavItem` 으로 현재 segment 의 breadcrumb 라벨을 찾는다. `MobileDock` 은 고정 4개 항목 + `ClockCard` 의 `ClockFab` 이라 이 테이블을 쓰지 않는다.
+- 상세 페이지가 breadcrumb 끝에 문서 제목을 붙이려면 `breadcrumb.ts` 의 `useBreadcrumbTitle(title)` 을 호출한다 (provider 없는 모듈 단위 store, 언마운트 시 자동 해제).
+- Nested layout 도 동일 규칙이다. 예: `src/app/admin/_layouts/Sidebar.tsx` 는 `src/app/admin/layout.tsx` 전용이며, root layout 에서 쓰고 싶다면 먼저 `src/shared/components/` 로 승격한다.
 
-- `src/app/layout.tsx` 는 `./_layouts/Header`, `./_layouts/Contents`, `./_layouts/Footer` 를 사용한다.
-- `src/app/admin/layout.tsx` 는 `./_layouts/Sidebar` (즉 `src/app/admin/_layouts/Sidebar`) 를 사용한다.
-- `admin/_layouts/Sidebar` 를 root layout 에서 사용하고 싶다면 먼저 `src/shared/components/` 로 승격한다.
+## Shared UI primitives — `src/shared/components/`
+
+여러 도메인이 공유하는 UI 는 `src/shared/components/` 루트에 둔다. 새 페이지를 만들 때 아래를 먼저 재사용하고, 같은 모양을 다시 만들지 않는다.
+
+- `PageHeader` — `eyebrow` / title / description / actions 페이지 상단
+- `CardPageTitle` — 카드 안 제목 (placeholder 지원)
+- `Card` / `CardSection` — 카드 컨테이너와 제목·링크 있는 섹션
+- `StatCard` — 지표 카드 (label / value / unit / caption / ring)
+- `Badge` — 상태 badge 의 단일 진입점 (variant `ok` / `wait` / `no` / `neutral` / `primary`)
+- `Segment` — 세그먼트 토글
+- `Pagination` — 목록 페이지네이션
+- `Table` — `thClass` / `tdClass` / `rowClass` 클래스 상수 + `TableSkeletonRows`
+- `FormSection` — 번호가 붙는 폼 단계 섹션
+
+도메인 전용이지만 여러 페이지가 쓰는 것은 해당 도메인의 `components/` 에 둔다:
+`ApprovalStepper` (+ `toApprovalSteps`, `toDocumentSteps`) — `src/domain/approval/components/`,
+`DocumentPeriod` / `DocumentStatusBadge` / `DocumentTypeBadge` — `src/domain/document/components/`,
+`AttendanceStatusBadge` — `src/domain/attendance/components/`.
+
+스타일 토큰과 badge/버튼 규칙은 [Tailwind 4 + daisyUI 5](./libs/tailwind-daisyui.md).
 
 ## Page sub-components — `_components/`
 
