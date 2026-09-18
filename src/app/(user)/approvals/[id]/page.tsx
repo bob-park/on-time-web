@@ -1,5 +1,4 @@
-import { cookies } from 'next/headers';
-
+import { getApprovalDetail } from '@/app/api/v1/documents/_lib/enrichDocument';
 import OverTimeWorkDocument from '@/domain/document/components/OverTimeWorkDocument';
 import VacationDocument from '@/domain/document/components/VacationDocument';
 import PageHeader from '@/shared/components/PageHeader';
@@ -8,22 +7,11 @@ import { getTranslations } from 'next-intl/server';
 
 import ApprovalProceedContents from './_components/ApprovalProceedContents';
 
-const { WEB_SERVICE_HOST } = process.env;
-
 export default async function ApprovalDetailPage({ params }: { params: Promise<{ id: number }> }) {
   const id = (await params).id;
   const t = await getTranslations('approval.detail');
 
-  const cookieStore = await cookies();
-
-  const res = await fetch(`${WEB_SERVICE_HOST}/documents/approval/${id}`, {
-    method: 'get',
-    headers: {
-      Cookie: `JSESSIONID=${cookieStore.get('JSESSIONID')?.value || ''}`,
-    },
-  })
-    .then((res) => res.json())
-    .then((data: ApprovalHistory) => data);
+  const res = await getApprovalDetail(id);
 
   return (
     <div className="animate-fade-up flex size-full flex-col items-center gap-4">
