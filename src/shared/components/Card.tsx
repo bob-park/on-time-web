@@ -22,7 +22,7 @@ interface CardSectionProps {
 
 export function CardSection({ title, aside, link, children }: CardSectionProps) {
   return (
-    <div className="border-soft flex items-center gap-2.5 border-b px-[18px] py-4">
+    <div className="border-soft flex flex-wrap items-center gap-2.5 border-b px-[18px] py-4">
       <h3 className="text-[15px] font-semibold">{title}</h3>
       {aside}
       <span className="flex-1" />

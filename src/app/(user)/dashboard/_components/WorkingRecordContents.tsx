@@ -2,18 +2,17 @@
 
 import { memo, useContext } from 'react';
 
-import { AttendanceRecord, AttendanceStatus, DayOffType } from '@/domain/attendance/apis/attendance.dto';
+import { AttendanceRecord, DayOffType } from '@/domain/attendance/apis/attendance.dto';
 import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
+import WorkingTimeView from '@/domain/attendance/components/WorkingTimeView';
 import { useGetAttendanceRecord } from '@/domain/attendance/queries/attendanceRecord';
 import { useUser } from '@/domain/users/queries/user';
-import Badge, { BadgeVariant } from '@/shared/components/Badge';
-import { isIncludeTime } from '@/utils/dataUtils';
-import { getDuration } from '@/utils/parse';
+import Badge from '@/shared/components/Badge';
+import { Card, CardSection } from '@/shared/components/Card';
+import dayjs from '@/shared/dayjs';
+import { getWorkDuration, parseHours } from '@/utils/parse';
 
 import cx from 'classnames';
-import dayjs from 'dayjs';
-import 'dayjs/locale/ko';
-import padStart from 'lodash/padStart';
 import { useTranslations } from 'next-intl';
 
 const ONE_HOUR = 3_600;
@@ -22,12 +21,6 @@ const DEFAULT_WEEKENDS = [0, 6];
 
 type CategoryKey = 'work' | 'dayOff' | 'halfDayOff' | 'holiday';
 
-function parseHours(seconds: number): string {
-  const hours = Math.floor(seconds / ONE_HOUR);
-  const min = Math.floor((seconds / 60) % 60);
-  return `${hours}h ${padStart(min + '', 2, '0')}m`;
-}
-
 function getCategoryKey(date: Date, dayOffType?: DayOffType): CategoryKey {
   if (dayOffType === 'DAY_OFF') return 'dayOff';
   if (dayOffType === 'AM_HALF_DAY_OFF' || dayOffType === 'PM_HALF_DAY_OFF') return 'halfDayOff';
@@ -35,127 +28,74 @@ function getCategoryKey(date: Date, dayOffType?: DayOffType): CategoryKey {
   return 'work';
 }
 
-function getCategoryBadgeVariant(category: CategoryKey): BadgeVariant {
-  if (category === 'dayOff' || category === 'halfDayOff') return 'primary';
-  return 'neutral';
-}
-
 interface WorkingRecordRowProps {
   date: Date;
   clockInTime?: Date;
-  leaveWorkAt?: Date;
   clockOutTime?: Date;
-  status?: AttendanceStatus;
   dayOffType?: DayOffType;
 }
 
 const WorkingRecordRow = memo(function WorkingRecordRow({
   date,
   clockInTime,
-  leaveWorkAt,
   clockOutTime,
-  status,
   dayOffType,
 }: WorkingRecordRowProps) {
   const t = useTranslations('dashboard');
 
-  const now = dayjs().hour(0).minute(0).second(0).millisecond(0);
-  const isToday = now.isSame(date);
-  const isInProgress = isToday && clockInTime && !clockOutTime;
-  const isWeekend = DEFAULT_WEEKENDS.includes(dayjs(date).day());
+  const isToday = dayjs().isSame(date, 'day');
+  const isInProgress = isToday && !!clockInTime && !clockOutTime;
 
-  const rawDuration = clockInTime && clockOutTime ? getDuration(clockInTime, clockOutTime) : 0;
-  const workDuration = rawDuration
-    ? rawDuration -
-      (rawDuration > ONE_HOUR * 8 ||
-      isIncludeTime(
-        {
-          from: clockInTime || dayjs(date).hour(0).toDate(),
-          to: clockOutTime || dayjs(date).hour(0).toDate(),
-        },
-        dayjs(date).hour(12).toDate(),
-      )
-        ? ONE_HOUR
-        : 0)
-    : 0;
-
+  const workDuration = getWorkDuration(date, clockInTime, isInProgress ? dayjs().toDate() : clockOutTime);
   const durationPercent = Math.min(Math.round((workDuration / (ONE_HOUR * DAILY_TOTAL_HOURS)) * 100), 100);
-  const categoryKey = getCategoryKey(date, dayOffType);
-  const categoryLabel = t(
-    categoryKey === 'dayOff'
-      ? 'categoryDayOff'
-      : categoryKey === 'halfDayOff'
-        ? 'categoryHalfDayOff'
-        : categoryKey === 'holiday'
-          ? 'categoryHoliday'
-          : 'categoryWork',
-  );
-  const isUnder = status === 'WARNING';
+  const isOver = workDuration > ONE_HOUR * DAILY_TOTAL_HOURS;
 
-  const emptyCell = <span className="text-3">—</span>;
+  const categoryKey = getCategoryKey(date, dayOffType);
+  const isOff = categoryKey === 'dayOff' || categoryKey === 'halfDayOff';
 
   return (
-    <tr
-      className={cx('border-soft hover:bg-base-200 border-b transition-colors duration-100', {
+    <div
+      className={cx('hover:bg-base-200 flex items-center gap-3 rounded-[10px] px-2.5 py-2.5 transition-colors', {
         'bg-primary-soft': isToday,
+        'opacity-60': !clockInTime && !isOff,
       })}
     >
-      {/* DATE / DAY */}
-      <td className="px-4 py-3.5">
-        <span className="text-sm font-bold">{dayjs(date).format('MM.DD')}</span>
-        <span className="text-2 ml-1.5 text-[13px]">
-          {dayjs(date).locale('ko').format('dd')}
-          {isToday && ` · ${t('todaySuffix')}`}
-        </span>
-      </td>
+      {/* DAY / DATE */}
+      <div className="w-16 flex-none text-[13px] font-semibold">
+        {dayjs(date).format('dd')}
+        <span className="text-3 block text-[11px] font-normal">{dayjs(date).format('MM/DD')}</span>
+      </div>
 
-      {/* CATEGORY */}
-      <td className="px-4 py-3.5">
-        <Badge variant={getCategoryBadgeVariant(categoryKey)}>{categoryLabel}</Badge>
-      </td>
+      {/* DURATION BAR */}
+      <div className="bg-base-300 relative h-2 flex-1 overflow-hidden rounded-full">
+        <div
+          className={cx('absolute inset-y-0 left-0 rounded-full', isOver ? 'bg-warning' : 'bg-primary')}
+          style={{ width: `${durationPercent}%` }}
+        />
+      </div>
 
-      {/* CLOCK-IN */}
-      <td className="px-4 py-3.5 text-sm">{clockInTime ? dayjs(clockInTime).format('HH:mm') : emptyCell}</td>
+      {/* DURATION */}
+      <div className="w-16 flex-none text-right text-[13px] font-semibold tabular-nums">
+        {workDuration > 0 ? parseHours(workDuration) : '—'}
+      </div>
 
-      {/* TARGET CLOCK-OUT */}
-      <td className="text-2 px-4 py-3.5 text-[13px]">{leaveWorkAt ? dayjs(leaveWorkAt).format('HH:mm') : emptyCell}</td>
-
-      {/* CLOCK-OUT */}
-      <td className="px-4 py-3.5 text-sm">
-        {isInProgress ? (
-          <span className="text-primary animate-pulse font-bold">{t('working')}</span>
-        ) : clockOutTime ? (
-          dayjs(clockOutTime).format('HH:mm')
-        ) : (
-          emptyCell
-        )}
-      </td>
-
-      {/* WORK DURATION */}
-      <td className="px-4 py-3.5">
-        <div className="flex items-center gap-2.5">
-          <span className="bg-base-300 inline-block h-1 w-[120px] overflow-hidden rounded">
-            <span
-              className={cx('block h-full rounded', isUnder ? 'bg-warning' : 'bg-primary')}
-              style={{ width: `${durationPercent}%` }}
-            />
+      {/* TIME RANGE / CATEGORY */}
+      <div className="text-3 w-[110px] flex-none text-right text-xs">
+        {isOff ? (
+          <Badge variant="primary">{t(categoryKey === 'dayOff' ? 'categoryDayOff' : 'categoryHalfDayOff')}</Badge>
+        ) : isInProgress ? (
+          <span>
+            {dayjs(clockInTime).format('HH:mm')} – <span className="text-primary font-semibold">{t('working')}</span>
           </span>
-          <span className="text-2 text-[13px]">{workDuration > 0 ? parseHours(workDuration) : '—'}</span>
-        </div>
-      </td>
-
-      {/* STATUS */}
-      <td className="px-4 py-3.5">
-        {isWeekend && !status ? null : (
-          <span
-            className={cx(
-              'inline-block h-2 w-2 rounded-full',
-              status === 'SUCCESS' ? 'bg-primary' : status === 'WARNING' ? 'bg-error' : 'bg-base-300',
-            )}
-          />
+        ) : clockInTime && clockOutTime ? (
+          `${dayjs(clockInTime).format('HH:mm')} – ${dayjs(clockOutTime).format('HH:mm')}`
+        ) : categoryKey === 'holiday' ? (
+          <Badge variant="neutral">{t('categoryHoliday')}</Badge>
+        ) : (
+          '—'
         )}
-      </td>
-    </tr>
+      </div>
+    </div>
   );
 });
 
@@ -176,8 +116,6 @@ function getDates(
             date: current,
             clockInTime: record.clockInTime,
             clockOutTime: record.clockOutTime,
-            leaveWorkAt: record.leaveWorkAt,
-            status: record.status,
             dayOffType: record.dayOffType,
           }
         : { date: current },
@@ -190,7 +128,7 @@ function getDates(
 
 export default function WorkingRecordContents() {
   const t = useTranslations('dashboard');
-  const { selectDate, updateSelectDate } = useContext(WorkingTimeContext);
+  const { selectDate } = useContext(WorkingTimeContext);
   const { user: currentUser } = useUser();
   const { attendanceRecords } = useGetAttendanceRecord({
     userUniqueId: currentUser?.id || '',
@@ -200,81 +138,23 @@ export default function WorkingRecordContents() {
 
   const dataList = getDates(selectDate, attendanceRecords);
 
-  const handlePrevWeek = () => {
-    updateSelectDate({
-      startDate: dayjs(selectDate.startDate).add(-7, 'day').toDate(),
-      endDate: dayjs(selectDate.endDate).add(-7, 'day').toDate(),
-    });
-  };
-
-  const handleNextWeek = () => {
-    updateSelectDate({
-      startDate: dayjs(selectDate.startDate).add(7, 'day').toDate(),
-      endDate: dayjs(selectDate.endDate).add(7, 'day').toDate(),
-    });
-  };
-
   return (
-    <div className="animate-fade-up bg-base-100 border-base-300 rounded-box shadow-whisper w-full border p-5 delay-225">
-      {/* section header */}
-      <div className="mb-4 flex items-center justify-between">
-        <span className="text-lg font-semibold">{t('sectionTitle')}</span>
-        <span className="text-2 text-[13px]">{t('weekCount', { count: dataList.length })}</span>
-      </div>
+    <Card className="animate-fade-up delay-150">
+      <CardSection title={t('sectionWeek')} link={{ href: '/schedule', label: t('viewAll') }}>
+        <WorkingTimeView />
+      </CardSection>
 
-      {/* table */}
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse text-sm">
-          <thead>
-            <tr>
-              <th className="text-2 border-soft border-b px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
-                {t('colDate')}
-              </th>
-              <th className="text-2 border-soft border-b px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
-                {t('colCategory')}
-              </th>
-              <th className="text-2 border-soft border-b px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
-                {t('colClockIn')}
-              </th>
-              <th className="text-2 border-soft border-b px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
-                {t('colTargetClockOut')}
-              </th>
-              <th className="text-2 border-soft border-b px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
-                {t('colClockOut')}
-              </th>
-              <th className="text-2 border-soft border-b px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
-                {t('colWorkTime')}
-              </th>
-              <th className="text-2 border-soft border-b px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
-                {t('colStatus')}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {dataList.map((item) => (
-              <WorkingRecordRow
-                key={`working-record-${dayjs(item.date).unix()}`}
-                date={item.date}
-                clockInTime={item.clockInTime}
-                leaveWorkAt={item.leaveWorkAt}
-                clockOutTime={item.clockOutTime}
-                status={item.status}
-                dayOffType={item.dayOffType}
-              />
-            ))}
-          </tbody>
-        </table>
+      <div className="p-2">
+        {dataList.map((item) => (
+          <WorkingRecordRow
+            key={`working-record-${dayjs(item.date).unix()}`}
+            date={item.date}
+            clockInTime={item.clockInTime}
+            clockOutTime={item.clockOutTime}
+            dayOffType={item.dayOffType}
+          />
+        ))}
       </div>
-
-      {/* footer */}
-      <div className="mt-3.5 flex items-center justify-end gap-2">
-        <button onClick={handlePrevWeek} className="btn btn-ghost btn-sm">
-          ‹ {t('prevWeek')}
-        </button>
-        <button onClick={handleNextWeek} className="btn btn-ghost btn-sm">
-          {t('nextWeek')} ›
-        </button>
-      </div>
-    </div>
+    </Card>
   );
 }

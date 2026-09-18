@@ -2,46 +2,25 @@
 
 import { useContext } from 'react';
 
-import Link from 'next/link';
-
 import { AttendanceRecord } from '@/domain/attendance/apis/attendance.dto';
 import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
 import { useGetAttendanceRecord } from '@/domain/attendance/queries/attendanceRecord';
-import { useUser } from '@/domain/users/queries/user';
+import { useProceedingApprovalCount, useUser, useUserLeaveEntry } from '@/domain/users/queries/user';
 import { useUserCompLeaveEntries } from '@/domain/users/queries/userCompLeaveEntry';
 import Badge from '@/shared/components/Badge';
 import StatCard from '@/shared/components/StatCard';
-import { isIncludeTime } from '@/utils/dataUtils';
-import { getDuration } from '@/utils/parse';
+import dayjs from '@/shared/dayjs';
+import { getWorkDuration, parseHours } from '@/utils/parse';
 
-import dayjs from 'dayjs';
 import { useTranslations } from 'next-intl';
 
 const ONE_HOUR = 3_600;
 const WEEKLY_TOTAL_HOURS = 40;
 
-function calcCumulativeHours(attendanceRecords: AttendanceRecord[]): number {
-  return Math.floor(
-    attendanceRecords
-      .map((item) => {
-        const duration =
-          (item.clockInTime && item.clockOutTime && getDuration(item.clockInTime, item.clockOutTime)) || 0;
-        return (
-          duration -
-          (duration > ONE_HOUR * 8 ||
-          isIncludeTime(
-            {
-              from: item.clockInTime || dayjs(item.workingDate).hour(0).toDate(),
-              to: item.clockOutTime || dayjs(item.workingDate).hour(0).toDate(),
-            },
-            dayjs(item.workingDate).hour(12).toDate(),
-          )
-            ? ONE_HOUR
-            : 0)
-        );
-      })
-      .reduce((sum, v) => sum + v, 0) / ONE_HOUR,
-  );
+function calcCumulativeSeconds(attendanceRecords: AttendanceRecord[]): number {
+  return attendanceRecords
+    .map((item) => getWorkDuration(item.workingDate, item.clockInTime, item.clockOutTime))
+    .reduce((sum, v) => sum + v, 0);
 }
 
 export default function WeeklySummaryCards() {
@@ -54,78 +33,64 @@ export default function WeeklySummaryCards() {
     endDate: dayjs(selectDate.endDate).format('YYYY-MM-DD'),
   });
   const { compLeaveEntries } = useUserCompLeaveEntries();
+  const { leaveEntry } = useUserLeaveEntry(dayjs().year());
+  const { count } = useProceedingApprovalCount();
 
-  const cumulativeHours = calcCumulativeHours(attendanceRecords);
-  const progressPercent = Math.min(Math.round((cumulativeHours / WEEKLY_TOTAL_HOURS) * 100), 100);
+  /* 1. 이번 주 누적 근무 */
+  const cumulativeSeconds = calcCumulativeSeconds(attendanceRecords);
+  const cumulativeHours = Math.floor(cumulativeSeconds / ONE_HOUR);
+  const remainingSeconds = Math.max(WEEKLY_TOTAL_HOURS * ONE_HOUR - cumulativeSeconds, 0);
   const isOnTrack = cumulativeHours >= WEEKLY_TOTAL_HOURS * 0.5;
 
-  // 보상휴가 잔여 시간 (leaveDays - usedDays) * 8h
-  const overtimeBalanceHours = compLeaveEntries.reduce((sum, entry) => {
-    return sum + (entry.leaveDays - entry.usedDays) * 8;
-  }, 0);
+  /* 2. 오늘 근무 — 이미 조회한 주간 기록에서 오늘을 찾는다 (추가 요청 없음) */
+  const today = dayjs().format('YYYY-MM-DD');
+  const todayRecord = attendanceRecords.find((item) => dayjs(item.workingDate).format('YYYY-MM-DD') === today);
+  const todaySeconds = todayRecord
+    ? getWorkDuration(todayRecord.workingDate, todayRecord.clockInTime, todayRecord.clockOutTime || dayjs().toDate())
+    : 0;
+
+  /* 3. 잔여 연차 */
+  const totalLeaveDays = leaveEntry?.totalLeaveDays ?? 0;
+  const remainingLeaveDays = totalLeaveDays - (leaveEntry?.usedLeaveDays ?? 0);
+  const leaveRing = totalLeaveDays ? Math.round((remainingLeaveDays / totalLeaveDays) * 100) : 0;
+  const compLeaveDays = compLeaveEntries.reduce((sum, entry) => sum + (entry.leaveDays - entry.usedDays), 0);
 
   return (
-    <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-3">
-      {/* Weekly Progress — Hero Card */}
-      <div className="animate-fade-up bg-base-100 border-base-300 rounded-box shadow-whisper border p-7 lg:col-span-2">
-        <div className="flex items-center justify-between gap-3">
-          <p className="text-2 text-xs font-semibold tracking-widest uppercase">{t('heroLabel')}</p>
-          <Badge variant={isOnTrack ? 'primary' : 'wait'}>
-            <span
-              className="h-2 w-2 rounded-full"
-              style={{ background: isOnTrack ? 'var(--color-primary)' : 'var(--warning-text)' }}
-            />
-            {isOnTrack ? t('statusOnTrack') : t('statusBehind')}
-          </Badge>
-        </div>
+    <div className="animate-fade-up grid w-full grid-cols-2 gap-4 lg:grid-cols-4">
+      <StatCard
+        label={t('statWeekly')}
+        value={`${cumulativeHours}h`}
+        unit={`/ ${WEEKLY_TOTAL_HOURS}h`}
+        caption={
+          <>
+            <Badge variant={isOnTrack ? 'ok' : 'wait'}>{isOnTrack ? t('statusOnTrack') : t('statusBehind')}</Badge>
+            {remainingSeconds > 0 && <span>{t('statWeeklyTarget', { time: parseHours(remainingSeconds) })}</span>}
+          </>
+        }
+      />
 
-        <div className="mt-3.5 mb-1 text-[44px] leading-none font-bold tracking-tight">
-          {cumulativeHours}
-          <span className="text-2 text-xl font-normal">h</span>
-          <span className="text-2 text-base font-normal"> / {WEEKLY_TOTAL_HOURS}h</span>
-        </div>
+      <StatCard
+        label={t('statToday')}
+        value={todaySeconds > 0 ? parseHours(todaySeconds) : '—'}
+        caption={
+          todayRecord?.clockInTime
+            ? t('statTodayCaption', {
+                clockIn: dayjs(todayRecord.clockInTime).format('HH:mm'),
+                clockOut: todayRecord.leaveWorkAt ? dayjs(todayRecord.leaveWorkAt).format('HH:mm') : '—',
+              })
+            : undefined
+        }
+      />
 
-        <div className="mt-5 space-y-3.5">
-          {/* Cumulative work hours */}
-          <div>
-            <div className="mb-2 flex items-center justify-between text-xs">
-              <span className="text-2">{t('cumulativeHours')}</span>
-              <span className="font-bold">{progressPercent}%</span>
-            </div>
-            <div className="bg-base-300 h-2 w-full overflow-hidden rounded">
-              <div
-                className="animate-progress bg-primary h-full origin-left rounded"
-                style={{ width: `${progressPercent}%` }}
-              />
-            </div>
-          </div>
+      <StatCard
+        label={t('statLeave')}
+        value={remainingLeaveDays}
+        unit="일"
+        ring={leaveRing}
+        caption={t('statLeaveCaption', { comp: compLeaveDays })}
+      />
 
-          {/* Expected work hours */}
-          <div>
-            <div className="mb-2 flex items-center justify-between text-xs">
-              <span className="text-2">{t('expectedHours')}</span>
-              <span className="text-2 font-bold">{t('expectedTarget')}</span>
-            </div>
-            <div className="bg-base-300 h-2 w-full overflow-hidden rounded">
-              <div className="bg-neutral h-full w-full rounded" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Overtime Balance Card */}
-      <div className="animate-fade-up delay-150">
-        <StatCard
-          label={t('compLeaveLabel')}
-          value={`${overtimeBalanceHours >= 0 ? '+' : ''}${overtimeBalanceHours.toFixed(1)}`}
-          unit="h"
-          caption={t('compLeaveCaption')}
-        >
-          <Link href="/dayoff/used" className="btn btn-outline btn-sm mt-[18px]">
-            {t('viewUsage')}
-          </Link>
-        </StatCard>
-      </div>
+      <StatCard label={t('statProceeding')} value={count} unit="건" />
     </div>
   );
 }
