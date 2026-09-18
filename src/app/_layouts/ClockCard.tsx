@@ -107,10 +107,10 @@ export default function ClockCard() {
       <div className="mt-1 mb-2 text-xl font-bold tracking-tight">{elapsed}</div>
       {sub && <div className="text-3 -mt-1 mb-2 text-xs">{sub}</div>}
 
-      {/* CTA */}
-      {!isDone && (
+      {/* CTA — 출근하기는 비활성화 상태라 근무 중(퇴근하기)일 때만 노출한다 */}
+      {isWorking && (
         <Link href="/attendance/record/gps" className="btn btn-primary btn-sm w-full">
-          {isWorking ? t('clockOut') : t('clockIn')}
+          {t('clockOut')}
         </Link>
       )}
     </div>
@@ -128,26 +128,21 @@ export function ClockFab() {
 
   const className = cx(
     'bg-primary text-primary-content border-base-100 -mt-7 flex size-14 flex-none items-center justify-center rounded-full border-4',
-    isDone && 'opacity-50',
+    !isWorking && 'opacity-50',
   );
   const style = { boxShadow: '0 8px 20px color-mix(in oklab, var(--color-primary) 40%, transparent)' };
 
-  // 퇴근 완료 — 이동할 곳이 없으므로 링크가 아닌 표시용 요소
-  if (isDone) {
+  // 퇴근 완료 또는 출근 전(출근하기 비활성화) — 이동할 곳이 없으므로 링크가 아닌 표시용 요소
+  if (!isWorking) {
     return (
-      <span role="img" aria-label={t('todayDone')} className={className} style={style}>
+      <span role="img" aria-label={isDone ? t('todayDone') : t('beforeWork')} className={className} style={style}>
         <IoTimeOutline className="size-6" />
       </span>
     );
   }
 
   return (
-    <Link
-      href="/attendance/record/gps"
-      aria-label={isWorking ? t('clockOut') : t('clockIn')}
-      style={style}
-      className={className}
-    >
+    <Link href="/attendance/record/gps" aria-label={t('clockOut')} style={style} className={className}>
       <IoTimeOutline className="size-6" />
     </Link>
   );

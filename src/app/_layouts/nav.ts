@@ -1,7 +1,7 @@
 import { AiOutlineSchedule } from 'react-icons/ai';
 import { FaUsersViewfinder } from 'react-icons/fa6';
 import { HiDocumentPlus } from 'react-icons/hi2';
-import { IoQrCodeOutline, IoTimeOutline } from 'react-icons/io5';
+import { IoTimeOutline } from 'react-icons/io5';
 import { LuHistory } from 'react-icons/lu';
 import { MdManageAccounts, MdOutlineInbox } from 'react-icons/md';
 import { RiDashboardFill } from 'react-icons/ri';
@@ -60,7 +60,6 @@ export const NAV_GROUPS: NavGroup[] = [
         segments: ['dayoff', 'users', 'vacations'],
         icon: MdManageAccounts,
       },
-      { key: 'qr', href: '/qr', segments: ['qr'], icon: IoQrCodeOutline },
     ],
   },
 ];

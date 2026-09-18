@@ -37,7 +37,6 @@
     "groupManage": "관리",
     "managerAttendance": "임직원 근무 현황",
     "managerVacations": "임직원 휴가 현황",
-    "qr": "출근 QR",
     "profile": "내 정보",
     "logout": "로그아웃",
     "leader": "팀장"
@@ -434,7 +433,8 @@
         "proceed": "진행하기",
         "proceeding": "진행중",
         "tooltip": "현재 위치에서 처리할 수 없지만, 너굴맨이 처리함",
-        "errorTitle": "무언가 잘못되었는디?"
+        "errorTitle": "무언가 잘못되었는디?",
+        "clockInDisabled": "출근 처리는 현재 사용할 수 없습니다."
       }
     }
   },

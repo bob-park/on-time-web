@@ -26,7 +26,8 @@ export default function AttendanceRecordGpsContents() {
 
   // state
   const [selectGpsId, setSelectGpsId] = useState<number>();
-  const [selectType, setSelectType] = useState<AttendanceType>('CLOCK_IN');
+  // 출근 처리는 비활성화 상태 — 퇴근만 선택 가능
+  const [selectType, setSelectType] = useState<AttendanceType>('CLOCK_OUT');
 
   // hooks
   const { isSupport, position } = useGps();
@@ -129,6 +130,8 @@ export default function AttendanceRecordGpsContents() {
           <button
             className={cx('btn btn-lg flex-1', selectType === 'CLOCK_IN' ? 'btn-primary' : 'btn-outline')}
             onClick={() => setSelectType('CLOCK_IN')}
+            disabled
+            title={t('gps.clockInDisabled')}
           >
             {t('gps.clockIn')}
           </button>
