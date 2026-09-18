@@ -7,12 +7,11 @@ import { GiCancel } from 'react-icons/gi';
 
 import ApprovalLines from '@/domain/approval/components/ApprovalLines';
 import ApproveModal from '@/domain/document/components/ApproveModal';
+import CancelConfirmModal from '@/domain/document/components/CancelConfirmModal';
 import RejectModal from '@/domain/document/components/RejectModal';
 import { useApprovalDocument } from '@/domain/document/queries/documents';
 
 import { useTranslations } from 'next-intl';
-
-import CancelConfirmModal from './CancelConfirmModal';
 
 interface ApprovalProceedContentsProps {
   id: number;

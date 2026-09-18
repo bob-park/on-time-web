@@ -6,10 +6,10 @@ import { FaFilePdf } from 'react-icons/fa';
 import { IoNotifications } from 'react-icons/io5';
 import { PiUploadFill } from 'react-icons/pi';
 
-import CancelConfirmModal from '@/app/(user)/approvals/[id]/_components/CancelConfirmModal';
 import PressApprovalModal from '@/app/(user)/dayoff/[id]/_components/PressApprovalModal';
 import RequestConfirmModal from '@/app/(user)/dayoff/[id]/_components/RequestConfirmModal';
 import ApprovalLines from '@/domain/approval/components/ApprovalLines';
+import CancelConfirmModal from '@/domain/document/components/CancelConfirmModal';
 import OverTimeWorkDocument from '@/domain/document/components/OverTimeWorkDocument';
 import { useOverTimeWorkDocument } from '@/domain/document/queries/overtime';
 import delay from '@/utils/delay';

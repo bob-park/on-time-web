@@ -19,7 +19,8 @@
       "statusApproved": "승인",
       "statusRejected": "반려"
     },
-    "timesCount": "{count}건"
+    "timesCount": "{count}건",
+    "days": "{days}일"
   },
   "nav": {
     "home": "홈",
@@ -119,8 +120,6 @@
     "actionCancel": "취소",
     "toastRequested": "문서를 상신했습니다.",
     "toastRequestError": "상신 처리 중 오류가 발생했습니다. 다시 시도해 주세요.",
-    "toastCancelled": "문서를 취소했습니다.",
-    "toastCancelError": "취소 처리 중 오류가 발생했습니다. 다시 시도해 주세요.",
     "rowAria": "문서 {id} 상세 보기",
     "empty": "조건에 맞는 문서가 없습니다"
   },
@@ -130,9 +129,13 @@
     "description": "내가 결재선에 포함된 문서입니다. 행을 클릭하면 상세와 결재선을 볼 수 있어요.",
     "categoryFilterAria": "문서 구분 필터",
     "statusFilterAria": "문서 상태 필터",
+    "segmentWaiting": "대기 {count}",
+    "segmentApproved": "승인됨",
+    "segmentRejected": "반려됨",
+    "segmentAll": "전체",
     "colDocument": "문서",
     "colRequester": "신청자",
-    "colPeriod": "기간",
+    "colPeriod": "기간 / 일수",
     "colStatus": "상태",
     "colAction": "처리",
     "requestedAt": "{date} 요청",

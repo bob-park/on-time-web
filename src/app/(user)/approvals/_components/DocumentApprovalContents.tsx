@@ -22,10 +22,10 @@ export default function DocumentApprovalContents() {
 
   // No DRAFT on /approvals — 대기 건을 맨 앞에 두고 건수를 함께 보여준다.
   const statusOptions: { label: string; value: DocumentStatus | undefined }[] = [
-    { label: `${tf('statusWaiting')} ${count}`, value: 'WAITING' },
-    { label: tf('statusApproved'), value: 'APPROVED' },
-    { label: tf('statusRejected'), value: 'REJECTED' },
-    { label: tf('all'), value: undefined },
+    { label: t('segmentWaiting', { count }), value: 'WAITING' },
+    { label: t('segmentApproved'), value: 'APPROVED' },
+    { label: t('segmentRejected'), value: 'REJECTED' },
+    { label: t('segmentAll'), value: undefined },
   ];
 
   const categoryOptions: { label: string; value: DocumentsType | undefined }[] = [

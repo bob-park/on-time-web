@@ -44,7 +44,7 @@ export default function DocumentApprovalResult({ items, isLoading }: DocumentApp
             <tr>
               <th className={thClass}>{t('colDocument')}</th>
               <th className={`w-[160px] ${thClass}`}>{t('colRequester')}</th>
-              <th className={`w-[150px] ${thClass}`}>{t('colPeriod')}</th>
+              <th className={`w-[200px] ${thClass}`}>{t('colPeriod')}</th>
               <th className={`w-[150px] ${thClass}`}>{t('colStatus')}</th>
               <th className={`w-[170px] ${thClass}`}>{t('colAction')}</th>
             </tr>
@@ -68,11 +68,12 @@ export default function DocumentApprovalResult({ items, isLoading }: DocumentApp
                 return (
                   <tr
                     key={item.id ?? `row-${index}`}
-                    className={`cursor-pointer ${rowClass}`}
+                    className={`hover:bg-base-200 cursor-pointer ${rowClass}`}
                     onClick={() => handleOpen(item.id)}
                     role="button"
                     tabIndex={0}
-                    onKeyDown={(e) => e.key === 'Enter' && handleOpen(item.id)}
+                    // 행 자신이 포커스된 경우에만 이동 — 내부 버튼의 keydown 은 무시한다.
+                    onKeyDown={(e) => e.key === 'Enter' && e.target === e.currentTarget && handleOpen(item.id)}
                     aria-label={t('rowAria', { id: item.id ?? '' })}
                   >
                     {/* 문서 */}
@@ -119,6 +120,7 @@ export default function DocumentApprovalResult({ items, isLoading }: DocumentApp
                               e.stopPropagation();
                               setRejectId(item.id);
                             }}
+                            onKeyDown={(e) => e.stopPropagation()}
                           >
                             {t('actionReject')}
                           </button>
@@ -129,6 +131,7 @@ export default function DocumentApprovalResult({ items, isLoading }: DocumentApp
                               e.stopPropagation();
                               setApproveId(item.id);
                             }}
+                            onKeyDown={(e) => e.stopPropagation()}
                           >
                             {t('actionApprove')}
                           </button>
