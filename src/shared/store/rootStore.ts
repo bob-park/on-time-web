@@ -1,5 +1,4 @@
 import createAttendanceSlice from '@/domain/attendance/store/slice';
-import createCounterSlice from '@/domain/counter/store/slice';
 
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
@@ -9,7 +8,6 @@ export const useStore = create<BoundState>()(
   devtools(
     persist(
       immer((...a) => ({
-        ...createCounterSlice(...a),
         ...createAttendanceSlice(...a),
       })),
       {
@@ -20,4 +18,4 @@ export const useStore = create<BoundState>()(
   ),
 );
 
-export type BoundState = AttendanceState & CounterState;
+export type BoundState = AttendanceState;

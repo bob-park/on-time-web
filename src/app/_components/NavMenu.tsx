@@ -3,10 +3,9 @@
 import { AiOutlineSchedule } from 'react-icons/ai';
 import { FaUsersViewfinder } from 'react-icons/fa6';
 import { HiDocumentPlus } from 'react-icons/hi2';
-import { IoChatbox, IoLogOutOutline } from 'react-icons/io5';
+import { IoLogOutOutline } from 'react-icons/io5';
 import { LuHistory } from 'react-icons/lu';
 import { MdManageAccounts, MdOutlineApproval } from 'react-icons/md';
-import { PiUserFocusBold } from 'react-icons/pi';
 import { RiDashboardFill } from 'react-icons/ri';
 
 import Link from 'next/link';
@@ -110,11 +109,6 @@ export default function NavMenu() {
               {t('overtimeRequest')}
             </MenuItem>
 
-            <MenuItem href="/expense/reports/requests" active={isActive(segments, ['expense', 'reports', 'requests'])}>
-              <HiDocumentPlus className="inline-block size-5 flex-none" />
-              {t('expenseRequest')}
-            </MenuItem>
-
             <MenuItem href="/documents" active={isActive(segments, ['documents'])}>
               <MdOutlineApproval className="inline-block size-5 flex-none" />
               {t('documents')}
@@ -140,30 +134,9 @@ export default function NavMenu() {
                   {t('managerVacations')}
                 </MenuItem>
 
-                <MenuItem
-                  href="/dayoff/users/compensatory"
-                  active={isActive(segments, ['dayoff', 'users', 'compensatory'])}
-                >
-                  <PiUserFocusBold className="inline-block size-5 flex-none" />
-                  {t('managerCompensatory')}
-                </MenuItem>
-
                 <MenuItem href="/attendance/view" active={isActive(segments, ['attendance', 'view'])}>
                   <FaUsersViewfinder className="inline-block size-5 flex-none" />
                   {t('managerAttendance')}
-                </MenuItem>
-
-                <MenuItem
-                  href="/attendance/people/schedules"
-                  active={isActive(segments, ['attendance', 'people', 'schedules'])}
-                >
-                  <AiOutlineSchedule className="inline-block size-5 flex-none" />
-                  {t('managerSchedules')}
-                </MenuItem>
-
-                <MenuItem href="/chat/users" active={isActive(segments, ['chat'])}>
-                  <IoChatbox className="inline-block size-5 flex-none" />
-                  {t('managerChat')}
                 </MenuItem>
               </>
             )}

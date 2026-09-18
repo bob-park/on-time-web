@@ -20,14 +20,6 @@
       "statusRejected": "반려"
     }
   },
-  "preparing": {
-    "title": "준비중",
-    "descriptionExpense": "지출결의서 기능을 준비하고 있어요 — 조금만 기다려 주세요",
-    "descriptionSchedules": "임직원 근무 일정 등록 기능을 준비하고 있어요",
-    "descriptionCompensatory": "임직원 보상 휴가 현황 기능을 준비하고 있어요",
-    "backToDocuments": "결재 목록으로",
-    "backToDashboard": "대시보드로"
-  },
   "nav": {
     "dashboard": "대시보드",
     "schedule": "근무 일정",
@@ -35,15 +27,11 @@
     "dayoffRequest": "휴가 신청",
     "dayoffUsed": "휴가 사용 내역",
     "overtimeRequest": "휴일근무보고서 신청",
-    "expenseRequest": "지출결의서 신청",
     "documents": "결재 신청 목록",
     "approvals": "결재 처리 대기 목록",
     "groupManager": "관리자",
     "managerVacations": "임직원 휴가 사용 현황",
-    "managerCompensatory": "임직원 보상 휴가 현황",
     "managerAttendance": "임직원 근무 현황",
-    "managerSchedules": "임직원 근무 일정 등록",
-    "managerChat": "임직원과의 소통",
     "logout": "로그아웃",
     "profile": "프로필"
   },
@@ -513,20 +501,6 @@
       "autoRefresh": "자동 갱신 중",
       "caption": "스캔하면 {type} 처리 페이지로 이동합니다",
       "qrAlt": "{type} QR 코드"
-    }
-  },
-  "chat": {
-    "eyebrow": "Support",
-    "title": "임직원과의 소통",
-    "subtitle": "임직원을 선택해 1:1 대화를 시작합니다",
-    "back": "목록으로",
-    "inputPlaceholder": "메세지를 입력해주세요",
-    "send": "전송",
-    "system": {
-      "enterMe": "고객지원에 연결되었습니다.",
-      "enterOther": "담당자와 연결되었습니다.",
-      "leaveMe": "고객지원에 연결 해제되었습니다.",
-      "leaveOther": "담당자가 나가부렀습니다."
     }
   }
 }
