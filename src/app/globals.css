@@ -1,6 +1,9 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
 @import 'tailwindcss';
-@plugin 'daisyui';
+/* daisyUI 내장 테마(light/dark)를 끄고 아래 커스텀 light/dark 만 사용한다 — 내장 light 가 더 작은 radius 로 덮어쓰는 문제 방지 */
+@plugin 'daisyui' {
+  themes: false;
+}
 
 @media (prefers-reduced-motion: reduce) {
   *,
