@@ -51,11 +51,7 @@ export default function UpdatePasswordContents() {
   };
 
   return (
-    <div className="animate-fade-up bg-base-100 border-base-300 rounded-box shadow-whisper w-full border p-5">
-      <div className="border-soft mb-5 border-b pb-4">
-        <h3 className="text-lg font-semibold">{t('title')}</h3>
-      </div>
-
+    <div className="w-full">
       <form onSubmit={handleUpdatePassword}>
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">

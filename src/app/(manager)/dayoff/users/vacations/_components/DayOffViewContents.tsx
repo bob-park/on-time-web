@@ -11,7 +11,7 @@ interface DayOffViewContentsProps {
   usedVacations: UsedVacation[];
 }
 
-// 본값(연차) white / 괄호 보상값 warning, 둘 다 0 이면 "—" muted
+// 본값(연차) 기본색 / 괄호 보상값 muted, 둘 다 0 이면 "—" muted
 function DualValue({ value, comp, valueClassName }: { value: number; comp: number; valueClassName?: string }) {
   if (value === 0 && comp === 0) {
     return <span className="text-3">—</span>;
@@ -19,7 +19,7 @@ function DualValue({ value, comp, valueClassName }: { value: number; comp: numbe
   return (
     <>
       <span className={cx('text-base-content', valueClassName)}>{value}</span>
-      {comp > 0 && <span className="text-warning ml-0.5 text-xs">({comp})</span>}
+      {comp > 0 && <span className="text-2 ml-0.5 text-xs">({comp})</span>}
     </>
   );
 }

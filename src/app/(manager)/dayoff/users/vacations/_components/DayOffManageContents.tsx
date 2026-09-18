@@ -3,9 +3,10 @@
 import { useState } from 'react';
 
 import { HiOutlineDocumentText } from 'react-icons/hi';
-import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 import { useUserLeaveEntries, useUsersUsedVacations } from '@/domain/users/queries/user';
+import Card from '@/shared/components/Card';
+import Segment from '@/shared/components/Segment';
 
 import cx from 'classnames';
 import dayjs from 'dayjs';
@@ -44,7 +45,14 @@ function SkeletonRow() {
 
 export default function DayOffManageContents() {
   const t = useTranslations('manager.vacations');
-  const [year, setYear] = useState<number>(dayjs().year());
+
+  const thisYear = dayjs().year();
+  const [year, setYear] = useState<number>(thisYear);
+
+  const yearOptions = [thisYear, thisYear - 1, thisYear - 2].map((value) => ({
+    label: t('yearLabel', { year: String(value) }),
+    value,
+  }));
 
   const { users, isLoading: isLoadingLeave } = useUserLeaveEntries({ year });
   const { usersUsedVacations, isLoading: isLoadingVacations } = useUsersUsedVacations({ year });
@@ -55,45 +63,19 @@ export default function DayOffManageContents() {
   );
 
   return (
-    <div className="bg-base-100 border-base-300 rounded-box shadow-whisper overflow-hidden border">
-      {/* Header zone — 타이틀 + 연도 navigator */}
-      <div className="border-soft flex items-center justify-between gap-4 border-b px-5 py-4">
-        <div>
-          <div className="eyebrow">{t('eyebrow')}</div>
-          <h2 className="mt-0.5 text-base font-bold tracking-tight">{t('title')}</h2>
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            aria-label={t('prevYear')}
-            className="border-base-300 text-2 hover:bg-base-200 flex h-8 w-8 items-center justify-center rounded-[10px] border transition-colors"
-            onClick={() => setYear(year - 1)}
-          >
-            <IoIosArrowBack className="size-4" />
-          </button>
-          <span className="min-w-[72px] text-center text-sm font-semibold">
-            {t('yearLabel', { year: String(year) })}
-          </span>
-          <button
-            type="button"
-            aria-label={t('nextYear')}
-            className="border-base-300 text-2 hover:bg-base-200 flex h-8 w-8 items-center justify-center rounded-[10px] border transition-colors"
-            onClick={() => setYear(year + 1)}
-          >
-            <IoIosArrowForward className="size-4" />
-          </button>
-        </div>
-      </div>
-
-      {/* Hint */}
-      <div className="flex justify-end px-5 pt-3">
+    <div className="flex w-full flex-col gap-4">
+      {/* 연도 필터 + 안내 */}
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-3 text-xs font-semibold">{t('yearFilterLabel')}</span>
+        <Segment ariaLabel={t('yearFilterAria')} options={yearOptions} value={year} onChange={setYear} />
+        <span className="flex-1" />
         <span className="text-3 text-[11px]">
-          {t.rich('hint', { comp: (chunks) => <span className="text-warning">{chunks}</span> })}
+          {t.rich('hint', { comp: (chunks) => <span className="text-2 font-semibold">{chunks}</span> })}
         </span>
       </div>
 
       {/* Matrix zone — 가로 스크롤 13px 테이블 */}
-      <div className="overflow-x-auto p-2">
+      <Card className="overflow-x-auto p-2">
         <table className="w-max border-collapse text-[13px]" aria-label={t('gridLabel')}>
           <thead>
             <tr className="border-soft border-b">
@@ -109,7 +91,7 @@ export default function DayOffManageContents() {
               <th className={cx(headerCellClass, 'min-w-[110px]')}>{t('colEffectiveDate')}</th>
               <th className={cx(headerCellClass, 'min-w-[96px]')}>
                 {t('colAnnual')}
-                <span className="text-warning">{t('colAnnualComp')}</span>
+                <span className="text-2">{t('colAnnualComp')}</span>
               </th>
               <th className={cx(headerCellClass, 'border-soft min-w-[88px] border-r')}>{t('colAvailable')}</th>
               {MONTHS.map((m) => (
@@ -146,7 +128,7 @@ export default function DayOffManageContents() {
             )}
           </tbody>
         </table>
-      </div>
+      </Card>
     </div>
   );
 }

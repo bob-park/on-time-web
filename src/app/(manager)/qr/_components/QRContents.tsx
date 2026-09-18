@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { AttendanceType } from '@/domain/attendance/apis/attendance.dto';
 import { useGenerateCurrentCheck, useGetCurrentCheck } from '@/domain/attendance/queries/attendanceCheck';
+import Card from '@/shared/components/Card';
 import { getDaysOfWeek } from '@/utils/parse';
 
 import cx from 'classnames';
@@ -122,7 +123,7 @@ export default function QRContents() {
       </div>
 
       {/* 정보 카드 + QR */}
-      <div className="bg-base-100 border-base-300 rounded-box shadow-whisper w-full max-w-[420px] border p-5">
+      <Card className="w-full max-w-[420px] p-5">
         {/* 메타 정보 */}
         {!isLoading && currentCheck && (
           <div className="flex flex-col">
@@ -166,7 +167,7 @@ export default function QRContents() {
         {!isLoading && currentCheck && (
           <p className="text-2 mt-3.5 text-center text-xs">{t('caption', { type: typeLabel })}</p>
         )}
-      </div>
+      </Card>
     </div>
   );
 }

@@ -24,7 +24,12 @@ export function useBreadcrumbTitle(value?: string) {
   useEffect(() => {
     setTitle(value);
 
-    return () => setTitle(undefined);
+    // 다음 상세 페이지가 이미 제목을 건 뒤라면 지우지 않는다.
+    return () => {
+      if (title === value) {
+        setTitle(undefined);
+      }
+    };
   }, [value]);
 }
 

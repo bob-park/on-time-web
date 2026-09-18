@@ -13,21 +13,17 @@ export default async function SchedulePage() {
   return (
     <div className="w-full">
       {/* eyebrow + title */}
-      <PageHeader eyebrow={t('eyebrow')} title={t('title')} />
+      <PageHeader eyebrow={t('eyebrow')} title={t('title')} actions={<AddScheduleButton />} />
 
       <WorkingTimeProvider>
+        {/* toolbar: week navigator */}
+        <div className="mb-4 flex w-full flex-row items-center gap-2">
+          <WorkingTimeView />
+        </div>
+
+        {/* gantt timeline */}
         <div className="overflow-x-auto">
           <div className="w-[1152px]">
-            {/* toolbar: week navigator + add */}
-            <div className="mb-6 flex w-full flex-row items-center justify-between gap-2">
-              <div>
-                <WorkingTimeView />
-              </div>
-
-              <AddScheduleButton />
-            </div>
-
-            {/* gantt timeline */}
             <ScheduleContents />
           </div>
         </div>

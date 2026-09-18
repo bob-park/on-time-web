@@ -10,6 +10,7 @@ import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimePr
 import { User } from '@/domain/users/apis/users.dto';
 import { useGetUsers } from '@/domain/users/queries/user';
 import Badge from '@/shared/components/Badge';
+import Card from '@/shared/components/Card';
 import { getDaysOfWeek } from '@/utils/parse';
 
 import cx from 'classnames';
@@ -255,7 +256,7 @@ export default function AllEmployeesGrid() {
         </div>
       )}
 
-      <div className="bg-base-100 border-base-300 rounded-box shadow-whisper min-h-0 flex-1 overflow-auto border">
+      <Card className="min-h-0 flex-1 overflow-auto">
         <table className="table" role="table" aria-label={t('gridLabel')}>
           <thead>
             <tr className="border-soft border-b">
@@ -318,7 +319,7 @@ export default function AllEmployeesGrid() {
               })}
           </tbody>
         </table>
-      </div>
+      </Card>
 
       <div className="text-2 mt-1.5 flex flex-wrap items-center gap-4 text-xs">
         <span className="inline-flex items-center gap-1.5">

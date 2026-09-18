@@ -39,11 +39,7 @@ export default function PersonalInfoContents() {
 
   return (
     <>
-      <div className="animate-fade-up bg-base-100 border-base-300 rounded-box shadow-whisper w-full border p-5">
-        <div className="border-soft mb-5 border-b pb-4">
-          <h3 className="text-lg font-semibold">{t('title')}</h3>
-        </div>
-
+      <div className="w-full">
         {isLoading ? (
           <div className="flex flex-col gap-8 md:flex-row">
             <div className="flex flex-shrink-0 flex-col items-center gap-3">
@@ -66,7 +62,7 @@ export default function PersonalInfoContents() {
                 size="profile"
                 isOnline={false}
               />
-              <button className="btn btn-outline btn-sm" onClick={() => setShowUpdateAvatarModal(true)}>
+              <button className="btn btn-subtle btn-sm" onClick={() => setShowUpdateAvatarModal(true)}>
                 {t('changeAvatar')}
               </button>
             </div>

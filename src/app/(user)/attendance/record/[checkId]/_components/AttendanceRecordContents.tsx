@@ -5,8 +5,10 @@ import { useEffect } from 'react';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
 import { AttendanceRecord } from '@/domain/attendance/apis/attendance.dto';
+import AttendanceStatusBadge from '@/domain/attendance/components/AttendanceStatusBadge';
 import { useGetResultAttendanceRecord, useRecordAttendance } from '@/domain/attendance/queries/attendanceRecord';
 import { useUser } from '@/domain/users/queries/user';
+import Card from '@/shared/components/Card';
 import { getDaysOfWeek } from '@/utils/parse';
 
 import cx from 'classnames';
@@ -37,7 +39,7 @@ function AttendanceRecordResult({ result }: AttendanceRecordResultProps) {
   const success = !!result;
 
   return (
-    <div className="animate-fade-up flex flex-col items-center gap-7 pt-16 pb-10 text-center">
+    <div className="animate-fade-up flex flex-col items-center gap-6 py-4 text-center">
       {/* icon */}
       <span
         className={cx('flex size-20 items-center justify-center rounded-full text-4xl', {
@@ -51,12 +53,15 @@ function AttendanceRecordResult({ result }: AttendanceRecordResultProps) {
       {/* contents */}
       {success ? (
         <>
-          <h2 className="text-2xl font-bold tracking-tight">
-            {result.clockInTime && !result.clockOutTime && t('clockInDone')}
-            {result.clockInTime && result.clockOutTime && t('clockOutDone')}
-          </h2>
+          <div className="flex flex-col items-center gap-2.5">
+            <h2 className="text-2xl font-bold tracking-tight">
+              {result.clockInTime && !result.clockOutTime && t('clockInDone')}
+              {result.clockInTime && result.clockOutTime && t('clockOutDone')}
+            </h2>
+            <AttendanceStatusBadge status={result.status} />
+          </div>
 
-          <div className="bg-base-100 border-base-300 rounded-box shadow-whisper w-full max-w-[420px] border px-5 text-left">
+          <div className="bg-base-200 rounded-box w-full px-4 text-left">
             <div className="divide-base-300 divide-y">
               <InfoRow
                 label={t('workingDate')}
@@ -99,15 +104,15 @@ export default function AttendanceRecordContents({ checkId }: AttendanceRecordCo
   }, [currentUser]);
 
   return (
-    <div className="flex w-full flex-col items-center justify-center">
+    <Card className="mx-auto w-full max-w-[520px] p-6">
       {/* 처리 결과 표시 */}
       {isLoading && !result && (
-        <div className="flex h-56 flex-col items-center justify-center pt-16">
+        <div className="flex h-56 flex-col items-center justify-center">
           <span className="loading loading-infinity loading-lg text-primary"></span>
         </div>
       )}
 
       {!isLoading && currentUser && <AttendanceRecordResult result={result} />}
-    </div>
+    </Card>
   );
 }

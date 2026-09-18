@@ -107,7 +107,7 @@ export default function DayOffDetailContents({ id }: DayOffDetailContentsProps) 
       />
 
       {/* A4 문서 · 결재 패널 */}
-      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[1fr_360px] xl:items-start">
+      <div className="grid grid-cols-1 gap-5 2xl:grid-cols-[1fr_360px] 2xl:items-start">
         {/* document — 1000px 고정이라 좁은 화면에서는 가로 스크롤 */}
         <div className="overflow-x-auto">
           <div className="aspect-[1/1.414] w-[1000px] shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
@@ -115,7 +115,7 @@ export default function DayOffDetailContents({ id }: DayOffDetailContentsProps) 
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 xl:sticky xl:top-0">
+        <div className="flex flex-col gap-4 2xl:sticky 2xl:top-4">
           {/* 결재 진행 */}
           <Card className="p-5">
             <h3 className="mb-2.5 text-[15px] font-semibold">{t('statusTitle')}</h3>

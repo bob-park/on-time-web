@@ -25,11 +25,7 @@ export default function UpdateUserSignatureContents() {
 
   return (
     <>
-      <div className="animate-fade-up bg-base-100 border-base-300 rounded-box shadow-whisper w-full border p-5">
-        <div className="border-soft mb-5 border-b pb-4">
-          <h3 className="text-lg font-semibold">{t('title')}</h3>
-        </div>
-
+      <div className="w-full">
         <div className="flex flex-col gap-4">
           <div className="border-base-300 relative h-[160px] w-full max-w-[400px] overflow-hidden rounded-lg border border-dashed">
             {currentUser && !isError ? (
@@ -51,7 +47,7 @@ export default function UpdateUserSignatureContents() {
           {hasSignature && <p className="text-warning text-xs">{t('transparentWarning')}</p>}
 
           <div className="flex justify-end">
-            <button className="btn btn-outline" onClick={() => setShowUpdateSignatureModal(true)}>
+            <button className="btn btn-outline btn-sm" onClick={() => setShowUpdateSignatureModal(true)}>
               {hasSignature ? t('change') : t('register')}
             </button>
           </div>

@@ -15,9 +15,11 @@ import { useTranslations } from 'next-intl';
 interface ApprovalProceedContentsProps {
   id: number;
   title: string;
+  // 지금 보고 있는 사람의 결재선 id — 스테퍼에서 "(나)" 로 표시한다.
+  currentId?: number;
 }
 
-export default function ApprovalProceedContents({ id, title }: ApprovalProceedContentsProps) {
+export default function ApprovalProceedContents({ id, title, currentId }: ApprovalProceedContentsProps) {
   // i18n
   const t = useTranslations('approval.detail');
 
@@ -33,14 +35,18 @@ export default function ApprovalProceedContents({ id, title }: ApprovalProceedCo
   const { approvalHistory } = useApprovalDocument(id);
 
   const doc = approvalHistory?.document;
-  const steps = doc ? toDocumentSteps(doc, t('stepRequest')) : [];
+  const steps = doc
+    ? toDocumentSteps(doc, t('stepRequest')).map((step) =>
+        step.id === currentId ? { ...step, role: `${step.role} ${t('me')}` } : step,
+      )
+    : [];
 
   // 결재 처리는 내 차례(WAITING)일 때만, 취소는 이미 종료된 문서에서는 불가
   const disabledProceed = doc?.status === 'CANCELLED' || approvalHistory?.status !== 'WAITING';
   const disabledCancel = ['CANCELLED', 'REJECTED'].includes(doc?.status || '');
 
   return (
-    <div className="flex flex-col gap-4 xl:sticky xl:top-0">
+    <div className="flex flex-col gap-4 2xl:sticky 2xl:top-4">
       {/* 결재 진행 */}
       <Card className="p-5">
         <h3 className="mb-2.5 text-[15px] font-semibold">{t('statusTitle')}</h3>

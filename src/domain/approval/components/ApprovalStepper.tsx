@@ -51,7 +51,10 @@ export default function ApprovalStepper({ steps }: ApprovalStepperProps) {
             {/* 승인자 이름이 없으면(결재선 contents 만 있는 경우) 역할을 제목으로 */}
             <span className="block text-sm font-semibold">{step.name || step.role}</span>
             <span className="text-3 block text-xs">
-              {[step.name ? step.role : undefined, step.caption].filter(Boolean).join(' · ')}
+              {step.name ? step.role : ''}
+              {step.name && step.caption ? ' · ' : ''}
+              {/* 반려 사유는 눈에 띄어야 하므로 error 색 */}
+              {step.caption && <span className={cx({ 'text-error': step.status === 'rejected' })}>{step.caption}</span>}
             </span>
           </span>
         </li>

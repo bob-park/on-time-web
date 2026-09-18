@@ -11,6 +11,7 @@ import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimePr
 import { useGetAttendanceRecord } from '@/domain/attendance/queries/attendanceRecord';
 import { useUser } from '@/domain/users/queries/user';
 import Badge from '@/shared/components/Badge';
+import Card from '@/shared/components/Card';
 import { getDaysOfWeek } from '@/utils/parse';
 
 import cx from 'classnames';
@@ -54,7 +55,7 @@ export default function ScheduleContents() {
   const dataList = getDates(selectDate, attendanceRecords);
 
   return (
-    <div className="bg-base-100 border-base-300 rounded-box shadow-whisper w-full border p-5 select-none">
+    <Card className="w-full p-4 select-none">
       {/* axis header */}
       <div className="border-soft grid grid-cols-[192px_1fr] items-center gap-4 border-b px-2 pb-2.5">
         <span className="text-2 text-[11px] font-semibold tracking-[1.4px] uppercase">{t('workingDay')}</span>
@@ -83,7 +84,7 @@ export default function ScheduleContents() {
           clockOutTime={item.clockOutTime}
         />
       ))}
-    </div>
+    </Card>
   );
 }
 

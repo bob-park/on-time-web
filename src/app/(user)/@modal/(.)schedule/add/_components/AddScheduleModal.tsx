@@ -105,7 +105,7 @@ export default function AddScheduleModal() {
         {/* 구분 */}
         <div className="mt-6 flex flex-col gap-2">
           <label className="text-2 text-xs font-semibold tracking-wider uppercase">{t('category')}</label>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-wrap gap-2">
             {SELECT_OPTIONS_ATTENDANCE.map((option) => {
               const selected = selectedDayOffType === option.id;
 
@@ -113,14 +113,17 @@ export default function AddScheduleModal() {
                 <button
                   key={`select-attendance-${option.key}`}
                   type="button"
+                  aria-pressed={selected}
                   className={cx(
-                    'flex items-center justify-between rounded-[10px] px-5 py-3 text-sm transition-colors duration-150',
-                    selected ? 'bg-primary-subtle ring-primary font-bold ring-1' : 'bg-base-200 hover:bg-base-300',
+                    'flex cursor-pointer items-center gap-2 rounded-[10px] border px-3.5 py-2 text-[13px] font-medium transition-colors duration-150',
+                    selected
+                      ? 'border-primary bg-primary-soft text-primary font-semibold'
+                      : 'border-base-300 bg-base-100 text-2 hover:bg-base-200',
                   )}
                   onClick={() => setSelectedDayOffType(option.id)}
                 >
-                  <span>{t(option.key)}</span>
-                  {selected && <FaCheck className="text-primary size-3.5" />}
+                  {t(option.key)}
+                  {selected && <FaCheck className="text-primary size-3" />}
                 </button>
               );
             })}

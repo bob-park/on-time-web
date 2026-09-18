@@ -19,11 +19,11 @@ export default function UserError({ error, reset }: { error: Error & { digest?: 
       </div>
 
       <div className="flex items-center gap-3">
-        <button className="btn btn-neutral" onClick={reset}>
+        <button className="btn btn-outline" onClick={reset}>
           <TbRefresh className="h-5 w-5" />
           다시 시도
         </button>
-        <Link className="btn" href="/dashboard">
+        <Link className="btn btn-primary" href="/dashboard">
           <TbArrowBack className="h-5 w-5" />
           대시보드로 돌아가기
         </Link>

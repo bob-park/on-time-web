@@ -6,12 +6,13 @@ import { FaCheck, FaTimes } from 'react-icons/fa';
 import { GiNightSleep } from 'react-icons/gi';
 
 import { AttendanceGps, AttendanceRecord, AttendanceType } from '@/domain/attendance/apis/attendance.dto';
+import AttendanceStatusBadge from '@/domain/attendance/components/AttendanceStatusBadge';
 import useGps from '@/domain/attendance/hooks/useGps';
 import { useGenerateCurrentCheck, useGetCurrentCheck } from '@/domain/attendance/queries/attendanceCheck';
 import { useGetAttendanceGps } from '@/domain/attendance/queries/attendanceGps';
 import { useGetAttendanceRecord, useRecordAttendance } from '@/domain/attendance/queries/attendanceRecord';
 import { useUser } from '@/domain/users/queries/user';
-import Segment from '@/shared/components/Segment';
+import Card from '@/shared/components/Card';
 import { isSameMarginOfError } from '@/utils/dataUtils';
 import { getDaysOfWeek, round } from '@/utils/parse';
 
@@ -93,16 +94,32 @@ export default function AttendanceRecordGpsContents() {
     ) || !isSupport;
 
   return (
-    <div className="animate-fade-up mx-auto mt-3 flex w-full max-w-[480px] flex-col gap-6">
-      {/* (a) 장소 */}
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="text-3 text-xs font-semibold">{t('gps.locationLabel')}</span>
-        <Segment
-          ariaLabel={t('gps.locationLabel')}
-          options={gpsResult.map((gps) => ({ label: gps.name, value: gps.id as number | undefined }))}
-          value={selectGpsId}
-          onChange={setSelectGpsId}
-        />
+    <Card className="animate-fade-up mx-auto mt-3 flex w-full max-w-[520px] flex-col gap-6 p-6">
+      {/* (a) 장소 — 장소 수가 많을 수 있어 줄바꿈되는 chip 으로 */}
+      <div>
+        <div className="text-2 mb-2.5 text-xs font-semibold tracking-wider uppercase">{t('gps.locationLabel')}</div>
+        <div className="flex flex-wrap gap-2">
+          {gpsResult.map((gps) => {
+            const selected = selectGpsId === gps.id;
+
+            return (
+              <button
+                key={`gps-${gps.id}`}
+                type="button"
+                aria-pressed={selected}
+                className={cx(
+                  'flex cursor-pointer items-center gap-2 rounded-[10px] border px-3.5 py-2 text-[13px] font-medium transition-colors duration-150',
+                  selected
+                    ? 'border-primary bg-primary-soft text-primary font-semibold'
+                    : 'border-base-300 bg-base-100 text-2 hover:bg-base-200',
+                )}
+                onClick={() => setSelectGpsId(gps.id)}
+              >
+                {gps.name}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* (b) 출 / 퇴근 */}
@@ -132,7 +149,7 @@ export default function AttendanceRecordGpsContents() {
       )}
 
       {!isLoading && currentCheck && (
-        <div className="bg-base-100 border-base-300 rounded-box shadow-whisper border px-5">
+        <div className="bg-base-200 rounded-box px-4">
           <div className="divide-base-300 divide-y">
             <div className="flex items-center justify-between py-2.5">
               <span className="text-2 text-[13px]">{t('workingDate')}</span>
@@ -160,7 +177,7 @@ export default function AttendanceRecordGpsContents() {
       {/* (d) 진행하기 */}
       {!isLoading && currentCheck && (
         <div className={cx('w-full', { tooltip: showTooltip })} data-tip={t('gps.tooltip')}>
-          <button className="btn btn-lg btn-primary w-full" disabled={isDisabled} onClick={handleRecord}>
+          <button className="btn btn-lg btn-primary btn-block" disabled={isDisabled} onClick={handleRecord}>
             {isRecording ? (
               <>
                 <span className="loading loading-spinner loading-xs" />
@@ -175,7 +192,7 @@ export default function AttendanceRecordGpsContents() {
 
       {/* (e) 처리 결과 */}
       <AttendanceRecordResult result={attendanceResult} isError={!!recordErr} />
-    </div>
+    </Card>
   );
 }
 
@@ -216,7 +233,7 @@ function AttendanceRecordResult({ result, isError }: AttendanceRecordResultProps
   }
 
   return (
-    <div className="bg-base-100 border-base-300 rounded-box shadow-whisper animate-fade-up w-full border p-5">
+    <div className="border-soft animate-fade-up w-full border-t pt-5">
       <div className="flex items-center gap-4">
         {/* icon */}
         {showSleep && (
@@ -240,9 +257,12 @@ function AttendanceRecordResult({ result, isError }: AttendanceRecordResultProps
           {isError && <div className="text-base font-bold">{t('gps.errorTitle')}</div>}
           {showSuccess && (
             <>
-              <div className="text-base font-bold">
-                {result.clockInTime && !result.clockOutTime && t('clockInDone')}
-                {result.clockInTime && result.clockOutTime && t('clockOutDone')}
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-base font-bold">
+                  {result.clockInTime && !result.clockOutTime && t('clockInDone')}
+                  {result.clockInTime && result.clockOutTime && t('clockOutDone')}
+                </span>
+                <AttendanceStatusBadge status={result.status} />
               </div>
               <div className="text-2 mt-1 text-[13px]">
                 {result.clockOutTime ? (

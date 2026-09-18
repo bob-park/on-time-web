@@ -34,7 +34,7 @@ export default function NotFound() {
       </div>
 
       <div className="mt-5">
-        <Link className="btn btn-neutral" href="/dashboard">
+        <Link className="btn btn-primary" href="/dashboard">
           <TbArrowBack className="h-6 w-6" />
           돌아가기
         </Link>

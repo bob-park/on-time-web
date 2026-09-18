@@ -289,7 +289,8 @@
         "back": "돌아가기",
         "confirm": "문서 취소",
         "confirming": "취소 중"
-      }
+      },
+      "me": "(나)"
     }
   },
   "overtime": {
@@ -426,6 +427,11 @@
       "clockInTime": "출근 시간",
       "leaveWorkAt": "퇴근 예정 시간",
       "clockOutTime": "퇴근 시간",
+      "status": {
+        "SUCCESS": "정상",
+        "WAITING": "대기",
+        "WARNING": "확인 필요"
+      },
       "gps": {
         "eyebrow": "GPS Check",
         "title": "근태 처리 (GPS)",
@@ -474,9 +480,9 @@
       "eyebrow": "Manage",
       "title": "임직원 휴가 사용 현황",
       "gridLabel": "임직원 휴가 사용 현황",
-      "prevYear": "이전 연도",
-      "nextYear": "다음 연도",
       "yearLabel": "{year}년",
+      "yearFilterLabel": "연도",
+      "yearFilterAria": "연도 필터",
       "hint": "괄호 안 숫자는 <comp>보상휴가</comp> 사용분입니다 · 단위: 일",
       "colOrder": "순번",
       "colName": "성명",
