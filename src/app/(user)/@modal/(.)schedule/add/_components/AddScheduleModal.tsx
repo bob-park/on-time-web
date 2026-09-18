@@ -144,7 +144,7 @@ export default function AddScheduleModal() {
           {showDatePicker && (
             <div className="bg-base-300 mt-1 flex justify-center rounded-xl p-4">
               <DayPicker
-                className="rdp-dark"
+                className="rdp-theme"
                 animate
                 locale={ko}
                 mode="single"

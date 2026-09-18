@@ -263,7 +263,7 @@ export default function OvertimeRequestContents() {
               {showDatePicker && (
                 <div className="bg-base-200 absolute top-full left-0 z-50 mt-2 rounded-xl border border-white/10 p-2 shadow-2xl">
                   <DayPicker
-                    className="rdp-dark"
+                    className="rdp-theme"
                     locale={ko}
                     mode="single"
                     captionLayout="dropdown-years"

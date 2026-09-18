@@ -256,7 +256,7 @@ export default function DayOffRequestContent() {
             </div>
             <div className="flex flex-1 items-start justify-center">
               <DayPicker
-                className="rdp-dark"
+                className="rdp-theme"
                 locale={ko}
                 mode="range"
                 selected={selectedDate}

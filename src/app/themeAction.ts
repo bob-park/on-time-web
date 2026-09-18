@@ -1,5 +1,6 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 
 import { Theme } from '@/shared/providers/theme/ThemeProvider';
@@ -14,4 +15,6 @@ export async function setTheme(theme: Theme) {
     maxAge: 60 * 60 * 24 * 365, // 365 days
     sameSite: 'lax',
   });
+
+  revalidatePath('/', 'layout');
 }
