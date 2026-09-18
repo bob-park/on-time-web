@@ -78,7 +78,11 @@ export async function handle(fn: (sub: string) => Promise<unknown>) {
     return NextResponse.json(await fn(sub));
   } catch (e) {
     if (e instanceof HTTPError) {
-      return passthroughResponse(e.response);
+      // ky already consumed the response body into `e.data`, so `e.response.body` is disturbed.
+      return new NextResponse(typeof e.data === 'string' ? e.data : JSON.stringify(e.data ?? null), {
+        status: e.response.status,
+        headers: { 'Content-Type': e.response.headers.get('Content-Type') ?? 'application/json' },
+      });
     }
 
     throw e;
