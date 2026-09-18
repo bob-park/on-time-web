@@ -234,13 +234,13 @@
   },
   "approval": {
     "detail": {
-      "eyebrow": "Approval",
-      "proceedEyebrow": "Approvals",
-      "dayoffTitle": "휴가 신청 정보",
-      "overtimeTitle": "휴일 근무 보고서 신청 정보",
-      "proceedTitle": "결재 처리 정보",
-      "statusTitle": "현재 결재 상태",
-      "stepCurrent": "현재",
+      "eyebrow": "내 결재 문서",
+      "proceedEyebrow": "처리 대기",
+      "dayoffTitle": "휴가 신청서",
+      "overtimeTitle": "휴일근무 보고서",
+      "summary": "{requester} · {type} · {date} 상신",
+      "statusTitle": "결재 진행",
+      "stepRequest": "상신",
       "actions": {
         "press": "빨리 진행시켜줘",
         "request": "신청하기",

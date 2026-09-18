@@ -6,6 +6,7 @@ import {
 import OverTimeWorkDocument from '@/domain/document/components/OverTimeWorkDocument';
 import VacationDocument from '@/domain/document/components/VacationDocument';
 import PageHeader from '@/shared/components/PageHeader';
+import dayjs from '@/shared/dayjs';
 
 import { getTranslations } from 'next-intl/server';
 
@@ -14,39 +15,45 @@ import ApprovalProceedContents from './_components/ApprovalProceedContents';
 export default async function ApprovalDetailPage({ params }: { params: Promise<{ id: number }> }) {
   const id = (await params).id;
   const t = await getTranslations('approval.detail');
+  const tf = await getTranslations('common.filter');
 
   const res = await getApprovalDetail(id);
 
+  const isVacation = res.document.type === 'VACATION';
+  const title = isVacation ? t('dayoffTitle') : t('overtimeTitle');
+
   return (
-    <div className="animate-fade-up flex size-full flex-col items-center gap-4">
+    <div className="animate-fade-up w-full">
       {/* eyebrow + title */}
-      <div className="w-full max-w-[1200px]">
-        <PageHeader eyebrow={t('proceedEyebrow')} title={t('proceedTitle')} />
-      </div>
+      <PageHeader
+        eyebrow={t('proceedEyebrow')}
+        title={title}
+        description={t('summary', {
+          requester: res.document.user.username,
+          type: isVacation ? tf('typeVacation') : tf('typeOvertime'),
+          date: dayjs(res.document.createdDate).format('YYYY-MM-DD'),
+        })}
+      />
 
-      {/* contents */}
-      <div className="flex w-full max-w-[1200px] flex-col items-center justify-center gap-4">
-        {/* proceed buttons */}
-        <div className="w-full">
-          <ApprovalProceedContents id={id} currentId={res.approvalLine.id} />
-        </div>
-
-        {/* document info */}
-        <div className="w-full">
-          <div className="bg-base-100 border-base-300 rounded-box shadow-whisper flex w-full items-center justify-center border p-6">
-            <div className="aspect-[1/1.414] w-[1000px] shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
-              {res.document.type === 'VACATION' && (
-                <VacationDocument id="approval_document_vacation_id" document={res.document as VacationDocumentDto} />
-              )}
-              {res.document.type === 'OVERTIME_WORK' && (
-                <OverTimeWorkDocument
-                  id="approval_overtime_work_document_id"
-                  document={res.document as OverTimeWorkDocumentDto}
-                />
-              )}
-            </div>
+      {/* A4 문서 · 결재 패널 */}
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[1fr_360px] xl:items-start">
+        {/* document — 1000px 고정이라 좁은 화면에서는 가로 스크롤 */}
+        <div className="overflow-x-auto">
+          <div className="aspect-[1/1.414] w-[1000px] shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
+            {isVacation && (
+              <VacationDocument id="approval_document_vacation_id" document={res.document as VacationDocumentDto} />
+            )}
+            {res.document.type === 'OVERTIME_WORK' && (
+              <OverTimeWorkDocument
+                id="approval_overtime_work_document_id"
+                document={res.document as OverTimeWorkDocumentDto}
+              />
+            )}
           </div>
         </div>
+
+        {/* 결재 진행 + 처리 */}
+        <ApprovalProceedContents id={id} title={title} />
       </div>
     </div>
   );

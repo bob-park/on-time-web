@@ -7,10 +7,12 @@ import Link from 'next/link';
 import { useSelectedLayoutSegments } from 'next/navigation';
 
 import NotificationDialog from '@/app/_layouts/NotificationDialog';
+import { useBreadcrumbTitleValue } from '@/app/_layouts/breadcrumb';
 import { useUser } from '@/domain/users/queries/user';
 import ThemeSwitcher from '@/shared/components/theme/ThemeSwitcher';
 import { Theme } from '@/shared/providers/theme/ThemeProvider';
 
+import cx from 'classnames';
 import { useTranslations } from 'next-intl';
 import { overlay } from 'overlay-kit';
 
@@ -30,6 +32,9 @@ export default function Header({ theme }: HeaderProps) {
   // query
   const { user } = useUser();
 
+  // 상세 페이지가 걸어둔 문서 제목
+  const detailTitle = useBreadcrumbTitleValue();
+
   const { group, item } = findNavItem(segments);
   const initial = user?.username?.substring(0, 1)?.toUpperCase() || '';
 
@@ -43,7 +48,13 @@ export default function Header({ theme }: HeaderProps) {
             <span>›</span>
           </>
         )}
-        {item && <span className="text-base-content font-semibold">{t(item.key)}</span>}
+        {item && <span className={cx({ 'text-base-content font-semibold': !detailTitle })}>{t(item.key)}</span>}
+        {detailTitle && (
+          <>
+            {item && <span>›</span>}
+            <span className="text-base-content font-semibold">{detailTitle}</span>
+          </>
+        )}
       </div>
 
       <span className="flex-1" />

@@ -1,4 +1,6 @@
 import { ApprovalHistory } from '@/domain/approval/apis/approval.dto';
+import { Document } from '@/domain/document/apis/document.dto';
+import dayjs from '@/shared/dayjs';
 
 import cx from 'classnames';
 
@@ -58,7 +60,9 @@ export default function ApprovalStepper({ steps }: ApprovalStepperProps) {
   );
 }
 
-// approvalHistories → stepper steps. 첫 미결(status 없음) 항목이 current.
+// approvalHistories → stepper steps.
+// APPROVED=ok, REJECTED=rejected(이후 진행 없음), CANCELLED=pending(이후 진행 없음),
+// DRAFT=pending, WAITING/미결은 첫 건만 current.
 export function toApprovalSteps(histories: ApprovalHistory[], names: (userUniqueId: string) => string): ApprovalStep[] {
   let currentFound = false;
 
@@ -69,7 +73,8 @@ export function toApprovalSteps(histories: ApprovalHistory[], names: (userUnique
     else if (h.status === 'REJECTED') {
       status = 'rejected';
       currentFound = true;
-    } else if (!currentFound) {
+    } else if (h.status === 'CANCELLED') currentFound = true;
+    else if (h.status !== 'DRAFT' && !currentFound) {
       status = 'current';
       currentFound = true;
     }
@@ -82,4 +87,18 @@ export function toApprovalSteps(histories: ApprovalHistory[], names: (userUnique
       caption: h.status === 'REJECTED' ? h.reason : undefined,
     };
   });
+}
+
+// 문서 상세용 단계 — 맨 앞에 상신자를 붙인다. 결재자 이름은 응답에 없어 결재선 contents 를 제목으로 쓴다.
+export function toDocumentSteps(document: Document, requestRole: string): ApprovalStep[] {
+  return [
+    {
+      id: 0,
+      name: document.user.username,
+      role: requestRole,
+      status: 'ok',
+      caption: dayjs(document.createdDate).format('MM/DD HH:mm'),
+    },
+    ...toApprovalSteps(document.approvalHistories, () => ''),
+  ];
 }

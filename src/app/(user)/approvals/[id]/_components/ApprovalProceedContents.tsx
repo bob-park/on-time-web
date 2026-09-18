@@ -2,25 +2,27 @@
 
 import { useState } from 'react';
 
-import { FaCheck, FaTimes } from 'react-icons/fa';
-import { GiCancel } from 'react-icons/gi';
-
-import ApprovalLines from '@/domain/approval/components/ApprovalLines';
+import { useBreadcrumbTitle } from '@/app/_layouts/breadcrumb';
+import ApprovalStepper, { toDocumentSteps } from '@/domain/approval/components/ApprovalStepper';
 import ApproveModal from '@/domain/document/components/ApproveModal';
 import CancelConfirmModal from '@/domain/document/components/CancelConfirmModal';
 import RejectModal from '@/domain/document/components/RejectModal';
 import { useApprovalDocument } from '@/domain/document/queries/documents';
+import Card from '@/shared/components/Card';
 
 import { useTranslations } from 'next-intl';
 
 interface ApprovalProceedContentsProps {
   id: number;
-  currentId: number;
+  title: string;
 }
 
-export default function ApprovalProceedContents({ id, currentId }: ApprovalProceedContentsProps) {
+export default function ApprovalProceedContents({ id, title }: ApprovalProceedContentsProps) {
   // i18n
   const t = useTranslations('approval.detail');
+
+  // breadcrumb
+  useBreadcrumbTitle(title);
 
   // state
   const [showApprove, setShowApprove] = useState<boolean>(false);
@@ -30,71 +32,54 @@ export default function ApprovalProceedContents({ id, currentId }: ApprovalProce
   // query
   const { approvalHistory } = useApprovalDocument(id);
 
-  return (
-    <>
-      <div className="flex w-full flex-col items-center justify-center gap-4">
-        {/* 현재 결재 라인 상태 정보 */}
-        <div className="bg-base-100 border-base-300 rounded-box shadow-whisper flex w-full flex-col gap-5 border p-6">
-          <h3 className="text-lg font-semibold">{t('statusTitle')}</h3>
-          <div className="w-full py-2">
-            <ApprovalLines
-              lines={
-                approvalHistory?.document.approvalHistories.map((item) => ({
-                  id: item.approvalLine.id,
-                  contents: item.approvalLine.contents,
-                  status: item.status || 'NOT_YET',
-                  reason: item.reason,
-                })) || []
-              }
-              currentId={currentId}
-            />
-          </div>
-        </div>
+  const doc = approvalHistory?.document;
+  const steps = doc ? toDocumentSteps(doc, t('stepRequest')) : [];
 
-        {/* buttons */}
-        <div className="bg-base-100 border-base-300 rounded-box shadow-whisper flex w-full flex-row items-center justify-center gap-6 border p-6">
-          <div className="flex-1">
-            <button
-              type="button"
-              className="btn btn-ghost w-full"
-              disabled={['CANCELLED', 'REJECTED'].includes(approvalHistory?.document.status || '')}
-              onClick={() => setShowCancel(true)}
-            >
-              <GiCancel className="size-6" />
-              {t('actions.cancel')}
-            </button>
-          </div>
-          <div className="flex-1">
-            <button
-              type="button"
-              className="btn btn-outline btn-error w-full"
-              disabled={approvalHistory?.document.status === 'CANCELLED' || approvalHistory?.status !== 'WAITING'}
-              onClick={() => setShowReject(true)}
-            >
-              <FaTimes className="size-5" />
-              {t('actions.reject')}
-            </button>
-          </div>
-          <div className="flex-1">
-            <button
-              type="button"
-              className="btn btn-primary w-full"
-              disabled={approvalHistory?.document.status === 'CANCELLED' || approvalHistory?.status !== 'WAITING'}
-              onClick={() => setShowApprove(true)}
-            >
-              <FaCheck className="size-5" />
-              {t('actions.approve')}
-            </button>
-          </div>
+  // 결재 처리는 내 차례(WAITING)일 때만, 취소는 이미 종료된 문서에서는 불가
+  const disabledProceed = doc?.status === 'CANCELLED' || approvalHistory?.status !== 'WAITING';
+  const disabledCancel = ['CANCELLED', 'REJECTED'].includes(doc?.status || '');
+
+  return (
+    <div className="flex flex-col gap-4 xl:sticky xl:top-0">
+      {/* 결재 진행 */}
+      <Card className="p-5">
+        <h3 className="mb-2.5 text-[15px] font-semibold">{t('statusTitle')}</h3>
+        <ApprovalStepper steps={steps} />
+      </Card>
+
+      {/* 처리 */}
+      <Card className="flex flex-col gap-2 p-5">
+        <div className="flex gap-2">
+          <button
+            type="button"
+            className="btn btn-soft btn-error flex-1"
+            disabled={disabledProceed}
+            onClick={() => setShowReject(true)}
+          >
+            {t('actions.reject')}
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary flex-[2]"
+            disabled={disabledProceed}
+            onClick={() => setShowApprove(true)}
+          >
+            {t('actions.approve')}
+          </button>
         </div>
-      </div>
+        <button
+          type="button"
+          className="btn btn-ghost btn-sm"
+          disabled={disabledCancel}
+          onClick={() => setShowCancel(true)}
+        >
+          {t('actions.cancel')}
+        </button>
+      </Card>
+
       <ApproveModal show={showApprove} id={id} onClose={() => setShowApprove(false)} />
       <RejectModal show={showReject} id={id} onClose={() => setShowReject(false)} />
-      <CancelConfirmModal
-        show={showCancel}
-        documentId={approvalHistory?.document.id || -1}
-        onClose={() => setShowCancel(false)}
-      />
-    </>
+      <CancelConfirmModal show={showCancel} documentId={doc?.id || -1} onClose={() => setShowCancel(false)} />
+    </div>
   );
 }
