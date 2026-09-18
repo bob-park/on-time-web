@@ -59,7 +59,7 @@ export function useProceedingApprovalCount() {
     enabled: !!sub,
   });
 
-  return { count: data?.page.totalElements ?? 0 };
+  return { count: data?.total ?? 0 };
 }
 
 export function useGetUsers(params: SearchPageParams) {

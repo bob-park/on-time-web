@@ -97,11 +97,12 @@ Specific routes take precedence over `[...path]` (Next.js prefers static and
 `src/shared/api/index.ts` — `ky` instance, no retry. `afterResponse`: 401 →
 `location.href = '/login'`, 403 → `/forbidden`. All `domain/*/apis` URLs renamed
 `/api/<x>` → `/api/v1/<x>` (mechanical). Response types unchanged, except paged
-responses: the gateway returns Spring `PagedModel` (`{ content, page: { size, number,
-totalElements, totalPages } }`), not the BFF's `{ content, pageable, total }`. The
-frontend adopts the template's `PagedModel<T>` (`shared/api/common.dto.ts`); the four
-paged consumers (`useGetUsers`, `useDocuments`, `useApprovalHistories`,
-`useVacationDocuments`) switch to `page.totalElements`.
+responses from the **auth-user API** (`/users`): it returns Spring `PagedModel`
+(`{ content, page: { size, number, totalElements, totalPages } }`), adopted as the
+template's `PagedModel<T>` and used by `useGetUsers`. The on-time / e-work APIs
+(`documents`, `documents/vacations`, `documents/approval`, `users/employments`) keep the
+existing `Page<T>` shape (`{ content, pageable, total }`); both live in
+`shared/api/common.dto.ts`.
 
 Current-user hooks in `src/domain/users/queries/users.tsx`:
 

@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server';
 
 import { ApprovalHistory } from '@/domain/approval/apis/approval.dto';
 import { User } from '@/domain/users/apis/users.dto';
-import { PagedModel } from '@/shared/api/common.dto';
+import { Page } from '@/shared/api/common.dto';
 import { handle, serverApi } from '@/shared/api/server';
 
 export async function GET(req: NextRequest) {
@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
     const searchParams = new URLSearchParams(req.nextUrl.searchParams);
     searchParams.set('userUniqueId', sub);
 
-    const page = await serverApi.get('api/v1/documents/approval', { searchParams }).json<PagedModel<ApprovalHistory>>();
+    const page = await serverApi.get('api/v1/documents/approval', { searchParams }).json<Page<ApprovalHistory>>();
 
     const content = await Promise.all(
       page.content.map(async (item) => {

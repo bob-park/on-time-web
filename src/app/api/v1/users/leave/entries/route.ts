@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server';
 
 import { User, UserEmployment, UserLeaveEntry } from '@/domain/users/apis/users.dto';
-import { PagedModel } from '@/shared/api/common.dto';
+import { Page } from '@/shared/api/common.dto';
 import { handle, serverApi } from '@/shared/api/server';
 
 import { HTTPError } from 'ky';
@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
 
     const employments = await serverApi
       .get('api/v1/users/employments', { searchParams: { status: 'ACTIVE', page: 0, size: 100 } })
-      .json<PagedModel<UserEmployment>>();
+      .json<Page<UserEmployment>>();
 
     const users = await Promise.all(
       employments.content.map(async (employment) => {

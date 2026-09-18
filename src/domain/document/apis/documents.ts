@@ -1,11 +1,11 @@
 import { ApprovalHistory } from '@/domain/approval/apis/approval.dto';
 import { Document, RejectDocumentRequest, SearchDocumentRequest } from '@/domain/document/apis/document.dto';
 import api from '@/shared/api';
-import { PagedModel } from '@/shared/api/common.dto';
+import { Page } from '@/shared/api/common.dto';
 import delay from '@/utils/delay';
 
 export async function searchDocument(req: SearchDocumentRequest) {
-  const result = await api.get(`/api/v1/documents`, { searchParams: req }).json<PagedModel<Document>>();
+  const result = await api.get(`/api/v1/documents`, { searchParams: req }).json<Page<Document>>();
 
   return result;
 }

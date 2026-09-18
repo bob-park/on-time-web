@@ -4,7 +4,7 @@ import {
   VacationDocument,
 } from '@/domain/document/apis/document.dto';
 import api from '@/shared/api';
-import { PagedModel } from '@/shared/api/common.dto';
+import { Page } from '@/shared/api/common.dto';
 import delay from '@/utils/delay';
 
 export async function createVacation(req: CreateVacationDocumentRequest) {
@@ -26,5 +26,5 @@ export async function getVacationDocument(id: number) {
 }
 
 export async function searchVacationDocuments(req: SearchVacationDocumentRequest) {
-  return api.get('/api/v1/documents/vacations', { searchParams: req }).json<PagedModel<VacationDocument>>();
+  return api.get('/api/v1/documents/vacations', { searchParams: req }).json<Page<VacationDocument>>();
 }

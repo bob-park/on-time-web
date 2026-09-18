@@ -19,6 +19,21 @@ interface PagedModel<T> {
 }
 
 /**
+ * Page Response (on-time / e-work API — Spring Page 직렬화 형식)
+ * auth-user API 만 PagedModel 을 반환한다.
+ */
+interface Pageable {
+  pageNumber: number;
+  pageSize: number;
+}
+
+interface Page<T> {
+  content: T[];
+  pageable: Pageable;
+  total: number;
+}
+
+/**
  * Page Request
  */
 type PageRequest = {
@@ -40,4 +55,4 @@ type ProblemDetail = {
   exception: string;
 };
 
-export type { SearchPageParams, PageRequest, PageMetadata, PagedModel, ProblemDetail };
+export type { SearchPageParams, PageRequest, PageMetadata, PagedModel, Pageable, Page, ProblemDetail };

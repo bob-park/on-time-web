@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server';
 
 import { VacationDocument } from '@/domain/document/apis/document.dto';
-import { PagedModel } from '@/shared/api/common.dto';
+import { Page } from '@/shared/api/common.dto';
 import { currentSub, forward, handle, serverApi, unauthorized } from '@/shared/api/server';
 
 export async function GET(req: NextRequest) {
@@ -9,9 +9,7 @@ export async function GET(req: NextRequest) {
     const searchParams = new URLSearchParams(req.nextUrl.searchParams);
     searchParams.set('userUniqueId', sub);
 
-    const page = await serverApi
-      .get('api/v1/documents/vacations', { searchParams })
-      .json<PagedModel<VacationDocument>>();
+    const page = await serverApi.get('api/v1/documents/vacations', { searchParams }).json<Page<VacationDocument>>();
 
     const content = await Promise.all(
       page.content.map((item) => serverApi.get(`api/v1/documents/vacations/${item.id}`).json<VacationDocument>()),

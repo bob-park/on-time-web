@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server';
 
 import { VacationDocument } from '@/domain/document/apis/document.dto';
 import { UsedVacation, UserEmployment } from '@/domain/users/apis/users.dto';
-import { PagedModel } from '@/shared/api/common.dto';
+import { Page } from '@/shared/api/common.dto';
 import { handle, serverApi } from '@/shared/api/server';
 
 export async function GET(req: NextRequest) {
@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
 
     const employments = await serverApi
       .get('api/v1/users/employments', { searchParams: { page: 0, size: 100 } })
-      .json<PagedModel<UserEmployment>>();
+      .json<Page<UserEmployment>>();
 
     return Promise.all(
       employments.content.map(async (employment) => {
@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
               size: 100,
             },
           })
-          .json<PagedModel<VacationDocument>>();
+          .json<Page<VacationDocument>>();
 
         const byMonth = new Map<number, UsedVacation>();
 
