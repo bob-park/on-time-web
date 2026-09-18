@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
-import { useApproveDocument } from '@/domain/document/query/documents';
+import { useApproveDocument } from '@/domain/document/queries/documents';
 import useToast from '@/shared/hooks/useToast';
 
 import { useTranslations } from 'next-intl';

@@ -1,6 +1,0 @@
-import api from '@/shared/api';
-import { PagedModel } from '@/shared/api/common.dto';
-
-export async function searchApprovalHistories(req: SearchDocumentApprovalHistoryRequest) {
-  return api.get('/api/v1/documents/approval', { searchParams: req }).json<PagedModel<ApprovalHistory>>();
-}

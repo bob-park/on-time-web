@@ -6,6 +6,8 @@ import { HiOutlineDocumentText } from 'react-icons/hi';
 
 import { useRouter } from 'next/navigation';
 
+import { ApprovalHistory } from '@/domain/approval/apis/approval.dto';
+import { DocumentStatus } from '@/domain/document/apis/document.dto';
 import DocumentStatusBadge from '@/domain/document/components/DocumentStatusBadge';
 import DocumentsTypeBadge from '@/domain/document/components/DocumentTypeBadge';
 

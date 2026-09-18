@@ -2,6 +2,8 @@
 
 import { Fragment } from 'react';
 
+import { DocumentStatus } from '@/domain/document/apis/document.dto';
+
 import cx from 'classnames';
 import { useTranslations } from 'next-intl';
 

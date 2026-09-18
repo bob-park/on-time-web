@@ -4,8 +4,8 @@ import PageHeader from '@/shared/components/PageHeader';
 
 import { getTranslations } from 'next-intl/server';
 
-import WeeklySummaryCards from './_componets/WeeklySummaryCards';
-import WorkingRecordContents from './_componets/WorkingRecordContents';
+import WeeklySummaryCards from './_components/WeeklySummaryCards';
+import WorkingRecordContents from './_components/WorkingRecordContents';
 
 export default async function DashboardPage() {
   const t = await getTranslations('dashboard');

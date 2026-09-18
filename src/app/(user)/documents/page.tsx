@@ -1,3 +1,4 @@
+import { DocumentStatus, DocumentsType, SearchDocumentRequest } from '@/domain/document/apis/document.dto';
 import PageHeader from '@/shared/components/PageHeader';
 
 import { getTranslations } from 'next-intl/server';

@@ -1,4 +1,8 @@
 import { getApprovalDetail } from '@/app/api/v1/documents/_lib/enrichDocument';
+import {
+  OverTimeWorkDocument as OverTimeWorkDocumentDto,
+  VacationDocument as VacationDocumentDto,
+} from '@/domain/document/apis/document.dto';
 import OverTimeWorkDocument from '@/domain/document/components/OverTimeWorkDocument';
 import VacationDocument from '@/domain/document/components/VacationDocument';
 import PageHeader from '@/shared/components/PageHeader';
@@ -32,12 +36,12 @@ export default async function ApprovalDetailPage({ params }: { params: Promise<{
           <div className="bg-base-300 flex w-full items-center justify-center rounded-lg p-6">
             <div className="aspect-[1/1.414] w-[1000px] shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
               {res.document.type === 'VACATION' && (
-                <VacationDocument id="approval_document_vacation_id" document={res.document as VacationDocument} />
+                <VacationDocument id="approval_document_vacation_id" document={res.document as VacationDocumentDto} />
               )}
               {res.document.type === 'OVERTIME_WORK' && (
                 <OverTimeWorkDocument
                   id="approval_overtime_work_document_id"
-                  document={res.document as OverTimeWorkDocument}
+                  document={res.document as OverTimeWorkDocumentDto}
                 />
               )}
             </div>

@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import { useGenerateCurrentCheck, useGetCurrentCheck } from '@/domain/attendance/query/attendanceCheck';
+import { AttendanceType } from '@/domain/attendance/apis/attendance.dto';
+import { useGenerateCurrentCheck, useGetCurrentCheck } from '@/domain/attendance/queries/attendanceCheck';
 import { getDaysOfWeek } from '@/utils/parse';
 
 import cx from 'classnames';

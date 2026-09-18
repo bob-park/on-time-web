@@ -6,7 +6,7 @@ import { GiCancel } from 'react-icons/gi';
 import { IoCloudUploadOutline } from 'react-icons/io5';
 import { TbArrowsExchange } from 'react-icons/tb';
 
-import { useUpdateUserAvatar } from '@/domain/user/query/user';
+import { useUpdateUserAvatar } from '@/domain/users/queries/user';
 import useToast from '@/shared/hooks/useToast';
 
 import { useTranslations } from 'next-intl';

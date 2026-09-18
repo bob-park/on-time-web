@@ -11,7 +11,7 @@ import PressApprovalModal from '@/app/(user)/dayoff/[id]/_components/PressApprov
 import RequestConfirmModal from '@/app/(user)/dayoff/[id]/_components/RequestConfirmModal';
 import ApprovalLines from '@/domain/approval/components/ApprovalLines';
 import OverTimeWorkDocument from '@/domain/document/components/OverTimeWorkDocument';
-import { useOverTimeWorkDocument } from '@/domain/document/query/overtime';
+import { useOverTimeWorkDocument } from '@/domain/document/queries/overtime';
 import delay from '@/utils/delay';
 
 import cx from 'classnames';

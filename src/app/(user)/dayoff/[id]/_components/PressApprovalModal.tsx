@@ -6,8 +6,8 @@ import { FaCheck, FaTimes } from 'react-icons/fa';
 
 import Image from 'next/image';
 
-import { useUser } from '@/domain/user/query/user';
-import { useUserNotification } from '@/domain/user/query/userNotification';
+import { useUser } from '@/domain/users/queries/user';
+import { useUserNotification } from '@/domain/users/queries/userNotification';
 import useToast from '@/shared/hooks/useToast';
 
 import { useTranslations } from 'next-intl';

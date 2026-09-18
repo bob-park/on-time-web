@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 
-import UserAvatar from '@/domain/user/components/UserAvatar';
-import { useUser } from '@/domain/user/query/user';
+import UserAvatar from '@/domain/users/components/UserAvatar';
+import { useUser } from '@/domain/users/queries/user';
 
 import { useTranslations } from 'next-intl';
 

@@ -1,3 +1,5 @@
+import { DocumentStatus } from '@/domain/document/apis/document.dto';
+
 import cx from 'classnames';
 
 export default function DocumentStatusBadge({ status }: { status: DocumentStatus }) {

@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
-import { useGetUsers } from '@/domain/user/query/user';
+import { User } from '@/domain/users/apis/users.dto';
+import { useGetUsers } from '@/domain/users/queries/user';
 
 import cx from 'classnames';
 import { useTranslations } from 'next-intl';

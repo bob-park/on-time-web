@@ -6,7 +6,8 @@ import { HiOutlineDocumentText } from 'react-icons/hi';
 
 import { useRouter } from 'next/navigation';
 
-import { useCreateOverTimeWorkDocument } from '@/domain/document/query/overtime';
+import { useCreateOverTimeWorkDocument } from '@/domain/document/queries/overtime';
+import { User } from '@/domain/users/apis/users.dto';
 import useToast from '@/shared/hooks/useToast';
 import { getDaysOfWeek } from '@/utils/parse';
 

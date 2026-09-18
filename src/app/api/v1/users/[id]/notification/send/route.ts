@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 
+import { User } from '@/domain/users/apis/users.dto';
 import { handle, serverApi } from '@/shared/api/server';
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {

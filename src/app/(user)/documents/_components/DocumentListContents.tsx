@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 
-import { useDocuments } from '@/domain/document/query/documents';
+import { DocumentStatus, DocumentsType, SearchDocumentRequest } from '@/domain/document/apis/document.dto';
+import { useDocuments } from '@/domain/document/queries/documents';
 import Pagination from '@/shared/components/Pagination';
 import PillFilter from '@/shared/components/PillFilter';
 

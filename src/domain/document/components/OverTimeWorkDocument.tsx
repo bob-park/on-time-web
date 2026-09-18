@@ -4,6 +4,8 @@ import { useState } from 'react';
 
 import { RiCheckboxBlankCircleLine } from 'react-icons/ri';
 
+import { ApprovalLine } from '@/domain/approval/apis/approval.dto';
+import { OverTimeWorkDocument as OverTimeWorkDocumentDto, OverTimeWorkTime } from '@/domain/document/apis/document.dto';
 import DocumentApprovalLine from '@/domain/document/components/DocumentApprovalLine';
 
 import cx from 'classnames';
@@ -13,7 +15,7 @@ const DEFAULT_WORK_TIME_ITEM_LENGTH = 12;
 
 interface OverTimeWorkDocumentProps {
   id: string;
-  document: OverTimeWorkDocument;
+  document: OverTimeWorkDocumentDto;
 }
 
 export default function OverTimeWorkDocument({ id, document }: OverTimeWorkDocumentProps) {

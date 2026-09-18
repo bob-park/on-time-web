@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 
-import { useUpdateUserPassword } from '@/domain/user/query/user';
+import { useUpdateUserPassword } from '@/domain/users/queries/user';
 import useToast from '@/shared/hooks/useToast';
 
 import cx from 'classnames';

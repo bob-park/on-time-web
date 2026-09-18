@@ -1,5 +1,6 @@
 import { forbidden } from 'next/navigation';
 
+import { RoleType } from '@/domain/users/apis/users.dto';
 import { getUserinfo } from '@/shared/auth/serverAction';
 import { hasRole } from '@/utils/AuthUtils';
 

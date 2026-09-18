@@ -4,8 +4,9 @@ import { useEffect } from 'react';
 
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
-import { useGetResultAttendanceRecord, useRecordAttendance } from '@/domain/attendance/query/attendanceRecord';
-import { useUser } from '@/domain/user/query/user';
+import { AttendanceRecord } from '@/domain/attendance/apis/attendance.dto';
+import { useGetResultAttendanceRecord, useRecordAttendance } from '@/domain/attendance/queries/attendanceRecord';
+import { useUser } from '@/domain/users/queries/user';
 import { getDaysOfWeek } from '@/utils/parse';
 
 import cx from 'classnames';

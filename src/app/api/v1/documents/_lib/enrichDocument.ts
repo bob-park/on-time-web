@@ -1,3 +1,6 @@
+import { ApprovalHistory, ApprovalLine } from '@/domain/approval/apis/approval.dto';
+import { Document, DocumentsType } from '@/domain/document/apis/document.dto';
+import { User } from '@/domain/users/apis/users.dto';
 import { serverApi } from '@/shared/api/server';
 
 function flatten(line: ApprovalLine): ApprovalLine[] {

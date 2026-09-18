@@ -7,8 +7,9 @@ import { FaCheck } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
 
 import SelectUserCompLeaveEntriesModal from '@/app/(user)/dayoff/requests/_components/SelectUserCompLeaveEntriesModal';
-import { useCreateVacation } from '@/domain/document/query/vacation';
-import { useUserLeaveEntry } from '@/domain/user/query/user';
+import { UsedCompLeaveEntryRequest, VacationSubType, VacationType } from '@/domain/document/apis/document.dto';
+import { useCreateVacation } from '@/domain/document/queries/vacation';
+import { useUserLeaveEntry } from '@/domain/users/queries/user';
 import useToast from '@/shared/hooks/useToast';
 
 import cx from 'classnames';

@@ -4,9 +4,10 @@ import { useState } from 'react';
 
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
+import { VacationSubType, VacationType } from '@/domain/document/apis/document.dto';
 import DocumentStatusBadge from '@/domain/document/components/DocumentStatusBadge';
-import { useVacationDocuments } from '@/domain/document/query/vacation';
-import { useUserLeaveEntry } from '@/domain/user/query/user';
+import { useVacationDocuments } from '@/domain/document/queries/vacation';
+import { useUserLeaveEntry } from '@/domain/users/queries/user';
 import StatCard from '@/shared/components/StatCard';
 
 import cx from 'classnames';

@@ -4,9 +4,11 @@ import { memo, useContext, useMemo } from 'react';
 
 import { useQueries } from '@tanstack/react-query';
 
-import { getAllRecords } from '@/domain/attendance/api/attendanceRecord';
+import { AttendanceRecord } from '@/domain/attendance/apis/attendance.dto';
+import { getAllRecords } from '@/domain/attendance/apis/attendanceRecord';
 import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
-import { useGetUsers } from '@/domain/user/query/user';
+import { User } from '@/domain/users/apis/users.dto';
+import { useGetUsers } from '@/domain/users/queries/user';
 import { getDaysOfWeek } from '@/utils/parse';
 
 import cx from 'classnames';

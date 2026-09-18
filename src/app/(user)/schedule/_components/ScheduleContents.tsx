@@ -6,9 +6,10 @@ import { FaCheckCircle } from 'react-icons/fa';
 import { GiNightSleep } from 'react-icons/gi';
 import { IoIosTime, IoIosWarning } from 'react-icons/io';
 
+import { AttendanceRecord, AttendanceStatus, DayOffType } from '@/domain/attendance/apis/attendance.dto';
 import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
-import { useGetAttendanceRecord } from '@/domain/attendance/query/attendanceRecord';
-import { useUser } from '@/domain/user/query/user';
+import { useGetAttendanceRecord } from '@/domain/attendance/queries/attendanceRecord';
+import { useUser } from '@/domain/users/queries/user';
 import { getDaysOfWeek } from '@/utils/parse';
 
 import cx from 'classnames';

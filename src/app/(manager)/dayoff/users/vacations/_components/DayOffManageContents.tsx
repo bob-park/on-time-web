@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
-import { useUserLeaveEntries, useUsersUsedVacations } from '@/domain/user/query/user';
+import { useUserLeaveEntries, useUsersUsedVacations } from '@/domain/users/queries/user';
 
 import cx from 'classnames';
 import dayjs from 'dayjs';

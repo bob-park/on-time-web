@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import Image from 'next/image';
 
-import { useUser } from '@/domain/user/query/user';
+import { useUser } from '@/domain/users/queries/user';
 
 import { useTranslations } from 'next-intl';
 

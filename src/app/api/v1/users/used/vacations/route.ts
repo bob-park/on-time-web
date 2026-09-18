@@ -1,5 +1,7 @@
 import { NextRequest } from 'next/server';
 
+import { VacationDocument } from '@/domain/document/apis/document.dto';
+import { UsedVacation, UserEmployment } from '@/domain/users/apis/users.dto';
 import { PagedModel } from '@/shared/api/common.dto';
 import { handle, serverApi } from '@/shared/api/server';
 

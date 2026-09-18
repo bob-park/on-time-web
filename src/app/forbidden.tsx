@@ -2,7 +2,7 @@ import { TbArrowBack } from 'react-icons/tb';
 
 import Link from 'next/link';
 
-import CardPageTitle from './_components/CardPageTitle';
+import CardPageTitle from '@/shared/components/CardPageTitle';
 
 export default function Forbidden() {
   return (

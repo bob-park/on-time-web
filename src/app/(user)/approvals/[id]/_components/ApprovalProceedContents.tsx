@@ -6,7 +6,7 @@ import { FaCheck, FaTimes } from 'react-icons/fa';
 import { GiCancel } from 'react-icons/gi';
 
 import ApprovalLines from '@/domain/approval/components/ApprovalLines';
-import { useApprovalDocument } from '@/domain/document/query/documents';
+import { useApprovalDocument } from '@/domain/document/queries/documents';
 
 import { useTranslations } from 'next-intl';
 

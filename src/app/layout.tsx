@@ -2,15 +2,17 @@ import type { Metadata } from 'next';
 
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
 
-import NavMenu from '@/app/_components/NavMenu';
-import NowWorkingBar from '@/app/_components/NowWorkingBar';
+import NavMenu from '@/app/_layouts/NavMenu';
+import NowWorkingBar from '@/app/_layouts/NowWorkingBar';
+import RQProvider from '@/shared/components/queries/RQProvider';
 import ToastProvider from '@/shared/components/toast/ToastProvider';
+import { LOCALE_META } from '@/shared/i18n/config';
+import { getUserLocale } from '@/shared/i18n/locale';
 
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 
-import Header from './_components/Header';
-import RQProvider from './_components/RQProvider';
+import Header from './_layouts/Header';
 import './globals.css';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -31,12 +33,14 @@ export default async function RootLayout({
 
   const dehydratedState = dehydrate(queryClient);
 
+  const locale = await getUserLocale();
   const messages = await getMessages();
+  const htmlLang = LOCALE_META[locale].htmlLang;
 
   return (
-    <html lang="ko" data-theme="ontime-dark">
+    <html lang={htmlLang} data-theme="ontime-dark">
       <body className="relative">
-        <NextIntlClientProvider locale="ko" messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
           <RQProvider>
             <HydrationBoundary state={dehydratedState}>
               <ToastProvider limit={5} timeout={5}>

@@ -1,3 +1,4 @@
+import { AttendanceState } from '@/domain/attendance/store/attendance.state';
 import createAttendanceSlice from '@/domain/attendance/store/slice';
 
 import { create } from 'zustand';

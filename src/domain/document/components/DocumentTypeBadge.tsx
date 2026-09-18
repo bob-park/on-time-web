@@ -1,3 +1,5 @@
+import { DocumentsType } from '@/domain/document/apis/document.dto';
+
 import cx from 'classnames';
 
 export default function DocumentsTypeBadge({ type }: { type: DocumentsType }) {

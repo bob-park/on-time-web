@@ -7,7 +7,8 @@ import { RiCalendarScheduleLine } from 'react-icons/ri';
 
 import { useRouter } from 'next/navigation';
 
-import { useAddAttendanceSchedule } from '@/domain/attendance/query/attendanceRecord';
+import { DayOffType } from '@/domain/attendance/apis/attendance.dto';
+import { useAddAttendanceSchedule } from '@/domain/attendance/queries/attendanceRecord';
 import { useStore } from '@/shared/store/rootStore';
 
 import cx from 'classnames';

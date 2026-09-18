@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 
+import { VacationDocument } from '@/domain/document/apis/document.dto';
 import { PagedModel } from '@/shared/api/common.dto';
 import { currentSub, forward, handle, serverApi, unauthorized } from '@/shared/api/server';
 

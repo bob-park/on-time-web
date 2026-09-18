@@ -1,5 +1,7 @@
 'use client';
 
+import { UsedVacation, User } from '@/domain/users/apis/users.dto';
+
 import cx from 'classnames';
 import dayjs from 'dayjs';
 

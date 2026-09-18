@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { PiUploadFill } from 'react-icons/pi';
 
-import { useRequestDocument } from '@/domain/document/query/documents';
+import { useRequestDocument } from '@/domain/document/queries/documents';
 import useToast from '@/shared/hooks/useToast';
 
 import { useTranslations } from 'next-intl';

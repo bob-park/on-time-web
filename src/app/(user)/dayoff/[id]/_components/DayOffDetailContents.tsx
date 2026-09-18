@@ -9,7 +9,7 @@ import { PiUploadFill } from 'react-icons/pi';
 import RequestConfirmModal from '@/app/(user)/dayoff/[id]/_components/RequestConfirmModal';
 import ApprovalLines from '@/domain/approval/components/ApprovalLines';
 import VacationDocument from '@/domain/document/components/VacationDocument';
-import { useVacationDocument } from '@/domain/document/query/vacation';
+import { useVacationDocument } from '@/domain/document/queries/vacation';
 import delay from '@/utils/delay';
 
 import cx from 'classnames';

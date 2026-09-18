@@ -1,6 +1,6 @@
 'use client';
 
-import { useUserLeaveEntry } from '@/domain/user/query/user';
+import { useUserLeaveEntry } from '@/domain/users/queries/user';
 import StatCard from '@/shared/components/StatCard';
 
 import dayjs from 'dayjs';

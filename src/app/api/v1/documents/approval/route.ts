@@ -1,5 +1,7 @@
 import { NextRequest } from 'next/server';
 
+import { ApprovalHistory } from '@/domain/approval/apis/approval.dto';
+import { User } from '@/domain/users/apis/users.dto';
 import { PagedModel } from '@/shared/api/common.dto';
 import { handle, serverApi } from '@/shared/api/server';
 

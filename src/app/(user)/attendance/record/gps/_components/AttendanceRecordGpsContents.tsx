@@ -5,11 +5,12 @@ import { useEffect, useState } from 'react';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 import { GiNightSleep } from 'react-icons/gi';
 
+import { AttendanceGps, AttendanceRecord, AttendanceType } from '@/domain/attendance/apis/attendance.dto';
 import useGps from '@/domain/attendance/hooks/useGps';
-import { useGenerateCurrentCheck, useGetCurrentCheck } from '@/domain/attendance/query/attendanceCheck';
-import { useGetAttendanceGps } from '@/domain/attendance/query/attendanceGps';
-import { useGetAttendanceRecord, useRecordAttendance } from '@/domain/attendance/query/attendanceRecord';
-import { useUser } from '@/domain/user/query/user';
+import { useGenerateCurrentCheck, useGetCurrentCheck } from '@/domain/attendance/queries/attendanceCheck';
+import { useGetAttendanceGps } from '@/domain/attendance/queries/attendanceGps';
+import { useGetAttendanceRecord, useRecordAttendance } from '@/domain/attendance/queries/attendanceRecord';
+import { useUser } from '@/domain/users/queries/user';
 import PillFilter from '@/shared/components/PillFilter';
 import { isSameMarginOfError } from '@/utils/dataUtils';
 import { getDaysOfWeek, round } from '@/utils/parse';

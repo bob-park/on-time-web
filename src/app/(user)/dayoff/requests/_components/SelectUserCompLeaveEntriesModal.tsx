@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
-import { useUserCompLeaveEntries } from '@/domain/user/query/userCompLeaveEntry';
+import { UsedCompLeaveEntryRequest } from '@/domain/document/apis/document.dto';
+import { useUserCompLeaveEntries } from '@/domain/users/queries/userCompLeaveEntry';
 
 import dayjs from 'dayjs';
 import { useTranslations } from 'next-intl';
