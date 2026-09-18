@@ -33,9 +33,9 @@ A4 document components.
 
 ### 3.1 daisyUI themes (`src/app/globals.css`)
 
-Two `@plugin 'daisyui/theme'` blocks replace `ontime-dark`:
+Two `@plugin 'daisyui/theme'` blocks replace `ontime-dark`. They are named `light` and `dark` (custom themes overriding daisyUI's built-ins of the same name) so `data-theme` takes the cookie value directly:
 
-`ontime-light` (`default: true`, `color-scheme: light`)
+`light` (`default: true`, `color-scheme: light`)
 
 | daisyUI var | value | Kraken role |
 |---|---|---|
@@ -58,7 +58,7 @@ Two `@plugin 'daisyui/theme'` blocks replace `ontime-dark`:
 | `--radius-selector` | `0.5rem` | badges, chips |
 | `--border` | `1px` | |
 
-`ontime-dark` (`prefersdark: true`, `color-scheme: dark`) — derived, since the doc defines no dark palette:
+`dark` (`color-scheme: dark`, no `prefersdark`) — derived, since the doc defines no dark palette:
 `base-100 #17181d`, `base-200 #0f1014`, `base-300 #22232a`, `base-content #f3f3f6`,
 `primary #8b5cf6`, `secondary #7c4dff`, `neutral #a7a9b8`, `success #22c55e`,
 `warning #f59e0b`, `error #ef4444`; same radii.
