@@ -4,66 +4,77 @@ import { CgProfile } from 'react-icons/cg';
 import { IoLogOutOutline, IoNotificationsOutline } from 'react-icons/io5';
 
 import Link from 'next/link';
+import { useSelectedLayoutSegments } from 'next/navigation';
 
 import NotificationDialog from '@/app/_layouts/NotificationDialog';
 import { useUser } from '@/domain/users/queries/user';
+import ThemeSwitcher from '@/shared/components/theme/ThemeSwitcher';
+import { Theme } from '@/shared/providers/theme/ThemeProvider';
 
 import { useTranslations } from 'next-intl';
 import { overlay } from 'overlay-kit';
 
-export default function Header() {
+import { findNavItem } from './nav';
+
+interface HeaderProps {
+  theme: Theme;
+}
+
+export default function Header({ theme }: HeaderProps) {
+  // segments
+  const segments = useSelectedLayoutSegments();
+
   // i18n
   const t = useTranslations('nav');
 
   // query
-  const { user: currentUser } = useUser();
+  const { user } = useUser();
 
-  const initial = currentUser?.username?.substring(0, 1)?.toUpperCase() || '';
+  const { group, item } = findNavItem(segments);
+  const initial = user?.username?.substring(0, 1)?.toUpperCase() || '';
 
   return (
-    <header className="flex w-full flex-none flex-row items-center justify-end gap-3 bg-transparent px-6 py-3.5">
+    <header className="flex h-14 w-full flex-none items-center gap-3 px-7">
+      {/* breadcrumb */}
+      <div className="text-3 flex items-center gap-1.5 text-[13px]">
+        {group?.key && (
+          <>
+            <span>{t(group.key)}</span>
+            <span>›</span>
+          </>
+        )}
+        {item && <span className="text-base-content font-semibold">{t(item.key)}</span>}
+      </div>
+
+      <span className="flex-1" />
+
       {/* notification */}
       <button
-        className="bg-base-300 text-base-content/70 hover:text-base-content flex size-9 items-center justify-center rounded-full transition-transform duration-100 hover:scale-105"
+        type="button"
         aria-label="알림"
+        className="bg-base-100 border-base-300 text-2 hover:text-base-content relative flex size-9 items-center justify-center rounded-full border transition-colors"
         onClick={() => {
           overlay.open(({ isOpen, close }) => <NotificationDialog open={isOpen} onClose={close} />);
         }}
       >
-        <IoNotificationsOutline className="size-5" />
+        <IoNotificationsOutline className="size-[18px]" />
       </button>
 
-      {/* user info + avatar */}
+      <ThemeSwitcher current={theme} />
+
+      {/* avatar dropdown */}
       <div className="dropdown dropdown-end">
         <div
           tabIndex={0}
           role="button"
-          className="bg-base-300 flex cursor-pointer flex-row items-center gap-2.5 rounded-full py-1 pr-3 pl-1"
+          className="from-primary to-secondary text-primary-content flex size-9 cursor-pointer items-center justify-center rounded-full bg-gradient-to-br text-[13px] font-bold select-none"
         >
-          {/* avatar */}
-          <div className="from-info to-primary text-primary-content flex size-[30px] flex-none items-center justify-center rounded-full bg-gradient-to-br text-xs font-bold select-none">
-            {initial}
-          </div>
-
-          {/* name / team */}
-          <div className="hidden text-left leading-tight select-none md:block">
-            <div className="text-[13px] font-bold">
-              {currentUser?.username}
-              {currentUser?.groups?.[0]?.isLeader && (
-                <span className="text-base-content/60 ml-1 font-normal">(팀장)</span>
-              )}
-            </div>
-            <div className="text-base-content/60 text-[11px]">
-              {[
-                currentUser?.groups?.[0]?.group.name,
-                currentUser?.position?.name || currentUser?.groups?.[0].description,
-              ]
-                .filter(Boolean)
-                .join(' · ')}
-            </div>
-          </div>
+          {initial}
         </div>
-        <ul tabIndex={0} className="menu dropdown-content rounded-box bg-base-300 z-[1] mt-2 w-40 p-2 shadow-lg">
+        <ul
+          tabIndex={0}
+          className="menu dropdown-content bg-base-100 border-base-300 rounded-box shadow-whisper z-[1] mt-2 w-40 border p-2"
+        >
           <li>
             <Link href="/profile">
               <CgProfile className="size-4" />

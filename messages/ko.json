@@ -21,19 +21,24 @@
     }
   },
   "nav": {
-    "dashboard": "대시보드",
+    "home": "홈",
+    "groupAttendance": "근태",
     "schedule": "근무 일정",
+    "attendanceRecord": "출퇴근 기록",
     "groupApproval": "전자 결재",
-    "dayoffRequest": "휴가 신청",
+    "requestGroup": "신청하기",
+    "dayoffRequest": "휴가",
+    "overtimeRequest": "휴일근무 보고",
     "dayoffUsed": "휴가 사용 내역",
-    "overtimeRequest": "휴일근무보고서 신청",
-    "documents": "결재 신청 목록",
-    "approvals": "결재 처리 대기 목록",
-    "groupManager": "관리자",
-    "managerVacations": "임직원 휴가 사용 현황",
+    "documents": "내 결재 문서",
+    "approvals": "처리 대기",
+    "groupManage": "관리",
     "managerAttendance": "임직원 근무 현황",
+    "managerVacations": "임직원 휴가 현황",
+    "qr": "출근 QR",
+    "profile": "내 정보",
     "logout": "로그아웃",
-    "profile": "프로필"
+    "leader": "팀장"
   },
   "workingBar": {
     "working": "근무 중 · {time} 출근",
@@ -41,7 +46,9 @@
     "beforeWork": "출근 전",
     "done": "오늘 근무 완료 · {duration}",
     "clockOut": "퇴근하기",
-    "clockIn": "출근하기"
+    "clockIn": "출근하기",
+    "elapsed": "경과",
+    "todayDone": "오늘 근무 완료"
   },
   "dashboard": {
     "eyebrow": "Dashboard",
@@ -502,5 +509,9 @@
       "caption": "스캔하면 {type} 처리 페이지로 이동합니다",
       "qrAlt": "{type} QR 코드"
     }
+  },
+  "theme": {
+    "toLight": "라이트 테마로 전환",
+    "toDark": "다크 테마로 전환"
   }
 }

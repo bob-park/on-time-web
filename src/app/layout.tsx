@@ -2,8 +2,6 @@ import type { Metadata } from 'next';
 
 import { cookies } from 'next/headers';
 
-import NavMenu from '@/app/_layouts/NavMenu';
-import NowWorkingBar from '@/app/_layouts/NowWorkingBar';
 import RQProvider from '@/shared/components/queries/RQProvider';
 import ToastProvider from '@/shared/components/toast/ToastProvider';
 import { LOCALE_META } from '@/shared/i18n/config';
@@ -14,6 +12,8 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 
 import Header from './_layouts/Header';
+import MobileDock from './_layouts/MobileDock';
+import Sidebar from './_layouts/Sidebar';
 import './globals.css';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -44,17 +44,14 @@ export default async function RootLayout({
           <RQProvider>
             <ToastProvider limit={5} timeout={5}>
               <div className="bg-base-200 flex h-screen overflow-hidden">
-                {/* sidebar (desktop) + mobile dock rendered inside NavMenu */}
-                <NavMenu />
-
-                {/* main area — floating surface card */}
+                <Sidebar />
                 <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
-                  <Header />
-                  <main className="flex-1 overflow-y-auto px-6 pb-[120px]">{children}</main>
+                  <Header theme={theme} />
+                  <main className="flex-1 overflow-y-auto px-4 pb-24 md:px-7 md:pb-10">{children}</main>
                 </div>
               </div>
 
-              <NowWorkingBar />
+              <MobileDock />
             </ToastProvider>
           </RQProvider>
         </NextIntlClientProvider>

@@ -155,6 +155,9 @@ body {
   background-color: var(--primary-subtle);
   color: var(--color-primary);
   border-color: transparent;
+  &:hover {
+    background-color: color-mix(in oklab, var(--primary-subtle) 80%, var(--color-primary));
+  }
 }
 @utility eyebrow {
   font-size: 11px;
@@ -162,11 +165,6 @@ body {
   letter-spacing: 1.6px;
   text-transform: uppercase;
   color: var(--text-3);
-}
-
-/* @utility 이름에는 pseudo-class 를 쓸 수 없어 일반 규칙으로 선언한다 */
-.btn-subtle:hover {
-  background-color: color-mix(in oklab, var(--primary-subtle) 80%, var(--color-primary));
 }
 
 /* Entrance animations */
