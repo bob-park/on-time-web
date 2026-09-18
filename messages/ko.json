@@ -40,14 +40,6 @@
     "logout": "로그아웃",
     "leader": "팀장"
   },
-  "workingBar": {
-    "working": "근무 중 · {time} 출근",
-    "leaveTarget": "목표 퇴근 {time}",
-    "beforeWork": "출근 전",
-    "clockOut": "퇴근하기",
-    "clockIn": "출근하기",
-    "todayDone": "오늘 근무 완료"
-  },
   "dashboard": {
     "greeting": "안녕하세요, {name}님 👋",
     "dateLine": "{date}",

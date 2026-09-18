@@ -10,7 +10,6 @@ import { useProceedingApprovalCount, useUser } from '@/domain/users/queries/user
 import cx from 'classnames';
 import { useTranslations } from 'next-intl';
 
-import ClockCard from './ClockCard';
 import { MANAGER_ROLES, NAV_GROUPS, NavItem, isActive } from './nav';
 
 export default function Sidebar() {
@@ -60,9 +59,6 @@ export default function Sidebar() {
         <span className="bg-primary size-3 rounded-full" style={{ boxShadow: '0 0 0 4px var(--primary-subtle)' }} />
         OnTime
       </Link>
-
-      {/* 오늘 출퇴근 상태 */}
-      <ClockCard />
 
       {/* nav */}
       <nav className="flex-1 overflow-y-auto px-3 py-1">

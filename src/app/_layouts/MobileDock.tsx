@@ -11,12 +11,9 @@ import { useSelectedLayoutSegments } from 'next/navigation';
 import cx from 'classnames';
 import { useTranslations } from 'next-intl';
 
-import { ClockFab } from './ClockCard';
-
 const ITEMS = [
   { key: 'home', href: '/dashboard', segments: ['dashboard'], icon: RiDashboardFill },
   { key: 'schedule', href: '/schedule', segments: ['schedule'], icon: AiOutlineSchedule },
-  null, // FAB slot
   { key: 'approvals', href: '/approvals', segments: ['approvals'], icon: HiDocumentPlus },
   { key: 'profile', href: '/profile', segments: ['profile'], icon: IoPersonCircleOutline },
 ] as const;
@@ -28,10 +25,6 @@ export default function MobileDock() {
   return (
     <nav className="bg-base-100 border-base-300 fixed inset-x-0 bottom-0 z-40 flex h-[72px] items-start justify-around border-t px-1.5 pt-2 md:hidden">
       {ITEMS.map((item) => {
-        if (item === null) {
-          return <ClockFab key="fab" />;
-        }
-
         const active = item.segments.every((s) => segments.includes(s));
 
         return (
