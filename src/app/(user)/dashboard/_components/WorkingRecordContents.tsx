@@ -43,10 +43,11 @@ const WorkingRecordRow = memo(function WorkingRecordRow({
 }: WorkingRecordRowProps) {
   const t = useTranslations('dashboard');
 
-  const isToday = dayjs().isSame(date, 'day');
+  const now = dayjs().toDate();
+  const isToday = dayjs(date).isSame(now, 'day');
   const isInProgress = isToday && !!clockInTime && !clockOutTime;
 
-  const workDuration = getWorkDuration(date, clockInTime, isInProgress ? dayjs().toDate() : clockOutTime);
+  const workDuration = getWorkDuration(date, clockInTime, clockOutTime, now);
   const durationPercent = Math.min(Math.round((workDuration / (ONE_HOUR * DAILY_TOTAL_HOURS)) * 100), 100);
   const isOver = workDuration > ONE_HOUR * DAILY_TOTAL_HOURS;
 
@@ -61,13 +62,13 @@ const WorkingRecordRow = memo(function WorkingRecordRow({
       })}
     >
       {/* DAY / DATE */}
-      <div className="w-16 flex-none text-[13px] font-semibold">
+      <div className="w-14 flex-none text-[13px] font-semibold">
         {dayjs(date).format('dd')}
         <span className="text-3 block text-[11px] font-normal">{dayjs(date).format('MM/DD')}</span>
       </div>
 
       {/* DURATION BAR */}
-      <div className="bg-base-300 relative h-2 flex-1 overflow-hidden rounded-full">
+      <div className="bg-base-300 relative h-2 min-w-0 flex-1 overflow-hidden rounded-full">
         <div
           className={cx('absolute inset-y-0 left-0 rounded-full', isOver ? 'bg-warning' : 'bg-primary')}
           style={{ width: `${durationPercent}%` }}
@@ -80,7 +81,7 @@ const WorkingRecordRow = memo(function WorkingRecordRow({
       </div>
 
       {/* TIME RANGE / CATEGORY */}
-      <div className="text-3 w-[110px] flex-none text-right text-xs">
+      <div className="text-3 hidden w-[110px] flex-none text-right text-xs sm:block">
         {isOff ? (
           <Badge variant="primary">{t(categoryKey === 'dayOff' ? 'categoryDayOff' : 'categoryHalfDayOff')}</Badge>
         ) : isInProgress ? (

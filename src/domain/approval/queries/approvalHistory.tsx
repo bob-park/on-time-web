@@ -4,10 +4,11 @@ import { ApprovalHistory, SearchDocumentApprovalHistoryRequest } from '@/domain/
 import { searchApprovalHistories } from '@/domain/approval/apis/approvalHistory';
 import { Page } from '@/shared/api/common.dto';
 
-export function useApprovalHistories(req: SearchDocumentApprovalHistoryRequest) {
+export function useApprovalHistories(req: SearchDocumentApprovalHistoryRequest, options?: { enabled?: boolean }) {
   const { data, isLoading } = useQuery<Page<ApprovalHistory>>({
     queryKey: ['documents', 'approval', 'histories', req],
     queryFn: () => searchApprovalHistories(req),
+    ...options,
   });
 
   return {

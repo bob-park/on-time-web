@@ -41,15 +41,17 @@ export function parseHours(seconds: number): string {
 }
 
 // 근무 시간(초). 8시간 초과이거나 점심시간(12시)을 포함하면 1시간을 제외한다.
-export function getWorkDuration(workingDate: Date, clockInTime?: Date, clockOutTime?: Date): number {
-  if (!clockInTime || !clockOutTime) {
+// 퇴근 기록이 없는 당일(근무 중)은 `now` 를 퇴근 시각으로 대체한다.
+export function getWorkDuration(workingDate: Date, clockInTime?: Date, clockOutTime?: Date, now?: Date): number {
+  const endTime = clockOutTime || (now && dayjs(workingDate).isSame(now, 'day') ? now : undefined);
+
+  if (!clockInTime || !endTime) {
     return 0;
   }
 
-  const duration = getDuration(clockInTime, clockOutTime);
+  const duration = getDuration(clockInTime, endTime);
   const hasLunch =
-    duration > ONE_HOUR * 8 ||
-    isIncludeTime({ from: clockInTime, to: clockOutTime }, dayjs(workingDate).hour(12).toDate());
+    duration > ONE_HOUR * 8 || isIncludeTime({ from: clockInTime, to: endTime }, dayjs(workingDate).hour(12).toDate());
 
   return duration - (hasLunch ? ONE_HOUR : 0);
 }

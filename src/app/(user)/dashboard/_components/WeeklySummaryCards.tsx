@@ -17,9 +17,9 @@ import { useTranslations } from 'next-intl';
 const ONE_HOUR = 3_600;
 const WEEKLY_TOTAL_HOURS = 40;
 
-function calcCumulativeSeconds(attendanceRecords: AttendanceRecord[]): number {
+function calcCumulativeSeconds(attendanceRecords: AttendanceRecord[], now: Date): number {
   return attendanceRecords
-    .map((item) => getWorkDuration(item.workingDate, item.clockInTime, item.clockOutTime))
+    .map((item) => getWorkDuration(item.workingDate, item.clockInTime, item.clockOutTime, now))
     .reduce((sum, v) => sum + v, 0);
 }
 
@@ -36,23 +36,26 @@ export default function WeeklySummaryCards() {
   const { leaveEntry } = useUserLeaveEntry(dayjs().year());
   const { count } = useProceedingApprovalCount();
 
-  /* 1. 이번 주 누적 근무 */
-  const cumulativeSeconds = calcCumulativeSeconds(attendanceRecords);
+  const now = dayjs().toDate();
+
+  /* 1. 이번 주 누적 근무 — 당일 근무 중이면 현재 시각까지 포함 (getWorkDuration 이 판단) */
+  const cumulativeSeconds = calcCumulativeSeconds(attendanceRecords, now);
   const cumulativeHours = Math.floor(cumulativeSeconds / ONE_HOUR);
   const remainingSeconds = Math.max(WEEKLY_TOTAL_HOURS * ONE_HOUR - cumulativeSeconds, 0);
   const isOnTrack = cumulativeHours >= WEEKLY_TOTAL_HOURS * 0.5;
 
   /* 2. 오늘 근무 — 이미 조회한 주간 기록에서 오늘을 찾는다 (추가 요청 없음) */
-  const today = dayjs().format('YYYY-MM-DD');
-  const todayRecord = attendanceRecords.find((item) => dayjs(item.workingDate).format('YYYY-MM-DD') === today);
+  const todayRecord = attendanceRecords.find((item) => dayjs(item.workingDate).isSame(now, 'day'));
   const todaySeconds = todayRecord
-    ? getWorkDuration(todayRecord.workingDate, todayRecord.clockInTime, todayRecord.clockOutTime || dayjs().toDate())
+    ? getWorkDuration(todayRecord.workingDate, todayRecord.clockInTime, todayRecord.clockOutTime, now)
     : 0;
 
   /* 3. 잔여 연차 */
   const totalLeaveDays = leaveEntry?.totalLeaveDays ?? 0;
   const remainingLeaveDays = totalLeaveDays - (leaveEntry?.usedLeaveDays ?? 0);
-  const leaveRing = totalLeaveDays ? Math.round((remainingLeaveDays / totalLeaveDays) * 100) : 0;
+  const leaveRing = totalLeaveDays
+    ? Math.max(0, Math.min(100, Math.round((remainingLeaveDays / totalLeaveDays) * 100)))
+    : 0;
   const compLeaveDays = compLeaveEntries.reduce((sum, entry) => sum + (entry.leaveDays - entry.usedDays), 0);
 
   return (

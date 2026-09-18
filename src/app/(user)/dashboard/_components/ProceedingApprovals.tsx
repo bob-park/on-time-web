@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 
+import { ApprovalHistory } from '@/domain/approval/apis/approval.dto';
 import { useApprovalHistories } from '@/domain/approval/queries/approvalHistory';
 import DocumentTypeBadge from '@/domain/document/components/DocumentTypeBadge';
 import { useApproveDocument } from '@/domain/document/queries/documents';
@@ -20,7 +21,7 @@ export default function ProceedingApprovals() {
   const { data: session } = authClient.useSession();
   const sub = session?.user.sub;
 
-  const { page } = useApprovalHistories({ userUniqueId: sub, status: 'WAITING', page: 0, size: 3 });
+  const { page } = useApprovalHistories({ userUniqueId: sub, status: 'WAITING', page: 0, size: 3 }, { enabled: !!sub });
   const { count } = useProceedingApprovalCount();
   const { approve, isLoading } = useApproveDocument();
 
@@ -28,38 +29,40 @@ export default function ProceedingApprovals() {
     <Card className="animate-fade-up delay-225">
       <CardSection
         title={t('sectionProceeding')}
-        aside={<Badge variant="primary">{count}</Badge>}
+        aside={count > 0 ? <Badge variant="primary">{count}</Badge> : undefined}
         link={{ href: '/approvals', label: t('viewAll') }}
       />
 
       <div className="p-2">
-        {(page?.content ?? []).map((h) => (
-          <div key={h.id} className="hover:bg-base-200 flex items-center gap-3 rounded-[10px] px-2.5 py-3">
-            <span className="bg-base-200 border-base-300 text-2 flex size-[34px] flex-none items-center justify-center rounded-full border text-xs font-bold">
-              {h.document.user?.username?.[0] ?? '?'}
-            </span>
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-1.5 text-sm font-semibold">
-                <span className="truncate">{h.document.user?.username}</span>
-                <span className="flex-none">
-                  <DocumentTypeBadge type={h.document.type} />
-                </span>
+        {(page?.content ?? [])
+          .filter((h): h is ApprovalHistory & { id: number } => h.id != null)
+          .map((h) => (
+            <div key={h.id} className="hover:bg-base-200 flex items-center gap-3 rounded-[10px] px-2.5 py-3">
+              <span className="bg-base-200 border-base-300 text-2 flex size-[34px] flex-none items-center justify-center rounded-full border text-xs font-bold">
+                {h.document.user?.username?.[0] ?? '?'}
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-1.5 text-sm font-semibold">
+                  <span className="truncate">{h.document.user?.username}</span>
+                  <span className="flex-none">
+                    <DocumentTypeBadge type={h.document.type} />
+                  </span>
+                </div>
+                <div className="text-3 text-xs">{t('requestedAt', { time: dayjs(h.createdDate).fromNow() })}</div>
               </div>
-              <div className="text-3 text-xs">{t('requestedAt', { time: dayjs(h.createdDate).fromNow() })}</div>
+              <Link href={`/approvals/${h.id}`} className="btn btn-ghost btn-sm">
+                {t('view')}
+              </Link>
+              <button
+                type="button"
+                className="btn btn-subtle btn-sm"
+                disabled={isLoading}
+                onClick={() => approve({ id: h.id })}
+              >
+                {t('approve')}
+              </button>
             </div>
-            <Link href={`/approvals/${h.id}`} className="btn btn-ghost btn-sm">
-              {t('view')}
-            </Link>
-            <button
-              type="button"
-              className="btn btn-subtle btn-sm"
-              disabled={isLoading}
-              onClick={() => approve({ id: h.id! })}
-            >
-              {t('approve')}
-            </button>
-          </div>
-        ))}
+          ))}
 
         {page && page.content.length === 0 && (
           <p className="text-3 px-3 py-6 text-center text-sm">{t('emptyProceeding')}</p>
