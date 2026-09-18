@@ -10,13 +10,13 @@ import useToast from '@/shared/hooks/useToast';
 
 import { useTranslations } from 'next-intl';
 
-interface ApproveModalProps {
+interface RejectModalProps {
   show: boolean;
   id: number;
   onClose?: () => void;
 }
 
-export default function RejectModal({ show, id, onClose }: ApproveModalProps) {
+export default function RejectModal({ show, id, onClose }: RejectModalProps) {
   // ref
   const ref = useRef<HTMLDialogElement>(null);
 

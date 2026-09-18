@@ -15,6 +15,7 @@ export default async function DayOffHistoryPage() {
       <PageHeader
         eyebrow={t('eyebrow')}
         title={t('title')}
+        description={t('description')}
         actions={
           <Link href="/dayoff/requests" className="btn btn-primary btn-sm">
             {t('requestAction')}

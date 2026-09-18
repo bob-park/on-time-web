@@ -18,7 +18,8 @@
       "statusWaiting": "진행",
       "statusApproved": "승인",
       "statusRejected": "반려"
-    }
+    },
+    "timesCount": "{count}건"
   },
   "nav": {
     "home": "홈",
@@ -106,33 +107,40 @@
   "documents": {
     "eyebrow": "Documents",
     "title": "내 결재 문서",
-    "subtitle": "결재 신청 내역을 조회하고 상태를 확인합니다",
+    "description": "내가 신청한 결재 문서입니다. 행을 클릭하면 상세를 볼 수 있어요.",
     "categoryFilterAria": "문서 구분 필터",
     "statusFilterAria": "문서 상태 필터",
-    "colDocNo": "문서번호",
-    "colCategory": "구분",
+    "colDocument": "문서",
     "colStatus": "상태",
-    "colDate": "요청일",
+    "colPeriod": "기간 / 일수",
+    "colAction": "처리",
+    "requestedAt": "{date} 신청",
+    "actionRequest": "상신",
+    "actionCancel": "취소",
+    "toastRequested": "문서를 상신했습니다.",
+    "toastRequestError": "상신 처리 중 오류가 발생했습니다. 다시 시도해 주세요.",
+    "toastCancelled": "문서를 취소했습니다.",
+    "toastCancelError": "취소 처리 중 오류가 발생했습니다. 다시 시도해 주세요.",
     "rowAria": "문서 {id} 상세 보기",
-    "moreAria": "문서 상세 보기",
-    "emptyTitle": "결재 문서가 없습니다",
-    "emptyDescription": "조건에 맞는 문서가 없습니다"
+    "empty": "조건에 맞는 문서가 없습니다"
   },
   "approvals": {
     "eyebrow": "Approvals",
-    "title": "결재 처리",
-    "subtitle": "결재 요청 목록을 조회하고 처리합니다",
+    "title": "결재 처리 대기",
+    "description": "내가 결재선에 포함된 문서입니다. 행을 클릭하면 상세와 결재선을 볼 수 있어요.",
     "categoryFilterAria": "문서 구분 필터",
     "statusFilterAria": "문서 상태 필터",
-    "colDocNo": "문서번호",
-    "colCategory": "구분",
+    "colDocument": "문서",
+    "colRequester": "신청자",
+    "colPeriod": "기간",
     "colStatus": "상태",
-    "colApplicant": "신청자",
-    "colDate": "요청일",
+    "colAction": "처리",
+    "requestedAt": "{date} 요청",
+    "statusMine": "내 결재 대기",
+    "actionReject": "반려",
+    "actionApprove": "승인",
     "rowAria": "결재 {id} 상세 보기",
-    "moreAria": "결재 상세 보기",
-    "emptyTitle": "결재 문서가 없습니다",
-    "emptyDescription": "조건에 맞는 문서가 없습니다"
+    "empty": "조건에 맞는 문서가 없습니다"
   },
   "dayoff": {
     "request": {
@@ -212,29 +220,26 @@
     "used": {
       "eyebrow": "History",
       "title": "휴가 내역",
+      "description": "승인된 휴가 사용 내역과 연차 잔여를 연도별로 확인합니다.",
       "requestAction": "+ 휴가 신청",
       "unit": "일",
       "year": "{year}년",
-      "prevYear": "이전 연도",
-      "nextYear": "다음 연도",
+      "yearLabel": "연도",
+      "yearFilterAria": "연도 필터",
       "stat": {
-        "totalUsed": "총 사용일",
-        "generalChip": "연차 {days}일",
-        "compChip": "보상 {days}일",
-        "noneUsed": "사용 내역 없음",
+        "total": "총 연차",
+        "used": "사용",
         "remaining": "잔여 연차",
         "expireCaption": "만료일 {year}년 12월 31일"
       },
       "table": {
         "title": "상세 내역",
         "count": "{year}년 · {count}건",
-        "colNo": "번호",
         "colType": "종류",
-        "colSubType": "구분",
-        "colDate": "사용일",
+        "colPeriod": "기간",
         "colDays": "사용일수",
-        "colNote": "비고",
         "colStatus": "상태",
+        "colReason": "사유",
         "days": "{days}일"
       },
       "type": {
@@ -243,7 +248,6 @@
         "official": "공가"
       },
       "subType": {
-        "allDay": "종일",
         "amHalf": "오전 반차",
         "pmHalf": "오후 반차"
       },

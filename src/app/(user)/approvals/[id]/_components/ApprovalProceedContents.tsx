@@ -6,13 +6,13 @@ import { FaCheck, FaTimes } from 'react-icons/fa';
 import { GiCancel } from 'react-icons/gi';
 
 import ApprovalLines from '@/domain/approval/components/ApprovalLines';
+import ApproveModal from '@/domain/document/components/ApproveModal';
+import RejectModal from '@/domain/document/components/RejectModal';
 import { useApprovalDocument } from '@/domain/document/queries/documents';
 
 import { useTranslations } from 'next-intl';
 
-import ApproveModal from './ApproveModal';
 import CancelConfirmModal from './CancelConfirmModal';
-import RejectModal from './RejectModal';
 
 interface ApprovalProceedContentsProps {
   id: number;

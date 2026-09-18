@@ -1,17 +1,16 @@
 'use client';
 
-import { memo } from 'react';
-
-import { HiOutlineDocumentText } from 'react-icons/hi';
-
 import { useRouter } from 'next/navigation';
 
-import { Document } from '@/domain/document/apis/document.dto';
+import { Document, DocumentsType } from '@/domain/document/apis/document.dto';
+import DocumentPeriod, { documentSummary } from '@/domain/document/components/DocumentPeriod';
 import DocumentStatusBadge from '@/domain/document/components/DocumentStatusBadge';
 import DocumentsTypeBadge from '@/domain/document/components/DocumentTypeBadge';
+import { useCancelDocument, useRequestDocument } from '@/domain/document/queries/documents';
+import { TableSkeletonRows, rowClass, tdClass, thClass } from '@/shared/components/Table';
+import dayjs from '@/shared/dayjs';
+import useToast from '@/shared/hooks/useToast';
 
-import dayjs from 'dayjs';
-import 'dayjs/locale/ko';
 import { useTranslations } from 'next-intl';
 
 interface DocumentResultProps {
@@ -19,133 +18,119 @@ interface DocumentResultProps {
   isLoading: boolean;
 }
 
-const thClass =
-  'text-2 border-b border-soft px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase';
+const DETAIL_PATH: Record<DocumentsType, string> = {
+  VACATION: 'dayoff',
+  OVERTIME_WORK: 'overtime',
+};
 
 export default function DocumentResult({ documents, isLoading }: DocumentResultProps) {
   const t = useTranslations('documents');
+  const router = useRouter();
+  const { push } = useToast();
+
+  const { request, isLoading: isRequesting } = useRequestDocument(
+    () => push(t('toastRequested'), 'success'),
+    () => push(t('toastRequestError'), 'error'),
+  );
+  const { cancel, isLoading: isCancelling } = useCancelDocument(
+    () => push(t('toastCancelled'), 'success'),
+    () => push(t('toastCancelError'), 'error'),
+  );
+
+  const handleOpen = (doc: Document) => {
+    router.push(`/${DETAIL_PATH[doc.type]}/${doc.id}`);
+  };
 
   return (
-    <div className="w-full overflow-x-auto select-none">
-      <table className="w-full border-collapse text-sm">
+    <div className="w-full overflow-x-auto">
+      <table className="w-full text-sm">
         <thead>
           <tr>
-            <th className={`w-[120px] ${thClass}`}>{t('colDocNo')}</th>
-            <th className={`w-[150px] ${thClass}`}>{t('colCategory')}</th>
-            <th className={`w-[130px] ${thClass}`}>{t('colStatus')}</th>
-            <th className={thClass}>{t('colDate')}</th>
-            <th className={`w-14 ${thClass}`} />
+            <th className={thClass}>{t('colDocument')}</th>
+            <th className={`w-[140px] ${thClass}`}>{t('colStatus')}</th>
+            <th className={`w-[150px] ${thClass}`}>{t('colPeriod')}</th>
+            <th className={`w-[110px] ${thClass}`}>{t('colAction')}</th>
           </tr>
         </thead>
         <tbody>
           {isLoading ? (
-            <SkeletonRows />
+            <TableSkeletonRows cols={4} />
           ) : documents.length === 0 ? (
-            <EmptyState />
+            <tr>
+              <td colSpan={4} className="text-3 px-4 py-10 text-center text-sm">
+                {t('empty')}
+              </td>
+            </tr>
           ) : (
-            documents.map((document) => <DocumentRow key={document.id} document={document} />)
+            documents.map((doc) => {
+              const summary = documentSummary(doc);
+
+              return (
+                <tr
+                  key={doc.id}
+                  className={`cursor-pointer ${rowClass}`}
+                  onClick={() => handleOpen(doc)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => e.key === 'Enter' && handleOpen(doc)}
+                  aria-label={t('rowAria', { id: doc.id })}
+                >
+                  {/* 문서 */}
+                  <td className={tdClass}>
+                    <div className="flex min-w-0 items-center gap-2">
+                      <DocumentsTypeBadge type={doc.type} />
+                      {summary && <span className="truncate font-semibold">{summary}</span>}
+                    </div>
+                    <div className="text-3 mt-1 text-xs">
+                      {t('requestedAt', { date: dayjs(doc.createdDate).format('YYYY.MM.DD') })}
+                    </div>
+                  </td>
+
+                  {/* 상태 */}
+                  <td className={tdClass}>
+                    <DocumentStatusBadge status={doc.status} />
+                  </td>
+
+                  {/* 기간/일수 */}
+                  <td className={`text-2 ${tdClass}`}>
+                    <DocumentPeriod doc={doc} />
+                  </td>
+
+                  {/* 처리 */}
+                  <td className={tdClass}>
+                    {doc.status === 'DRAFT' && (
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-ghost"
+                        disabled={isRequesting}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          request({ id: doc.id });
+                        }}
+                      >
+                        {t('actionRequest')}
+                      </button>
+                    )}
+                    {doc.status === 'WAITING' && (
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-ghost"
+                        disabled={isCancelling}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          cancel({ id: doc.id });
+                        }}
+                      >
+                        {t('actionCancel')}
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              );
+            })
           )}
         </tbody>
       </table>
     </div>
-  );
-}
-
-const DocumentRow = memo(function DocumentRow({ document }: { document: Document }) {
-  const t = useTranslations('documents');
-  const router = useRouter();
-
-  const handleClick = () => {
-    switch (document.type) {
-      case 'VACATION':
-        router.push(`/dayoff/${document.id}`);
-        break;
-      case 'OVERTIME_WORK':
-        router.push(`/overtime/${document.id}`);
-        break;
-      default:
-        break;
-    }
-  };
-
-  return (
-    <tr
-      className="border-soft hover:bg-base-200 h-[52px] cursor-pointer border-b transition-colors duration-100 last:border-b-0"
-      onClick={handleClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => e.key === 'Enter' && handleClick()}
-      aria-label={t('rowAria', { id: document.id })}
-    >
-      <td className="text-base-content px-4 text-sm font-bold">#{document.id}</td>
-      <td className="px-4">
-        <DocumentsTypeBadge type={document.type} />
-      </td>
-      <td className="px-4">
-        <DocumentStatusBadge status={document.status} />
-      </td>
-      <td className="text-2 px-4 text-sm">{dayjs(document.createdDate).locale('ko').format('YYYY년 MM월 DD일')}</td>
-      <td className="px-4 text-center">
-        <button
-          type="button"
-          aria-label={t('moreAria')}
-          className="text-2 hover:text-base-content hover:bg-base-200 mx-auto flex h-8 w-8 items-center justify-center rounded-[10px] transition-colors duration-100"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleClick();
-          }}
-        >
-          ···
-        </button>
-      </td>
-    </tr>
-  );
-});
-
-function SkeletonRows() {
-  const widths = [
-    { id: 'w-14', type: 'w-16', status: 'w-16', date: 'w-24' },
-    { id: 'w-12', type: 'w-[72px]', status: 'w-14', date: 'w-[110px]' },
-    { id: 'w-[52px]', type: 'w-16', status: 'w-12', date: 'w-[96px]' },
-    { id: 'w-14', type: 'w-14', status: 'w-[60px]', date: 'w-[104px]' },
-    { id: 'w-[44px]', type: 'w-[68px]', status: 'w-[52px]', date: 'w-[92px]' },
-  ];
-  return (
-    <>
-      {widths.map((w, i) => (
-        <tr key={i} className="border-soft h-[52px] border-b last:border-b-0">
-          <td className="px-4">
-            <div className={`bg-base-300 h-3.5 animate-pulse rounded ${w.id}`} />
-          </td>
-          <td className="px-4">
-            <div className={`bg-base-300 h-5 animate-pulse rounded-md ${w.type}`} />
-          </td>
-          <td className="px-4">
-            <div className={`bg-base-300 h-5 animate-pulse rounded-md ${w.status}`} />
-          </td>
-          <td className="px-4">
-            <div className={`bg-base-300 h-3.5 animate-pulse rounded ${w.date}`} />
-          </td>
-          <td className="px-4 text-center">
-            <div className="bg-base-300 mx-auto h-8 w-8 animate-pulse rounded-[10px]" />
-          </td>
-        </tr>
-      ))}
-    </>
-  );
-}
-
-function EmptyState() {
-  const t = useTranslations('documents');
-  return (
-    <tr>
-      <td colSpan={5} className="py-16 text-center">
-        <div className="flex flex-col items-center gap-2">
-          <HiOutlineDocumentText className="text-3 size-10" />
-          <p className="text-2 text-sm font-semibold">{t('emptyTitle')}</p>
-          <p className="text-3 text-sm">{t('emptyDescription')}</p>
-        </div>
-      </td>
-    </tr>
   );
 }

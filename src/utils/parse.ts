@@ -53,5 +53,5 @@ export function getWorkDuration(workingDate: Date, clockInTime?: Date, clockOutT
   const hasLunch =
     duration > ONE_HOUR * 8 || isIncludeTime({ from: clockInTime, to: endTime }, dayjs(workingDate).hour(12).toDate());
 
-  return duration - (hasLunch ? ONE_HOUR : 0);
+  return Math.max(0, duration - (hasLunch ? ONE_HOUR : 0));
 }
