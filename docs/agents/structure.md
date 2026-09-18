@@ -40,7 +40,7 @@ src/
 messages/               # next-intl translation messages — messages/<locale>.json — see [next-intl](./libs/next-intl.md)
 ```
 
-Rule: when adding a new domain, create all four sub-folders (`apis`, `queries`, `components`, `store`) even if some start empty. Predictable layout matters more than file count.
+Rule: when adding a new domain, create all four sub-folders (`apis`, `queries`, `components`, `store`) even if some start empty. Predictable layout matters more than file count. 단, 타입만 가지는 도메인 (예: `team`, `position`, `notification`) 은 `apis/<name>.dto.ts` 만 두고, 나머지 폴더는 실제 코드가 생길 때 만든다.
 
 ## Adding a domain feature
 

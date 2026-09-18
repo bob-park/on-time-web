@@ -19,5 +19,6 @@ related:
     docker buildx bake -f docker-compose.yml --push --provenance false
   ```
 
+- `docker-compose.yml` 의 `x-bake.tags` 는 `:${VERSION}` 과 함께 `:latest` 태그도 같이 push 한다.
 - When changing image names or tags, update `docker-compose.yml`.
 - Version pattern is defined in the Git workflow ([version pattern](./git.md#pr-title--version-bump)).

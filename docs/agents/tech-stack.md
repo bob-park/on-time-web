@@ -9,7 +9,7 @@ related:
 
 # Tech Stack
 
-> TypeScript 6 + Next.js 16 (App Router) + React 19. TanStack Query + Zustand + ky + next-intl v4. Tailwind 4 + daisyUI 5.
+> TypeScript 6 + Next.js 16 (App Router) + React 19. TanStack Query + Zustand + ky + better-auth + next-intl v4. Tailwind 4 + daisyUI 5.
 
 - **Language:** TypeScript 6 (`strict: true`)
 - **Framework:** Next.js 16 (App Router), React 19
