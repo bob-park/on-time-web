@@ -10,7 +10,10 @@ import { PagedModel, SearchPageParams } from '@/shared/api/common.dto';
 import delay from '@/utils/delay';
 
 export async function getUsers(params: SearchPageParams) {
-  return api.get('/api/v1/users', { searchParams: { ...params, sort: 'username,asc' } }).json<PagedModel<User>>();
+  // 삭제된 사용자는 제외하고 조회한다.
+  return api
+    .get('/api/v1/users', { searchParams: { ...params, isDeleted: false, sort: 'username,asc' } })
+    .json<PagedModel<User>>();
 }
 
 export async function updateUserPassword(req: UpdateUserPasswordRequest) {
