@@ -62,6 +62,7 @@ export default function OvertimeRequestContents() {
   const [startMinutes, setStartMinutes] = useState(0);
   const [endHour, setEndHour] = useState(0);
   const [endMinutes, setEndMinutes] = useState(0);
+  const [endNextDay, setEndNextDay] = useState(false);
   const [isDayOff, setIsDayOff] = useState(true);
 
   const datePickerRef = useRef<HTMLDivElement>(null);
@@ -106,7 +107,8 @@ export default function OvertimeRequestContents() {
       return;
     }
 
-    const isOvernight = endHour < startHour || (endHour === startHour && endMinutes < startMinutes);
+    // 익일 토글이 켜졌거나, 종료 시각이 시작보다 빠르면(암묵 규칙) 익일 종료로 처리한다.
+    const isOvernight = endNextDay || endHour < startHour || (endHour === startHour && endMinutes < startMinutes);
     const endDateBase = isOvernight ? dayjs(date).add(1, 'day').toDate() : date;
 
     setWorkTimes((prev) => [
@@ -130,6 +132,7 @@ export default function OvertimeRequestContents() {
     setStartMinutes(0);
     setEndHour(0);
     setEndMinutes(0);
+    setEndNextDay(false);
     setIsDayOff(true);
   };
 
@@ -294,6 +297,19 @@ export default function OvertimeRequestContents() {
                 <option value={0}>{t('minuteUnit', { value: '00' })}</option>
                 <option value={30}>{t('minuteUnit', { value: '30' })}</option>
               </select>
+              <button
+                type="button"
+                aria-pressed={endNextDay}
+                onClick={() => setEndNextDay((v) => !v)}
+                className={cx(
+                  'flex cursor-pointer items-center gap-1.5 rounded-[10px] border px-3 py-1.5 text-[13px] font-medium transition-colors duration-150',
+                  endNextDay
+                    ? 'border-primary bg-primary-soft text-primary font-semibold'
+                    : 'border-base-300 bg-base-100 text-2',
+                )}
+              >
+                {t('nextDay')}
+              </button>
             </div>
 
             <label className="flex w-fit cursor-pointer items-center gap-2.5 pt-3.5">
@@ -358,7 +374,11 @@ export default function OvertimeRequestContents() {
                           <span className="text-3">{getDaysOfWeek(dayjs(wt.startDate).day())}</span>
                         </td>
                         <td className="text-2 px-4 text-sm">
-                          {dayjs(wt.startDate).format('HH:mm')} – {dayjs(wt.endDate).format('HH:mm')}
+                          {dayjs(wt.startDate).format('HH:mm')} –{' '}
+                          {dayjs(wt.endDate).isAfter(wt.startDate, 'day') && (
+                            <span className="text-primary mr-1 text-xs font-semibold">{t('nextDay')}</span>
+                          )}
+                          {dayjs(wt.endDate).format('HH:mm')}
                         </td>
                         <td className="text-2 px-4 text-sm">{wt.contents}</td>
                         <td className="text-2 px-4 text-sm">{wt.username}</td>
