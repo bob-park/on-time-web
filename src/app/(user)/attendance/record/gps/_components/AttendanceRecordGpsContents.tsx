@@ -11,7 +11,7 @@ import { useGenerateCurrentCheck, useGetCurrentCheck } from '@/domain/attendance
 import { useGetAttendanceGps } from '@/domain/attendance/queries/attendanceGps';
 import { useGetAttendanceRecord, useRecordAttendance } from '@/domain/attendance/queries/attendanceRecord';
 import { useUser } from '@/domain/users/queries/user';
-import PillFilter from '@/shared/components/PillFilter';
+import Segment from '@/shared/components/Segment';
 import { isSameMarginOfError } from '@/utils/dataUtils';
 import { getDaysOfWeek, round } from '@/utils/parse';
 
@@ -95,13 +95,15 @@ export default function AttendanceRecordGpsContents() {
   return (
     <div className="animate-fade-up mx-auto mt-3 flex w-full max-w-[480px] flex-col gap-6">
       {/* (a) 장소 */}
-      <PillFilter
-        label={t('gps.locationLabel')}
-        ariaLabel={t('gps.locationLabel')}
-        options={gpsResult.map((gps) => ({ label: gps.name, value: gps.id as number | undefined }))}
-        value={selectGpsId}
-        onChange={setSelectGpsId}
-      />
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-3 text-xs font-semibold">{t('gps.locationLabel')}</span>
+        <Segment
+          ariaLabel={t('gps.locationLabel')}
+          options={gpsResult.map((gps) => ({ label: gps.name, value: gps.id as number | undefined }))}
+          value={selectGpsId}
+          onChange={setSelectGpsId}
+        />
+      </div>
 
       {/* (b) 출 / 퇴근 */}
       <div>

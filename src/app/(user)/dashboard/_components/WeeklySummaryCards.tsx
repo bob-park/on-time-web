@@ -118,7 +118,6 @@ export default function WeeklySummaryCards() {
       {/* Overtime Balance Card */}
       <div className="animate-fade-up delay-150">
         <StatCard
-          highlight
           label={t('compLeaveLabel')}
           value={`${overtimeBalanceHours >= 0 ? '+' : ''}${overtimeBalanceHours.toFixed(1)}`}
           unit="h"

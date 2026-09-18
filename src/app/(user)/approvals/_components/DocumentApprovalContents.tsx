@@ -7,7 +7,7 @@ import { SearchDocumentApprovalHistoryRequest } from '@/domain/approval/apis/app
 import { useApprovalHistories } from '@/domain/approval/queries/approvalHistory';
 import { DocumentStatus, DocumentsType } from '@/domain/document/apis/document.dto';
 import Pagination from '@/shared/components/Pagination';
-import PillFilter from '@/shared/components/PillFilter';
+import Segment from '@/shared/components/Segment';
 
 import { useTranslations } from 'next-intl';
 
@@ -62,16 +62,14 @@ export default function DocumentApprovalContents({ params }: DocumentApprovalCon
   return (
     <div className="animate-fade-up bg-base-300 w-full rounded-lg p-5">
       {/* Filters */}
-      <div className="mb-5 flex flex-col gap-2.5 border-b border-white/10 pb-4">
-        <PillFilter
-          label={tf('categoryLabel')}
+      <div className="mb-3.5 flex flex-wrap items-center gap-2">
+        <Segment
           ariaLabel={t('categoryFilterAria')}
           options={categoryOptions}
           value={selectedType}
           onChange={handleTypeChange}
         />
-        <PillFilter
-          label={tf('statusLabel')}
+        <Segment
           ariaLabel={t('statusFilterAria')}
           options={statusOptions}
           value={selectedStatus}

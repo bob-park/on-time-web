@@ -1,17 +1,16 @@
 import { DocumentsType } from '@/domain/document/apis/document.dto';
+import Badge, { BadgeVariant } from '@/shared/components/Badge';
 
-import cx from 'classnames';
+const VARIANTS: Record<DocumentsType, BadgeVariant> = {
+  VACATION: 'primary',
+  OVERTIME_WORK: 'wait',
+};
+
+const LABELS: Record<DocumentsType, string> = {
+  VACATION: '휴가계',
+  OVERTIME_WORK: '휴일 근무 보고서',
+};
 
 export default function DocumentsTypeBadge({ type }: { type: DocumentsType }) {
-  return (
-    <span
-      className={cx('inline-flex h-[22px] items-center rounded-full px-2.5 text-[11px] font-semibold', {
-        'bg-info/15 text-info': type === 'VACATION',
-        'bg-warning/15 text-warning': type === 'OVERTIME_WORK',
-      })}
-    >
-      {type === 'VACATION' && <span>휴가계</span>}
-      {type === 'OVERTIME_WORK' && <span>휴일 근무 보고서</span>}
-    </span>
-  );
+  return <Badge variant={VARIANTS[type]}>{LABELS[type]}</Badge>;
 }

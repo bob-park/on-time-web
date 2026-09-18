@@ -22,13 +22,7 @@ export default function UserLeaveEntryContents() {
     <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
       <StatCard label={t('stat.total')} value={totalLeaveDays} unit={unit} caption={t('stat.totalCaption', { year })} />
       <StatCard label={t('stat.used')} value={usedLeaveDays} unit={unit} caption={t('stat.usedCaption')} />
-      <StatCard
-        label={t('stat.remaining')}
-        value={freeLeaveDays}
-        unit={unit}
-        caption={t('stat.remainingCaption')}
-        highlight
-      />
+      <StatCard label={t('stat.remaining')} value={freeLeaveDays} unit={unit} caption={t('stat.remainingCaption')} />
       <StatCard label={t('stat.comp')} value={freeCompLeaveDays} unit={unit} caption={t('stat.compCaption')} />
     </div>
   );

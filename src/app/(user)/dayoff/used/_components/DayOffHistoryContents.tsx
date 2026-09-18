@@ -98,7 +98,6 @@ export default function DayOffHistoryContents() {
           value={freeLeaveDays.toFixed(1)}
           unit={t('unit')}
           caption={t('stat.expireCaption', { year: selectedYear })}
-          highlight
         />
       </div>
 
