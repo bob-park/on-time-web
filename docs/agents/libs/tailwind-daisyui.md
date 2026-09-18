@@ -71,7 +71,7 @@ daisyUI 변수로 표현되지 않는 보조 색/그림자는 `globals.css` 의 
 | `btn-subtle` | primary-subtle 배경 + primary 글자 버튼. hover 는 utility 안에 `color-mix` 로 내장되어 있으므로 별도 `hover:` class 를 붙이지 않는다 |
 | `eyebrow` | 11px / 600 / letter-spacing 1.6px / uppercase / `--text-3` — `PageHeader` 의 상단 라벨 |
 
-애니메이션 utility (`animate-fade-up`, `animate-fade-in`, `animate-scale-in`, `animate-progress`, `delay-75|150|225|300`) 도 같은 파일에 있다. `prefers-reduced-motion: reduce` 전역 가드가 이미 걸려 있으므로 컴포넌트에서 따로 분기하지 않는다.
+애니메이션 utility (`animate-fade-up`, `delay-150|225|300`) 도 같은 파일에 있다. `prefers-reduced-motion: reduce` 전역 가드가 이미 걸려 있으므로 컴포넌트에서 따로 분기하지 않는다.
 
 ## Styling rules
 

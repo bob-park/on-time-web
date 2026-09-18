@@ -118,7 +118,6 @@
     "actionCancel": "취소",
     "toastRequested": "문서를 상신했습니다.",
     "toastRequestError": "상신 처리 중 오류가 발생했습니다. 다시 시도해 주세요.",
-    "rowAria": "문서 {id} 상세 보기",
     "empty": "조건에 맞는 문서가 없습니다"
   },
   "approvals": {
@@ -140,7 +139,6 @@
     "statusMine": "내 결재 대기",
     "actionReject": "반려",
     "actionApprove": "승인",
-    "rowAria": "결재 {id} 상세 보기",
     "empty": "조건에 맞는 문서가 없습니다"
   },
   "dayoff": {
