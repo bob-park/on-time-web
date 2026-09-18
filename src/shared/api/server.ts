@@ -75,6 +75,12 @@ export async function handle(fn: (sub: string) => Promise<unknown>) {
   }
 
   try {
+    await getAccessToken();
+  } catch {
+    return unauthorized();
+  }
+
+  try {
     return NextResponse.json(await fn(sub));
   } catch (e) {
     if (e instanceof HTTPError) {

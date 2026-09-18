@@ -39,7 +39,6 @@
     "@bob-park/eslint-config-bobpark": "0.3.0-RC4-20260630",
     "@bob-park/prettier-config-bobpark": "0.4.0-RC4-20260630",
     "@eslint/eslintrc": "^3",
-    "@faker-js/faker": "^10.5.0",
     "@tailwindcss/postcss": "^4.2.2",
     "@tanstack/react-query-devtools": "^5.101.2",
     "@types/lodash": "^4.17.24",

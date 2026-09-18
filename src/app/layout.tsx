@@ -1,7 +1,5 @@
 import type { Metadata } from 'next';
 
-import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
-
 import NavMenu from '@/app/_layouts/NavMenu';
 import NowWorkingBar from '@/app/_layouts/NowWorkingBar';
 import RQProvider from '@/shared/components/queries/RQProvider';
@@ -29,10 +27,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const queryClient = new QueryClient();
-
-  const dehydratedState = dehydrate(queryClient);
-
   const locale = await getUserLocale();
   const messages = await getMessages();
   const htmlLang = LOCALE_META[locale].htmlLang;
@@ -42,22 +36,20 @@ export default async function RootLayout({
       <body className="relative">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <RQProvider>
-            <HydrationBoundary state={dehydratedState}>
-              <ToastProvider limit={5} timeout={5}>
-                <div className="bg-base-100 flex h-screen gap-2 overflow-hidden p-2">
-                  {/* sidebar (desktop) + mobile dock rendered inside NavMenu */}
-                  <NavMenu />
+            <ToastProvider limit={5} timeout={5}>
+              <div className="bg-base-100 flex h-screen gap-2 overflow-hidden p-2">
+                {/* sidebar (desktop) + mobile dock rendered inside NavMenu */}
+                <NavMenu />
 
-                  {/* main area — floating surface card */}
-                  <div className="to-base-200 flex min-w-0 flex-1 flex-col overflow-hidden rounded-lg bg-gradient-to-b from-[#1c1c1c]">
-                    <Header />
-                    <main className="flex-1 overflow-y-auto px-6 pb-[120px]">{children}</main>
-                  </div>
+                {/* main area — floating surface card */}
+                <div className="to-base-200 flex min-w-0 flex-1 flex-col overflow-hidden rounded-lg bg-gradient-to-b from-[#1c1c1c]">
+                  <Header />
+                  <main className="flex-1 overflow-y-auto px-6 pb-[120px]">{children}</main>
                 </div>
+              </div>
 
-                <NowWorkingBar />
-              </ToastProvider>
-            </HydrationBoundary>
+              <NowWorkingBar />
+            </ToastProvider>
           </RQProvider>
         </NextIntlClientProvider>
       </body>

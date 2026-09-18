@@ -46,7 +46,7 @@ export function useUserLeaveEntry(year: number) {
     enabled: !!sub,
   });
 
-  return { leaveEntry: data, isLoading };
+  return { leaveEntry: data, isLoading: isLoading || !sub };
 }
 
 export function useProceedingApprovalCount() {
