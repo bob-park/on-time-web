@@ -73,9 +73,9 @@ export default function MonthPicker() {
           <div key={`month-picker-item-${index}`} className="p-1">
             <div
               className={cx(
-                'hover:bg-base-300 flex h-12 w-16 cursor-pointer items-center justify-center rounded-2xl text-center transition-all duration-150',
+                'hover:bg-base-200 flex h-12 w-16 cursor-pointer items-center justify-center rounded-[10px] text-center transition-all duration-150',
                 {
-                  'bg-base-300': dayjs(startDate).isSame(dayjs(startDate).month(index), 'month'),
+                  'bg-primary-subtle text-primary': dayjs(startDate).isSame(dayjs(startDate).month(index), 'month'),
                 },
               )}
               onClick={() => handleChange(dayjs(startDate).month(index).toDate())}

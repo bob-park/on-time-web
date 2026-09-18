@@ -22,7 +22,7 @@ interface InfoRowProps {
 function InfoRow({ label, value, accent }: InfoRowProps) {
   return (
     <div className="flex items-center justify-between py-3">
-      <span className="text-base-content/60 text-[13px]">{label}</span>
+      <span className="text-2 text-[13px]">{label}</span>
       <span className={cx('text-[15px] font-bold', { 'text-primary': accent })}>{value}</span>
     </div>
   );
@@ -41,8 +41,8 @@ function AttendanceRecordResult({ result }: AttendanceRecordResultProps) {
       {/* icon */}
       <span
         className={cx('flex size-20 items-center justify-center rounded-full text-4xl', {
-          'bg-primary text-primary-content shadow-[0_0_40px_rgba(30,215,96,0.35)]': success,
-          'bg-error text-error-content shadow-[0_0_40px_rgba(243,114,127,0.35)]': !success,
+          'bg-primary text-primary-content shadow-whisper': success,
+          'bg-error text-error-content shadow-whisper': !success,
         })}
       >
         {success ? <FaCheck /> : <FaTimes />}
@@ -56,8 +56,8 @@ function AttendanceRecordResult({ result }: AttendanceRecordResultProps) {
             {result.clockInTime && result.clockOutTime && t('clockOutDone')}
           </h2>
 
-          <div className="bg-base-300 w-full max-w-[420px] rounded-lg px-5 text-left">
-            <div className="divide-y divide-white/10">
+          <div className="bg-base-100 border-base-300 rounded-box shadow-whisper w-full max-w-[420px] border px-5 text-left">
+            <div className="divide-base-300 divide-y">
               <InfoRow
                 label={t('workingDate')}
                 value={
@@ -74,7 +74,7 @@ function AttendanceRecordResult({ result }: AttendanceRecordResultProps) {
             </div>
           </div>
 
-          <span className="text-base-content/50 text-[13px]">{t('closeHint')}</span>
+          <span className="text-3 text-[13px]">{t('closeHint')}</span>
         </>
       ) : (
         <h2 className="text-2xl font-bold tracking-tight">{t('invalidAccess')}</h2>

@@ -8,14 +8,14 @@ import { VacationSubType, VacationType } from '@/domain/document/apis/document.d
 import DocumentStatusBadge from '@/domain/document/components/DocumentStatusBadge';
 import { useVacationDocuments } from '@/domain/document/queries/vacation';
 import { useUserLeaveEntry } from '@/domain/users/queries/user';
+import Badge from '@/shared/components/Badge';
 import StatCard from '@/shared/components/StatCard';
 
-import cx from 'classnames';
 import dayjs from 'dayjs';
 import { useTranslations } from 'next-intl';
 
 const thClass =
-  'text-base-content/60 border-b border-white/10 px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase';
+  'text-2 border-b border-soft px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase';
 
 export default function DayOffHistoryContents() {
   const t = useTranslations('dayoff.used');
@@ -55,7 +55,7 @@ export default function DayOffHistoryContents() {
         <button
           type="button"
           aria-label={t('prevYear')}
-          className="border-base-content/10 text-base-content/70 hover:bg-base-content/5 hover:text-base-content flex size-9 items-center justify-center rounded-full border transition-colors duration-150"
+          className="border-base-300 text-2 hover:bg-base-200 hover:text-base-content flex size-9 items-center justify-center rounded-[10px] border transition-colors duration-150"
           onClick={() => handleYearChange(-1)}
         >
           <IoIosArrowBack className="size-4" />
@@ -66,7 +66,7 @@ export default function DayOffHistoryContents() {
         <button
           type="button"
           aria-label={t('nextYear')}
-          className="border-base-content/10 text-base-content/70 hover:bg-base-content/5 hover:text-base-content flex size-9 items-center justify-center rounded-full border transition-colors duration-150"
+          className="border-base-300 text-2 hover:bg-base-200 hover:text-base-content flex size-9 items-center justify-center rounded-[10px] border transition-colors duration-150"
           onClick={() => handleYearChange(1)}
         >
           <IoIosArrowForward className="size-4" />
@@ -79,16 +79,12 @@ export default function DayOffHistoryContents() {
         <StatCard label={t('stat.totalUsed')} value={totalUsedDays.toFixed(1)} unit={t('unit')}>
           <div className="mt-3 flex flex-wrap gap-2">
             {totalGeneralDays > 0 && (
-              <span className="bg-info/15 text-info inline-flex h-[22px] items-center rounded-full px-2.5 text-[11px] font-semibold">
-                {t('stat.generalChip', { days: totalGeneralDays.toFixed(1) })}
-              </span>
+              <Badge variant="primary">{t('stat.generalChip', { days: totalGeneralDays.toFixed(1) })}</Badge>
             )}
             {totalCompDays > 0 && (
-              <span className="bg-warning/15 text-warning inline-flex h-[22px] items-center rounded-full px-2.5 text-[11px] font-semibold">
-                {t('stat.compChip', { days: totalCompDays.toFixed(1) })}
-              </span>
+              <Badge variant="wait">{t('stat.compChip', { days: totalCompDays.toFixed(1) })}</Badge>
             )}
-            {totalUsedDays === 0 && <span className="text-base-content/50 text-xs">{t('stat.noneUsed')}</span>}
+            {totalUsedDays === 0 && <span className="text-3 text-xs">{t('stat.noneUsed')}</span>}
           </div>
         </StatCard>
 
@@ -102,10 +98,10 @@ export default function DayOffHistoryContents() {
       </div>
 
       {/* 상세 내역 */}
-      <div className="bg-base-200 mt-1 w-full rounded-lg">
-        <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
+      <div className="bg-base-100 border-base-300 rounded-box shadow-whisper mt-1 w-full border">
+        <div className="border-soft flex items-center justify-between border-b px-5 py-4">
           <span className="text-base-content text-sm font-semibold">{t('table.title')}</span>
-          <span className="text-base-content/50 text-xs">
+          <span className="text-3 text-xs">
             {t('table.count', { year: selectedYear, count: vacationDocuments.length })}
           </span>
         </div>
@@ -128,7 +124,7 @@ export default function DayOffHistoryContents() {
                 <SkeletonRows />
               ) : sortedDocuments.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="text-base-content/50 py-16 text-center text-sm">
+                  <td colSpan={7} className="text-3 py-16 text-center text-sm">
                     {t('empty', { year: selectedYear })}
                   </td>
                 </tr>
@@ -136,10 +132,10 @@ export default function DayOffHistoryContents() {
                 sortedDocuments.map((doc, index) => (
                   <tr
                     key={`vacation-history-${doc.id}`}
-                    className="border-b border-white/[0.04] transition-colors duration-100 last:border-b-0 hover:bg-white/[0.04]"
+                    className="border-soft hover:bg-base-200 border-b transition-colors duration-100 last:border-b-0"
                   >
                     {/* 번호 */}
-                    <td className="text-base-content/40 px-4 py-4 text-sm">{index + 1}</td>
+                    <td className="text-3 px-4 py-4 text-sm">{index + 1}</td>
 
                     {/* 종류 */}
                     <td className="px-4 py-4">
@@ -147,7 +143,7 @@ export default function DayOffHistoryContents() {
                     </td>
 
                     {/* 구분 */}
-                    <td className="text-base-content/70 px-4 py-4">
+                    <td className="text-2 px-4 py-4">
                       <VacationSubTypeText subType={doc.vacationSubType} />
                     </td>
 
@@ -158,10 +154,7 @@ export default function DayOffHistoryContents() {
                       ) : (
                         <span className="font-semibold">
                           {dayjs(doc.startDate).format('YYYY.MM.DD')}
-                          <span className="text-base-content/50 font-normal">
-                            {' '}
-                            — {dayjs(doc.endDate).format('YYYY.MM.DD')}
-                          </span>
+                          <span className="text-3 font-normal"> — {dayjs(doc.endDate).format('YYYY.MM.DD')}</span>
                         </span>
                       )}
                     </td>
@@ -174,9 +167,9 @@ export default function DayOffHistoryContents() {
                     {/* 비고 */}
                     <td className="min-w-0 px-4 py-4">
                       <div className="space-y-1">
-                        {doc.reason && <p className="text-base-content/70 truncate">{doc.reason}</p>}
+                        {doc.reason && <p className="text-2 truncate">{doc.reason}</p>}
                         {doc.usedCompLeaveEntries?.map((entry) => (
-                          <p key={`comp-entry-${entry.id}`} className="text-base-content/40 text-xs">
+                          <p key={`comp-entry-${entry.id}`} className="text-3 text-xs">
                             {dayjs(entry.compLeaveEntry.effectiveDate).format('YYYY-MM-DD')} —{' '}
                             {entry.compLeaveEntry.contents}
                           </p>
@@ -201,15 +194,13 @@ export default function DayOffHistoryContents() {
 
 function VacationTypeBadge({ type }: { type: VacationType }) {
   const t = useTranslations('dayoff.used');
-  const base = 'inline-flex h-[22px] items-center rounded-full px-2.5 text-[11px] font-semibold';
-
   switch (type) {
     case 'COMPENSATORY':
-      return <span className={cx(base, 'bg-warning/15 text-warning')}>{t('type.compensatory')}</span>;
+      return <Badge variant="wait">{t('type.compensatory')}</Badge>;
     case 'OFFICIAL':
-      return <span className={cx(base, 'bg-base-content/10 text-base-content/60')}>{t('type.official')}</span>;
+      return <Badge variant="neutral">{t('type.official')}</Badge>;
     default:
-      return <span className={cx(base, 'bg-info/15 text-info')}>{t('type.general')}</span>;
+      return <Badge variant="primary">{t('type.general')}</Badge>;
   }
 }
 
@@ -237,27 +228,27 @@ function SkeletonRows() {
   return (
     <>
       {widths.map((w, i) => (
-        <tr key={i} className="border-b border-white/[0.04] last:border-b-0">
+        <tr key={i} className="border-soft border-b last:border-b-0">
           <td className="px-4 py-4">
-            <div className={`h-3.5 animate-pulse rounded bg-white/5 ${w.no}`} />
+            <div className={`bg-base-300 h-3.5 animate-pulse rounded ${w.no}`} />
           </td>
           <td className="px-4 py-4">
-            <div className={`h-[22px] animate-pulse rounded-full bg-white/5 ${w.type}`} />
+            <div className={`bg-base-300 h-[22px] animate-pulse rounded-md ${w.type}`} />
           </td>
           <td className="px-4 py-4">
-            <div className={`h-3.5 animate-pulse rounded bg-white/5 ${w.sub}`} />
+            <div className={`bg-base-300 h-3.5 animate-pulse rounded ${w.sub}`} />
           </td>
           <td className="px-4 py-4">
-            <div className={`h-3.5 animate-pulse rounded bg-white/5 ${w.date}`} />
+            <div className={`bg-base-300 h-3.5 animate-pulse rounded ${w.date}`} />
           </td>
           <td className="px-4 py-4">
-            <div className={`h-3.5 animate-pulse rounded bg-white/5 ${w.days}`} />
+            <div className={`bg-base-300 h-3.5 animate-pulse rounded ${w.days}`} />
           </td>
           <td className="px-4 py-4">
-            <div className={`h-3.5 animate-pulse rounded bg-white/5 ${w.note}`} />
+            <div className={`bg-base-300 h-3.5 animate-pulse rounded ${w.note}`} />
           </td>
           <td className="px-4 py-4">
-            <div className="h-[22px] w-16 animate-pulse rounded-full bg-white/5" />
+            <div className="bg-base-300 h-[22px] w-16 animate-pulse rounded-md" />
           </td>
         </tr>
       ))}

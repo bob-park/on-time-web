@@ -14,7 +14,7 @@ interface DayOffViewContentsProps {
 // 본값(연차) white / 괄호 보상값 warning, 둘 다 0 이면 "—" muted
 function DualValue({ value, comp, valueClassName }: { value: number; comp: number; valueClassName?: string }) {
   if (value === 0 && comp === 0) {
-    return <span className="text-base-content/30">—</span>;
+    return <span className="text-3">—</span>;
   }
   return (
     <>
@@ -31,22 +31,20 @@ export default function DayOffViewContents({ order, user, usedVacations }: DayOf
   const remainingComp = (user.leaveEntry?.totalCompLeaveDays ?? 0) - (user.leaveEntry?.usedCompLeaveDays ?? 0);
 
   return (
-    <tr className="group border-base-content/[0.06] hover:bg-base-content/[0.04] border-b transition-colors duration-100 last:border-b-0">
+    <tr className="group border-soft hover:bg-base-200 border-b transition-colors duration-100 last:border-b-0">
       {/* 순번 (sticky) */}
-      <td className="bg-base-300 text-base-content/40 sticky left-0 z-10 px-3 py-3 text-center whitespace-nowrap group-hover:bg-[#232323]">
+      <td className="bg-base-100 text-3 group-hover:bg-base-200 sticky left-0 z-10 px-3 py-3 text-center whitespace-nowrap">
         {order}
       </td>
 
       {/* 성명 (sticky) */}
-      <td className="bg-base-300 border-base-content/[0.08] sticky left-[48px] z-10 border-r px-3 py-3 whitespace-nowrap group-hover:bg-[#232323]">
+      <td className="bg-base-100 border-soft group-hover:bg-base-200 sticky left-[48px] z-10 border-r px-3 py-3 whitespace-nowrap">
         <div className="font-bold">{user.username}</div>
-        {user.groups?.[0]?.group.name && (
-          <div className="text-base-content/50 mt-0.5 text-xs">{user.groups?.[0]?.group.name}</div>
-        )}
+        {user.groups?.[0]?.group.name && <div className="text-3 mt-0.5 text-xs">{user.groups?.[0]?.group.name}</div>}
       </td>
 
       {/* 입사일 */}
-      <td className="text-base-content/50 px-3 py-3 text-center whitespace-nowrap">
+      <td className="text-3 px-3 py-3 text-center whitespace-nowrap">
         {user.employment ? dayjs(user.employment.effectiveDate).format('YYYY.MM.DD') : '—'}
       </td>
 
@@ -56,7 +54,7 @@ export default function DayOffViewContents({ order, user, usedVacations }: DayOf
       </td>
 
       {/* 사용가능 */}
-      <td className={cx(cellClass, 'border-base-content/[0.08] border-r')}>
+      <td className={cx(cellClass, 'border-soft border-r')}>
         <DualValue value={user.leaveEntry?.totalLeaveDays ?? 0} comp={user.leaveEntry?.totalCompLeaveDays ?? 0} />
       </td>
 
@@ -71,7 +69,7 @@ export default function DayOffViewContents({ order, user, usedVacations }: DayOf
       })}
 
       {/* 합계 */}
-      <td className={cx(cellClass, 'border-base-content/[0.08] border-l')}>
+      <td className={cx(cellClass, 'border-soft border-l')}>
         <DualValue
           value={user.leaveEntry?.usedLeaveDays ?? 0}
           comp={user.leaveEntry?.usedCompLeaveDays ?? 0}

@@ -7,7 +7,7 @@ import CardPageTitle from '@/shared/components/CardPageTitle';
 export default function NotFound() {
   return (
     <div className="flex size-full flex-col items-center justify-center gap-2">
-      <div className="text-base-content/30 mt-36 flex cursor-default flex-row items-center justify-center gap-4 text-9xl font-bold select-none">
+      <div className="text-3 mt-36 flex cursor-default flex-row items-center justify-center gap-4 text-9xl font-bold select-none">
         <CardPageTitle placeholder="Oops">
           <span>4</span>
         </CardPageTitle>
@@ -26,9 +26,9 @@ export default function NotFound() {
       <div className="mt-5">
         <p className="text-xl font-medium">
           아마도 페이지가
-          <span className="text-base-content/70 px-1 text-2xl font-bold">💥부서지</span>
+          <span className="text-2 px-1 text-2xl font-bold">💥부서지</span>
           거나,
-          <span className="text-base-content/70 px-1 text-2xl font-bold">💣폭파</span>
+          <span className="text-2 px-1 text-2xl font-bold">💣폭파</span>
           되었어요!!
         </p>
       </div>

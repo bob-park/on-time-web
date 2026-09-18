@@ -6,6 +6,7 @@ import { AttendanceRecord, AttendanceStatus, DayOffType } from '@/domain/attenda
 import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
 import { useGetAttendanceRecord } from '@/domain/attendance/queries/attendanceRecord';
 import { useUser } from '@/domain/users/queries/user';
+import Badge, { BadgeVariant } from '@/shared/components/Badge';
 import { isIncludeTime } from '@/utils/dataUtils';
 import { getDuration } from '@/utils/parse';
 
@@ -34,9 +35,9 @@ function getCategoryKey(date: Date, dayOffType?: DayOffType): CategoryKey {
   return 'work';
 }
 
-function getCategoryBadgeStyle(category: CategoryKey): string {
-  if (category === 'dayOff' || category === 'halfDayOff') return 'bg-info/15 text-info';
-  return 'bg-base-content/10 text-base-content/60';
+function getCategoryBadgeVariant(category: CategoryKey): BadgeVariant {
+  if (category === 'dayOff' || category === 'halfDayOff') return 'primary';
+  return 'neutral';
 }
 
 interface WorkingRecordRowProps {
@@ -91,18 +92,18 @@ const WorkingRecordRow = memo(function WorkingRecordRow({
   );
   const isUnder = status === 'WARNING';
 
-  const emptyCell = <span className="text-base-content/40">—</span>;
+  const emptyCell = <span className="text-3">—</span>;
 
   return (
     <tr
-      className={cx('border-b border-white/[0.04] transition-colors duration-100 hover:bg-white/[0.04]', {
-        'bg-primary/[0.07]': isToday,
+      className={cx('border-soft hover:bg-base-200 border-b transition-colors duration-100', {
+        'bg-primary-soft': isToday,
       })}
     >
       {/* DATE / DAY */}
       <td className="px-4 py-3.5">
         <span className="text-sm font-bold">{dayjs(date).format('MM.DD')}</span>
-        <span className="text-base-content/60 ml-1.5 text-[13px]">
+        <span className="text-2 ml-1.5 text-[13px]">
           {dayjs(date).locale('ko').format('dd')}
           {isToday && ` · ${t('todaySuffix')}`}
         </span>
@@ -110,23 +111,14 @@ const WorkingRecordRow = memo(function WorkingRecordRow({
 
       {/* CATEGORY */}
       <td className="px-4 py-3.5">
-        <span
-          className={cx(
-            'inline-flex h-[22px] items-center rounded-full px-2.5 text-[11px] font-semibold',
-            getCategoryBadgeStyle(categoryKey),
-          )}
-        >
-          {categoryLabel}
-        </span>
+        <Badge variant={getCategoryBadgeVariant(categoryKey)}>{categoryLabel}</Badge>
       </td>
 
       {/* CLOCK-IN */}
       <td className="px-4 py-3.5 text-sm">{clockInTime ? dayjs(clockInTime).format('HH:mm') : emptyCell}</td>
 
       {/* TARGET CLOCK-OUT */}
-      <td className="text-base-content/60 px-4 py-3.5 text-[13px]">
-        {leaveWorkAt ? dayjs(leaveWorkAt).format('HH:mm') : emptyCell}
-      </td>
+      <td className="text-2 px-4 py-3.5 text-[13px]">{leaveWorkAt ? dayjs(leaveWorkAt).format('HH:mm') : emptyCell}</td>
 
       {/* CLOCK-OUT */}
       <td className="px-4 py-3.5 text-sm">
@@ -142,13 +134,13 @@ const WorkingRecordRow = memo(function WorkingRecordRow({
       {/* WORK DURATION */}
       <td className="px-4 py-3.5">
         <div className="flex items-center gap-2.5">
-          <span className="inline-block h-1 w-[120px] overflow-hidden rounded bg-white/15">
+          <span className="bg-base-300 inline-block h-1 w-[120px] overflow-hidden rounded">
             <span
               className={cx('block h-full rounded', isUnder ? 'bg-warning' : 'bg-primary')}
               style={{ width: `${durationPercent}%` }}
             />
           </span>
-          <span className="text-base-content/60 text-[13px]">{workDuration > 0 ? parseHours(workDuration) : '—'}</span>
+          <span className="text-2 text-[13px]">{workDuration > 0 ? parseHours(workDuration) : '—'}</span>
         </div>
       </td>
 
@@ -158,7 +150,7 @@ const WorkingRecordRow = memo(function WorkingRecordRow({
           <span
             className={cx(
               'inline-block h-2 w-2 rounded-full',
-              status === 'SUCCESS' ? 'bg-primary' : status === 'WARNING' ? 'bg-error' : 'bg-white/25',
+              status === 'SUCCESS' ? 'bg-primary' : status === 'WARNING' ? 'bg-error' : 'bg-base-300',
             )}
           />
         )}
@@ -223,11 +215,11 @@ export default function WorkingRecordContents() {
   };
 
   return (
-    <div className="animate-fade-up bg-base-300 w-full rounded-lg p-5 delay-225">
+    <div className="animate-fade-up bg-base-100 border-base-300 rounded-box shadow-whisper w-full border p-5 delay-225">
       {/* section header */}
       <div className="mb-4 flex items-center justify-between">
         <span className="text-lg font-semibold">{t('sectionTitle')}</span>
-        <span className="text-base-content/60 text-[13px]">{t('weekCount', { count: dataList.length })}</span>
+        <span className="text-2 text-[13px]">{t('weekCount', { count: dataList.length })}</span>
       </div>
 
       {/* table */}
@@ -235,25 +227,25 @@ export default function WorkingRecordContents() {
         <table className="w-full border-collapse text-sm">
           <thead>
             <tr>
-              <th className="text-base-content/60 border-b border-white/10 px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
+              <th className="text-2 border-soft border-b px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
                 {t('colDate')}
               </th>
-              <th className="text-base-content/60 border-b border-white/10 px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
+              <th className="text-2 border-soft border-b px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
                 {t('colCategory')}
               </th>
-              <th className="text-base-content/60 border-b border-white/10 px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
+              <th className="text-2 border-soft border-b px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
                 {t('colClockIn')}
               </th>
-              <th className="text-base-content/60 border-b border-white/10 px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
+              <th className="text-2 border-soft border-b px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
                 {t('colTargetClockOut')}
               </th>
-              <th className="text-base-content/60 border-b border-white/10 px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
+              <th className="text-2 border-soft border-b px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
                 {t('colClockOut')}
               </th>
-              <th className="text-base-content/60 border-b border-white/10 px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
+              <th className="text-2 border-soft border-b px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
                 {t('colWorkTime')}
               </th>
-              <th className="text-base-content/60 border-b border-white/10 px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
+              <th className="text-2 border-soft border-b px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase">
                 {t('colStatus')}
               </th>
             </tr>

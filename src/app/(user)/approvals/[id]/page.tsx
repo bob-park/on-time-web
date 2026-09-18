@@ -33,8 +33,8 @@ export default async function ApprovalDetailPage({ params }: { params: Promise<{
 
         {/* document info */}
         <div className="w-full">
-          <div className="bg-base-300 flex w-full items-center justify-center rounded-lg p-6">
-            <div className="aspect-[1/1.414] w-[1000px] shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+          <div className="bg-base-100 border-base-300 rounded-box shadow-whisper flex w-full items-center justify-center border p-6">
+            <div className="aspect-[1/1.414] w-[1000px] shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
               {res.document.type === 'VACATION' && (
                 <VacationDocument id="approval_document_vacation_id" document={res.document as VacationDocumentDto} />
               )}

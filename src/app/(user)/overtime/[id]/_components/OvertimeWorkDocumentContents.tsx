@@ -70,7 +70,7 @@ export default function OvertimeWorkDocumentContents({ id }: OvertimeWorkDocumen
     <>
       <div className="flex size-full flex-col items-center justify-center gap-4">
         {/* 현재 결재 라인 상태 정보 */}
-        <div className="bg-base-300 flex w-full flex-col gap-5 rounded-lg p-6">
+        <div className="bg-base-100 border-base-300 rounded-box shadow-whisper flex w-full flex-col gap-5 border p-6">
           <h3 className="text-lg font-semibold">{t('statusTitle')}</h3>
           <div className="w-full py-2">
             <ApprovalLines
@@ -87,7 +87,7 @@ export default function OvertimeWorkDocumentContents({ id }: OvertimeWorkDocumen
         </div>
 
         {/* 휴가계 다운로드 버튼 */}
-        <div className="bg-base-300 flex w-full flex-row items-center justify-center gap-6 rounded-lg p-6">
+        <div className="bg-base-100 border-base-300 rounded-box shadow-whisper flex w-full flex-row items-center justify-center gap-6 border p-6">
           <div className="flex-1">
             <button
               type="button"
@@ -143,8 +143,8 @@ export default function OvertimeWorkDocumentContents({ id }: OvertimeWorkDocumen
         </div>
 
         {/* 휴일 근무 보고서 정보 */}
-        <div className="bg-base-300 flex w-full items-center justify-center rounded-lg p-6">
-          <div className="aspect-[1/1.414] w-[1000px] shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+        <div className="bg-base-100 border-base-300 rounded-box shadow-whisper flex w-full items-center justify-center border p-6">
+          <div className="aspect-[1/1.414] w-[1000px] shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
             {overTimeWorkDocument && <OverTimeWorkDocument id={DEFAULT_DOCUMENT_ID} document={overTimeWorkDocument} />}
           </div>
         </div>

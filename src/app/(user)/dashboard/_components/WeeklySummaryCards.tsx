@@ -9,6 +9,7 @@ import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimePr
 import { useGetAttendanceRecord } from '@/domain/attendance/queries/attendanceRecord';
 import { useUser } from '@/domain/users/queries/user';
 import { useUserCompLeaveEntries } from '@/domain/users/queries/userCompLeaveEntry';
+import Badge from '@/shared/components/Badge';
 import StatCard from '@/shared/components/StatCard';
 import { isIncludeTime } from '@/utils/dataUtils';
 import { getDuration } from '@/utils/parse';
@@ -67,34 +68,29 @@ export default function WeeklySummaryCards() {
   return (
     <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-3">
       {/* Weekly Progress — Hero Card */}
-      <div className="animate-fade-up to-base-200 rounded-lg bg-gradient-to-br from-[#14371f] p-7 shadow-[0_8px_8px_rgba(0,0,0,0.3)] lg:col-span-2">
+      <div className="animate-fade-up bg-base-100 border-base-300 rounded-box shadow-whisper border p-7 lg:col-span-2">
         <div className="flex items-center justify-between gap-3">
-          <p className="text-base-content/60 text-xs font-semibold tracking-widest uppercase">{t('heroLabel')}</p>
-          <span
-            className={cx(
-              'inline-flex h-[22px] items-center gap-1.5 rounded-full px-2.5 text-[11px] font-semibold',
-              isOnTrack ? 'bg-primary/15 text-primary' : 'bg-warning/15 text-warning',
-            )}
-          >
+          <p className="text-2 text-xs font-semibold tracking-widest uppercase">{t('heroLabel')}</p>
+          <Badge variant={isOnTrack ? 'primary' : 'wait'}>
             <span className={cx('h-2 w-2 rounded-full', isOnTrack ? 'bg-primary' : 'bg-warning')} />
             {isOnTrack ? t('statusOnTrack') : t('statusBehind')}
-          </span>
+          </Badge>
         </div>
 
         <div className="mt-3.5 mb-1 text-[44px] leading-none font-bold tracking-tight">
           {cumulativeHours}
-          <span className="text-base-content/60 text-xl font-normal">h</span>
-          <span className="text-base-content/60 text-base font-normal"> / {WEEKLY_TOTAL_HOURS}h</span>
+          <span className="text-2 text-xl font-normal">h</span>
+          <span className="text-2 text-base font-normal"> / {WEEKLY_TOTAL_HOURS}h</span>
         </div>
 
         <div className="mt-5 space-y-3.5">
           {/* Cumulative work hours */}
           <div>
             <div className="mb-2 flex items-center justify-between text-xs">
-              <span className="text-base-content/60">{t('cumulativeHours')}</span>
+              <span className="text-2">{t('cumulativeHours')}</span>
               <span className="font-bold">{progressPercent}%</span>
             </div>
-            <div className="h-2 w-full overflow-hidden rounded bg-white/10">
+            <div className="bg-base-300 h-2 w-full overflow-hidden rounded">
               <div
                 className="animate-progress bg-primary h-full origin-left rounded"
                 style={{ width: `${progressPercent}%` }}
@@ -105,11 +101,11 @@ export default function WeeklySummaryCards() {
           {/* Expected work hours */}
           <div>
             <div className="mb-2 flex items-center justify-between text-xs">
-              <span className="text-base-content/60">{t('expectedHours')}</span>
-              <span className="text-base-content/60 font-bold">{t('expectedTarget')}</span>
+              <span className="text-2">{t('expectedHours')}</span>
+              <span className="text-2 font-bold">{t('expectedTarget')}</span>
             </div>
-            <div className="h-2 w-full overflow-hidden rounded bg-white/10">
-              <div className="h-full w-full rounded bg-white/30" />
+            <div className="bg-base-300 h-2 w-full overflow-hidden rounded">
+              <div className="bg-neutral h-full w-full rounded" />
             </div>
           </div>
         </div>
@@ -123,7 +119,7 @@ export default function WeeklySummaryCards() {
           unit="h"
           caption={t('compLeaveCaption')}
         >
-          <Link href="/dayoff/used" className="btn btn-outline btn-sm mt-[18px] rounded-full">
+          <Link href="/dayoff/used" className="btn btn-outline btn-sm mt-[18px]">
             {t('viewUsage')}
           </Link>
         </StatCard>

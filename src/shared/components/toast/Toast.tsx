@@ -22,17 +22,25 @@ interface ToastIconProps {
 function ToastIcon({ level }: ToastIconProps) {
   switch (level) {
     case 'warning':
-      return <IoWarning className="h-6 w-6 text-orange-600" />;
+      return <IoWarning className="text-warning h-6 w-6" />;
     case 'success':
-      return <FaCheckCircle className="h-6 w-6 text-green-500" />;
+      return <FaCheckCircle className="text-success h-6 w-6" />;
     case 'error':
-      return <RiErrorWarningFill className="h-6 w-6 text-red-500" />;
+      return <RiErrorWarningFill className="text-error h-6 w-6" />;
     case 'message':
-      return <TbMessageFilled className="h-6 w-6 text-black" />;
+      return <TbMessageFilled className="text-base-content h-6 w-6" />;
     default:
-      return <RiInformationLine className="h-6 w-6 text-sky-500" />;
+      return <RiInformationLine className="text-info h-6 w-6" />;
   }
 }
+
+const ACCENT_BORDER: Record<MessageLevel, string> = {
+  warning: 'border-l-warning',
+  success: 'border-l-success',
+  error: 'border-l-error',
+  message: 'border-l-neutral',
+  info: 'border-l-info',
+};
 
 export default function Toast({ message, timeout, onRemove }: ToastProps) {
   // useState
@@ -60,7 +68,13 @@ export default function Toast({ message, timeout, onRemove }: ToastProps) {
         { 'translate-y-0 opacity-100': isShow },
         { '-translate-y-3 opacity-0': !isShow },
         'alert',
-        'shadow-lg',
+        'bg-base-100',
+        'border-base-300',
+        'rounded-box',
+        'shadow-whisper',
+        'border',
+        'border-l-4',
+        ACCENT_BORDER[message.level],
         'flex-none',
         'w-[430px]',
         'transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
@@ -71,7 +85,7 @@ export default function Toast({ message, timeout, onRemove }: ToastProps) {
       <div>
         <h3 className="font-bold">{message.message}</h3>
       </div>
-      <button className="btn btn-circle btn-sm" type="button" onClick={handleRemove}>
+      <button className="btn btn-ghost btn-sm" type="button" onClick={handleRemove}>
         <IoClose className="h-6 w-6" />
       </button>
     </div>

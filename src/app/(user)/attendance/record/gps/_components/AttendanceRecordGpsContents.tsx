@@ -107,9 +107,7 @@ export default function AttendanceRecordGpsContents() {
 
       {/* (b) 출 / 퇴근 */}
       <div>
-        <div className="text-base-content/60 mb-2.5 text-xs font-semibold tracking-wider uppercase">
-          {t('gps.typeLabel')}
-        </div>
+        <div className="text-2 mb-2.5 text-xs font-semibold tracking-wider uppercase">{t('gps.typeLabel')}</div>
         <div className="flex gap-3">
           <button
             className={cx('btn btn-lg flex-1', selectType === 'CLOCK_IN' ? 'btn-primary' : 'btn-outline')}
@@ -134,27 +132,27 @@ export default function AttendanceRecordGpsContents() {
       )}
 
       {!isLoading && currentCheck && (
-        <div className="bg-base-300 rounded-lg px-5">
-          <div className="divide-y divide-white/10">
+        <div className="bg-base-100 border-base-300 rounded-box shadow-whisper border px-5">
+          <div className="divide-base-300 divide-y">
             <div className="flex items-center justify-between py-2.5">
-              <span className="text-base-content/60 text-[13px]">{t('workingDate')}</span>
+              <span className="text-2 text-[13px]">{t('workingDate')}</span>
               <span className="text-sm font-bold">
                 {dayjs(currentCheck.workingDate).format('YYYY.MM.DD')} (
                 {getDaysOfWeek(dayjs(currentCheck.workingDate).day())})
               </span>
             </div>
             <div className="flex items-center justify-between py-2.5">
-              <span className="text-base-content/60 text-[13px]">{t('gps.createdDate')}</span>
+              <span className="text-2 text-[13px]">{t('gps.createdDate')}</span>
               <span className="text-sm font-bold">{dayjs(currentCheck.createdDate).format('HH:mm:ss')}</span>
             </div>
             <div className="flex items-center justify-between py-2.5">
-              <span className="text-base-content/60 text-[13px]">{t('gps.expiredDate')}</span>
+              <span className="text-2 text-[13px]">{t('gps.expiredDate')}</span>
               <span className="text-sm font-bold">{dayjs(currentCheck.expiredDate).format('HH:mm:ss')}</span>
             </div>
           </div>
           <div className="flex items-center gap-2 py-3">
             <span className="bg-primary size-2 animate-pulse rounded-full"></span>
-            <span className="text-base-content/60 text-xs">{t('gps.autoRefresh')}</span>
+            <span className="text-2 text-xs">{t('gps.autoRefresh')}</span>
           </div>
         </div>
       )}
@@ -218,21 +216,21 @@ function AttendanceRecordResult({ result, isError }: AttendanceRecordResultProps
   }
 
   return (
-    <div className="bg-base-300 animate-fade-up w-full rounded-lg p-5">
+    <div className="bg-base-100 border-base-300 rounded-box shadow-whisper animate-fade-up w-full border p-5">
       <div className="flex items-center gap-4">
         {/* icon */}
         {showSleep && (
-          <span className="bg-base-100 text-base-content/70 flex size-12 flex-none items-center justify-center rounded-full text-xl">
+          <span className="bg-base-200 text-2 flex size-12 flex-none items-center justify-center rounded-full text-xl">
             <GiNightSleep />
           </span>
         )}
         {isError && (
-          <span className="bg-error text-error-content flex size-12 flex-none items-center justify-center rounded-full text-xl shadow-[0_0_24px_rgba(243,114,127,0.3)]">
+          <span className="bg-error text-error-content shadow-whisper flex size-12 flex-none items-center justify-center rounded-full text-xl">
             <FaTimes />
           </span>
         )}
         {showSuccess && !isError && (
-          <span className="bg-primary text-primary-content flex size-12 flex-none items-center justify-center rounded-full text-xl shadow-[0_0_24px_rgba(30,215,96,0.3)]">
+          <span className="bg-primary text-primary-content shadow-whisper flex size-12 flex-none items-center justify-center rounded-full text-xl">
             <FaCheck />
           </span>
         )}
@@ -246,7 +244,7 @@ function AttendanceRecordResult({ result, isError }: AttendanceRecordResultProps
                 {result.clockInTime && !result.clockOutTime && t('clockInDone')}
                 {result.clockInTime && result.clockOutTime && t('clockOutDone')}
               </div>
-              <div className="text-base-content/60 mt-1 text-[13px]">
+              <div className="text-2 mt-1 text-[13px]">
                 {result.clockOutTime ? (
                   <>
                     {t('clockOutTime')}{' '}

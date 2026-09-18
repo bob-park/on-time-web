@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 
 import { useCreateOverTimeWorkDocument } from '@/domain/document/queries/overtime';
 import { User } from '@/domain/users/apis/users.dto';
+import Badge from '@/shared/components/Badge';
 import useToast from '@/shared/hooks/useToast';
 import { getDaysOfWeek } from '@/utils/parse';
 
@@ -33,16 +34,16 @@ function toDate(date: Date, hour: number, minute: number) {
   return dayjs(date).hour(hour).minute(minute).second(0).millisecond(0).toDate();
 }
 
-const fieldLabel = 'w-20 flex-none pt-2.5 text-xs font-semibold uppercase tracking-wider text-base-content/50';
+const fieldLabel = 'w-20 flex-none pt-2.5 text-xs font-semibold uppercase tracking-wider text-3';
 
 const pillControl =
-  'flex h-11 items-center gap-2.5 rounded-full bg-base-300 px-5 text-sm text-base-content shadow-[inset_0_0_0_1px_#3a3a3a] transition-colors duration-150 hover:bg-[#2e2e2e]';
+  'bg-base-100 border-base-300 flex h-11 items-center gap-2.5 rounded-[10px] border px-5 text-sm text-base-content transition-colors duration-150 hover:bg-base-200';
 
 const pillInput =
-  'h-11 rounded-full bg-base-300 px-5 text-sm text-base-content placeholder:text-base-content/40 shadow-[inset_0_0_0_1px_#3a3a3a] transition-shadow duration-150 focus:shadow-[inset_0_0_0_1px_#1ed760] focus:outline-none';
+  'bg-base-100 border-base-300 h-11 rounded-[10px] border px-5 text-sm text-base-content placeholder:text-3 transition-colors duration-150 focus:border-primary focus:outline-none';
 
 const selectPill =
-  'h-11 rounded-full bg-base-300 px-4 text-sm text-base-content shadow-[inset_0_0_0_1px_#3a3a3a] focus:outline-none';
+  'bg-base-100 border-base-300 h-11 rounded-[10px] border px-4 text-sm text-base-content focus:outline-none';
 
 export default function OvertimeRequestContents() {
   const t = useTranslations('overtime.request');
@@ -150,11 +151,11 @@ export default function OvertimeRequestContents() {
 
   return (
     <>
-      <div className="bg-base-200 rounded-2xl border border-white/5 shadow-sm">
+      <div className="bg-base-100 border-base-300 rounded-box shadow-whisper border">
         {/* Card header */}
         <div className="flex items-center justify-between px-6 pt-5 pb-1">
           <span className="text-base-content text-base font-semibold">{t('formTitle')}</span>
-          <span className="text-base-content/40 text-[13px]">{t('formHint')}</span>
+          <span className="text-3 text-[13px]">{t('formHint')}</span>
         </div>
 
         {/* Form zone */}
@@ -166,7 +167,7 @@ export default function OvertimeRequestContents() {
               <button
                 type="button"
                 aria-label={t('clearAria')}
-                className="text-base-content/50 hover:text-base-content flex h-8 w-8 flex-none items-center justify-center rounded-full transition-colors duration-100 hover:bg-white/10"
+                className="text-3 hover:text-base-content hover:bg-base-200 flex h-8 w-8 flex-none items-center justify-center rounded-[10px] transition-colors duration-100"
                 onClick={() => {
                   setIsRegisteredUser(undefined);
                   setUsername(undefined);
@@ -179,10 +180,10 @@ export default function OvertimeRequestContents() {
                 type="button"
                 aria-pressed={isRegisteredUser === true}
                 className={cx(
-                  'h-8 rounded-full px-4 text-sm font-medium transition-colors duration-100',
+                  'h-8 rounded-[10px] px-4 text-sm font-medium transition-colors duration-100',
                   isRegisteredUser === true
                     ? 'bg-primary text-primary-content'
-                    : 'bg-base-300 text-base-content/60 hover:bg-[#2e2e2e]',
+                    : 'bg-base-200 text-2 hover:bg-base-300',
                 )}
                 onClick={() => {
                   setIsRegisteredUser(true);
@@ -196,10 +197,10 @@ export default function OvertimeRequestContents() {
                 type="button"
                 aria-pressed={isRegisteredUser === false}
                 className={cx(
-                  'h-8 rounded-full px-4 text-sm font-medium transition-colors duration-100',
+                  'h-8 rounded-[10px] px-4 text-sm font-medium transition-colors duration-100',
                   isRegisteredUser === false
                     ? 'bg-primary text-primary-content'
-                    : 'bg-base-300 text-base-content/60 hover:bg-[#2e2e2e]',
+                    : 'bg-base-200 text-2 hover:bg-base-300',
                 )}
                 onClick={() => {
                   setIsRegisteredUser(false);
@@ -218,8 +219,8 @@ export default function OvertimeRequestContents() {
               <span className={fieldLabel}>{t('personLabel')}</span>
               {isRegisteredUser ? (
                 <button type="button" className={pillControl} onClick={() => setShowUser(true)}>
-                  <span className="text-base-content/50">{t('selectPerson')} —</span>
-                  <span className={cx(userUniqueId ? 'text-base-content' : 'text-base-content/40')}>
+                  <span className="text-3">{t('selectPerson')} —</span>
+                  <span className={cx(userUniqueId ? 'text-base-content' : 'text-3')}>
                     {username || t('selectPersonPlaceholder')}
                   </span>
                 </button>
@@ -257,11 +258,11 @@ export default function OvertimeRequestContents() {
                     {dayjs(date).format('YYYY-MM-DD')} ({getDaysOfWeek(dayjs(date).day())}) 📅
                   </span>
                 ) : (
-                  <span className="text-base-content/40">{t('selectDate')} 📅</span>
+                  <span className="text-3">{t('selectDate')} 📅</span>
                 )}
               </button>
               {showDatePicker && (
-                <div className="bg-base-200 absolute top-full left-0 z-50 mt-2 rounded-xl border border-white/10 p-2 shadow-2xl">
+                <div className="bg-base-100 border-base-300 shadow-whisper absolute top-full left-0 z-50 mt-2 rounded-xl border p-2">
                   <DayPicker
                     className="rdp-theme"
                     locale={ko}
@@ -284,7 +285,7 @@ export default function OvertimeRequestContents() {
           <div className="flex items-start gap-4">
             <span className={fieldLabel}>{t('workTimeLabel')}</span>
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-base-content/40 text-xs">{t('start')}</span>
+              <span className="text-3 text-xs">{t('start')}</span>
               <select value={startHour} onChange={(e) => setStartHour(Number(e.target.value))} className={selectPill}>
                 {Array.from({ length: 24 }, (_, i) => (
                   <option key={i} value={i}>
@@ -300,8 +301,8 @@ export default function OvertimeRequestContents() {
                 <option value={0}>{t('minuteUnit', { value: '00' })}</option>
                 <option value={30}>{t('minuteUnit', { value: '30' })}</option>
               </select>
-              <span className="text-base-content/40 text-sm">{t('timeSep')}</span>
-              <span className="text-base-content/40 text-xs">{t('end')}</span>
+              <span className="text-3 text-sm">{t('timeSep')}</span>
+              <span className="text-3 text-xs">{t('end')}</span>
               <select value={endHour} onChange={(e) => setEndHour(Number(e.target.value))} className={selectPill}>
                 {Array.from({ length: 24 }, (_, i) => (
                   <option key={i} value={i}>
@@ -326,7 +327,7 @@ export default function OvertimeRequestContents() {
                 checked={isDayOff}
                 onChange={(e) => setIsDayOff(e.target.checked)}
               />
-              <span className="text-base-content/70 text-sm">{t('compToggle')}</span>
+              <span className="text-2 text-sm">{t('compToggle')}</span>
             </div>
           </div>
 
@@ -337,7 +338,7 @@ export default function OvertimeRequestContents() {
         </div>
 
         {/* Divider */}
-        <hr className="border-white/5" />
+        <hr className="border-soft" />
 
         {/* List zone */}
         <div>
@@ -348,23 +349,23 @@ export default function OvertimeRequestContents() {
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
-                <tr className="border-b border-white/5">
-                  <th className="text-base-content/40 px-6 py-2 text-left text-[11px] font-semibold tracking-wider uppercase">
+                <tr className="border-soft border-b">
+                  <th className="text-3 px-6 py-2 text-left text-[11px] font-semibold tracking-wider uppercase">
                     {t('colDate')}
                   </th>
-                  <th className="text-base-content/40 px-4 py-2 text-left text-[11px] font-semibold tracking-wider uppercase">
+                  <th className="text-3 px-4 py-2 text-left text-[11px] font-semibold tracking-wider uppercase">
                     {t('colTime')}
                   </th>
-                  <th className="text-base-content/40 px-4 py-2 text-left text-[11px] font-semibold tracking-wider uppercase">
+                  <th className="text-3 px-4 py-2 text-left text-[11px] font-semibold tracking-wider uppercase">
                     {t('colPurpose')}
                   </th>
-                  <th className="text-base-content/40 px-4 py-2 text-left text-[11px] font-semibold tracking-wider uppercase">
+                  <th className="text-3 px-4 py-2 text-left text-[11px] font-semibold tracking-wider uppercase">
                     {t('colWorker')}
                   </th>
-                  <th className="text-base-content/40 px-4 py-2 text-left text-[11px] font-semibold tracking-wider uppercase">
+                  <th className="text-3 px-4 py-2 text-left text-[11px] font-semibold tracking-wider uppercase">
                     {t('colComp')}
                   </th>
-                  <th className="text-base-content/40 w-14 px-4 py-2 text-left text-[11px] font-semibold tracking-wider uppercase">
+                  <th className="text-3 w-14 px-4 py-2 text-left text-[11px] font-semibold tracking-wider uppercase">
                     {t('colDelete')}
                   </th>
                 </tr>
@@ -374,38 +375,36 @@ export default function OvertimeRequestContents() {
                   <tr>
                     <td colSpan={6} className="py-16 text-center">
                       <div className="flex flex-col items-center gap-2">
-                        <HiOutlineDocumentText className="text-base-content/20 size-10" />
-                        <p className="text-base-content/70 text-sm font-semibold">{t('emptyTitle')}</p>
-                        <p className="text-base-content/40 text-sm">{t('emptyDescription')}</p>
+                        <HiOutlineDocumentText className="text-3 size-10" />
+                        <p className="text-2 text-sm font-semibold">{t('emptyTitle')}</p>
+                        <p className="text-3 text-sm">{t('emptyDescription')}</p>
                       </div>
                     </td>
                   </tr>
                 ) : (
                   workTimes.map((wt, index) => (
-                    <tr key={index} className="h-[52px] border-b border-white/5 last:border-b-0 hover:bg-white/5">
+                    <tr key={index} className="hover:bg-base-200 border-soft h-[52px] border-b last:border-b-0">
                       <td className="text-base-content px-6 text-sm">
                         <span className="font-semibold">{dayjs(wt.startDate).format('MM.DD')}</span>{' '}
-                        <span className="text-base-content/50">{getDaysOfWeek(dayjs(wt.startDate).day())}</span>
+                        <span className="text-3">{getDaysOfWeek(dayjs(wt.startDate).day())}</span>
                       </td>
-                      <td className="text-base-content/70 px-4 text-sm">
+                      <td className="text-2 px-4 text-sm">
                         {dayjs(wt.startDate).format('HH:mm')} – {dayjs(wt.endDate).format('HH:mm')}
                       </td>
-                      <td className="text-base-content/70 px-4 text-sm">{wt.contents}</td>
-                      <td className="text-base-content/70 px-4 text-sm">{wt.username}</td>
+                      <td className="text-2 px-4 text-sm">{wt.contents}</td>
+                      <td className="text-2 px-4 text-sm">{wt.username}</td>
                       <td className="px-4">
                         {wt.isDayOff ? (
-                          <span className="bg-primary/15 text-primary rounded-full px-2.5 py-0.5 text-xs font-medium">
-                            {t('compApplied')}
-                          </span>
+                          <Badge variant="primary">{t('compApplied')}</Badge>
                         ) : (
-                          <span className="text-base-content/30">—</span>
+                          <span className="text-3">—</span>
                         )}
                       </td>
                       <td className="px-4">
                         <button
                           type="button"
                           aria-label={t('deleteAria')}
-                          className="text-base-content/50 hover:text-error flex h-7 w-7 items-center justify-center rounded-full transition-colors hover:bg-white/10"
+                          className="text-3 hover:text-error hover:bg-base-200 flex h-7 w-7 items-center justify-center rounded-[10px] transition-colors"
                           onClick={() => setWorkTimes((prev) => prev.filter((_, i) => i !== index))}
                         >
                           ×
@@ -420,7 +419,7 @@ export default function OvertimeRequestContents() {
         </div>
 
         {/* Submit zone */}
-        <div className="flex justify-end gap-3 border-t border-white/5 px-6 py-4">
+        <div className="border-soft flex justify-end gap-3 border-t px-6 py-4">
           <button type="button" className="btn btn-ghost" onClick={() => router.push('/documents')}>
             {t('cancel')}
           </button>

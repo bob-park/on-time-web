@@ -21,7 +21,7 @@ interface DocumentApprovalResultProps {
 }
 
 const thClass =
-  'text-base-content/60 border-b border-white/10 px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase';
+  'text-2 border-b border-soft px-4 py-2.5 text-left text-[11px] font-semibold tracking-[1.4px] uppercase';
 
 export default function DocumentApprovalResult({ items, isLoading }: DocumentApprovalResultProps) {
   const t = useTranslations('approvals');
@@ -67,7 +67,7 @@ const ApprovalRow = memo(function ApprovalRow({ item }: { item: ApprovalHistory 
 
   return (
     <tr
-      className="h-[52px] cursor-pointer border-b border-white/[0.04] transition-colors duration-100 last:border-b-0 hover:bg-white/[0.04]"
+      className="border-soft hover:bg-base-200 h-[52px] cursor-pointer border-b transition-colors duration-100 last:border-b-0"
       onClick={handleClick}
       role="button"
       tabIndex={0}
@@ -83,16 +83,16 @@ const ApprovalRow = memo(function ApprovalRow({ item }: { item: ApprovalHistory 
       </td>
       <td className="px-4">
         <div className="text-base-content text-sm">{item.document.user.username}</div>
-        <div className="text-base-content/50 text-xs">{item.document.user.position.name}</div>
+        <div className="text-3 text-xs">{item.document.user.position.name}</div>
       </td>
-      <td className="text-base-content/60 px-4 text-sm">
+      <td className="text-2 px-4 text-sm">
         {item.createdDate ? dayjs(item.createdDate).locale('ko').format('YYYY년 MM월 DD일') : '—'}
       </td>
       <td className="px-4 text-center">
         <button
           type="button"
           aria-label={t('moreAria')}
-          className="text-base-content/60 hover:text-base-content mx-auto flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-100 hover:bg-white/10"
+          className="text-2 hover:text-base-content hover:bg-base-200 mx-auto flex h-8 w-8 items-center justify-center rounded-[10px] transition-colors duration-100"
           onClick={(e) => {
             e.stopPropagation();
             handleClick();
@@ -116,25 +116,25 @@ function SkeletonRows() {
   return (
     <>
       {widths.map((w, i) => (
-        <tr key={i} className="h-[52px] border-b border-white/[0.04] last:border-b-0">
+        <tr key={i} className="border-soft h-[52px] border-b last:border-b-0">
           <td className="px-4">
-            <div className={`h-3.5 animate-pulse rounded bg-white/5 ${w.id}`} />
+            <div className={`bg-base-300 h-3.5 animate-pulse rounded ${w.id}`} />
           </td>
           <td className="px-4">
-            <div className={`h-5 animate-pulse rounded-full bg-white/5 ${w.type}`} />
+            <div className={`bg-base-300 h-5 animate-pulse rounded-md ${w.type}`} />
           </td>
           <td className="px-4">
-            <div className={`h-5 animate-pulse rounded-full bg-white/5 ${w.status}`} />
+            <div className={`bg-base-300 h-5 animate-pulse rounded-md ${w.status}`} />
           </td>
           <td className="px-4">
-            <div className={`mb-1 h-3.5 animate-pulse rounded bg-white/5 ${w.name}`} />
-            <div className={`h-3 animate-pulse rounded bg-white/5 ${w.pos}`} />
+            <div className={`bg-base-300 mb-1 h-3.5 animate-pulse rounded ${w.name}`} />
+            <div className={`bg-base-300 h-3 animate-pulse rounded ${w.pos}`} />
           </td>
           <td className="px-4">
-            <div className={`h-3.5 animate-pulse rounded bg-white/5 ${w.date}`} />
+            <div className={`bg-base-300 h-3.5 animate-pulse rounded ${w.date}`} />
           </td>
           <td className="px-4 text-center">
-            <div className="mx-auto h-8 w-8 animate-pulse rounded-full bg-white/5" />
+            <div className="bg-base-300 mx-auto h-8 w-8 animate-pulse rounded-[10px]" />
           </td>
         </tr>
       ))}
@@ -148,9 +148,9 @@ function EmptyState() {
     <tr>
       <td colSpan={6} className="py-16 text-center">
         <div className="flex flex-col items-center gap-2">
-          <HiOutlineDocumentText className="text-base-content/20 size-10" />
-          <p className="text-base-content/70 text-sm font-semibold">{t('emptyTitle')}</p>
-          <p className="text-base-content/50 text-sm">{t('emptyDescription')}</p>
+          <HiOutlineDocumentText className="text-3 size-10" />
+          <p className="text-2 text-sm font-semibold">{t('emptyTitle')}</p>
+          <p className="text-3 text-sm">{t('emptyDescription')}</p>
         </div>
       </td>
     </tr>

@@ -65,19 +65,19 @@ export default function SelectUserCompLeaveEntriesModal({
 
   return (
     <dialog ref={ref} className="modal" onKeyDownCapture={handleKeyboardDown}>
-      <div className="modal-box bg-base-200 max-w-5xl">
+      <div className="modal-box bg-base-100 border-base-300 rounded-box shadow-whisper max-w-5xl border">
         {/* header */}
         <h3 className="text-base-content text-lg font-bold">{t('modalTitle')}</h3>
 
         {/* content */}
         <div className="mt-4 flex flex-col items-start justify-center gap-4">
-          <p className="text-base-content/70 text-sm">{t('modalDescription')}</p>
+          <p className="text-2 text-sm">{t('modalDescription')}</p>
 
-          <div className="bg-base-300 w-full overflow-x-auto rounded-lg">
+          <div className="bg-base-200 border-base-300 w-full overflow-x-auto rounded-lg border">
             <table className="table">
               {/* head */}
               <thead>
-                <tr className="text-base-content/60">
+                <tr className="text-2">
                   <th className="text-center"></th>
                   <th className="text-center">{t('colCreatedDate')}</th>
                   <th className="text-center">{t('colContents')}</th>
@@ -87,7 +87,7 @@ export default function SelectUserCompLeaveEntriesModal({
               </thead>
               <tbody>
                 {compLeaveEntries.map((compLeaveEntry) => (
-                  <tr key={`select-user-comp-leave-entry-${compLeaveEntry.id}`} className="hover:bg-base-200/60">
+                  <tr key={`select-user-comp-leave-entry-${compLeaveEntry.id}`} className="hover:bg-base-200">
                     <td className="text-center">
                       <label>
                         <input

@@ -9,6 +9,7 @@ import { getAllRecords } from '@/domain/attendance/apis/attendanceRecord';
 import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
 import { User } from '@/domain/users/apis/users.dto';
 import { useGetUsers } from '@/domain/users/queries/user';
+import Badge from '@/shared/components/Badge';
 import { getDaysOfWeek } from '@/utils/parse';
 
 import cx from 'classnames';
@@ -23,17 +24,17 @@ const SKELETON_ROW_COUNT = 5;
 function SkeletonCell({ label }: { label: string }) {
   return (
     <td className="px-2 py-3 text-center align-middle" aria-label={label}>
-      <div className="bg-base-content/10 mx-auto h-3 w-12 animate-pulse rounded" />
+      <div className="bg-base-300 mx-auto h-3 w-12 animate-pulse rounded" />
     </td>
   );
 }
 
 function SkeletonRow({ label }: { label: string }) {
   return (
-    <tr className="border-base-content/[0.08] border-b last:border-b-0">
-      <td className="bg-base-300 sticky left-0 z-10 min-w-[170px] px-3 py-3">
-        <div className="bg-base-content/10 mb-1 h-3 w-20 animate-pulse rounded" />
-        <div className="bg-base-content/[0.06] h-2 w-14 animate-pulse rounded" />
+    <tr className="border-soft border-b last:border-b-0">
+      <td className="bg-base-100 sticky left-0 z-10 min-w-[170px] px-3 py-3">
+        <div className="bg-base-300 mb-1 h-3 w-20 animate-pulse rounded" />
+        <div className="bg-base-200 h-2 w-14 animate-pulse rounded" />
       </td>
       {Array.from({ length: 7 }).map((_, i) => (
         <SkeletonCell key={i} label={label} />
@@ -63,7 +64,7 @@ function DayCell({ date, record, isLoading, isError, t }: DayCellProps) {
   if (isLoading) {
     return (
       <td className={cellClass} aria-label={t('loadingLabel')}>
-        <div className="bg-base-content/10 mx-auto h-3 w-12 animate-pulse rounded" />
+        <div className="bg-base-300 mx-auto h-3 w-12 animate-pulse rounded" />
       </td>
     );
   }
@@ -79,7 +80,7 @@ function DayCell({ date, record, isLoading, isError, t }: DayCellProps) {
   if (isWeekend) {
     return (
       <td className={cellClass}>
-        <span className="text-base-content/40 text-xs">{t('holiday')}</span>
+        <span className="text-3 text-xs">{t('holiday')}</span>
       </td>
     );
   }
@@ -87,7 +88,7 @@ function DayCell({ date, record, isLoading, isError, t }: DayCellProps) {
   if (!record) {
     return (
       <td className={cellClass}>
-        <span className="text-base-content/30">—</span>
+        <span className="text-3">—</span>
       </td>
     );
   }
@@ -95,7 +96,7 @@ function DayCell({ date, record, isLoading, isError, t }: DayCellProps) {
   if (record.dayOffType === 'DAY_OFF') {
     return (
       <td className={cellClass}>
-        <span className="bg-info/15 text-info rounded-full px-2 py-0.5 text-xs font-semibold">{t('dayOff')}</span>
+        <Badge variant="primary">{t('dayOff')}</Badge>
       </td>
     );
   }
@@ -103,7 +104,7 @@ function DayCell({ date, record, isLoading, isError, t }: DayCellProps) {
   if (record.dayOffType === 'AM_HALF_DAY_OFF') {
     return (
       <td className={cellClass}>
-        <span className="bg-info/15 text-info rounded-full px-2 py-0.5 text-xs font-semibold">{t('amHalfDayOff')}</span>
+        <Badge variant="primary">{t('amHalfDayOff')}</Badge>
       </td>
     );
   }
@@ -111,7 +112,7 @@ function DayCell({ date, record, isLoading, isError, t }: DayCellProps) {
   if (record.dayOffType === 'PM_HALF_DAY_OFF') {
     return (
       <td className={cellClass}>
-        <span className="bg-info/15 text-info rounded-full px-2 py-0.5 text-xs font-semibold">{t('pmHalfDayOff')}</span>
+        <Badge variant="primary">{t('pmHalfDayOff')}</Badge>
       </td>
     );
   }
@@ -134,24 +135,24 @@ function DayCell({ date, record, isLoading, isError, t }: DayCellProps) {
               aria-hidden="true"
             />
             <span className="sr-only">{isWarning ? t('statusWarning') : t('statusDone')}</span>
-            <span className="text-base-content/50">{t('clockIn')}</span>
+            <span className="text-3">{t('clockIn')}</span>
             <span className={timeColor}>{clockIn}</span>
           </span>
         )}
         {leaveWorkAt && (
           <span className="inline-flex items-center gap-1.5">
-            <span className="text-base-content/40">{t('scheduled')}</span>
-            <span className="text-base-content/60">{leaveWorkAt}</span>
+            <span className="text-3">{t('scheduled')}</span>
+            <span className="text-2">{leaveWorkAt}</span>
           </span>
         )}
         {clockOut && (
           <span className="inline-flex items-center gap-1.5">
-            <span className="text-base-content/40">{t('clockOut')}</span>
-            <span className="text-base-content/60">{clockOut}</span>
+            <span className="text-3">{t('clockOut')}</span>
+            <span className="text-2">{clockOut}</span>
           </span>
         )}
         {isInProgress && <span className="text-primary text-[13px] font-bold">{t('working')}</span>}
-        {!clockIn && !clockOut && <span className="text-base-content/30">—</span>}
+        {!clockIn && !clockOut && <span className="text-3">—</span>}
       </div>
     </td>
   );
@@ -170,10 +171,10 @@ interface EmployeeRowProps {
 
 const EmployeeRow = memo(function EmployeeRow({ user, dates, records, isLoading, isError, t }: EmployeeRowProps) {
   return (
-    <tr className="group border-base-content/[0.08] hover:bg-base-content/[0.04] border-b transition-colors duration-100 last:border-b-0">
-      <td scope="row" className="bg-base-300 sticky left-0 z-10 min-w-[170px] px-3 py-3 group-hover:bg-[#232323]">
+    <tr className="group border-soft hover:bg-base-200 border-b transition-colors duration-100 last:border-b-0">
+      <td scope="row" className="bg-base-100 group-hover:bg-base-200 sticky left-0 z-10 min-w-[170px] px-3 py-3">
         <div className="max-w-[150px] truncate text-sm font-bold">{user.username}</div>
-        <div className="text-base-content/60 mt-0.5 max-w-[150px] truncate text-xs">
+        <div className="text-2 mt-0.5 max-w-[150px] truncate text-xs">
           {user.groups?.[0]?.group.name}
           {user.groups?.[0]?.group.name && user.position?.name && ' · '}
           {user.position?.name}
@@ -239,10 +240,10 @@ export default function AllEmployeesGrid() {
   const colHeaderClass = (date: Date) => {
     const isToday = dayjs().isSame(date, 'day');
     const isWeekend = DEFAULT_WEEKENDS.includes(dayjs(date).day());
-    return cx('bg-base-300 sticky top-0 min-w-[110px] px-2 py-3 text-center text-xs font-semibold', {
+    return cx('bg-base-200 sticky top-0 min-w-[110px] px-2 py-3 text-center text-xs font-semibold', {
       'text-primary font-bold': isToday,
-      'text-base-content/40': isWeekend && !isToday,
-      'text-base-content/60': !isWeekend && !isToday,
+      'text-3': isWeekend && !isToday,
+      'text-2': !isWeekend && !isToday,
     });
   };
 
@@ -250,19 +251,17 @@ export default function AllEmployeesGrid() {
     <div className="flex size-full flex-col gap-2">
       {lastUpdatedAt && (
         <div className="flex justify-end">
-          <span className="text-base-content/40 text-xs">
-            {t('lastUpdated', { time: dayjs(lastUpdatedAt).format('HH:mm:ss') })}
-          </span>
+          <span className="text-3 text-xs">{t('lastUpdated', { time: dayjs(lastUpdatedAt).format('HH:mm:ss') })}</span>
         </div>
       )}
 
-      <div className="border-base-content/10 bg-base-300 min-h-0 flex-1 overflow-auto rounded-2xl border shadow-sm">
+      <div className="bg-base-100 border-base-300 rounded-box shadow-whisper min-h-0 flex-1 overflow-auto border">
         <table className="table" role="table" aria-label={t('gridLabel')}>
           <thead>
-            <tr className="border-base-content/[0.08] border-b">
+            <tr className="border-soft border-b">
               <th
                 scope="col"
-                className="bg-base-300 text-base-content/60 sticky top-0 left-0 z-30 min-w-[170px] py-3 pl-4 text-left text-xs font-semibold"
+                className="bg-base-200 text-2 sticky top-0 left-0 z-30 min-w-[170px] py-3 pl-4 text-left text-xs font-semibold"
               >
                 {t('employee')}
               </th>
@@ -295,9 +294,7 @@ export default function AllEmployeesGrid() {
             {!usersLoading && !usersError && users.length === 0 && (
               <tr>
                 <td colSpan={8}>
-                  <div className="text-base-content/50 flex h-32 items-center justify-center text-sm">
-                    {t('noEmployees')}
-                  </div>
+                  <div className="text-3 flex h-32 items-center justify-center text-sm">{t('noEmployees')}</div>
                 </td>
               </tr>
             )}
@@ -323,7 +320,7 @@ export default function AllEmployeesGrid() {
         </table>
       </div>
 
-      <div className="text-base-content/60 mt-1.5 flex flex-wrap items-center gap-4 text-xs">
+      <div className="text-2 mt-1.5 flex flex-wrap items-center gap-4 text-xs">
         <span className="inline-flex items-center gap-1.5">
           <span className="bg-primary inline-block h-2 w-2 rounded-full" />
           {t('legendNormal')}
@@ -333,7 +330,7 @@ export default function AllEmployeesGrid() {
           {t('legendWarning')}
         </span>
         <span className="inline-flex items-center gap-1.5">
-          <span className="bg-info/15 text-info rounded-full px-2 py-0.5 font-semibold">{t('legendDayOff')}</span>
+          <Badge variant="primary">{t('legendDayOff')}</Badge>
         </span>
       </div>
     </div>

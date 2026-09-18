@@ -3,6 +3,7 @@
 import { Fragment } from 'react';
 
 import { DocumentStatus } from '@/domain/document/apis/document.dto';
+import Badge from '@/shared/components/Badge';
 
 import cx from 'classnames';
 import { useTranslations } from 'next-intl';
@@ -40,7 +41,7 @@ function ApprovalLineCircle({ status }: { status: DocumentStatus | 'NOT_YET' }) 
         </span>
       );
     default:
-      return <span className="flex size-11 items-center justify-center rounded-full border-2 border-white/15" />;
+      return <span className="border-soft flex size-11 items-center justify-center rounded-full border-2" />;
   }
 }
 
@@ -55,7 +56,7 @@ export default function ApprovalLines({ lines, currentId }: ApprovalLinesProps) 
             <div
               className={cx('mt-[21px] h-0.5 flex-1 rounded-full', {
                 'bg-primary': lines[index - 1].status === 'APPROVED',
-                'bg-white/10': lines[index - 1].status !== 'APPROVED',
+                'bg-base-300': lines[index - 1].status !== 'APPROVED',
               })}
             />
           )}
@@ -66,16 +67,12 @@ export default function ApprovalLines({ lines, currentId }: ApprovalLinesProps) 
                 className={cx('text-sm', {
                   'font-semibold': line.status !== 'NOT_YET',
                   'text-warning': line.status === 'WAITING',
-                  'text-base-content/50': line.status === 'NOT_YET',
+                  'text-3': line.status === 'NOT_YET',
                 })}
               >
                 {line.contents}
               </p>
-              {currentId && currentId === line.id && (
-                <span className="bg-warning/15 text-warning rounded-full px-2 py-0.5 text-xs font-semibold">
-                  {t('stepCurrent')}
-                </span>
-              )}
+              {currentId && currentId === line.id && <Badge variant="wait">{t('stepCurrent')}</Badge>}
               {line.status === 'REJECTED' && <span className="text-error text-xs">{line.reason}</span>}
             </div>
           </div>

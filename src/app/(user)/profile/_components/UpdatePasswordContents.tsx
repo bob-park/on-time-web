@@ -51,28 +51,26 @@ export default function UpdatePasswordContents() {
   };
 
   return (
-    <div className="animate-fade-up bg-base-300 w-full rounded-lg p-5">
-      <div className="mb-5 border-b border-white/10 pb-4">
+    <div className="animate-fade-up bg-base-100 border-base-300 rounded-box shadow-whisper w-full border p-5">
+      <div className="border-soft mb-5 border-b pb-4">
         <h3 className="text-lg font-semibold">{t('title')}</h3>
       </div>
 
       <form onSubmit={handleUpdatePassword}>
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <label className="text-base-content/60 text-[11px] font-semibold tracking-[1.4px] uppercase">
-              {t('newLabel')}
-            </label>
-            <div className="bg-base-200 focus-within:ring-primary flex items-center gap-2 rounded-full px-4 py-2.5 ring-1 ring-white/10 transition focus-within:ring-1">
+            <label className="text-2 text-[11px] font-semibold tracking-[1.4px] uppercase">{t('newLabel')}</label>
+            <div className="bg-base-100 border-base-300 focus-within:border-primary flex items-center gap-2 rounded-[10px] border px-4 py-2.5 transition">
               <input
                 type={showPassword ? 'text' : 'password'}
-                className="placeholder:text-base-content/40 flex-1 bg-transparent text-sm outline-none"
+                className="placeholder:text-3 flex-1 bg-transparent text-sm outline-none"
                 placeholder={t('newPlaceholder')}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <button
                 type="button"
-                className="text-base-content/40 hover:text-base-content/70 transition-colors"
+                className="text-3 hover:text-2 transition-colors"
                 aria-label={t('toggleAria')}
                 onClick={() => setShowPassword(!showPassword)}
               >
@@ -82,25 +80,23 @@ export default function UpdatePasswordContents() {
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="text-base-content/60 text-[11px] font-semibold tracking-[1.4px] uppercase">
-              {t('confirmLabel')}
-            </label>
+            <label className="text-2 text-[11px] font-semibold tracking-[1.4px] uppercase">{t('confirmLabel')}</label>
             <div
               className={cx(
-                'bg-base-200 flex items-center gap-2 rounded-full px-4 py-2.5 ring-1 transition',
-                isMismatch ? 'ring-error' : 'focus-within:ring-primary ring-white/10 focus-within:ring-1',
+                'bg-base-100 flex items-center gap-2 rounded-[10px] border px-4 py-2.5 transition',
+                isMismatch ? 'border-error' : 'border-base-300 focus-within:border-primary',
               )}
             >
               <input
                 type={showConfirmPassword ? 'text' : 'password'}
-                className="placeholder:text-base-content/40 flex-1 bg-transparent text-sm outline-none"
+                className="placeholder:text-3 flex-1 bg-transparent text-sm outline-none"
                 placeholder={t('confirmPlaceholder')}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
               <button
                 type="button"
-                className="text-base-content/40 hover:text-base-content/70 transition-colors"
+                className="text-3 hover:text-2 transition-colors"
                 aria-label={t('toggleAria')}
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               >
@@ -111,8 +107,8 @@ export default function UpdatePasswordContents() {
           </div>
 
           <div className="mt-2 flex items-center justify-between gap-4">
-            <span className="text-base-content/60 text-xs">{t('hint')}</span>
-            <button type="submit" className="btn btn-primary rounded-full px-6" disabled={!canSubmit}>
+            <span className="text-2 text-xs">{t('hint')}</span>
+            <button type="submit" className="btn btn-primary px-6" disabled={!canSubmit}>
               {isLoading ? (
                 <>
                   <span className="loading loading-spinner loading-xs" />

@@ -25,13 +25,13 @@ export default function UpdateUserSignatureContents() {
 
   return (
     <>
-      <div className="animate-fade-up bg-base-300 w-full rounded-lg p-5">
-        <div className="mb-5 border-b border-white/10 pb-4">
+      <div className="animate-fade-up bg-base-100 border-base-300 rounded-box shadow-whisper w-full border p-5">
+        <div className="border-soft mb-5 border-b pb-4">
           <h3 className="text-lg font-semibold">{t('title')}</h3>
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="relative h-[160px] w-full max-w-[400px] overflow-hidden rounded-lg border border-dashed border-white/20">
+          <div className="border-base-300 relative h-[160px] w-full max-w-[400px] overflow-hidden rounded-lg border border-dashed">
             {currentUser && !isError ? (
               // 서명 PNG 는 검정 잉크 + 투명 배경이라 다크 배경에서 안 보이므로 프리뷰 내부만 밝게 유지
               <Image
@@ -43,7 +43,7 @@ export default function UpdateUserSignatureContents() {
               />
             ) : (
               <div className="flex size-full items-center justify-center">
-                <span className="text-base-content/40 text-sm">{t('empty')}</span>
+                <span className="text-3 text-sm">{t('empty')}</span>
               </div>
             )}
           </div>
@@ -51,7 +51,7 @@ export default function UpdateUserSignatureContents() {
           {hasSignature && <p className="text-warning text-xs">{t('transparentWarning')}</p>}
 
           <div className="flex justify-end">
-            <button className="btn btn-outline rounded-full" onClick={() => setShowUpdateSignatureModal(true)}>
+            <button className="btn btn-outline" onClick={() => setShowUpdateSignatureModal(true)}>
               {hasSignature ? t('change') : t('register')}
             </button>
           </div>

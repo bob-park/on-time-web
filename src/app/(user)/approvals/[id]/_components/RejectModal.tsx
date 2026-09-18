@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
 import { useRejectDocument } from '@/domain/document/queries/documents';
+import Badge from '@/shared/components/Badge';
 import useToast from '@/shared/hooks/useToast';
 
 import { useTranslations } from 'next-intl';
@@ -66,7 +67,7 @@ export default function RejectModal({ show, id, onClose }: ApproveModalProps) {
 
   return (
     <dialog ref={ref} className="modal" onKeyDownCapture={handleKeyboardDown}>
-      <div className="modal-box rounded-xl bg-[#252525] shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+      <div className="modal-box bg-base-100 border-base-300 rounded-box shadow-whisper border">
         <div className="flex w-full flex-col items-start justify-start gap-3">
           {/* header */}
           <div className="">
@@ -76,7 +77,7 @@ export default function RejectModal({ show, id, onClose }: ApproveModalProps) {
 
         {/* content */}
         <div className="m-3 flex flex-col items-start justify-center gap-4">
-          <label className="input mt-5 w-full">
+          <label className="input bg-base-100 border-base-300 mt-5 w-full">
             <span className="label">{t('reasonLabel')}</span>
             <input
               type="text"
@@ -86,7 +87,7 @@ export default function RejectModal({ show, id, onClose }: ApproveModalProps) {
               value={reason}
               onChange={(e) => setReason(e.target.value)}
             />
-            <span className="badge badge-neutral badge-xs">{t('required')}</span>
+            <Badge variant="neutral">{t('required')}</Badge>
           </label>
         </div>
 

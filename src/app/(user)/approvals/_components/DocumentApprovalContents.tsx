@@ -60,7 +60,7 @@ export default function DocumentApprovalContents({ params }: DocumentApprovalCon
   };
 
   return (
-    <div className="animate-fade-up bg-base-300 w-full rounded-lg p-5">
+    <div className="animate-fade-up bg-base-100 border-base-300 rounded-box shadow-whisper w-full border p-5">
       {/* Filters */}
       <div className="mb-3.5 flex flex-wrap items-center gap-2">
         <Segment

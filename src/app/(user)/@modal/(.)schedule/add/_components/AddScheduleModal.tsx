@@ -98,13 +98,13 @@ export default function AddScheduleModal() {
 
   return (
     <dialog ref={dialogRef} className="modal" onKeyDownCapture={handleKeyboardDown}>
-      <div className="modal-box w-[520px] max-w-[calc(100vw-48px)] rounded-xl bg-[#252525] p-7 shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+      <div className="modal-box bg-base-100 border-base-300 rounded-box shadow-whisper w-[520px] max-w-[calc(100vw-48px)] border p-7">
         {/* header */}
         <h3 className="text-lg font-bold">{t('addTitle')}</h3>
 
         {/* 구분 */}
         <div className="mt-6 flex flex-col gap-2">
-          <label className="text-base-content/60 text-xs font-semibold tracking-wider uppercase">{t('category')}</label>
+          <label className="text-2 text-xs font-semibold tracking-wider uppercase">{t('category')}</label>
           <div className="flex flex-col gap-2">
             {SELECT_OPTIONS_ATTENDANCE.map((option) => {
               const selected = selectedDayOffType === option.id;
@@ -114,10 +114,8 @@ export default function AddScheduleModal() {
                   key={`select-attendance-${option.key}`}
                   type="button"
                   className={cx(
-                    'flex items-center justify-between rounded-full px-5 py-3 text-sm transition-colors duration-150',
-                    selected
-                      ? 'bg-primary/10 ring-primary font-bold ring-1'
-                      : 'bg-base-300 hover:bg-base-content/[0.06]',
+                    'flex items-center justify-between rounded-[10px] px-5 py-3 text-sm transition-colors duration-150',
+                    selected ? 'bg-primary-subtle ring-primary font-bold ring-1' : 'bg-base-200 hover:bg-base-300',
                   )}
                   onClick={() => setSelectedDayOffType(option.id)}
                 >
@@ -131,7 +129,7 @@ export default function AddScheduleModal() {
 
         {/* 일자 */}
         <div className="mt-5 flex flex-col gap-2">
-          <label className="text-base-content/60 text-xs font-semibold tracking-wider uppercase">{t('date')}</label>
+          <label className="text-2 text-xs font-semibold tracking-wider uppercase">{t('date')}</label>
           <button
             type="button"
             className="btn btn-outline justify-start"
@@ -142,7 +140,7 @@ export default function AddScheduleModal() {
           </button>
 
           {showDatePicker && (
-            <div className="bg-base-300 mt-1 flex justify-center rounded-xl p-4">
+            <div className="bg-base-200 border-base-300 mt-1 flex justify-center rounded-xl border p-4">
               <DayPicker
                 className="rdp-theme"
                 animate

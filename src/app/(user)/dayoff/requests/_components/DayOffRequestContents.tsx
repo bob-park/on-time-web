@@ -10,6 +10,7 @@ import SelectUserCompLeaveEntriesModal from '@/app/(user)/dayoff/requests/_compo
 import { UsedCompLeaveEntryRequest, VacationSubType, VacationType } from '@/domain/document/apis/document.dto';
 import { useCreateVacation } from '@/domain/document/queries/vacation';
 import { useUserLeaveEntry } from '@/domain/users/queries/user';
+import Badge from '@/shared/components/Badge';
 import useToast from '@/shared/hooks/useToast';
 
 import cx from 'classnames';
@@ -120,10 +121,10 @@ export default function DayOffRequestContent() {
         {/* 2-column layout */}
         <div className="flex w-full flex-col gap-4 lg:flex-row">
           {/* Left — 휴가 구분 설정 */}
-          <div className="bg-base-300 flex w-full flex-none flex-col gap-5 rounded-lg p-6 lg:w-80">
+          <div className="bg-base-100 border-base-300 rounded-box shadow-whisper flex w-full flex-none flex-col gap-5 border p-6 lg:w-80">
             {/* 휴가 구분 */}
             <div>
-              <p className="text-base-content/60 mb-2 text-xs font-medium">
+              <p className="text-2 mb-2 text-xs font-medium">
                 {t('settings.typeLabel')}
                 {hasAttemptedSubmit && !selectedVacationType && (
                   <span className="text-error ml-2">{t('settings.selectRequired')}</span>
@@ -143,16 +144,16 @@ export default function DayOffRequestContent() {
                       }}
                       className={cx(
                         'flex flex-col items-start gap-1 rounded-lg px-4 py-3 text-left transition-colors duration-150',
-                        selected ? 'ring-primary bg-primary/10 ring-1 ring-inset' : 'bg-secondary hover:bg-[#2e2e2e]',
+                        selected ? 'ring-primary bg-primary-subtle ring-1 ring-inset' : 'bg-base-200 hover:bg-base-300',
                       )}
                     >
                       <span className={cx('text-sm font-bold', selected && 'text-primary')}>
                         {t(`type.${type.labelKey}`)}
                       </span>
-                      <span className="text-base-content/50 text-xs">
+                      <span className="text-3 text-xs">
                         {t(`type.${type.descKey}`)}
                         {remaining !== undefined && (
-                          <span className="text-base-content/70"> · {t('type.remaining', { days: remaining })}</span>
+                          <span className="text-2"> · {t('type.remaining', { days: remaining })}</span>
                         )}
                       </span>
                     </button>
@@ -163,7 +164,7 @@ export default function DayOffRequestContent() {
 
             {/* 부가 구분 */}
             <div>
-              <p className="text-base-content/60 mb-2 text-xs font-medium">
+              <p className="text-2 mb-2 text-xs font-medium">
                 {t('settings.subTypeLabel')}
                 {hasAttemptedSubmit && !selectedVacationSubType && (
                   <span className="text-error ml-2">{t('settings.selectRequired')}</span>
@@ -178,12 +179,12 @@ export default function DayOffRequestContent() {
                       type="button"
                       onClick={() => setSelectedVacationSubType(sub.value)}
                       className={cx(
-                        'flex h-10 items-center justify-between rounded-full px-4 text-[13px] transition-colors duration-150',
-                        selected ? 'bg-primary text-primary-content font-bold' : 'bg-secondary hover:bg-[#2e2e2e]',
+                        'flex h-10 items-center justify-between rounded-[10px] px-4 text-[13px] transition-colors duration-150',
+                        selected ? 'bg-primary text-primary-content font-bold' : 'bg-base-200 hover:bg-base-300',
                       )}
                     >
                       <span>{t(`subType.${sub.labelKey}`)}</span>
-                      <span className={cx('text-xs', selected ? 'text-primary-content/65' : 'text-base-content/50')}>
+                      <span className={cx('text-xs', selected ? 'text-primary-content/65' : 'text-3')}>
                         {t('subType.days', { days: sub.days })}
                       </span>
                     </button>
@@ -195,15 +196,15 @@ export default function DayOffRequestContent() {
             {/* 보상 휴가 선택 (COMPENSATORY 시에만) */}
             {selectedVacationType === 'COMPENSATORY' && (
               <div>
-                <p className="text-base-content/60 mb-2 text-xs font-medium">{t('settings.compLabel')}</p>
+                <p className="text-2 mb-2 text-xs font-medium">{t('settings.compLabel')}</p>
                 <button
                   type="button"
                   onClick={() => setShowSelectCompLeaveEntries(true)}
                   className={cx(
-                    'flex w-full items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium transition-colors duration-150',
+                    'flex w-full items-center justify-center gap-2 rounded-[10px] px-4 py-2.5 text-sm font-medium transition-colors duration-150',
                     usedCompLeaveEntries.length !== 0
-                      ? 'ring-primary bg-primary/10 text-primary ring-1 ring-inset'
-                      : 'bg-secondary hover:bg-[#2e2e2e]',
+                      ? 'ring-primary bg-primary-subtle text-primary ring-1 ring-inset'
+                      : 'bg-base-200 hover:bg-base-300',
                   )}
                 >
                   {usedCompLeaveEntries.length !== 0 ? (
@@ -219,7 +220,7 @@ export default function DayOffRequestContent() {
 
             {/* 사유 */}
             <div>
-              <p className="text-base-content/60 mb-2 text-xs font-medium">
+              <p className="text-2 mb-2 text-xs font-medium">
                 {t('settings.reasonLabel')}
                 {hasAttemptedSubmit && !reason && (
                   <span className="text-error ml-2">{t('settings.inputRequired')}</span>
@@ -229,10 +230,8 @@ export default function DayOffRequestContent() {
                 type="text"
                 maxLength={200}
                 className={cx(
-                  'bg-base-300 text-base-content placeholder:text-base-content/40 w-full rounded-full px-4 py-2.5 text-sm transition-shadow duration-150 focus:outline-none',
-                  hasAttemptedSubmit && !reason
-                    ? 'shadow-[inset_0_0_0_1px_#f3727f]'
-                    : 'shadow-[inset_0_0_0_1px_#7c7c7c] focus:shadow-[inset_0_0_0_1px_#1ed760]',
+                  'bg-base-100 text-base-content placeholder:text-3 w-full rounded-[10px] border px-4 py-2.5 text-sm transition-colors duration-150 focus:outline-none',
+                  hasAttemptedSubmit && !reason ? 'border-error' : 'border-base-300 focus:border-primary',
                 )}
                 placeholder={t('settings.reasonPlaceholder')}
                 value={reason}
@@ -242,16 +241,16 @@ export default function DayOffRequestContent() {
           </div>
 
           {/* Right — 날짜 선택 */}
-          <div className="bg-base-300 flex flex-1 flex-col rounded-lg p-6">
+          <div className="bg-base-100 border-base-300 rounded-box shadow-whisper flex flex-1 flex-col border p-6">
             <div className="mb-4 flex items-center justify-between">
               <p className="text-base-content text-base font-semibold">{t('calendar.title')}</p>
               {selectedDate.from && selectedDate.to && (
-                <span className="bg-primary/15 text-primary inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold">
+                <Badge variant="primary">
                   {dayjs(selectedDate.from).format('MM.DD')}
                   {!dayjs(selectedDate.from).isSame(selectedDate.to, 'day') &&
                     ` – ${dayjs(selectedDate.to).format('MM.DD')}`}
                   {` · ${t('calendar.rangeBadge', { days: usedDays })}`}
-                </span>
+                </Badge>
               )}
             </div>
             <div className="flex flex-1 items-start justify-center">
@@ -267,13 +266,11 @@ export default function DayOffRequestContent() {
         </div>
 
         {/* Bottom — 신청 요약 패널 */}
-        <div className="bg-base-300 w-full rounded-lg p-6">
+        <div className="bg-base-100 border-base-300 rounded-box shadow-whisper w-full border p-6">
           <div className="flex flex-wrap items-center gap-8">
             {/* 선택 날짜 */}
             <div>
-              <p className="text-base-content/50 text-[11px] font-semibold tracking-wider uppercase">
-                {t('summary.selectedDate')}
-              </p>
+              <p className="text-3 text-[11px] font-semibold tracking-wider uppercase">{t('summary.selectedDate')}</p>
               <p className="text-base-content mt-1 text-base font-bold">
                 {dayjs(selectedDate.from).format('YYYY.MM.DD')}
                 {selectedDate.to && !dayjs(selectedDate.from).isSame(selectedDate.to, 'day') && (
@@ -284,9 +281,7 @@ export default function DayOffRequestContent() {
 
             {/* 사용 기간 */}
             <div>
-              <p className="text-base-content/50 text-[11px] font-semibold tracking-wider uppercase">
-                {t('summary.usedDays')}
-              </p>
+              <p className="text-3 text-[11px] font-semibold tracking-wider uppercase">{t('summary.usedDays')}</p>
               <p className="text-base-content mt-1 text-base font-bold">
                 {t('summary.days', { days: usedDays.toFixed(1) })}
               </p>
@@ -294,9 +289,7 @@ export default function DayOffRequestContent() {
 
             {/* 사용 후 잔여 */}
             <div>
-              <p className="text-base-content/50 text-[11px] font-semibold tracking-wider uppercase">
-                {t('summary.remainingAfter')}
-              </p>
+              <p className="text-3 text-[11px] font-semibold tracking-wider uppercase">{t('summary.remainingAfter')}</p>
               <p className={cx('mt-1 text-base font-bold', remainingAfterUse < 0 ? 'text-error' : 'text-base-content')}>
                 {t('summary.days', { days: remainingAfterUse.toFixed(1) })}
               </p>
@@ -304,9 +297,7 @@ export default function DayOffRequestContent() {
 
             {/* 승인 예상 */}
             <div>
-              <p className="text-base-content/50 text-[11px] font-semibold tracking-wider uppercase">
-                {t('summary.approval')}
-              </p>
+              <p className="text-3 text-[11px] font-semibold tracking-wider uppercase">{t('summary.approval')}</p>
               <p className="text-base-content mt-1 text-base font-bold">{t('summary.approvalValue')}</p>
             </div>
 
