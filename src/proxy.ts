@@ -1,38 +1,31 @@
+import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
-const { WEB_SERVICE_HOST } = process.env;
+import { auth } from '@/shared/auth';
+
+const IGNORE_PATH_PATTERNS = [/^\/login/, /^\/logout/];
 
 export async function proxy(req: NextRequest) {
-  const { nextUrl, cookies } = req;
-  const { pathname } = nextUrl;
+  const { pathname, search, origin } = req.nextUrl;
 
-  const sessionId = cookies.get('JSESSIONID');
-
-  const isLogin = await checkAuth(sessionId?.value || '');
-
-  const res = NextResponse.next();
-
-  if (!isLogin) {
-    res.cookies.set('lastPage', pathname);
-  } else {
-    res.cookies.delete('lastPage');
+  if (IGNORE_PATH_PATTERNS.some((p) => p.test(pathname))) {
+    return NextResponse.next();
   }
 
-  return res;
-}
-
-async function checkAuth(sessionId: string) {
-  const result = await fetch(`${WEB_SERVICE_HOST}/users/me`, {
-    method: 'GET',
-    headers: {
-      Cookie: `JSESSIONID=${sessionId}`,
-    },
-    credentials: 'include',
+  const session = await auth.api.getSession({
+    headers: await headers(),
   });
 
-  return result.ok;
+  if (!session) {
+    const loginUrl = new URL('/login', origin);
+    loginUrl.searchParams.set('callback', `${pathname}${search}`);
+
+    return NextResponse.redirect(loginUrl);
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: [],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };

@@ -10,7 +10,7 @@ const index = ky.extend({
       ({ response }) => {
         // 401 Unauthorized 인 경우 로그인 페이지로 이동
         if (response.status === 401) {
-          location.href = '/api/oauth2/authorization/keyflow-auth';
+          location.href = '/login';
         }
 
         // 403 Forbidden 인 경우 forbidden 페이지로 이동
