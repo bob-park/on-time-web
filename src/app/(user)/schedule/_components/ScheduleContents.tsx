@@ -8,7 +8,7 @@ import { IoIosTime, IoIosWarning } from 'react-icons/io';
 
 import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
 import { useGetAttendanceRecord } from '@/domain/attendance/query/attendanceRecord';
-import { useGetCurrentUser } from '@/domain/user/query/user';
+import { useUser } from '@/domain/user/query/user';
 import { getDaysOfWeek } from '@/utils/parse';
 
 import cx from 'classnames';
@@ -42,7 +42,7 @@ export default function ScheduleContents() {
   const { selectDate } = useContext(WorkingTimeContext);
 
   // query
-  const { currentUser } = useGetCurrentUser();
+  const { user: currentUser } = useUser();
   const { attendanceRecords } = useGetAttendanceRecord({
     userUniqueId: currentUser?.id || '',
     startDate: dayjs(selectDate.startDate).format('YYYY-MM-DD'),

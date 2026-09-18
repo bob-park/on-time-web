@@ -1,8 +1,10 @@
 import { InfiniteData, QueryKey, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
-import { currentUser } from '@/domain/user/api/session';
+import { searchApprovalHistories } from '@/domain/approval/api/approvalHistory';
 import {
   getAllUserLeaveEntries,
+  getUser,
+  getUserLeaveEntry,
   getUsers,
   getUsersUsedVacations,
   resetUserAvatar,
@@ -12,14 +14,45 @@ import {
 } from '@/domain/user/api/users';
 import { getNextPageParams } from '@/shared/api';
 import { PagedModel } from '@/shared/api/common.dto';
+import { authClient } from '@/shared/auth/auth-client';
 
-export function useGetCurrentUser() {
+export function useUser() {
+  const { data: session } = authClient.useSession();
+  const sub = session?.user.sub;
+
   const { data, isLoading } = useQuery<User>({
-    queryKey: ['user', 'me'],
-    queryFn: () => currentUser(),
+    queryKey: ['users', sub, 'summary'],
+    queryFn: () => getUser(sub!),
+    enabled: !!sub,
   });
 
-  return { currentUser: data, isLoading };
+  return { user: data, isLoading: isLoading || !sub };
+}
+
+export function useUserLeaveEntry(year: number) {
+  const { data: session } = authClient.useSession();
+  const sub = session?.user.sub;
+
+  const { data, isLoading } = useQuery<UserLeaveEntry>({
+    queryKey: ['users', sub, 'leave', 'entries', year],
+    queryFn: () => getUserLeaveEntry(sub!, year),
+    enabled: !!sub,
+  });
+
+  return { leaveEntry: data, isLoading };
+}
+
+export function useProceedingApprovalCount() {
+  const { data: session } = authClient.useSession();
+  const sub = session?.user.sub;
+
+  const { data } = useQuery({
+    queryKey: ['documents', 'approval', 'proceeding', sub],
+    queryFn: () => searchApprovalHistories({ userUniqueId: sub, status: 'WAITING', page: 0, size: 1 }),
+    enabled: !!sub,
+  });
+
+  return { count: data?.page.totalElements ?? 0 };
 }
 
 export function useGetUsers(params: SearchPageParams) {

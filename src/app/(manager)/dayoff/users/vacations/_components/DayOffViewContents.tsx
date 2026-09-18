@@ -25,8 +25,8 @@ function DualValue({ value, comp, valueClassName }: { value: number; comp: numbe
 const cellClass = 'px-3 py-3 text-center whitespace-nowrap';
 
 export default function DayOffViewContents({ order, user, usedVacations }: DayOffViewContentsProps) {
-  const remaining = user.leaveEntry.totalLeaveDays - user.leaveEntry.usedLeaveDays;
-  const remainingComp = user.leaveEntry.totalCompLeaveDays - user.leaveEntry.usedCompLeaveDays;
+  const remaining = (user.leaveEntry?.totalLeaveDays ?? 0) - (user.leaveEntry?.usedLeaveDays ?? 0);
+  const remainingComp = (user.leaveEntry?.totalCompLeaveDays ?? 0) - (user.leaveEntry?.usedCompLeaveDays ?? 0);
 
   return (
     <tr className="group border-base-content/[0.06] hover:bg-base-content/[0.04] border-b transition-colors duration-100 last:border-b-0">
@@ -50,12 +50,12 @@ export default function DayOffViewContents({ order, user, usedVacations }: DayOf
 
       {/* 연차(보상) */}
       <td className={cellClass}>
-        <DualValue value={user.leaveEntry.totalLeaveDays} comp={user.leaveEntry.totalCompLeaveDays} />
+        <DualValue value={user.leaveEntry?.totalLeaveDays ?? 0} comp={user.leaveEntry?.totalCompLeaveDays ?? 0} />
       </td>
 
       {/* 사용가능 */}
       <td className={cx(cellClass, 'border-base-content/[0.08] border-r')}>
-        <DualValue value={user.leaveEntry.totalLeaveDays} comp={user.leaveEntry.totalCompLeaveDays} />
+        <DualValue value={user.leaveEntry?.totalLeaveDays ?? 0} comp={user.leaveEntry?.totalCompLeaveDays ?? 0} />
       </td>
 
       {/* 월별 */}
@@ -71,8 +71,8 @@ export default function DayOffViewContents({ order, user, usedVacations }: DayOf
       {/* 합계 */}
       <td className={cx(cellClass, 'border-base-content/[0.08] border-l')}>
         <DualValue
-          value={user.leaveEntry.usedLeaveDays}
-          comp={user.leaveEntry.usedCompLeaveDays}
+          value={user.leaveEntry?.usedLeaveDays ?? 0}
+          comp={user.leaveEntry?.usedCompLeaveDays ?? 0}
           valueClassName="font-bold"
         />
       </td>

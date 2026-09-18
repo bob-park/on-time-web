@@ -6,7 +6,7 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 import DocumentStatusBadge from '@/domain/document/components/DocumentStatusBadge';
 import { useVacationDocuments } from '@/domain/document/query/vacation';
-import { useGetCurrentUser } from '@/domain/user/query/user';
+import { useUserLeaveEntry } from '@/domain/user/query/user';
 import StatCard from '@/shared/components/StatCard';
 
 import cx from 'classnames';
@@ -29,8 +29,7 @@ export default function DayOffHistoryContents() {
     size: 1000,
   });
 
-  const { currentUser } = useGetCurrentUser();
-  const leaveEntry = currentUser?.leaveEntry;
+  const { leaveEntry } = useUserLeaveEntry(selectedYear);
   const freeLeaveDays = (leaveEntry?.totalLeaveDays ?? 0) - (leaveEntry?.usedLeaveDays ?? 0);
 
   // 총 사용일 합산

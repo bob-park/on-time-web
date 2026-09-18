@@ -7,7 +7,7 @@ import { IoClose } from 'react-icons/io5';
 import Image from 'next/image';
 
 import ChatChannel from '@/domain/chat/components/ChatChannel';
-import { useGetCurrentUser, useGetUsers } from '@/domain/user/query/user';
+import { useGetUsers, useUser } from '@/domain/user/query/user';
 import { useUserNotification } from '@/domain/user/query/userNotification';
 import useToast from '@/shared/hooks/useToast';
 import useWebSocket from '@/shared/hooks/ws/useWebSocket';
@@ -23,7 +23,7 @@ export default function CustomerSupport({ wsHost, userUniqueId }: { wsHost: stri
   const [sendNotiMessages, setSendNotiMessages] = useState<string[]>([]);
 
   // query
-  const { currentUser } = useGetCurrentUser();
+  const { user: currentUser } = useUser();
   const { sendMessage } = useUserNotification();
   const { pages } = useGetUsers({ page: 0, size: 100 });
 

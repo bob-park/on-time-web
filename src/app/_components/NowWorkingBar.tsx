@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import { useGetAttendanceRecord } from '@/domain/attendance/query/attendanceRecord';
-import { useGetCurrentUser } from '@/domain/user/query/user';
+import { useUser } from '@/domain/user/query/user';
 import { getDuration } from '@/utils/parse';
 
 import dayjs from 'dayjs';
@@ -32,7 +32,7 @@ export default function NowWorkingBar() {
   const [now, setNow] = useState<Date>(() => new Date());
 
   // query — 대시보드와 동일한 오늘-근태 조회 소스 재사용
-  const { currentUser } = useGetCurrentUser();
+  const { user: currentUser } = useUser();
   const today = dayjs().format('YYYY-MM-DD');
   const { attendanceRecords, isLoading } = useGetAttendanceRecord({
     userUniqueId: currentUser?.id || '',

@@ -16,14 +16,13 @@ interface User {
   role: Role;
   position: Position;
   groups: UserGroup[];
-  leaveEntry: UserLeaveEntry;
+  leaveEntry?: UserLeaveEntry;
   createdDate: Date;
   createdBy: string;
   lastModifiedDate?: Date;
   lastModifiedBy?: string;
   isLeader?: boolean;
   teamUserDescription?: boolean;
-  proceedingDocumentsCount?: number;
   employment?: UserEmployment;
 }
 
@@ -56,6 +55,8 @@ interface UpdateUserPasswordRequest {
 
 interface UserEmployment {
   id: number;
+  userUniqueId: string;
+  status: string;
   effectiveDate: Date;
 }
 

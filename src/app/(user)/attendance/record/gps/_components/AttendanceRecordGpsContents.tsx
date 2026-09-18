@@ -9,7 +9,7 @@ import useGps from '@/domain/attendance/hooks/useGps';
 import { useGenerateCurrentCheck, useGetCurrentCheck } from '@/domain/attendance/query/attendanceCheck';
 import { useGetAttendanceGps } from '@/domain/attendance/query/attendanceGps';
 import { useGetAttendanceRecord, useRecordAttendance } from '@/domain/attendance/query/attendanceRecord';
-import { useGetCurrentUser } from '@/domain/user/query/user';
+import { useUser } from '@/domain/user/query/user';
 import PillFilter from '@/shared/components/PillFilter';
 import { isSameMarginOfError } from '@/utils/dataUtils';
 import { getDaysOfWeek, round } from '@/utils/parse';
@@ -30,7 +30,7 @@ export default function AttendanceRecordGpsContents() {
   const { isSupport, position } = useGps();
 
   // query
-  const { currentUser } = useGetCurrentUser();
+  const { user: currentUser } = useUser();
   const { gpsResult } = useGetAttendanceGps();
   const { currentCheck } = useGetCurrentCheck();
   const { generateCheck, isLoading } = useGenerateCurrentCheck();

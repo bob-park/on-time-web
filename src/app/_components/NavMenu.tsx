@@ -12,7 +12,7 @@ import { RiDashboardFill } from 'react-icons/ri';
 import Link from 'next/link';
 import { useSelectedLayoutSegments } from 'next/navigation';
 
-import { useGetCurrentUser } from '@/domain/user/query/user';
+import { useProceedingApprovalCount, useUser } from '@/domain/user/query/user';
 
 import cx from 'classnames';
 import { useTranslations } from 'next-intl';
@@ -63,10 +63,10 @@ export default function NavMenu() {
   const t = useTranslations('nav');
 
   // query
-  const { currentUser } = useGetCurrentUser();
+  const { user: currentUser } = useUser();
+  const { count: proceedingCount } = useProceedingApprovalCount();
 
   const isManager = DEFAULT_MANAGER_ROLES.includes(currentUser?.role.type || 'ROLE_USER');
-  const proceedingCount = currentUser?.proceedingDocumentsCount || 0;
 
   return (
     <>

@@ -53,3 +53,11 @@ export async function getAllUserLeaveEntries(req: SearchUserLeaveEntryRequest) {
 export async function getUsersUsedVacations(req: SearchUserLeaveEntryRequest) {
   return api.get('/api/v1/users/used/vacations', { searchParams: req }).json<UserUsedVacation[]>();
 }
+
+export async function getUser(id: string) {
+  return api.get(`/api/v1/users/${id}/summary`).json<User>();
+}
+
+export async function getUserLeaveEntry(id: string, year: number) {
+  return api.get(`/api/v1/users/${id}/leave/entries`, { searchParams: { year } }).json<UserLeaveEntry>();
+}

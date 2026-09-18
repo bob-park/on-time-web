@@ -1,6 +1,6 @@
 'use client';
 
-import { useGetCurrentUser } from '@/domain/user/query/user';
+import { useUserLeaveEntry } from '@/domain/user/query/user';
 import StatCard from '@/shared/components/StatCard';
 
 import dayjs from 'dayjs';
@@ -8,10 +8,9 @@ import { useTranslations } from 'next-intl';
 
 export default function UserLeaveEntryContents() {
   const t = useTranslations('dayoff.request');
-  const { currentUser } = useGetCurrentUser();
 
-  const leaveEntry = currentUser?.leaveEntry;
-  const year = leaveEntry?.year || dayjs().year();
+  const year = dayjs().year();
+  const { leaveEntry } = useUserLeaveEntry(year);
   const totalLeaveDays = leaveEntry?.totalLeaveDays ?? 0;
   const usedLeaveDays = leaveEntry?.usedLeaveDays ?? 0;
   const freeLeaveDays = totalLeaveDays - usedLeaveDays;

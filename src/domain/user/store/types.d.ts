@@ -1,3 +1,0 @@
-interface UserState {
-  currentUser?: User;
-}

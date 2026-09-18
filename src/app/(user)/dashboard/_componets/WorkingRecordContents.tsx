@@ -4,7 +4,7 @@ import { memo, useContext } from 'react';
 
 import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
 import { useGetAttendanceRecord } from '@/domain/attendance/query/attendanceRecord';
-import { useGetCurrentUser } from '@/domain/user/query/user';
+import { useUser } from '@/domain/user/query/user';
 import { isIncludeTime } from '@/utils/dataUtils';
 import { getDuration } from '@/utils/parse';
 
@@ -198,7 +198,7 @@ function getDates(
 export default function WorkingRecordContents() {
   const t = useTranslations('dashboard');
   const { selectDate, updateSelectDate } = useContext(WorkingTimeContext);
-  const { currentUser } = useGetCurrentUser();
+  const { user: currentUser } = useUser();
   const { attendanceRecords } = useGetAttendanceRecord({
     userUniqueId: currentUser?.id || '',
     startDate: dayjs(selectDate.startDate).format('YYYY-MM-DD'),

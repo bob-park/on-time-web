@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import ChatChannel from '@/domain/chat/components/ChatChannel';
-import { useGetCurrentUser } from '@/domain/user/query/user';
+import { useUser } from '@/domain/user/query/user';
 import useWebSocket from '@/shared/hooks/ws/useWebSocket';
 
 interface ChatUserContentsProps {
@@ -16,7 +16,7 @@ export default function ChatUserContents({ wsHost, user }: ChatUserContentsProps
   const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
 
   // query
-  const { currentUser } = useGetCurrentUser();
+  const { user: currentUser } = useUser();
 
   // hooks
   const { publish } = useWebSocket({

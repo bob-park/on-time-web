@@ -6,7 +6,7 @@ import { FaCheck, FaTimes } from 'react-icons/fa';
 
 import Image from 'next/image';
 
-import { useGetCurrentUser } from '@/domain/user/query/user';
+import { useUser } from '@/domain/user/query/user';
 import { useUserNotification } from '@/domain/user/query/userNotification';
 import useToast from '@/shared/hooks/useToast';
 
@@ -29,7 +29,7 @@ export default function PressApprovalModal({ show, approvalUserUniqueId, onClose
   const { push } = useToast();
 
   // query
-  const { currentUser } = useGetCurrentUser();
+  const { user: currentUser } = useUser();
   const { sendMessage, isLoading } = useUserNotification(
     () => {
       handleClose();

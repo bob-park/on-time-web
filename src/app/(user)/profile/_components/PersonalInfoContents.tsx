@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import UserAvatar from '@/domain/user/components/UserAvatar';
-import { useGetCurrentUser } from '@/domain/user/query/user';
+import { useUser } from '@/domain/user/query/user';
 
 import { useTranslations } from 'next-intl';
 
@@ -35,7 +35,7 @@ export default function PersonalInfoContents() {
   const [showUpdateAvatarModal, setShowUpdateAvatarModal] = useState<boolean>(false);
 
   // query
-  const { currentUser, isLoading } = useGetCurrentUser();
+  const { user: currentUser, isLoading } = useUser();
 
   return (
     <>

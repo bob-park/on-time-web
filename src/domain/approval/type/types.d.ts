@@ -22,6 +22,7 @@ interface ApprovalHistory {
 }
 
 type SearchDocumentApprovalHistoryRequest = {
+  userUniqueId?: string;
   status?: DocumentStatus;
   type?: DocumentsType;
   createdDateFrom?: string;

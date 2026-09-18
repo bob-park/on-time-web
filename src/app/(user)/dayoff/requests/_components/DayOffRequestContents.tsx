@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 
 import SelectUserCompLeaveEntriesModal from '@/app/(user)/dayoff/requests/_components/SelectUserCompLeaveEntriesModal';
 import { useCreateVacation } from '@/domain/document/query/vacation';
-import { useGetCurrentUser } from '@/domain/user/query/user';
+import { useUserLeaveEntry } from '@/domain/user/query/user';
 import useToast from '@/shared/hooks/useToast';
 
 import cx from 'classnames';
@@ -64,7 +64,7 @@ export default function DayOffRequestContent() {
 
   const router = useRouter();
   const { push } = useToast();
-  const { currentUser } = useGetCurrentUser();
+  const { leaveEntry } = useUserLeaveEntry(new Date().getFullYear());
 
   const { createVacation, isLoading } = useCreateVacation(
     (data) => {
@@ -101,9 +101,8 @@ export default function DayOffRequestContent() {
   const isHalfDay = selectedVacationSubType === 'AM_HALF_DAY_OFF' || selectedVacationSubType === 'PM_HALF_DAY_OFF';
   const businessDays = selectedDate.from && selectedDate.to ? countBusinessDays(selectedDate.from, selectedDate.to) : 0;
   const usedDays = isHalfDay ? 0.5 : businessDays;
-  const freeLeaveDays = (currentUser?.leaveEntry?.totalLeaveDays ?? 0) - (currentUser?.leaveEntry?.usedLeaveDays ?? 0);
-  const freeCompLeaveDays =
-    (currentUser?.leaveEntry?.totalCompLeaveDays ?? 0) - (currentUser?.leaveEntry?.usedCompLeaveDays ?? 0);
+  const freeLeaveDays = (leaveEntry?.totalLeaveDays ?? 0) - (leaveEntry?.usedLeaveDays ?? 0);
+  const freeCompLeaveDays = (leaveEntry?.totalCompLeaveDays ?? 0) - (leaveEntry?.usedCompLeaveDays ?? 0);
   const remainingAfterUse = freeLeaveDays - usedDays;
 
   // 휴가 구분별 잔여일 (연차 / 보상 휴가는 카드 설명에 라이브 표시, 공가는 잔여 개념 없음)

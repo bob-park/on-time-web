@@ -6,8 +6,7 @@ import { IoLogOutOutline, IoNotificationsOutline } from 'react-icons/io5';
 import Link from 'next/link';
 
 import NotificationDialog from '@/app/_components/NotificationDialog';
-import { useSession } from '@/domain/user/query/session';
-import { useGetCurrentUser } from '@/domain/user/query/user';
+import { useUser } from '@/domain/user/query/user';
 
 import { useTranslations } from 'next-intl';
 import { overlay } from 'overlay-kit';
@@ -17,8 +16,7 @@ export default function Header() {
   const t = useTranslations('nav');
 
   // query
-  const { currentUser } = useGetCurrentUser();
-  useSession();
+  const { user: currentUser } = useUser();
 
   const initial = currentUser?.username?.substring(0, 1)?.toUpperCase() || '';
 

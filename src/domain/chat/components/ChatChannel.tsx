@@ -4,7 +4,7 @@ import { memo, useEffect, useRef, useState } from 'react';
 
 import { IoSend } from 'react-icons/io5';
 
-import { useGetCurrentUser } from '@/domain/user/query/user';
+import { useUser } from '@/domain/user/query/user';
 
 import { useTranslations } from 'next-intl';
 
@@ -79,7 +79,7 @@ function ChatMessages({ messages }: { messages: ChatMessageProps[] }) {
   const t = useTranslations('chat');
 
   // query
-  const { currentUser } = useGetCurrentUser();
+  const { user: currentUser } = useUser();
 
   return (
     <>

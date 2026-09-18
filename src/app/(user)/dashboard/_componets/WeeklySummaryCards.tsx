@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
 import { useGetAttendanceRecord } from '@/domain/attendance/query/attendanceRecord';
-import { useGetCurrentUser } from '@/domain/user/query/user';
+import { useUser } from '@/domain/user/query/user';
 import { useUserCompLeaveEntries } from '@/domain/user/query/userCompLeaveEntry';
 import StatCard from '@/shared/components/StatCard';
 import { isIncludeTime } from '@/utils/dataUtils';
@@ -46,7 +46,7 @@ function calcCumulativeHours(attendanceRecords: AttendanceRecord[]): number {
 export default function WeeklySummaryCards() {
   const t = useTranslations('dashboard');
   const { selectDate } = useContext(WorkingTimeContext);
-  const { currentUser } = useGetCurrentUser();
+  const { user: currentUser } = useUser();
   const { attendanceRecords } = useGetAttendanceRecord({
     userUniqueId: currentUser?.id || '',
     startDate: dayjs(selectDate.startDate).format('YYYY-MM-DD'),

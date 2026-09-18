@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import Image from 'next/image';
 
-import { useGetCurrentUser } from '@/domain/user/query/user';
+import { useUser } from '@/domain/user/query/user';
 
 import { useTranslations } from 'next-intl';
 
@@ -19,7 +19,7 @@ export default function UpdateUserSignatureContents() {
   const [showUpdateSignatureModal, setShowUpdateSignatureModal] = useState<boolean>(false);
 
   // query
-  const { currentUser } = useGetCurrentUser();
+  const { user: currentUser } = useUser();
 
   const hasSignature = !!currentUser && !isError;
 
