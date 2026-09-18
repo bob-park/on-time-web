@@ -83,7 +83,7 @@
     "quickSchedule": "근무 일정 등록",
     "quickScheduleSub": "휴무 · 반일 근무",
     "quickDocuments": "내 문서 보기",
-    "quickDocumentsSub": "상신한 문서 확인"
+    "quickDocumentsSub": "초안 문서 확인"
   },
   "schedule": {
     "title": "근무 일정",
@@ -141,7 +141,7 @@
   "dayoff": {
     "request": {
       "title": "휴가 신청",
-      "description": "필수 항목만 채우면 바로 상신할 수 있어요.",
+      "description": "필수 항목만 채우면 바로 초안을 만들 수 있어요.",
       "viewHistory": "휴가 내역 보기",
       "step1": "휴가 종류",
       "step1Desc": "잔여 일수가 함께 표시됩니다.",
@@ -158,8 +158,8 @@
       "summaryPeriod": "기간",
       "summaryUsed": "사용",
       "summaryRemaining": "신청 후 잔여",
-      "submit": "상신하기",
-      "submitting": "상신 중",
+      "submit": "초안 저장",
+      "submitting": "초안 저장 중",
       "empty": "—",
       "days": "{days}일",
       "type": {
@@ -229,9 +229,9 @@
       "proceedEyebrow": "처리 대기",
       "dayoffTitle": "휴가 신청서",
       "overtimeTitle": "휴일근무 보고서",
-      "summary": "{requester} · {type} · {date} 상신",
+      "summary": "{requester} · {type} · {date} 초안",
       "statusTitle": "결재 진행",
-      "stepRequest": "상신",
+      "stepRequest": "초안",
       "actions": {
         "press": "빨리 진행시켜줘",
         "request": "신청하기",
@@ -287,7 +287,7 @@
   "overtime": {
     "request": {
       "title": "휴일 근무 보고서 신청",
-      "description": "인원과 근무 시간을 채우고 목록에 추가하면 한 번에 상신할 수 있어요.",
+      "description": "인원과 근무 시간을 채우고 목록에 추가하면 한 번에 초안을 만들 수 있어요.",
       "viewDocuments": "결재 신청 목록",
       "step1": "인원",
       "step1Desc": "등록 직원은 목록에서, 미등록 직원은 이름을 직접 입력합니다.",
@@ -330,8 +330,8 @@
       "summaryHours": "총 근무 시간",
       "workerCount": "{count}명",
       "hours": "{hours}시간",
-      "submit": "상신하기",
-      "submitting": "상신 중",
+      "submit": "초안 저장",
+      "submitting": "초안 저장 중",
       "toast": {
         "created": "휴일 근무 보고서 초안이 작성되었습니다.",
         "error": "문서 생성에 실패했습니다. 다시 시도해 주세요.",
