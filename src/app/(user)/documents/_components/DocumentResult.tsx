@@ -69,20 +69,21 @@ export default function DocumentResult({ documents, isLoading }: DocumentResultP
                   <tr key={doc.id} className={`hover:bg-base-200 cursor-pointer ${rowClass}`}>
                     {/* 문서 */}
                     <td className={tdClass}>
-                      <div className="flex min-w-0 items-center gap-2">
-                        <DocumentsTypeBadge type={doc.type} />
-                        {summary &&
-                          (detailHref ? (
-                            <Link
-                              href={detailHref}
-                              className="truncate font-semibold hover:underline focus-visible:outline-2"
-                            >
-                              {summary}
-                            </Link>
-                          ) : (
-                            <span className="truncate font-semibold">{summary}</span>
-                          ))}
-                      </div>
+                      {detailHref ? (
+                        // 셀 전체가 링크 — summary 가 없으면 DocumentsTypeBadge 의 문서 유형 라벨이 링크 텍스트가 된다.
+                        <Link
+                          href={detailHref}
+                          className="text-primary flex min-w-0 items-center gap-2 font-semibold hover:underline"
+                        >
+                          <DocumentsTypeBadge type={doc.type} />
+                          {summary && <span className="truncate">{summary}</span>}
+                        </Link>
+                      ) : (
+                        <div className="flex min-w-0 items-center gap-2">
+                          <DocumentsTypeBadge type={doc.type} />
+                          {summary && <span className="truncate font-semibold">{summary}</span>}
+                        </div>
+                      )}
                       <div className="text-3 mt-1 text-xs">
                         {t('requestedAt', { date: dayjs(doc.createdDate).format('YYYY.MM.DD') })}
                       </div>

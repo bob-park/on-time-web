@@ -106,7 +106,7 @@
   "documents": {
     "eyebrow": "Documents",
     "title": "내 결재 문서",
-    "description": "내가 신청한 결재 문서입니다. 행을 클릭하면 상세를 볼 수 있어요.",
+    "description": "내가 신청한 결재 문서입니다. 문서 제목을 누르면 상세를 볼 수 있어요.",
     "categoryFilterAria": "문서 구분 필터",
     "statusFilterAria": "문서 상태 필터",
     "colDocument": "문서",
@@ -123,7 +123,7 @@
   "approvals": {
     "eyebrow": "Approvals",
     "title": "결재 처리 대기",
-    "description": "내가 결재선에 포함된 문서입니다. 행을 클릭하면 상세와 결재선을 볼 수 있어요.",
+    "description": "내가 결재선에 포함된 문서입니다. 문서 제목을 누르면 상세와 결재선을 볼 수 있어요.",
     "categoryFilterAria": "문서 구분 필터",
     "statusFilterAria": "문서 상태 필터",
     "segmentWaiting": "대기 {count}",
