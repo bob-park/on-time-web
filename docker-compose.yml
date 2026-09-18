@@ -1,7 +1,7 @@
 services:
   web:
     container_name: on-time-web
-    image: ghcr.io/bob-park/on-time-web
+    image: ghcr.io/bob-park/on-time-web:${VERSION}
     privileged: true
     build:
       context: ./
@@ -12,3 +12,6 @@ services:
         platforms:
           - linux/amd64
           - linux/arm64
+        tags:
+          - ghcr.io/bob-park/on-time-web:${VERSION}
+          - ghcr.io/bob-park/on-time-web:latest
