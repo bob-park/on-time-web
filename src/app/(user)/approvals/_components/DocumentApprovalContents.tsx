@@ -3,34 +3,35 @@
 import { useState } from 'react';
 
 import DocumentApprovalResult from '@/app/(user)/approvals/_components/DocumentApprovalResult';
-import { useApprovalHistories } from '@/domain/approval/query/approvalHistory';
+import { useApprovalHistories } from '@/domain/approval/queries/approvalHistory';
+import { DocumentStatus, DocumentsType } from '@/domain/document/apis/document.dto';
+import { useProceedingApprovalCount } from '@/domain/users/queries/user';
+import Card from '@/shared/components/Card';
 import Pagination from '@/shared/components/Pagination';
-import PillFilter from '@/shared/components/PillFilter';
+import Segment from '@/shared/components/Segment';
 
 import { useTranslations } from 'next-intl';
 
-interface DocumentApprovalContentsProps {
-  params: SearchDocumentApprovalHistoryRequest;
-}
-
 const PAGE_SIZE = 10;
 
-export default function DocumentApprovalContents({ params }: DocumentApprovalContentsProps) {
+export default function DocumentApprovalContents() {
   const t = useTranslations('approvals');
   const tf = useTranslations('common.filter');
+
+  const { count } = useProceedingApprovalCount();
+
+  // No DRAFT on /approvals — 대기 건을 맨 앞에 두고 건수를 함께 보여준다.
+  const statusOptions: { label: string; value: DocumentStatus | undefined }[] = [
+    { label: t('segmentWaiting', { count }), value: 'WAITING' },
+    { label: t('segmentApproved'), value: 'APPROVED' },
+    { label: t('segmentRejected'), value: 'REJECTED' },
+    { label: t('segmentAll'), value: undefined },
+  ];
 
   const categoryOptions: { label: string; value: DocumentsType | undefined }[] = [
     { label: tf('all'), value: undefined },
     { label: tf('typeVacation'), value: 'VACATION' },
     { label: tf('typeOvertime'), value: 'OVERTIME_WORK' },
-  ];
-
-  // No DRAFT on /approvals
-  const statusOptions: { label: string; value: DocumentStatus | undefined }[] = [
-    { label: tf('all'), value: undefined },
-    { label: tf('statusWaiting'), value: 'WAITING' },
-    { label: tf('statusApproved'), value: 'APPROVED' },
-    { label: tf('statusRejected'), value: 'REJECTED' },
   ];
 
   const [selectedType, setSelectedType] = useState<DocumentsType | undefined>(undefined);
@@ -58,36 +59,37 @@ export default function DocumentApprovalContents({ params }: DocumentApprovalCon
   };
 
   return (
-    <div className="animate-fade-up bg-base-300 w-full rounded-lg p-5">
-      {/* Filters */}
-      <div className="mb-5 flex flex-col gap-2.5 border-b border-white/10 pb-4">
-        <PillFilter
-          label={tf('categoryLabel')}
-          ariaLabel={t('categoryFilterAria')}
-          options={categoryOptions}
-          value={selectedType}
-          onChange={handleTypeChange}
-        />
-        <PillFilter
-          label={tf('statusLabel')}
+    <div className="animate-fade-up w-full">
+      {/* filters */}
+      <div className="mb-3.5 flex flex-wrap items-center gap-2">
+        <span className="text-3 text-xs font-semibold">{tf('statusLabel')}</span>
+        <Segment
           ariaLabel={t('statusFilterAria')}
           options={statusOptions}
           value={selectedStatus}
           onChange={handleStatusChange}
         />
+        <span className="text-3 ml-1 text-xs font-semibold">{tf('categoryLabel')}</span>
+        <Segment
+          ariaLabel={t('categoryFilterAria')}
+          options={categoryOptions}
+          value={selectedType}
+          onChange={handleTypeChange}
+        />
       </div>
 
-      {/* Table */}
-      <DocumentApprovalResult items={page?.content ?? []} isLoading={isLoading} />
+      {/* table */}
+      <Card>
+        <DocumentApprovalResult items={page?.content ?? []} isLoading={isLoading} />
 
-      {/* Pagination */}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        total={total}
-        pageSize={PAGE_SIZE}
-        onPageChange={setCurrentPage}
-      />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          total={total}
+          pageSize={PAGE_SIZE}
+          onPageChange={setCurrentPage}
+        />
+      </Card>
     </div>
   );
 }

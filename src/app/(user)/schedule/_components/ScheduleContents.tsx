@@ -6,9 +6,12 @@ import { FaCheckCircle } from 'react-icons/fa';
 import { GiNightSleep } from 'react-icons/gi';
 import { IoIosTime, IoIosWarning } from 'react-icons/io';
 
+import { AttendanceRecord, AttendanceStatus, DayOffType } from '@/domain/attendance/apis/attendance.dto';
 import { WorkingTimeContext } from '@/domain/attendance/components/WorkingTimeProvider';
-import { useGetAttendanceRecord } from '@/domain/attendance/query/attendanceRecord';
-import { useGetCurrentUser } from '@/domain/user/query/user';
+import { useGetAttendanceRecord } from '@/domain/attendance/queries/attendanceRecord';
+import { useUser } from '@/domain/users/queries/user';
+import Badge from '@/shared/components/Badge';
+import Card from '@/shared/components/Card';
 import { getDaysOfWeek } from '@/utils/parse';
 
 import cx from 'classnames';
@@ -35,14 +38,14 @@ const AXIS_HOURS = [
 ];
 
 const TRACK_GRIDLINES =
-  'repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent calc(100% / 24))';
+  'repeating-linear-gradient(90deg, var(--border-soft) 0, var(--border-soft) 1px, transparent 1px, transparent calc(100% / 24))';
 
 export default function ScheduleContents() {
   const t = useTranslations('schedule');
   const { selectDate } = useContext(WorkingTimeContext);
 
   // query
-  const { currentUser } = useGetCurrentUser();
+  const { user: currentUser } = useUser();
   const { attendanceRecords } = useGetAttendanceRecord({
     userUniqueId: currentUser?.id || '',
     startDate: dayjs(selectDate.startDate).format('YYYY-MM-DD'),
@@ -52,17 +55,15 @@ export default function ScheduleContents() {
   const dataList = getDates(selectDate, attendanceRecords);
 
   return (
-    <div className="bg-base-300 w-full rounded-lg p-5 select-none">
+    <Card className="w-full p-4 select-none">
       {/* axis header */}
-      <div className="grid grid-cols-[192px_1fr] items-center gap-4 border-b border-white/[0.08] px-2 pb-2.5">
-        <span className="text-base-content/60 text-[11px] font-semibold tracking-[1.4px] uppercase">
-          {t('workingDay')}
-        </span>
+      <div className="border-soft grid grid-cols-[192px_1fr] items-center gap-4 border-b px-2 pb-2.5">
+        <span className="text-2 text-[11px] font-semibold tracking-[1.4px] uppercase">{t('workingDay')}</span>
         <div className="relative h-3.5">
           {AXIS_HOURS.map((hour) => (
             <span
               key={`schedule-axis-${hour.label}`}
-              className="text-base-content/40 absolute top-0 -translate-x-1/2 text-[10px]"
+              className="text-3 absolute top-0 -translate-x-1/2 text-[10px]"
               style={{ left: hour.left }}
             >
               {hour.label}
@@ -83,7 +84,7 @@ export default function ScheduleContents() {
           clockOutTime={item.clockOutTime}
         />
       ))}
-    </div>
+    </Card>
   );
 }
 
@@ -152,8 +153,8 @@ const WorkingScheduleItem = ({
   return (
     <div
       className={cx(
-        'grid grid-cols-[192px_1fr] items-center gap-4 rounded-md px-2 py-2.5 transition-colors duration-100 first:mt-1 hover:bg-white/[0.04]',
-        isToday ? 'bg-primary/[0.06]' : 'border-t border-white/[0.04]',
+        'hover:bg-base-200 grid grid-cols-[192px_1fr] items-center gap-4 rounded-md px-2 py-2.5 transition-colors duration-100 first:mt-1',
+        isToday ? 'bg-primary-soft' : 'border-soft border-t',
       )}
     >
       {/* day column */}
@@ -166,7 +167,7 @@ const WorkingScheduleItem = ({
           className={cx('text-xs', {
             'text-info': day === 6,
             'text-error': day === 0,
-            'text-base-content/60': day !== 0 && day !== 6,
+            'text-2': day !== 0 && day !== 6,
           })}
         >
           {getDaysOfWeek(day)}
@@ -197,28 +198,28 @@ interface StatusChipProps {
 }
 
 const StatusChip = ({ dayOffType, status }: StatusChipProps) => {
-  let chip = 'bg-base-content/10';
-  let icon = <IoIosTime className="text-base-content/50 size-3.5" />;
+  let background = 'var(--neutral-soft)';
+  let icon = <IoIosTime className="text-2 size-3.5" />;
 
   if (dayOffType === 'DAY_OFF') {
-    chip = 'bg-info/15';
-    icon = <GiNightSleep className="text-info size-3.5" />;
+    background = 'var(--primary-subtle)';
+    icon = <GiNightSleep className="text-primary size-3.5" />;
   } else if (status === 'WARNING') {
-    chip = 'bg-warning/15';
-    icon = <IoIosWarning className="text-warning size-3.5" />;
+    background = 'var(--warning-soft)';
+    icon = <IoIosWarning className="size-3.5" style={{ color: 'var(--warning-text)' }} />;
   } else if (status === 'SUCCESS') {
-    chip = 'bg-primary/15';
-    icon = <FaCheckCircle className="text-primary size-3.5" />;
+    background = 'var(--success-soft)';
+    icon = <FaCheckCircle className="size-3.5" style={{ color: 'var(--success-text)' }} />;
   }
 
-  return <span className={cx('flex size-6 flex-none items-center justify-center rounded-full', chip)}>{icon}</span>;
+  return (
+    <span className="flex size-6 flex-none items-center justify-center rounded-full" style={{ background }}>
+      {icon}
+    </span>
+  );
 };
 
-const DayOffBadge = ({ children }: { children: React.ReactNode }) => (
-  <span className="bg-info/15 text-info inline-flex h-[22px] items-center rounded-full px-2.5 text-[11px] font-semibold">
-    {children}
-  </span>
-);
+const DayOffBadge = ({ children }: { children: React.ReactNode }) => <Badge variant="primary">{children}</Badge>;
 
 interface WorkingTimeItemsProps {
   date: Date;
@@ -244,13 +245,13 @@ const WorkingTimeItems = ({ date, status, clockIn, clockOut, isLive, hideBar }: 
           className={cx(
             { tooltip: clockIn && clockOut },
             'absolute top-1/2 h-3 -translate-y-1/2 rounded-full',
-            status === 'WARNING' ? 'bg-warning/40' : 'bg-white/25',
+            status === 'WARNING' ? 'bg-warning' : 'bg-base-300',
           )}
           data-tip={`${clockIn && dayjs(clockIn).format('HH:mm')} - ${clockOut && dayjs(clockOut).format('HH:mm')} ${((!status || status === 'WAITING') && `(${t('scheduled')})`) || ''} `}
           style={{ left: `${left}%`, width: `${width}%` }}
         >
           {isLive && (
-            <span className="bg-primary absolute top-1/2 right-0 size-3 -translate-y-1/2 rounded-full shadow-[0_0_10px_2px_rgba(30,215,96,0.6)]" />
+            <span className="bg-primary absolute top-1/2 right-0 size-3 -translate-y-1/2 rounded-full shadow-[0_0_10px_2px_var(--primary-subtle)]" />
           )}
         </div>
       )}

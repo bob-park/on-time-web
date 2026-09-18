@@ -1,6 +1,12 @@
 'use client';
 
-import UserSignature from '@/domain/user/components/UserSignature';
+import { ApprovalLine } from '@/domain/approval/apis/approval.dto';
+import {
+  VacationDocument as VacationDocumentDto,
+  VacationSubType,
+  VacationType,
+} from '@/domain/document/apis/document.dto';
+import UserSignature from '@/domain/users/components/UserSignature';
 import { getDaysOfWeek } from '@/utils/parse';
 
 import dayjs from 'dayjs';
@@ -9,7 +15,7 @@ import DocumentApprovalLine from './DocumentApprovalLine';
 
 interface VacationDocumentProps {
   id: string;
-  document: VacationDocument;
+  document: VacationDocumentDto;
 }
 
 export default function VacationDocument({ id, document }: VacationDocumentProps) {

@@ -10,7 +10,7 @@ frontmatter (`title`, `scope`, `applies_to`, `related`) 와 TL;DR blockquote 로
 ## Map
 
 ### Foundations
-- [Project Overview](docs/agents/overview.md) — KeyFlow BFF Next.js 템플릿의 목적과 경계
+- [Project Overview](docs/agents/overview.md) — KeyFlow 연동 (better-auth) Next.js 템플릿의 목적과 경계
 - [Tech Stack](docs/agents/tech-stack.md) — 언어/프레임워크/라이브러리 핀 버전 위치
 - [Directory & Layout Rules](docs/agents/structure.md) — `src/` 트리, 도메인 추가 절차, `_layout/` 규칙
 
@@ -23,15 +23,32 @@ frontmatter (`title`, `scope`, `applies_to`, `related`) 와 TL;DR blockquote 로
 ### Library Patterns
 - [Zustand Slice](docs/agents/libs/zustand-slice.md) — `SlicePattern`, action naming, immer
 - [ky + React Query](docs/agents/libs/ky-react-query.md) — 공유 `api`, query key, mutation, Server fetch+cache, RQProvider, HydrationBoundary
-- [Tailwind 4 + daisyUI 5](docs/agents/libs/tailwind-daisyui.md) — `classnames`, 단일 다크 테마
+- [Tailwind 4 + daisyUI 5](docs/agents/libs/tailwind-daisyui.md) — `classnames`, theme cookie
 - [next-intl v4](docs/agents/libs/next-intl.md) — wiring, locale resolution, server/client usage
-- [Theme](docs/agents/libs/theme.md) — 단일 다크 `ontime-dark` 고정 (토글/쿠키 없음)
+- [Theme](docs/agents/libs/theme.md) — `data-theme` cookie + `setTheme` server action
 - [overlay-kit](docs/agents/libs/overlay-kit.md) — `overlay.open` + `close`/`unmount` cleanup timing
 
 ### Workflows
 - [Dev Environment & Lint/Format](docs/agents/workflows/dev-env.md) — `mise`, `yarn`, lint 명령
 - [Git Workflow](docs/agents/workflows/git.md) — branch, commit prefix, PR base
 - [Build & Release](docs/agents/workflows/build-release.md) — Docker buildx bake, version pattern
+
+## Auth (better-auth)
+
+The app integrates directly with the KeyFlow Authorization Server via
+[better-auth](https://www.better-auth.com/) (`genericOAuth` plugin + PKCE).
+
+- `/login` and `/logout` are **route handlers** (`src/app/login/route.ts`,
+  `src/app/logout/route.ts`), not pages — they redirect immediately without
+  React rendering.
+- `/logout` performs the better-auth session signOut, then redirects to the
+  KeyFlow OIDC end session endpoint (`/connect/logout`) with `id_token_hint`.
+- `/api/**` goes through a catch-all proxy (`src/app/api/[...path]/route.ts`)
+  that resolves the access token server-side and forwards the request to
+  `API_HOST` with an `Authorization: Bearer` header — the access token is never
+  exposed to the browser.
+- better-auth config: `src/shared/auth/index.ts` (server),
+  `src/shared/auth/auth-client.ts` (client). Session guard: `src/proxy.ts`.
 
 ## How to use
 

@@ -1,27 +1,13 @@
-import { cookies } from 'next/headers';
-import { forbidden, redirect } from 'next/navigation';
+import { forbidden } from 'next/navigation';
 
-const { WEB_SERVICE_HOST } = process.env;
-
-const ALLOW_ROLES = ['ROLE_ADMIN', 'ROLE_MANAGER'];
+import { RoleType } from '@/domain/users/apis/users.dto';
+import { getUserinfo } from '@/shared/auth/serverAction';
+import { hasRole } from '@/utils/AuthUtils';
 
 export default async function ManagerLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const cookieStore = await cookies();
+  const user = await getUserinfo();
 
-  const res = await fetch(`${WEB_SERVICE_HOST}/users/me`, {
-    method: 'get',
-    headers: {
-      Cookie: `JSESSIONID=${cookieStore.get('JSESSIONID')?.value || ''}`,
-    },
-  });
-
-  if (!res.ok) {
-    redirect('/api/oauth2/authorization/keyflow-auth');
-  }
-
-  const user = (await res.json()) as User;
-
-  if (!ALLOW_ROLES.includes(user?.role.type || '')) {
+  if (!user || !hasRole(user.role as RoleType, 'ROLE_MANAGER')) {
     forbidden();
   }
 

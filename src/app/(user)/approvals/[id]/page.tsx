@@ -1,60 +1,59 @@
-import { cookies } from 'next/headers';
-
+import { getApprovalDetail } from '@/app/api/v1/documents/_lib/enrichDocument';
+import {
+  OverTimeWorkDocument as OverTimeWorkDocumentDto,
+  VacationDocument as VacationDocumentDto,
+} from '@/domain/document/apis/document.dto';
 import OverTimeWorkDocument from '@/domain/document/components/OverTimeWorkDocument';
 import VacationDocument from '@/domain/document/components/VacationDocument';
 import PageHeader from '@/shared/components/PageHeader';
+import dayjs from '@/shared/dayjs';
 
 import { getTranslations } from 'next-intl/server';
 
 import ApprovalProceedContents from './_components/ApprovalProceedContents';
 
-const { WEB_SERVICE_HOST } = process.env;
-
 export default async function ApprovalDetailPage({ params }: { params: Promise<{ id: number }> }) {
   const id = (await params).id;
   const t = await getTranslations('approval.detail');
+  const tf = await getTranslations('common.filter');
 
-  const cookieStore = await cookies();
+  const res = await getApprovalDetail(id);
 
-  const res = await fetch(`${WEB_SERVICE_HOST}/documents/approval/${id}`, {
-    method: 'get',
-    headers: {
-      Cookie: `JSESSIONID=${cookieStore.get('JSESSIONID')?.value || ''}`,
-    },
-  })
-    .then((res) => res.json())
-    .then((data: ApprovalHistory) => data);
+  const isVacation = res.document.type === 'VACATION';
+  const title = isVacation ? t('dayoffTitle') : t('overtimeTitle');
 
   return (
-    <div className="animate-fade-up flex size-full flex-col items-center gap-4">
+    <div className="animate-fade-up w-full">
       {/* eyebrow + title */}
-      <div className="w-full max-w-[1200px]">
-        <PageHeader eyebrow={t('proceedEyebrow')} title={t('proceedTitle')} />
-      </div>
+      <PageHeader
+        eyebrow={t('proceedEyebrow')}
+        title={title}
+        description={t('summary', {
+          requester: res.document.user.username,
+          type: isVacation ? tf('typeVacation') : tf('typeOvertime'),
+          date: dayjs(res.document.createdDate).format('YYYY-MM-DD'),
+        })}
+      />
 
-      {/* contents */}
-      <div className="flex w-full max-w-[1200px] flex-col items-center justify-center gap-4">
-        {/* proceed buttons */}
-        <div className="w-full">
-          <ApprovalProceedContents id={id} currentId={res.approvalLine.id} />
-        </div>
-
-        {/* document info */}
-        <div className="w-full">
-          <div className="bg-base-300 flex w-full items-center justify-center rounded-lg p-6">
-            <div className="aspect-[1/1.414] w-[1000px] shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
-              {res.document.type === 'VACATION' && (
-                <VacationDocument id="approval_document_vacation_id" document={res.document as VacationDocument} />
-              )}
-              {res.document.type === 'OVERTIME_WORK' && (
-                <OverTimeWorkDocument
-                  id="approval_overtime_work_document_id"
-                  document={res.document as OverTimeWorkDocument}
-                />
-              )}
-            </div>
+      {/* A4 문서 · 결재 패널 */}
+      <div className="grid grid-cols-1 gap-5 2xl:grid-cols-[1fr_360px] 2xl:items-start">
+        {/* document — 1000px 고정이라 좁은 화면에서는 가로 스크롤 */}
+        <div className="overflow-x-auto">
+          <div className="aspect-[1/1.414] w-[1000px] shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
+            {isVacation && (
+              <VacationDocument id="approval_document_vacation_id" document={res.document as VacationDocumentDto} />
+            )}
+            {res.document.type === 'OVERTIME_WORK' && (
+              <OverTimeWorkDocument
+                id="approval_overtime_work_document_id"
+                document={res.document as OverTimeWorkDocumentDto}
+              />
+            )}
           </div>
         </div>
+
+        {/* 결재 진행 + 처리 */}
+        <ApprovalProceedContents id={id} title={title} currentId={res.approvalLine.id} />
       </div>
     </div>
   );

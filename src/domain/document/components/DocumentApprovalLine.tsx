@@ -1,6 +1,7 @@
 'use client';
 
-import UserSignature from '@/domain/user/components/UserSignature';
+import { ApprovalLine } from '@/domain/approval/apis/approval.dto';
+import UserSignature from '@/domain/users/components/UserSignature';
 
 interface DocumentApprovalLineProps {
   lines: ApprovalLine[];

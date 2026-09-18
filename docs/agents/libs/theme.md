@@ -1,50 +1,93 @@
 ---
-title: Theme — dark-only (ontime-dark 고정)
-scope: src/app/globals.css, src/app/layout.tsx
-applies_to: theme tokens, dark surface styling
+title: Theme — cookie + server action
+scope: src/shared/providers/theme/**, src/shared/components/theme/**, src/app/themeAction.ts, src/app/layout.tsx
+applies_to: theme switching, cookie-driven dark mode, theme bridge for UI libraries
 related:
+  - ./next-intl.md
   - ./tailwind-daisyui.md
 ---
 
-# Theme — dark-only (ontime-dark 고정)
+# Theme — cookie + server action
 
-> 앱은 단일 다크 테마 `ontime-dark` 로 고정된다. 테마 전환/토글/쿠키는 없다. root layout 이 `<html data-theme="ontime-dark">` 를 하드코딩하고, 모든 색상은 daisyUI 시맨틱 토큰(`base-100/200/300`, `base-content`, `primary`, ...)으로 표현한다.
+> 테마는 `theme` cookie 에 저장되어 `<html data-theme={theme}>` 에 적용된다. 변경은 `setTheme` server action (`revalidatePath('/', 'layout')` 포함) 을 통해서만, UI 는 `ThemeSwitcher`. OS `prefers-color-scheme` 자동 전환은 사용하지 않는다. 패턴은 [next-intl](./next-intl.md) 의 locale 변경과 동일 구조.
 
-## Single theme
+## Storage
 
-- 유일한 테마는 `ontime-dark` — daisyUI theme 플러그인으로 `src/app/globals.css` 의 `@plugin 'daisyui/theme'` 블록에 정의된다 (`default: true`, `prefersdark: true`, `color-scheme: 'dark'`).
-- root layout 은 값을 하드코딩한다:
+- Cookie 이름: `theme` (server action 은 `COOKIE_NAME_THEME` 상수, root layout 은 literal).
+- 값: `Theme = 'light' | 'dark'` (정의: `src/shared/providers/theme/ThemeProvider.tsx` — 타입만 export 하는 파일이며 React provider 는 없다).
+- Default: cookie 가 없으면 `'light'`.
+- 적용 위치: root layout 의 `<html data-theme={theme}>` — `globals.css` 의 daisyUI theme 두 개 (`light` / `dark`) 와 토큰 변수 블록 (`[data-theme='dark']`) 이 모두 이 attribute 로 분기한다. 토큰은 [Tailwind 4 + daisyUI 5](./tailwind-daisyui.md) 참조.
+- `dark` theme 는 `prefersdark: false` 로 선언되어 있다 — OS 설정은 무시하고 cookie 값만 따른다.
+
+## Server action
+
+```ts
+// src/app/themeAction.ts
+'use server';
+
+import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
+
+import { Theme } from '@/shared/providers/theme/ThemeProvider';
+
+const COOKIE_NAME_THEME = 'theme';
+
+export async function setTheme(theme: Theme) {
+  const cookieStore = await cookies();
+
+  cookieStore.set(COOKIE_NAME_THEME, theme, {
+    path: '/',
+    maxAge: 60 * 60 * 24 * 365, // 365 days
+    sameSite: 'lax',
+  });
+
+  revalidatePath('/', 'layout');
+}
+```
+
+- Client 에서 cookie 를 직접 set 하지 않는다 — 항상 `setTheme(...)` server action 을 호출.
+- `revalidatePath('/', 'layout')` 이 root layout 을 다시 렌더링시켜 `<html data-theme>` 이 즉시 갱신된다. 호출부에서 `router.refresh()` 를 따로 부르지 않는다.
+- `maxAge` 1년 / `path: '/'` — 선택한 테마가 세션을 넘어 유지된다.
+
+## Switcher UI
+
+```tsx
+// src/shared/components/theme/ThemeSwitcher.tsx ('use client')
+export default function ThemeSwitcher({ current }: { current: Theme }) // setTheme 을 useTransition 으로 호출
+```
+
+- 현재 테마는 context 가 아니라 **prop 으로 내려간다**: root layout 이 cookie 를 읽어 `<Header theme={theme} />` 로 전달하고, `Header` 가 `<ThemeSwitcher current={theme} />` 로 넘긴다.
+- 전환 중에는 `useTransition` 의 `isPending` 으로 버튼을 disable 한다.
+
+## Reading in root layout
 
 ```tsx
 // src/app/layout.tsx (Server Component)
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+import { cookies } from 'next/headers';
+
+import { Theme } from '@/shared/providers/theme/ThemeProvider';
+
+const COOKIE_NAME_THEME = 'theme';
+
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const cookieStore = await cookies();
+
+  const theme = (cookieStore.get(COOKIE_NAME_THEME)?.value ?? 'light') as Theme;
+
   return (
-    <html lang="ko" data-theme="ontime-dark">
+    <html lang="ko" data-theme={theme}>
       <body>{children}</body>
     </html>
   );
 }
 ```
 
-- `theme` cookie, `COOKIE_NAME_THEME`, `setTheme` server action, `ThemeProvider` 는 모두 제거되었다. 클라이언트/서버 어디에서도 테마를 읽거나 쓰지 않는다.
+## Bridging into UI libraries
 
-## Color tokens
+3rd-party UI library 가 자체 테마 시스템을 가지면 (예: antd `ConfigProvider`), root layout 에서 cookie 로 읽은 `theme` 값을 해당 provider 에 전달해 SSR 부터 동기 적용한다. 컴포넌트 트리 안에서는 React context 가 아니라 root-supplied prop 으로 받는다.
 
-- Spotify 계열 다크 팔레트를 사용한다. 핵심 토큰은 `globals.css` 의 theme 블록 참조:
-  - surface: `--color-base-100` `#121212`, `--color-base-200` `#181818`, `--color-base-300` `#1f1f1f`, `--color-secondary` `#252525`
-  - text: `--color-base-content` `#ffffff`
-  - accent: `--color-primary` / `--color-accent` `#1ed760` (Spotify green), `--color-primary-content` `#000000`
-  - status: `--color-info` `#539df5`, `--color-success` `#1ed760`, `--color-warning` `#ffa42b`, `--color-error` `#f3727f`
-- 컴포넌트는 raw hex 대신 시맨틱 클래스(`bg-base-300`, `text-base-content/60`, `text-primary`, `bg-primary/15`, ...)를 사용한다.
+## Why server action (not client cookie write)
 
-## Sanctioned light surfaces
-
-다크 규칙의 예외로, 물리적 종이/스캔을 표현해야 하는 면만 흰색을 유지한다. 신규 화면에서 흰 배경을 쓰지 말 것.
-
-- A4 문서 컴포넌트: `VacationDocument`, `OverTimeWorkDocument`, `UserSignature` (인쇄/PDF 대상, 흰 종이 고정).
-- QR 코드 흰 패널, 서명 미리보기(`bg-white`) — 스캐너/서명 이미지 가독성을 위해 흰색 유지.
-
-## Adding a surface
-
-- 새 카드/패널은 `bg-base-300`(또는 `bg-base-200`) + `text-base-content` 계열로 시작한다.
-- 경계선·구분선은 `border-white/[0.04]`, hover 는 `bg-white/[0.04]` 같은 translucent white overlay 를 사용한다(다크 위 미세 대비용). 이는 `bg-white` 단색과 다르며 허용된다.
+- Cookie 를 client 에서 write 하면 root layout 이 다시 렌더링되지 않아 `<html data-theme>` 이 즉시 갱신되지 않는다.
+- Server action 이 cookie 를 갱신하고 `revalidatePath('/', 'layout')` 로 root layout 을 revalidate 하므로 같은 transition 안에서 새 값이 반영된다.
+- 같은 이유로 [next-intl](./next-intl.md) 의 `setLocale` 도 동일 패턴을 따른다. 새 cookie-driven 글로벌 상태가 추가되면 이 패턴을 재사용한다.

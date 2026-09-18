@@ -2,12 +2,12 @@ import { TbArrowBack } from 'react-icons/tb';
 
 import Link from 'next/link';
 
-import CardPageTitle from './_components/CardPageTitle';
+import CardPageTitle from '@/shared/components/CardPageTitle';
 
 export default function Forbidden() {
   return (
     <div className="flex size-full flex-col items-center justify-center gap-2">
-      <div className="text-base-content/30 mt-36 flex cursor-default flex-row items-center justify-center gap-4 text-9xl font-bold select-none">
+      <div className="text-3 mt-36 flex cursor-default flex-row items-center justify-center gap-4 text-9xl font-bold select-none">
         <CardPageTitle placeholder="Wow">
           <span>4</span>
         </CardPageTitle>
@@ -26,13 +26,13 @@ export default function Forbidden() {
       <div className="mt-5">
         <p className="text-xl font-medium">
           이 페이지의 성벽이
-          <span className="text-base-content/70 px-1 text-2xl font-bold">🏰 너무 높아</span>
-          <span className="text-base-content/70 px-1 text-2xl font-bold">🛠️현재 장비</span>로 올라갈수가 없어요!!
+          <span className="text-2 px-1 text-2xl font-bold">🏰 너무 높아</span>
+          <span className="text-2 px-1 text-2xl font-bold">🛠️현재 장비</span>로 올라갈수가 없어요!!
         </p>
       </div>
 
       <div className="mt-5">
-        <Link className="btn btn-neutral" href="/dashboard">
+        <Link className="btn btn-primary" href="/dashboard">
           <TbArrowBack className="h-6 w-6" />
           돌아가기
         </Link>

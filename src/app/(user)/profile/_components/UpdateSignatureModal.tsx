@@ -6,7 +6,7 @@ import { GiCancel } from 'react-icons/gi';
 import { IoCloudUploadOutline } from 'react-icons/io5';
 import { TbArrowsExchange } from 'react-icons/tb';
 
-import { useUpdateUserSignature } from '@/domain/user/query/user';
+import { useUpdateUserSignature } from '@/domain/users/queries/user';
 import useToast from '@/shared/hooks/useToast';
 
 import { useTranslations } from 'next-intl';
@@ -99,7 +99,7 @@ export default function UpdateSignatureModal({ show, onClose }: UpdateSignatureM
 
   return (
     <dialog ref={ref} className="modal" onKeyDownCapture={handleKeyboardDown}>
-      <div className="modal-box rounded-xl bg-[#252525] shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+      <div className="modal-box bg-base-100 border-base-300 rounded-box shadow-whisper border">
         <div className="flex w-full flex-col items-start justify-start gap-3">
           {/* header */}
           <div className="">
@@ -110,7 +110,7 @@ export default function UpdateSignatureModal({ show, onClose }: UpdateSignatureM
         {/* content */}
         <div className="m-3 flex flex-col items-start justify-center gap-4">
           <div
-            className="hover:border-primary flex h-[200px] w-full cursor-pointer items-center justify-center rounded-xl border border-dashed border-white/20 transition-colors"
+            className="hover:border-primary border-base-300 flex h-[200px] w-full cursor-pointer items-center justify-center rounded-xl border border-dashed transition-colors"
             onClick={handleClick}
             onDragEnter={handlePreventDragEvent}
             onMouseLeave={handlePreventDragEvent}
@@ -127,7 +127,7 @@ export default function UpdateSignatureModal({ show, onClose }: UpdateSignatureM
                 />
               </div>
             ) : (
-              <div className="text-base-content/60 flex size-full flex-col items-center justify-center gap-4">
+              <div className="text-2 flex size-full flex-col items-center justify-center gap-4">
                 <IoCloudUploadOutline className="size-10" />
                 <span className="text-sm">{t('dropzone')}</span>
               </div>
@@ -141,10 +141,8 @@ export default function UpdateSignatureModal({ show, onClose }: UpdateSignatureM
             />
           </div>
 
-          <div className="w-full">
-            <div className="flex flex-col items-center justify-center gap-2">
-              <span className="text-warning text-sm">{t('transparentWarning')}</span>
-            </div>
+          <div className="flex flex-col items-center justify-center gap-2">
+            <span className="text-warning text-sm">{t('transparentWarning')}</span>
           </div>
         </div>
 

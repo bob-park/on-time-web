@@ -11,7 +11,7 @@ export default async function AttendanceViewPage() {
   return (
     <div className="flex h-full w-full max-w-screen-lg flex-col gap-2">
       <WorkingTimeProvider>
-        <PageHeader eyebrow={t('eyebrow')} title={t('title')} actions={<WorkingTimeView />} />
+        <PageHeader title={t('title')} actions={<WorkingTimeView />} />
 
         <div className="min-h-0 flex-1">
           <AllEmployeesGrid />

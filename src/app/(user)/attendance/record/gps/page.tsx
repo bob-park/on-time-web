@@ -1,19 +1,6 @@
-import PageHeader from '@/shared/components/PageHeader';
+import { notFound } from 'next/navigation';
 
-import { getTranslations } from 'next-intl/server';
-
-import AttendanceRecordGpsContents from './_components/AttendanceRecordGpsContents';
-
-export default async function AttendanceRecordGpsPage() {
-  const t = await getTranslations('attendance.record.gps');
-
-  return (
-    <div className="w-full">
-      {/* eyebrow + title */}
-      <PageHeader eyebrow={t('eyebrow')} title={t('title')} subtitle={t('subtitle')} />
-
-      {/* content */}
-      <AttendanceRecordGpsContents />
-    </div>
-  );
+// 출퇴근 기록(근태 처리) 기능 비활성화 — 재활성화 시 git 이력의 원래 페이지로 되돌린다.
+export default function AttendanceRecordGpsPage() {
+  notFound();
 }

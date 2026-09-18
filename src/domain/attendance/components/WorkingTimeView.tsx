@@ -39,9 +39,9 @@ export default function WorkingTimeView() {
   };
 
   return (
-    <div className="flex w-full flex-row items-center justify-end gap-2">
+    <div className="flex flex-row items-center justify-end gap-2">
       <button
-        className="bg-base-300 text-base-content hover:bg-base-content/10 flex h-9 w-9 items-center justify-center rounded-full transition-[colors,transform] duration-150 active:scale-95"
+        className="bg-base-200 text-base-content hover:bg-base-300 flex h-9 w-9 items-center justify-center rounded-[10px] transition-[colors,transform] duration-150 active:scale-95"
         onClick={handlePrevWeekClick}
       >
         <IoIosArrowBack className="h-4 w-4" />
@@ -52,7 +52,7 @@ export default function WorkingTimeView() {
       </span>
 
       <button
-        className="bg-base-300 text-base-content hover:bg-base-content/10 flex h-9 w-9 items-center justify-center rounded-full transition-[colors,transform] duration-150 active:scale-95"
+        className="bg-base-200 text-base-content hover:bg-base-300 flex h-9 w-9 items-center justify-center rounded-[10px] transition-[colors,transform] duration-150 active:scale-95"
         onClick={handleNextWeekClick}
       >
         <IoIosArrowForward className="h-4 w-4" />

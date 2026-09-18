@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import { useGenerateCurrentCheck, useGetCurrentCheck } from '@/domain/attendance/query/attendanceCheck';
+import { AttendanceType } from '@/domain/attendance/apis/attendance.dto';
+import { useGenerateCurrentCheck, useGetCurrentCheck } from '@/domain/attendance/queries/attendanceCheck';
+import Card from '@/shared/components/Card';
 import { getDaysOfWeek } from '@/utils/parse';
 
 import cx from 'classnames';
@@ -27,7 +29,8 @@ export default function QRContents() {
     height: 300,
     image: '/malgn_logo.png',
     dotsOptions: {
-      color: '#121212',
+      // QR 은 스캔 대비를 위해 흰 패널 + 고정 다크 도트 (테마 무관)
+      color: '#101114',
       type: 'rounded',
     },
     imageOptions: {
@@ -120,23 +123,23 @@ export default function QRContents() {
       </div>
 
       {/* 정보 카드 + QR */}
-      <div className="bg-base-300 w-full max-w-[420px] rounded-lg p-5">
+      <Card className="w-full max-w-[420px] p-5">
         {/* 메타 정보 */}
         {!isLoading && currentCheck && (
           <div className="flex flex-col">
             <div className="flex items-center justify-between py-2 text-[13.5px]">
-              <span className="text-base-content/60">{t('workingDate')}</span>
+              <span className="text-2">{t('workingDate')}</span>
               <span className="font-bold">
                 {dayjs(currentCheck.workingDate).format('YYYY년 MM월 DD일')} (
                 {getDaysOfWeek(dayjs(currentCheck.workingDate).day())})
               </span>
             </div>
             <div className="flex items-center justify-between py-2 text-[13.5px]">
-              <span className="text-base-content/60">{t('createdDate')}</span>
+              <span className="text-2">{t('createdDate')}</span>
               <span className="font-bold">{dayjs(currentCheck.createdDate).format('YYYY-MM-DD HH:mm:ss')}</span>
             </div>
             <div className="flex items-center justify-between gap-3 py-2 text-[13.5px]">
-              <span className="text-base-content/60">{t('expiredDate')}</span>
+              <span className="text-2">{t('expiredDate')}</span>
               <div className="flex items-center gap-3">
                 <span className="font-bold">{dayjs(currentCheck.expiredDate).format('YYYY-MM-DD HH:mm:ss')}</span>
                 <span className="text-primary inline-flex items-center gap-1.5 text-xs font-bold">
@@ -156,15 +159,15 @@ export default function QRContents() {
         )}
 
         {/* QR 흰 패널 (스캔 대비 필수) — 캔버스는 항상 마운트 유지 */}
-        <div className={cx('mt-4 flex justify-center rounded-xl bg-[#fdfdfd] p-5', isLoading && 'invisible')}>
+        <div className={cx('mt-4 flex justify-center rounded-xl bg-white p-5', isLoading && 'invisible')}>
           <div id={QR_CANVAS_ID} ref={qrCanvasRef} role="img" aria-label={t('qrAlt', { type: typeLabel })} />
         </div>
 
         {/* 캡션 */}
         {!isLoading && currentCheck && (
-          <p className="text-base-content/60 mt-3.5 text-center text-xs">{t('caption', { type: typeLabel })}</p>
+          <p className="text-2 mt-3.5 text-center text-xs">{t('caption', { type: typeLabel })}</p>
         )}
-      </div>
+      </Card>
     </div>
   );
 }

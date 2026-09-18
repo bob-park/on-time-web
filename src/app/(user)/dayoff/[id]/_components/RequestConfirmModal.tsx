@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { PiUploadFill } from 'react-icons/pi';
 
-import { useRequestDocument } from '@/domain/document/query/documents';
+import { useRequestDocument } from '@/domain/document/queries/documents';
 import useToast from '@/shared/hooks/useToast';
 
 import { useTranslations } from 'next-intl';
@@ -63,7 +63,7 @@ export default function RequestConfirmModal({ show, documentId, onClose }: Reque
 
   return (
     <dialog ref={ref} className="modal" onKeyDownCapture={handleKeyboardDown}>
-      <div className="modal-box rounded-xl bg-[#252525] shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+      <div className="modal-box bg-base-100 border-base-300 rounded-box shadow-whisper border">
         <div className="flex w-full flex-col items-start justify-start gap-3">
           {/* header */}
           <div className="">

@@ -2,29 +2,21 @@
 
 import { useState } from 'react';
 
-import { useDocuments } from '@/domain/document/query/documents';
+import { DocumentStatus, DocumentsType } from '@/domain/document/apis/document.dto';
+import { useDocuments } from '@/domain/document/queries/documents';
+import Card from '@/shared/components/Card';
 import Pagination from '@/shared/components/Pagination';
-import PillFilter from '@/shared/components/PillFilter';
+import Segment from '@/shared/components/Segment';
 
 import { useTranslations } from 'next-intl';
 
 import DocumentResult from './DocumentResult';
 
-interface DocumentListContentsProps {
-  params: SearchDocumentRequest;
-}
-
 const PAGE_SIZE = 10;
 
-export default function DocumentListContents({ params }: DocumentListContentsProps) {
+export default function DocumentListContents() {
   const t = useTranslations('documents');
   const tf = useTranslations('common.filter');
-
-  const categoryOptions: { label: string; value: DocumentsType | undefined }[] = [
-    { label: tf('all'), value: undefined },
-    { label: tf('typeVacation'), value: 'VACATION' },
-    { label: tf('typeOvertime'), value: 'OVERTIME_WORK' },
-  ];
 
   const statusOptions: { label: string; value: DocumentStatus | undefined }[] = [
     { label: tf('all'), value: undefined },
@@ -32,6 +24,12 @@ export default function DocumentListContents({ params }: DocumentListContentsPro
     { label: tf('statusWaiting'), value: 'WAITING' },
     { label: tf('statusApproved'), value: 'APPROVED' },
     { label: tf('statusRejected'), value: 'REJECTED' },
+  ];
+
+  const categoryOptions: { label: string; value: DocumentsType | undefined }[] = [
+    { label: tf('all'), value: undefined },
+    { label: tf('typeVacation'), value: 'VACATION' },
+    { label: tf('typeOvertime'), value: 'OVERTIME_WORK' },
   ];
 
   const [selectedType, setSelectedType] = useState<DocumentsType | undefined>(undefined);
@@ -59,36 +57,37 @@ export default function DocumentListContents({ params }: DocumentListContentsPro
   };
 
   return (
-    <div className="animate-fade-up bg-base-300 w-full rounded-lg p-5">
-      {/* Filters */}
-      <div className="mb-5 flex flex-col gap-2.5 border-b border-white/10 pb-4">
-        <PillFilter
-          label={tf('categoryLabel')}
-          ariaLabel={t('categoryFilterAria')}
-          options={categoryOptions}
-          value={selectedType}
-          onChange={handleTypeChange}
-        />
-        <PillFilter
-          label={tf('statusLabel')}
+    <div className="animate-fade-up w-full">
+      {/* filters */}
+      <div className="mb-3.5 flex flex-wrap items-center gap-2">
+        <span className="text-3 text-xs font-semibold">{tf('statusLabel')}</span>
+        <Segment
           ariaLabel={t('statusFilterAria')}
           options={statusOptions}
           value={selectedStatus}
           onChange={handleStatusChange}
         />
+        <span className="text-3 ml-1 text-xs font-semibold">{tf('categoryLabel')}</span>
+        <Segment
+          ariaLabel={t('categoryFilterAria')}
+          options={categoryOptions}
+          value={selectedType}
+          onChange={handleTypeChange}
+        />
       </div>
 
-      {/* Table */}
-      <DocumentResult documents={page?.content ?? []} isLoading={isLoading} />
+      {/* table */}
+      <Card>
+        <DocumentResult documents={page?.content ?? []} isLoading={isLoading} />
 
-      {/* Pagination */}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        total={total}
-        pageSize={PAGE_SIZE}
-        onPageChange={setCurrentPage}
-      />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          total={total}
+          pageSize={PAGE_SIZE}
+          onPageChange={setCurrentPage}
+        />
+      </Card>
     </div>
   );
 }

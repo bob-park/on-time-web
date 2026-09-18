@@ -1,6 +1,9 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
 @import 'tailwindcss';
-@plugin 'daisyui';
+/* daisyUI 내장 테마(light/dark)를 끄고 아래 커스텀 light/dark 만 사용한다 — 내장 light 가 더 작은 radius 로 덮어쓰는 문제 방지 */
+@plugin 'daisyui' {
+  themes: false;
+}
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -14,61 +17,159 @@
 }
 
 @plugin 'daisyui/theme' {
-  name: 'ontime-dark';
+  name: 'light';
   default: true;
-  prefersdark: true;
-  color-scheme: 'dark';
-  --color-base-100: #121212;
-  --color-base-200: #181818;
-  --color-base-300: #1f1f1f;
-  --color-base-content: #ffffff;
-  --color-primary: #1ed760;
-  --color-primary-content: #000000;
-  --color-secondary: #252525;
+  color-scheme: 'light';
+  --color-base-100: #ffffff;
+  --color-base-200: #f5f5f8;
+  --color-base-300: #eeeef2;
+  --color-base-content: #101114;
+  --color-primary: #7132f5;
+  --color-primary-content: #ffffff;
+  --color-secondary: #5741d8;
   --color-secondary-content: #ffffff;
-  --color-accent: #1ed760;
-  --color-accent-content: #000000;
-  --color-neutral: #1f1f1f;
+  --color-accent: #7132f5;
+  --color-accent-content: #ffffff;
+  --color-neutral: #686b82;
   --color-neutral-content: #ffffff;
-  --color-info: #539df5;
-  --color-info-content: #000000;
-  --color-success: #1ed760;
-  --color-success-content: #000000;
-  --color-warning: #ffa42b;
-  --color-warning-content: #000000;
-  --color-error: #f3727f;
-  --color-error-content: #000000;
-  --radius-selector: 2rem;
-  --radius-field: 2rem;
-  --radius-box: 0.5rem;
+  --color-info: #5741d8;
+  --color-info-content: #ffffff;
+  --color-success: #149e61;
+  --color-success-content: #ffffff;
+  --color-warning: #d97706;
+  --color-warning-content: #ffffff;
+  --color-error: #dc2626;
+  --color-error-content: #ffffff;
+  --radius-selector: 0.5rem;
+  --radius-field: 0.75rem;
+  --radius-box: 0.75rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
-  --depth: 1;
+  --depth: 0;
   --noise: 0;
 }
 
-:root {
-  --shadow-heavy: rgba(0, 0, 0, 0.5) 0px 8px 24px;
-  --shadow-medium: rgba(0, 0, 0, 0.3) 0px 8px 8px;
+@plugin 'daisyui/theme' {
+  name: 'dark';
+  prefersdark: false;
+  color-scheme: 'dark';
+  --color-base-100: #17181d;
+  --color-base-200: #0f1014;
+  --color-base-300: #22232a;
+  --color-base-content: #f3f3f6;
+  --color-primary: #8b5cf6;
+  --color-primary-content: #ffffff;
+  --color-secondary: #7c4dff;
+  --color-secondary-content: #ffffff;
+  --color-accent: #8b5cf6;
+  --color-accent-content: #ffffff;
+  --color-neutral: #a7a9b8;
+  --color-neutral-content: #0f1014;
+  --color-info: #7c4dff;
+  --color-info-content: #ffffff;
+  --color-success: #22c55e;
+  --color-success-content: #0f1014;
+  --color-warning: #f59e0b;
+  --color-warning-content: #0f1014;
+  --color-error: #ef4444;
+  --color-error-content: #ffffff;
+  --radius-selector: 0.5rem;
+  --radius-field: 0.75rem;
+  --radius-box: 0.75rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+/* 토큰 커스텀 프로퍼티 — daisyUI 변수 밖의 보조 색/그림자 */
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+  --text-2: #686b82;
+  --text-3: #9497a9;
+  --border-soft: #eeeef2;
+  --primary-subtle: rgba(133, 91, 251, 0.16);
+  --primary-soft: #f3effe;
+  --success-soft: rgba(20, 158, 97, 0.16);
+  --success-text: #026b3f;
+  --warning-soft: rgba(217, 119, 6, 0.14);
+  --warning-text: #92400e;
+  --error-soft: rgba(220, 38, 38, 0.12);
+  --neutral-soft: rgba(104, 107, 130, 0.12);
+  --shadow-whisper: rgba(0, 0, 0, 0.03) 0px 4px 24px;
+  --shadow-micro: rgba(16, 24, 40, 0.04) 0px 1px 4px;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --text-2: #a7a9b8;
+  --text-3: #7c7f91;
+  --border-soft: #22232a;
+  --primary-subtle: rgba(139, 92, 246, 0.2);
+  --primary-soft: #1e1a2e;
+  --success-soft: rgba(34, 197, 94, 0.18);
+  --success-text: #86efac;
+  --warning-soft: rgba(245, 158, 11, 0.2);
+  --warning-text: #fcd34d;
+  --error-soft: rgba(239, 68, 68, 0.2);
+  --neutral-soft: rgba(167, 169, 184, 0.14);
+  --shadow-whisper: rgba(0, 0, 0, 0.35) 0px 4px 24px;
+  --shadow-micro: rgba(0, 0, 0, 0.3) 0px 1px 4px;
 }
 
 body {
   font-family:
     'Pretendard Variable',
     Pretendard,
+    'IBM Plex Sans',
     -apple-system,
     system-ui,
     sans-serif;
-  background: #121212;
+  font-size: 15px;
+  line-height: 1.38;
+  background: var(--color-base-200);
+  color: var(--color-base-content);
+  -webkit-font-smoothing: antialiased;
 }
 
+@utility text-2 {
+  color: var(--text-2);
+}
+@utility text-3 {
+  color: var(--text-3);
+}
+@utility border-soft {
+  border-color: var(--border-soft);
+}
+@utility bg-primary-subtle {
+  background-color: var(--primary-subtle);
+}
+@utility bg-primary-soft {
+  background-color: var(--primary-soft);
+}
+@utility shadow-whisper {
+  box-shadow: var(--shadow-whisper);
+}
+@utility shadow-micro {
+  box-shadow: var(--shadow-micro);
+}
+@utility btn-subtle {
+  background-color: var(--primary-subtle);
+  color: var(--color-primary);
+  border-color: transparent;
+  &:hover {
+    background-color: color-mix(in oklab, var(--primary-subtle) 80%, var(--color-primary));
+  }
+}
 @utility eyebrow {
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 2px;
+  letter-spacing: 1.6px;
   text-transform: uppercase;
-  color: #1ed760;
+  color: var(--text-3);
 }
 
 /* Entrance animations */
@@ -83,15 +184,6 @@ body {
   }
 }
 
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
 @keyframes scale-in {
   from {
     opacity: 0;
@@ -103,33 +195,8 @@ body {
   }
 }
 
-@keyframes progress-fill {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
-
 @utility animate-fade-up {
   animation: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@utility animate-fade-in {
-  animation: fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@utility animate-scale-in {
-  animation: scale-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@utility animate-progress {
-  animation: progress-fill 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@utility delay-75 {
-  animation-delay: 75ms;
 }
 
 @utility delay-150 {
@@ -159,81 +226,81 @@ dialog.modal[open] .modal-box {
   outline-offset: 2px;
 }
 
-/* react-day-picker — dark theme for schedule 일정 추가 modal */
-.rdp-dark {
+/* react-day-picker */
+.rdp-theme {
   --rdp-accent-color: var(--color-primary);
   --rdp-accent-background-color: color-mix(in oklab, var(--color-primary) 12%, transparent);
   --rdp-today-color: var(--color-primary);
   margin: 0;
   color: var(--color-base-content);
 }
-.rdp-dark .rdp-month_caption,
-.rdp-dark .rdp-caption_label {
+.rdp-theme .rdp-month_caption,
+.rdp-theme .rdp-caption_label {
   color: var(--color-base-content);
   font-weight: 700;
   font-size: 0.9rem;
 }
-.rdp-dark .rdp-weekday {
+.rdp-theme .rdp-weekday {
   color: color-mix(in oklab, var(--color-base-content) 55%, transparent);
   font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
 }
-.rdp-dark .rdp-chevron {
+.rdp-theme .rdp-chevron {
   fill: color-mix(in oklab, var(--color-base-content) 60%, transparent);
 }
-.rdp-dark .rdp-button_previous:hover,
-.rdp-dark .rdp-button_next:hover {
+.rdp-theme .rdp-button_previous:hover,
+.rdp-theme .rdp-button_next:hover {
   background: color-mix(in oklab, var(--color-base-content) 8%, transparent);
   border-radius: 9999px;
 }
-.rdp-dark .rdp-day_button {
+.rdp-theme .rdp-day_button {
   border: none;
   border-radius: 9999px;
   color: var(--color-base-content);
 }
-.rdp-dark .rdp-day_button:hover {
+.rdp-theme .rdp-day_button:hover {
   background: color-mix(in oklab, var(--color-base-content) 8%, transparent);
 }
-.rdp-dark .rdp-today:not(.rdp-outside) .rdp-day_button {
+.rdp-theme .rdp-today:not(.rdp-outside) .rdp-day_button {
   color: var(--color-warning);
   font-weight: 700;
 }
-.rdp-dark .rdp-selected .rdp-day_button {
+.rdp-theme .rdp-selected .rdp-day_button {
   background: var(--color-primary);
   color: var(--color-primary-content);
   font-weight: 700;
 }
-.rdp-dark .rdp-outside .rdp-day_button {
+.rdp-theme .rdp-outside .rdp-day_button {
   color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
 }
-.rdp-dark .rdp-dropdown,
-.rdp-dark .rdp-dropdowns select {
+.rdp-theme .rdp-dropdown,
+.rdp-theme .rdp-dropdowns select {
   background: var(--color-base-100);
   color: var(--color-base-content);
   border-radius: 0.5rem;
 }
 
-/* range selection — black band with solid rounded endpoints.
-   .rdp-dark.rdp-root(2클래스)로 라이브러리 .rdp-root 변수 선언(1클래스, 늦게 로드)을 이긴다 */
-.rdp-dark.rdp-root {
+/* range selection — subtle band with solid rounded endpoints.
+   .rdp-theme.rdp-root(2클래스)로 라이브러리 .rdp-root 변수 선언(1클래스, 늦게 로드)을 이긴다 */
+.rdp-theme.rdp-root {
   --rdp-accent-color: var(--color-primary);
   --rdp-accent-background-color: color-mix(in oklab, var(--color-primary) 12%, transparent);
-  --rdp-range_middle-background-color: #000000;
+  --rdp-range_middle-background-color: var(--primary-subtle);
   --rdp-range_start-background: linear-gradient(90deg, transparent 50%, var(--rdp-range_middle-background-color) 50%);
   --rdp-range_end-background: linear-gradient(90deg, var(--rdp-range_middle-background-color) 50%, transparent 50%);
 }
-.rdp-dark .rdp-range_start.rdp-range_end {
+.rdp-theme .rdp-range_start.rdp-range_end {
   background: revert;
 }
-.rdp-dark .rdp-range_start .rdp-day_button,
-.rdp-dark .rdp-range_end .rdp-day_button {
+.rdp-theme .rdp-range_start .rdp-day_button,
+.rdp-theme .rdp-range_end .rdp-day_button {
   background: var(--color-primary);
   color: var(--color-primary-content);
   border-radius: 9999px;
   font-weight: 700;
 }
-.rdp-dark .rdp-range_middle .rdp-day_button {
+.rdp-theme .rdp-range_middle .rdp-day_button {
   background: transparent;
   color: var(--color-base-content);
   border-radius: 0;
@@ -241,8 +308,8 @@ dialog.modal[open] .modal-box {
 }
 
 /* 오늘이 선택(단일/range 양끝)된 경우 — '오늘' 글자색 규칙보다 우선해 배경 대비 확보 */
-.rdp-dark .rdp-selected.rdp-today:not(.rdp-outside) .rdp-day_button,
-.rdp-dark .rdp-range_start.rdp-today:not(.rdp-outside) .rdp-day_button,
-.rdp-dark .rdp-range_end.rdp-today:not(.rdp-outside) .rdp-day_button {
+.rdp-theme .rdp-selected.rdp-today:not(.rdp-outside) .rdp-day_button,
+.rdp-theme .rdp-range_start.rdp-today:not(.rdp-outside) .rdp-day_button,
+.rdp-theme .rdp-range_end.rdp-today:not(.rdp-outside) .rdp-day_button {
   color: var(--color-primary-content);
 }

@@ -4,8 +4,11 @@ import { useEffect } from 'react';
 
 import { FaCheck, FaTimes } from 'react-icons/fa';
 
-import { useGetResultAttendanceRecord, useRecordAttendance } from '@/domain/attendance/query/attendanceRecord';
-import { useGetCurrentUser } from '@/domain/user/query/user';
+import { AttendanceRecord } from '@/domain/attendance/apis/attendance.dto';
+import AttendanceStatusBadge from '@/domain/attendance/components/AttendanceStatusBadge';
+import { useGetResultAttendanceRecord, useRecordAttendance } from '@/domain/attendance/queries/attendanceRecord';
+import { useUser } from '@/domain/users/queries/user';
+import Card from '@/shared/components/Card';
 import { getDaysOfWeek } from '@/utils/parse';
 
 import cx from 'classnames';
@@ -21,7 +24,7 @@ interface InfoRowProps {
 function InfoRow({ label, value, accent }: InfoRowProps) {
   return (
     <div className="flex items-center justify-between py-3">
-      <span className="text-base-content/60 text-[13px]">{label}</span>
+      <span className="text-2 text-[13px]">{label}</span>
       <span className={cx('text-[15px] font-bold', { 'text-primary': accent })}>{value}</span>
     </div>
   );
@@ -36,12 +39,12 @@ function AttendanceRecordResult({ result }: AttendanceRecordResultProps) {
   const success = !!result;
 
   return (
-    <div className="animate-fade-up flex flex-col items-center gap-7 pt-16 pb-10 text-center">
+    <div className="animate-fade-up flex flex-col items-center gap-6 py-4 text-center">
       {/* icon */}
       <span
         className={cx('flex size-20 items-center justify-center rounded-full text-4xl', {
-          'bg-primary text-primary-content shadow-[0_0_40px_rgba(30,215,96,0.35)]': success,
-          'bg-error text-error-content shadow-[0_0_40px_rgba(243,114,127,0.35)]': !success,
+          'bg-primary text-primary-content shadow-whisper': success,
+          'bg-error text-error-content shadow-whisper': !success,
         })}
       >
         {success ? <FaCheck /> : <FaTimes />}
@@ -50,13 +53,16 @@ function AttendanceRecordResult({ result }: AttendanceRecordResultProps) {
       {/* contents */}
       {success ? (
         <>
-          <h2 className="text-2xl font-bold tracking-tight">
-            {result.clockInTime && !result.clockOutTime && t('clockInDone')}
-            {result.clockInTime && result.clockOutTime && t('clockOutDone')}
-          </h2>
+          <div className="flex flex-col items-center gap-2.5">
+            <h2 className="text-2xl font-bold tracking-tight">
+              {result.clockInTime && !result.clockOutTime && t('clockInDone')}
+              {result.clockInTime && result.clockOutTime && t('clockOutDone')}
+            </h2>
+            <AttendanceStatusBadge status={result.status} />
+          </div>
 
-          <div className="bg-base-300 w-full max-w-[420px] rounded-lg px-5 text-left">
-            <div className="divide-y divide-white/10">
+          <div className="bg-base-200 rounded-box w-full px-4 text-left">
+            <div className="divide-base-300 divide-y">
               <InfoRow
                 label={t('workingDate')}
                 value={
@@ -73,7 +79,7 @@ function AttendanceRecordResult({ result }: AttendanceRecordResultProps) {
             </div>
           </div>
 
-          <span className="text-base-content/50 text-[13px]">{t('closeHint')}</span>
+          <span className="text-3 text-[13px]">{t('closeHint')}</span>
         </>
       ) : (
         <h2 className="text-2xl font-bold tracking-tight">{t('invalidAccess')}</h2>
@@ -88,7 +94,7 @@ interface AttendanceRecordContentsProps {
 
 export default function AttendanceRecordContents({ checkId }: AttendanceRecordContentsProps) {
   // query
-  const { currentUser } = useGetCurrentUser();
+  const { user: currentUser } = useUser();
   const { result } = useGetResultAttendanceRecord({ checkId });
   const { record, isLoading } = useRecordAttendance();
 
@@ -98,15 +104,15 @@ export default function AttendanceRecordContents({ checkId }: AttendanceRecordCo
   }, [currentUser]);
 
   return (
-    <div className="flex w-full flex-col items-center justify-center">
+    <Card className="mx-auto w-full max-w-[520px] p-6">
       {/* 처리 결과 표시 */}
       {isLoading && !result && (
-        <div className="flex h-56 flex-col items-center justify-center pt-16">
+        <div className="flex h-56 flex-col items-center justify-center">
           <span className="loading loading-infinity loading-lg text-primary"></span>
         </div>
       )}
 
       {!isLoading && currentUser && <AttendanceRecordResult result={result} />}
-    </div>
+    </Card>
   );
 }

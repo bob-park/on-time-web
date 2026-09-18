@@ -6,8 +6,8 @@ import { FaCheck, FaTimes } from 'react-icons/fa';
 
 import Image from 'next/image';
 
-import { useGetCurrentUser } from '@/domain/user/query/user';
-import { useUserNotification } from '@/domain/user/query/userNotification';
+import { useUser } from '@/domain/users/queries/user';
+import { useUserNotification } from '@/domain/users/queries/userNotification';
 import useToast from '@/shared/hooks/useToast';
 
 import { useTranslations } from 'next-intl';
@@ -29,7 +29,7 @@ export default function PressApprovalModal({ show, approvalUserUniqueId, onClose
   const { push } = useToast();
 
   // query
-  const { currentUser } = useGetCurrentUser();
+  const { user: currentUser } = useUser();
   const { sendMessage, isLoading } = useUserNotification(
     () => {
       handleClose();
@@ -76,7 +76,7 @@ export default function PressApprovalModal({ show, approvalUserUniqueId, onClose
 
   return (
     <dialog ref={ref} className="modal" onKeyDownCapture={handleKeyboardDown}>
-      <div className="modal-box rounded-xl bg-[#252525] shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+      <div className="modal-box bg-base-100 border-base-300 rounded-box shadow-whisper border">
         <div className="flex w-full flex-col items-start justify-start gap-3">
           {/* header */}
           <div className="">

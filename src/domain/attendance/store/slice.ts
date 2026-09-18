@@ -1,3 +1,4 @@
+import { AttendanceState } from '@/domain/attendance/store/attendance.state';
 import { BoundState } from '@/shared/store/rootStore';
 
 import { SlicePattern } from 'zustand';
