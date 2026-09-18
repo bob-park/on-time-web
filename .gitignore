@@ -31,7 +31,7 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # local env files
-.env*.local
+.env.development.local
 .env*.development
 
 # vercel
@@ -54,8 +54,7 @@ docker-compose*dev.yml
 *.iml
 *.ipr
 
-
-### bkit ###
-.bkit
+### AI ###
+.claude/
 .gstack/
-.claude
+.superpowers/
