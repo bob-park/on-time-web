@@ -162,7 +162,7 @@ export default function OvertimeRequestContents() {
         <Card>
           {/* 1 — 인원 */}
           <FormSection step={1} title={t('step1')} description={t('step1Desc')}>
-            <div className="flex flex-wrap items-center gap-2">
+            <div role="group" aria-label={t('step1')} className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
                 aria-pressed={isRegisteredUser === true}

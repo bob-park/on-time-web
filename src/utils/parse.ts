@@ -31,7 +31,7 @@ export function round(value: number, loc: number): number {
   return Math.round(value * pow) / pow;
 }
 
-const ONE_HOUR = 3_600;
+export const ONE_HOUR = 3_600;
 
 export function parseHours(seconds: number): string {
   const hours = Math.floor(seconds / ONE_HOUR);

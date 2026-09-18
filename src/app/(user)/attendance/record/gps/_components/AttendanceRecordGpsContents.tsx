@@ -98,7 +98,7 @@ export default function AttendanceRecordGpsContents() {
       {/* (a) 장소 — 장소 수가 많을 수 있어 줄바꿈되는 chip 으로 */}
       <div>
         <div className="text-2 mb-2.5 text-xs font-semibold tracking-wider uppercase">{t('gps.locationLabel')}</div>
-        <div className="flex flex-wrap gap-2">
+        <div role="group" aria-label={t('gps.locationLabel')} className="flex flex-wrap gap-2">
           {gpsResult.map((gps) => {
             const selected = selectGpsId === gps.id;
 

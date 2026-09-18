@@ -39,43 +39,41 @@ export default function PersonalInfoContents() {
 
   return (
     <>
-      <div className="w-full">
-        {isLoading ? (
-          <div className="flex flex-col gap-8 md:flex-row">
-            <div className="flex flex-shrink-0 flex-col items-center gap-3">
-              <div className="bg-base-300 h-24 w-24 animate-pulse rounded-full" />
-              <div className="bg-base-300 h-8 w-24 animate-pulse rounded-[10px]" />
-            </div>
-            <div className="grid flex-1 grid-cols-1 gap-x-8 gap-y-5 md:grid-cols-2">
-              <SkeletonField />
-              <SkeletonField />
-              <SkeletonField />
-              <SkeletonField />
-            </div>
+      {isLoading ? (
+        <div className="flex flex-col gap-8 md:flex-row">
+          <div className="flex flex-shrink-0 flex-col items-center gap-3">
+            <div className="bg-base-300 h-24 w-24 animate-pulse rounded-full" />
+            <div className="bg-base-300 h-8 w-24 animate-pulse rounded-[10px]" />
           </div>
-        ) : (
-          <div className="flex flex-col gap-8 md:flex-row">
-            <div className="flex flex-shrink-0 flex-col items-center gap-3.5">
-              <UserAvatar
-                alt={currentUser?.username || ''}
-                avatar={currentUser && `/api/v1/users/${currentUser.id}/avatar`}
-                size="profile"
-                isOnline={false}
-              />
-              <button className="btn btn-subtle btn-sm" onClick={() => setShowUpdateAvatarModal(true)}>
-                {t('changeAvatar')}
-              </button>
-            </div>
+          <div className="grid flex-1 grid-cols-1 gap-x-8 gap-y-5 md:grid-cols-2">
+            <SkeletonField />
+            <SkeletonField />
+            <SkeletonField />
+            <SkeletonField />
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-8 md:flex-row">
+          <div className="flex flex-shrink-0 flex-col items-center gap-3.5">
+            <UserAvatar
+              alt={currentUser?.username || ''}
+              avatar={currentUser && `/api/v1/users/${currentUser.id}/avatar`}
+              size="profile"
+              isOnline={false}
+            />
+            <button className="btn btn-subtle btn-sm" onClick={() => setShowUpdateAvatarModal(true)}>
+              {t('changeAvatar')}
+            </button>
+          </div>
 
-            <div className="grid flex-1 grid-cols-1 gap-x-8 gap-y-5 md:grid-cols-2">
-              <InfoField label={t('labelTeam')} value={currentUser?.groups?.[0]?.group.name} />
-              <InfoField label={t('labelPosition')} value={currentUser?.position.name} />
-              <InfoField label={t('labelName')} value={currentUser?.username} />
-              <InfoField label={t('labelEmail')} value={currentUser?.email} />
-            </div>
+          <div className="grid flex-1 grid-cols-1 gap-x-8 gap-y-5 md:grid-cols-2">
+            <InfoField label={t('labelTeam')} value={currentUser?.groups?.[0]?.group.name} />
+            <InfoField label={t('labelPosition')} value={currentUser?.position.name} />
+            <InfoField label={t('labelName')} value={currentUser?.username} />
+            <InfoField label={t('labelEmail')} value={currentUser?.email} />
           </div>
-        )}
-      </div>
+        </div>
+      )}
       <UpdateAvatarModal show={showUpdateAvatarModal} onClose={() => setShowUpdateAvatarModal(false)} />
     </>
   );

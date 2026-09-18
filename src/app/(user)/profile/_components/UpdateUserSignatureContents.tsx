@@ -25,32 +25,30 @@ export default function UpdateUserSignatureContents() {
 
   return (
     <>
-      <div className="w-full">
-        <div className="flex flex-col gap-4">
-          <div className="border-base-300 relative h-[160px] w-full max-w-[400px] overflow-hidden rounded-lg border border-dashed">
-            {currentUser && !isError ? (
-              // 서명 PNG 는 검정 잉크 + 투명 배경이라 다크 배경에서 안 보이므로 프리뷰 내부만 밝게 유지
-              <Image
-                className="bg-white object-contain"
-                src={`/api/v1/users/${currentUser.id}/signature`}
-                alt={t('alt')}
-                fill
-                onError={() => setIsError(true)}
-              />
-            ) : (
-              <div className="flex size-full items-center justify-center">
-                <span className="text-3 text-sm">{t('empty')}</span>
-              </div>
-            )}
-          </div>
+      <div className="flex flex-col gap-4">
+        <div className="border-base-300 relative h-[160px] w-full max-w-[400px] overflow-hidden rounded-lg border border-dashed">
+          {currentUser && !isError ? (
+            // 서명 PNG 는 검정 잉크 + 투명 배경이라 다크 배경에서 안 보이므로 프리뷰 내부만 밝게 유지
+            <Image
+              className="bg-white object-contain"
+              src={`/api/v1/users/${currentUser.id}/signature`}
+              alt={t('alt')}
+              fill
+              onError={() => setIsError(true)}
+            />
+          ) : (
+            <div className="flex size-full items-center justify-center">
+              <span className="text-3 text-sm">{t('empty')}</span>
+            </div>
+          )}
+        </div>
 
-          {hasSignature && <p className="text-warning text-xs">{t('transparentWarning')}</p>}
+        {hasSignature && <p className="text-warning text-xs">{t('transparentWarning')}</p>}
 
-          <div className="flex justify-end">
-            <button className="btn btn-outline btn-sm" onClick={() => setShowUpdateSignatureModal(true)}>
-              {hasSignature ? t('change') : t('register')}
-            </button>
-          </div>
+        <div className="flex justify-end">
+          <button className="btn btn-outline btn-sm" onClick={() => setShowUpdateSignatureModal(true)}>
+            {hasSignature ? t('change') : t('register')}
+          </button>
         </div>
       </div>
       <UpdateSignatureModal

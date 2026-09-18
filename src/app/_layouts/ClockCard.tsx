@@ -9,20 +9,11 @@ import Link from 'next/link';
 
 import { useGetAttendanceRecord } from '@/domain/attendance/queries/attendanceRecord';
 import { useUser } from '@/domain/users/queries/user';
-import { getDuration } from '@/utils/parse';
+import { getDuration, parseHours } from '@/utils/parse';
 
 import cx from 'classnames';
 import dayjs from 'dayjs';
-import padStart from 'lodash/padStart';
 import { useTranslations } from 'next-intl';
-
-const ONE_HOUR = 3_600;
-
-function parseHours(seconds: number): string {
-  const hours = Math.floor(seconds / ONE_HOUR);
-  const min = Math.floor((seconds / 60) % 60);
-  return `${hours}h ${padStart(min + '', 2, '0')}m`;
-}
 
 function useTodayClock() {
   const t = useTranslations('workingBar');

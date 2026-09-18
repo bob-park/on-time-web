@@ -30,7 +30,7 @@ src/
 │   ├── components/     # Cross-cutting UI primitives (PageHeader, Card, Table, Badge, ...) + toast / theme / queries
 │   ├── hooks/          # Reusable hooks (useModal, useWebSocket, ...)
 │   ├── i18n/           # next-intl config, locale resolution, server action — see [next-intl](./libs/next-intl.md)
-│   ├── providers/      # React context providers (theme, ...)
+│   ├── providers/      # theme type (no React provider)
 │   ├── queries/        # Shared React Query types/utilities
 │   ├── store/          # Root Zustand store (combines domain slices)
 │   └── dayjs/          # dayjs configuration / locale setup
@@ -87,7 +87,7 @@ src/app/
 - `_layouts/` 에는 `.tsx` sub-component 외에 그 layout 전용 데이터/훅 모듈 (`nav.ts`, `breadcrumb.ts`) 도 둘 수 있다. 파일명은 [File Naming](./conventions/naming.md) 대로 컴포넌트는 `PascalCase.tsx`, 모듈은 `camelCase.ts`.
 - 네비게이션 항목을 추가/삭제할 때는 `nav.ts` 의 `NAV_GROUPS` 만 수정한다 — `Sidebar` 가 이 테이블을 렌더링하고, `Header` 는 같은 파일의 `findNavItem` 으로 현재 segment 의 breadcrumb 라벨을 찾는다. `MobileDock` 은 고정 4개 항목 + `ClockCard` 의 `ClockFab` 이라 이 테이블을 쓰지 않는다.
 - 상세 페이지가 breadcrumb 끝에 문서 제목을 붙이려면 `breadcrumb.ts` 의 `useBreadcrumbTitle(title)` 을 호출한다 (provider 없는 모듈 단위 store, 언마운트 시 자동 해제).
-- Nested layout 도 동일 규칙이다. 예: `src/app/admin/_layouts/Sidebar.tsx` 는 `src/app/admin/layout.tsx` 전용이며, root layout 에서 쓰고 싶다면 먼저 `src/shared/components/` 로 승격한다.
+- Nested layout 도 동일 규칙이다. 예시 — 실제 경로 아님: `src/app/admin/_layouts/Sidebar.tsx` 는 `src/app/admin/layout.tsx` 전용이며, root layout 에서 쓰고 싶다면 먼저 `src/shared/components/` 로 승격한다.
 
 ## Shared UI primitives — `src/shared/components/`
 

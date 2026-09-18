@@ -104,8 +104,8 @@ export default function AddScheduleModal() {
 
         {/* 구분 */}
         <div className="mt-6 flex flex-col gap-2">
-          <label className="text-2 text-xs font-semibold tracking-wider uppercase">{t('category')}</label>
-          <div className="flex flex-wrap gap-2">
+          <span className="text-2 text-xs font-semibold tracking-wider uppercase">{t('category')}</span>
+          <div role="group" aria-label={t('category')} className="flex flex-wrap gap-2">
             {SELECT_OPTIONS_ATTENDANCE.map((option) => {
               const selected = selectedDayOffType === option.id;
 

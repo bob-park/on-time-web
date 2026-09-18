@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 import { Document, DocumentsType } from '@/domain/document/apis/document.dto';
 import CancelConfirmModal from '@/domain/document/components/CancelConfirmModal';
@@ -28,7 +28,6 @@ const DETAIL_PATH: Partial<Record<DocumentsType, string>> = {
 
 export default function DocumentResult({ documents, isLoading }: DocumentResultProps) {
   const t = useTranslations('documents');
-  const router = useRouter();
   const { push } = useToast();
 
   // 취소는 확인 모달을 거친다 — 어떤 문서에 대해 열었는지
@@ -38,16 +37,6 @@ export default function DocumentResult({ documents, isLoading }: DocumentResultP
     () => push(t('toastRequested'), 'success'),
     () => push(t('toastRequestError'), 'error'),
   );
-
-  const handleOpen = (doc: Document) => {
-    const path = DETAIL_PATH[doc.type];
-
-    if (!path) {
-      return;
-    }
-
-    router.push(`/${path}/${doc.id}`);
-  };
 
   return (
     <>
@@ -73,23 +62,26 @@ export default function DocumentResult({ documents, isLoading }: DocumentResultP
             ) : (
               documents.map((doc) => {
                 const summary = documentSummary(doc);
+                const detailPath = DETAIL_PATH[doc.type];
+                const detailHref = detailPath && `/${detailPath}/${doc.id}`;
 
                 return (
-                  <tr
-                    key={doc.id}
-                    className={`hover:bg-base-200 cursor-pointer ${rowClass}`}
-                    onClick={() => handleOpen(doc)}
-                    role="button"
-                    tabIndex={0}
-                    // 행 자신이 포커스된 경우에만 이동 — 내부 버튼의 keydown 은 무시한다.
-                    onKeyDown={(e) => e.key === 'Enter' && e.target === e.currentTarget && handleOpen(doc)}
-                    aria-label={t('rowAria', { id: doc.id })}
-                  >
+                  <tr key={doc.id} className={`hover:bg-base-200 cursor-pointer ${rowClass}`}>
                     {/* 문서 */}
                     <td className={tdClass}>
                       <div className="flex min-w-0 items-center gap-2">
                         <DocumentsTypeBadge type={doc.type} />
-                        {summary && <span className="truncate font-semibold">{summary}</span>}
+                        {summary &&
+                          (detailHref ? (
+                            <Link
+                              href={detailHref}
+                              className="truncate font-semibold hover:underline focus-visible:outline-2"
+                            >
+                              {summary}
+                            </Link>
+                          ) : (
+                            <span className="truncate font-semibold">{summary}</span>
+                          ))}
                       </div>
                       <div className="text-3 mt-1 text-xs">
                         {t('requestedAt', { date: dayjs(doc.createdDate).format('YYYY.MM.DD') })}
@@ -117,7 +109,6 @@ export default function DocumentResult({ documents, isLoading }: DocumentResultP
                             e.stopPropagation();
                             request({ id: doc.id });
                           }}
-                          onKeyDown={(e) => e.stopPropagation()}
                         >
                           {t('actionRequest')}
                         </button>
@@ -130,7 +121,6 @@ export default function DocumentResult({ documents, isLoading }: DocumentResultP
                             e.stopPropagation();
                             setCancelId(doc.id);
                           }}
-                          onKeyDown={(e) => e.stopPropagation()}
                         >
                           {t('actionCancel')}
                         </button>

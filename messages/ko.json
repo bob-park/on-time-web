@@ -46,10 +46,8 @@
     "working": "근무 중 · {time} 출근",
     "leaveTarget": "목표 퇴근 {time}",
     "beforeWork": "출근 전",
-    "done": "오늘 근무 완료 · {duration}",
     "clockOut": "퇴근하기",
     "clockIn": "출근하기",
-    "elapsed": "경과",
     "todayDone": "오늘 근무 완료"
   },
   "dashboard": {

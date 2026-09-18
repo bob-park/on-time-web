@@ -141,10 +141,8 @@ export default function UpdateSignatureModal({ show, onClose }: UpdateSignatureM
             />
           </div>
 
-          <div className="w-full">
-            <div className="flex flex-col items-center justify-center gap-2">
-              <span className="text-warning text-sm">{t('transparentWarning')}</span>
-            </div>
+          <div className="flex flex-col items-center justify-center gap-2">
+            <span className="text-warning text-sm">{t('transparentWarning')}</span>
           </div>
         </div>
 

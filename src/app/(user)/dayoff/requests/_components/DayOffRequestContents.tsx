@@ -133,7 +133,7 @@ export default function DayOffRequestContent() {
         <Card>
           {/* 1 — 휴가 종류 */}
           <FormSection step={1} title={t('step1')} description={t('step1Desc')}>
-            <div className="flex flex-wrap gap-2">
+            <div role="group" aria-label={t('step1')} className="flex flex-wrap gap-2">
               {VACATION_CHIPS.map((chip) => {
                 const selected = selectedChip?.key === chip.key;
                 const remaining = chipRemaining[chip.key];

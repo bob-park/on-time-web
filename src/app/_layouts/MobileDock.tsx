@@ -27,23 +27,28 @@ export default function MobileDock() {
 
   return (
     <nav className="bg-base-100 border-base-300 fixed inset-x-0 bottom-0 z-40 flex h-[72px] items-start justify-around border-t px-1.5 pt-2 md:hidden">
-      {ITEMS.map((item) =>
-        item === null ? (
-          <ClockFab key="fab" />
-        ) : (
+      {ITEMS.map((item) => {
+        if (item === null) {
+          return <ClockFab key="fab" />;
+        }
+
+        const active = item.segments.every((s) => segments.includes(s));
+
+        return (
           <Link
             key={item.key}
             href={item.href}
+            aria-current={active ? 'page' : undefined}
             className={cx(
               'flex w-16 flex-col items-center gap-1 text-[10px]',
-              item.segments.every((s) => segments.includes(s)) ? 'text-primary font-semibold' : 'text-3',
+              active ? 'text-primary font-semibold' : 'text-3',
             )}
           >
             <item.icon className="size-[22px]" />
             {t(item.key)}
           </Link>
-        ),
-      )}
+        );
+      })}
     </nav>
   );
 }

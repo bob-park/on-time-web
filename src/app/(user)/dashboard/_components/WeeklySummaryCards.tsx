@@ -10,11 +10,10 @@ import { useUserCompLeaveEntries } from '@/domain/users/queries/userCompLeaveEnt
 import Badge from '@/shared/components/Badge';
 import StatCard from '@/shared/components/StatCard';
 import dayjs from '@/shared/dayjs';
-import { getWorkDuration, parseHours } from '@/utils/parse';
+import { ONE_HOUR, getWorkDuration, parseHours } from '@/utils/parse';
 
 import { useTranslations } from 'next-intl';
 
-const ONE_HOUR = 3_600;
 const WEEKLY_TOTAL_HOURS = 40;
 
 function calcCumulativeSeconds(attendanceRecords: AttendanceRecord[], now: Date): number {

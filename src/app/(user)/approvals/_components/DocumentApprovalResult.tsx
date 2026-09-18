@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 import { ApprovalHistory } from '@/domain/approval/apis/approval.dto';
 import { DocumentStatus } from '@/domain/document/apis/document.dto';
@@ -24,17 +24,10 @@ interface DocumentApprovalResultProps {
 
 export default function DocumentApprovalResult({ items, isLoading }: DocumentApprovalResultProps) {
   const t = useTranslations('approvals');
-  const router = useRouter();
 
   // 인라인 처리 — 승인/반려 모달을 어떤 결재 이력에 대해 열었는지
   const [approveId, setApproveId] = useState<number | undefined>(undefined);
   const [rejectId, setRejectId] = useState<number | undefined>(undefined);
-
-  const handleOpen = (id?: number) => {
-    if (id === undefined) return;
-
-    router.push(`/approvals/${id}`);
-  };
 
   return (
     <>
@@ -61,26 +54,28 @@ export default function DocumentApprovalResult({ items, isLoading }: DocumentApp
             ) : (
               items.map((item, index) => {
                 const summary = documentSummary(item.document);
+                const detailHref = item.id === undefined ? undefined : `/approvals/${item.id}`;
                 const isWaiting = item.status === 'WAITING' && item.document.status !== 'CANCELLED';
                 const statusForBadge: DocumentStatus =
                   item.document.status === 'CANCELLED' ? 'CANCELLED' : (item.status ?? 'WAITING');
 
                 return (
-                  <tr
-                    key={item.id ?? `row-${index}`}
-                    className={`hover:bg-base-200 cursor-pointer ${rowClass}`}
-                    onClick={() => handleOpen(item.id)}
-                    role="button"
-                    tabIndex={0}
-                    // 행 자신이 포커스된 경우에만 이동 — 내부 버튼의 keydown 은 무시한다.
-                    onKeyDown={(e) => e.key === 'Enter' && e.target === e.currentTarget && handleOpen(item.id)}
-                    aria-label={t('rowAria', { id: item.id ?? '' })}
-                  >
+                  <tr key={item.id ?? `row-${index}`} className={`hover:bg-base-200 cursor-pointer ${rowClass}`}>
                     {/* 문서 */}
                     <td className={tdClass}>
                       <div className="flex min-w-0 items-center gap-2">
                         <DocumentsTypeBadge type={item.document.type} />
-                        {summary && <span className="truncate font-semibold">{summary}</span>}
+                        {summary &&
+                          (detailHref ? (
+                            <Link
+                              href={detailHref}
+                              className="truncate font-semibold hover:underline focus-visible:outline-2"
+                            >
+                              {summary}
+                            </Link>
+                          ) : (
+                            <span className="truncate font-semibold">{summary}</span>
+                          ))}
                       </div>
                       <div className="text-3 mt-1 text-xs">
                         {item.createdDate
@@ -120,7 +115,6 @@ export default function DocumentApprovalResult({ items, isLoading }: DocumentApp
                               e.stopPropagation();
                               setRejectId(item.id);
                             }}
-                            onKeyDown={(e) => e.stopPropagation()}
                           >
                             {t('actionReject')}
                           </button>
@@ -131,7 +125,6 @@ export default function DocumentApprovalResult({ items, isLoading }: DocumentApp
                               e.stopPropagation();
                               setApproveId(item.id);
                             }}
-                            onKeyDown={(e) => e.stopPropagation()}
                           >
                             {t('actionApprove')}
                           </button>

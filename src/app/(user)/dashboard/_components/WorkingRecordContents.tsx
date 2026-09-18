@@ -10,12 +10,11 @@ import { useUser } from '@/domain/users/queries/user';
 import Badge from '@/shared/components/Badge';
 import { Card, CardSection } from '@/shared/components/Card';
 import dayjs from '@/shared/dayjs';
-import { getWorkDuration, parseHours } from '@/utils/parse';
+import { ONE_HOUR, getWorkDuration, parseHours } from '@/utils/parse';
 
 import cx from 'classnames';
 import { useTranslations } from 'next-intl';
 
-const ONE_HOUR = 3_600;
 const DAILY_TOTAL_HOURS = 8;
 const DEFAULT_WEEKENDS = [0, 6];
 

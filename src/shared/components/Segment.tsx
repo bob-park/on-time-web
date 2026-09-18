@@ -19,7 +19,7 @@ export default function Segment<T>({ options, value, onChange, ariaLabel }: Segm
     <div
       role="group"
       aria-label={ariaLabel}
-      className="bg-base-100 border-base-300 inline-flex rounded-[10px] border p-[3px]"
+      className="bg-base-100 border-base-300 shadow-micro inline-flex rounded-[10px] border p-[3px]"
     >
       {options.map((opt) => (
         <button
