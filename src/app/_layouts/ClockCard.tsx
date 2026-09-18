@@ -5,8 +5,6 @@ import { useEffect, useState } from 'react';
 
 import { IoTimeOutline } from 'react-icons/io5';
 
-import Link from 'next/link';
-
 import { useGetAttendanceRecord } from '@/domain/attendance/queries/attendanceRecord';
 import { useUser } from '@/domain/users/queries/user';
 import { getDuration, parseHours } from '@/utils/parse';
@@ -71,7 +69,7 @@ function useTodayClock() {
 }
 
 export default function ClockCard() {
-  const { ready, isWorking, isDone, label, sub, elapsed, t } = useTodayClock();
+  const { ready, isWorking, label, sub, elapsed, t } = useTodayClock();
 
   // 로딩 중에도 같은 높이를 차지해 사이드바가 흔들리지 않게 한다
   // (p-3.5 28 + border 2 + status 16 + mt-1/text-xl/mb-2 40 + btn-sm 32 = 118px)
@@ -107,12 +105,7 @@ export default function ClockCard() {
       <div className="mt-1 mb-2 text-xl font-bold tracking-tight">{elapsed}</div>
       {sub && <div className="text-3 -mt-1 mb-2 text-xs">{sub}</div>}
 
-      {/* CTA — 출근하기는 비활성화 상태라 근무 중(퇴근하기)일 때만 노출한다 */}
-      {isWorking && (
-        <Link href="/attendance/record/gps" className="btn btn-primary btn-sm w-full">
-          {t('clockOut')}
-        </Link>
-      )}
+      {/* CTA 없음 — 출퇴근 기록(근태 처리) 기능이 비활성화되어 상태만 표시한다. 재활성화 시 /attendance/record/gps 링크 복원 */}
     </div>
   );
 }
@@ -126,24 +119,18 @@ export function ClockFab() {
     return <span className="bg-base-300 border-base-100 -mt-7 size-14 flex-none rounded-full border-4" aria-hidden />;
   }
 
-  const className = cx(
-    'bg-primary text-primary-content border-base-100 -mt-7 flex size-14 flex-none items-center justify-center rounded-full border-4',
-    !isWorking && 'opacity-50',
-  );
-  const style = { boxShadow: '0 8px 20px color-mix(in oklab, var(--color-primary) 40%, transparent)' };
-
-  // 퇴근 완료 또는 출근 전(출근하기 비활성화) — 이동할 곳이 없으므로 링크가 아닌 표시용 요소
-  if (!isWorking) {
-    return (
-      <span role="img" aria-label={isDone ? t('todayDone') : t('beforeWork')} className={className} style={style}>
-        <IoTimeOutline className="size-6" />
-      </span>
-    );
-  }
-
+  // 출퇴근 기록 기능이 비활성화되어 링크가 아닌 상태 표시용 요소만 렌더링한다.
   return (
-    <Link href="/attendance/record/gps" aria-label={t('clockOut')} style={style} className={className}>
+    <span
+      role="img"
+      aria-label={isDone ? t('todayDone') : isWorking ? t('clockOut') : t('beforeWork')}
+      className={cx(
+        'bg-primary text-primary-content border-base-100 -mt-7 flex size-14 flex-none items-center justify-center rounded-full border-4',
+        !isWorking && 'opacity-50',
+      )}
+      style={{ boxShadow: '0 8px 20px color-mix(in oklab, var(--color-primary) 40%, transparent)' }}
+    >
       <IoTimeOutline className="size-6" />
-    </Link>
+    </span>
   );
 }

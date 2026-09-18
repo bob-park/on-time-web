@@ -1,7 +1,6 @@
 import { AiOutlineSchedule } from 'react-icons/ai';
 import { FaUsersViewfinder } from 'react-icons/fa6';
 import { HiDocumentPlus } from 'react-icons/hi2';
-import { IoTimeOutline } from 'react-icons/io5';
 import { LuHistory } from 'react-icons/lu';
 import { MdManageAccounts, MdOutlineInbox } from 'react-icons/md';
 import { RiDashboardFill } from 'react-icons/ri';
@@ -28,15 +27,7 @@ export const NAV_GROUPS: NavGroup[] = [
   { items: [{ key: 'home', href: '/dashboard', segments: ['dashboard'], icon: RiDashboardFill }] },
   {
     key: 'groupAttendance',
-    items: [
-      { key: 'schedule', href: '/schedule', segments: ['schedule'], icon: AiOutlineSchedule },
-      {
-        key: 'attendanceRecord',
-        href: '/attendance/record/gps',
-        segments: ['attendance', 'record'],
-        icon: IoTimeOutline,
-      },
-    ],
+    items: [{ key: 'schedule', href: '/schedule', segments: ['schedule'], icon: AiOutlineSchedule }],
   },
   {
     key: 'groupApproval',
