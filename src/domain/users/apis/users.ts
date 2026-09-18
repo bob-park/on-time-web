@@ -12,7 +12,7 @@ import delay from '@/utils/delay';
 export async function getUsers(params: SearchPageParams) {
   // 삭제된 사용자는 제외하고 조회한다.
   return api
-    .get('/api/v1/users', { searchParams: { ...params, isDeleted: false, sort: 'username,asc' } })
+    .get('/api/v1/users', { searchParams: { ...params, isDeleted: false, sort: 'id,asc' } })
     .json<PagedModel<User>>();
 }
 
