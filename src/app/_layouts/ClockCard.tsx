@@ -30,7 +30,7 @@ function useTodayClock() {
 
   const { user } = useUser();
   const today = dayjs().format('YYYY-MM-DD');
-  const { attendanceRecords, isLoading } = useGetAttendanceRecord({
+  const { attendanceRecords, isFetched } = useGetAttendanceRecord({
     userUniqueId: user?.id || '',
     startDate: today,
     endDate: today,
@@ -49,6 +49,8 @@ function useTodayClock() {
     if (!isWorking) {
       return;
     }
+    // 마운트 직후 한 번 갱신 — 출근 직후 경과 시간이 최대 1분 뒤처지는 것을 막는다
+    setNow(new Date());
     const id = setInterval(() => setNow(new Date()), 60_000);
     return () => clearInterval(id);
   }, [isWorking]);
@@ -67,7 +69,7 @@ function useTodayClock() {
   }
 
   return {
-    ready: !!user && !isLoading,
+    ready: !!user && isFetched,
     isWorking,
     isDone,
     label,
@@ -80,8 +82,16 @@ function useTodayClock() {
 export default function ClockCard() {
   const { ready, isWorking, isDone, label, sub, elapsed, t } = useTodayClock();
 
+  // 로딩 중에도 같은 높이를 차지해 사이드바가 흔들리지 않게 한다
+  // (p-3.5 28 + border 2 + status 16 + mt-1/text-xl/mb-2 40 + btn-sm 32 = 118px)
   if (!ready) {
-    return null;
+    return (
+      <div
+        className="bg-primary-soft rounded-box mx-4 mb-2 h-[118px] border"
+        style={{ borderColor: 'var(--primary-subtle)' }}
+        aria-hidden
+      />
+    );
   }
 
   return (
@@ -120,19 +130,32 @@ export default function ClockCard() {
 export function ClockFab() {
   const { ready, isWorking, isDone, t } = useTodayClock();
 
+  // dock 이 5칸을 유지하도록 로딩 중에도 자리를 차지한다
   if (!ready) {
-    return null;
+    return <span className="bg-base-300 border-base-100 -mt-7 size-14 flex-none rounded-full border-4" aria-hidden />;
+  }
+
+  const className = cx(
+    'bg-primary text-primary-content border-base-100 -mt-7 flex size-14 flex-none items-center justify-center rounded-full border-4',
+    isDone && 'opacity-50',
+  );
+  const style = { boxShadow: '0 8px 20px color-mix(in oklab, var(--color-primary) 40%, transparent)' };
+
+  // 퇴근 완료 — 이동할 곳이 없으므로 링크가 아닌 표시용 요소
+  if (isDone) {
+    return (
+      <span role="img" aria-label={t('todayDone')} className={className} style={style}>
+        <IoTimeOutline className="size-6" />
+      </span>
+    );
   }
 
   return (
     <Link
       href="/attendance/record/gps"
       aria-label={isWorking ? t('clockOut') : t('clockIn')}
-      style={{ boxShadow: '0 8px 20px color-mix(in oklab, var(--color-primary) 40%, transparent)' }}
-      className={cx(
-        'bg-primary text-primary-content border-base-100 -mt-7 flex size-14 items-center justify-center rounded-full border-4',
-        isDone && 'pointer-events-none opacity-50',
-      )}
+      style={style}
+      className={className}
     >
       <IoTimeOutline className="size-6" />
     </Link>

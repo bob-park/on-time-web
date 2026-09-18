@@ -33,13 +33,13 @@ export function useRecordAttendance(onSuccess?: () => void) {
 }
 
 export function useGetAttendanceRecord(req: GetAttendanceRecordRequest) {
-  const { data, isLoading, refetch } = useQuery<AttendanceRecord[]>({
+  const { data, isLoading, isFetched, refetch } = useQuery<AttendanceRecord[]>({
     queryKey: ['record', 'attendance', req],
     queryFn: () => getAllRecords(req),
     enabled: !!req.userUniqueId,
   });
 
-  return { attendanceRecords: data || ([] as AttendanceRecord[]), isLoading, reloadRecord: refetch };
+  return { attendanceRecords: data || ([] as AttendanceRecord[]), isLoading, isFetched, reloadRecord: refetch };
 }
 
 export function useAddAttendanceSchedule(onSuccess?: () => void) {

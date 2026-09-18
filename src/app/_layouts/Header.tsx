@@ -34,7 +34,7 @@ export default function Header({ theme }: HeaderProps) {
   const initial = user?.username?.substring(0, 1)?.toUpperCase() || '';
 
   return (
-    <header className="flex h-14 w-full flex-none items-center gap-3 px-7">
+    <header className="flex h-14 w-full flex-none items-center gap-3 px-4 md:px-7">
       {/* breadcrumb */}
       <div className="text-3 flex items-center gap-1.5 text-[13px]">
         {group?.key && (
