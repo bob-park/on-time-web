@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { Document, DocumentsType } from '@/domain/document/apis/document.dto';
 import CancelConfirmModal from '@/domain/document/components/CancelConfirmModal';
@@ -28,6 +29,7 @@ const DETAIL_PATH: Partial<Record<DocumentsType, string>> = {
 
 export default function DocumentResult({ documents, isLoading }: DocumentResultProps) {
   const t = useTranslations('documents');
+  const router = useRouter();
   const { push } = useToast();
 
   // 취소는 확인 모달을 거친다 — 어떤 문서에 대해 열었는지
@@ -66,13 +68,18 @@ export default function DocumentResult({ documents, isLoading }: DocumentResultP
                 const detailHref = detailPath && `/${detailPath}/${doc.id}`;
 
                 return (
-                  <tr key={doc.id} className={`hover:bg-base-200 cursor-pointer ${rowClass}`}>
+                  <tr
+                    key={doc.id}
+                    className={`hover:bg-base-200 cursor-pointer ${rowClass}`}
+                    onClick={() => detailHref && router.push(detailHref)}
+                  >
                     {/* 문서 */}
                     <td className={tdClass}>
                       {detailHref ? (
                         // 셀 전체가 링크 — summary 가 없으면 DocumentsTypeBadge 의 문서 유형 라벨이 링크 텍스트가 된다.
                         <Link
                           href={detailHref}
+                          onClick={(e) => e.stopPropagation()}
                           className="text-primary flex min-w-0 items-center gap-2 font-semibold hover:underline"
                         >
                           <DocumentsTypeBadge type={doc.type} />

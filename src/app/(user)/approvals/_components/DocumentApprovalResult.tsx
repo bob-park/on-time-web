@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { ApprovalHistory } from '@/domain/approval/apis/approval.dto';
 import { DocumentStatus } from '@/domain/document/apis/document.dto';
@@ -24,6 +25,7 @@ interface DocumentApprovalResultProps {
 
 export default function DocumentApprovalResult({ items, isLoading }: DocumentApprovalResultProps) {
   const t = useTranslations('approvals');
+  const router = useRouter();
 
   // 인라인 처리 — 승인/반려 모달을 어떤 결재 이력에 대해 열었는지
   const [approveId, setApproveId] = useState<number | undefined>(undefined);
@@ -60,13 +62,18 @@ export default function DocumentApprovalResult({ items, isLoading }: DocumentApp
                   item.document.status === 'CANCELLED' ? 'CANCELLED' : (item.status ?? 'WAITING');
 
                 return (
-                  <tr key={item.id ?? `row-${index}`} className={`hover:bg-base-200 cursor-pointer ${rowClass}`}>
+                  <tr
+                    key={item.id ?? `row-${index}`}
+                    className={`hover:bg-base-200 cursor-pointer ${rowClass}`}
+                    onClick={() => detailHref && router.push(detailHref)}
+                  >
                     {/* 문서 */}
                     <td className={tdClass}>
                       {detailHref ? (
                         // 셀 전체가 링크 — summary 가 없으면 DocumentsTypeBadge 의 문서 유형 라벨이 링크 텍스트가 된다.
                         <Link
                           href={detailHref}
+                          onClick={(e) => e.stopPropagation()}
                           className="text-primary flex min-w-0 items-center gap-2 font-semibold hover:underline"
                         >
                           <DocumentsTypeBadge type={item.document.type} />
