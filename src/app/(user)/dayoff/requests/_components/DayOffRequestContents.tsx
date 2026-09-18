@@ -60,7 +60,6 @@ export default function DayOffRequestContent() {
   }));
   const [usedCompLeaveEntries, setUsedCompLeaveEntries] = useState<UsedCompLeaveEntryRequest[]>([]);
   const [showSelectCompLeaveEntries, setShowSelectCompLeaveEntries] = useState<boolean>(false);
-  const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState<boolean>(false);
 
   const router = useRouter();
   const { push } = useToast();
@@ -82,10 +81,8 @@ export default function DayOffRequestContent() {
   }, [showSelectCompLeaveEntries]);
 
   const handleRequestClick = () => {
-    setHasAttemptedSubmit(true);
-
+    // 상신 버튼은 같은 조건으로 disabled — 여기서는 타입 좁히기 용도로만 남긴다.
     if (!selectedVacationType || !selectedVacationSubType || !reason) {
-      push(t('toast.required'), 'error');
       return;
     }
     createVacation({
@@ -123,19 +120,19 @@ export default function DayOffRequestContent() {
       ? `${dayjs(selectedDate.from).format('MM/DD')} – ${dayjs(selectedDate.to).format('MM/DD')}`
       : dayjs(selectedDate.from).format('MM/DD');
 
-  const canSubmit = !!selectedVacationType && !!selectedVacationSubType && !!reason;
+  // 보상휴가는 사용할 보상 휴가 항목을 고르지 않으면 상신할 수 없다.
+  const canSubmit =
+    !!selectedVacationType &&
+    !!selectedVacationSubType &&
+    !!reason &&
+    (selectedVacationType !== 'COMPENSATORY' || usedCompLeaveEntries.length > 0);
 
   return (
     <>
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_340px] lg:items-start">
         <Card>
           {/* 1 — 휴가 종류 */}
-          <FormSection
-            step={1}
-            title={t('step1')}
-            description={t('step1Desc')}
-            error={hasAttemptedSubmit && !selectedVacationType ? t('selectRequired') : undefined}
-          >
+          <FormSection step={1} title={t('step1')} description={t('step1Desc')}>
             <div className="flex flex-wrap gap-2">
               {VACATION_CHIPS.map((chip) => {
                 const selected = selectedChip?.key === chip.key;
@@ -148,10 +145,13 @@ export default function DayOffRequestContent() {
                     onClick={() => {
                       setSelectedVacationType(chip.vacationType);
                       setSelectedVacationSubType(chip.vacationSubType);
-                      if (chip.vacationType === 'COMPENSATORY') {
-                        setShowSelectCompLeaveEntries(true);
-                      } else {
+                      if (chip.vacationType !== 'COMPENSATORY') {
                         setUsedCompLeaveEntries([]);
+                        return;
+                      }
+                      // 이미 보상휴가를 고른 상태에서 다시 누르면 선택이 날아가지 않도록 모달을 열지 않는다.
+                      if (selectedVacationType !== 'COMPENSATORY' || usedCompLeaveEntries.length === 0) {
+                        setShowSelectCompLeaveEntries(true);
                       }
                     }}
                     className={cx(
@@ -172,9 +172,20 @@ export default function DayOffRequestContent() {
               })}
             </div>
             {selectedVacationType === 'COMPENSATORY' && (
-              <p className="text-3 pt-3 text-xs">
-                {usedCompLeaveEntries.length !== 0 ? t('compSelected') : t('compSelectHint')}
-              </p>
+              <div className="flex flex-wrap items-center gap-2 pt-3">
+                <p className="text-3 text-xs">
+                  {usedCompLeaveEntries.length !== 0 ? t('compSelected') : t('compSelectHint')}
+                </p>
+                {usedCompLeaveEntries.length !== 0 && (
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-sm"
+                    onClick={() => setShowSelectCompLeaveEntries(true)}
+                  >
+                    {t('compChange')}
+                  </button>
+                )}
+              </div>
             )}
           </FormSection>
 
@@ -193,18 +204,11 @@ export default function DayOffRequestContent() {
           </FormSection>
 
           {/* 3 — 사유 */}
-          <FormSection
-            step={3}
-            title={t('step3')}
-            error={hasAttemptedSubmit && !reason ? t('inputRequired') : undefined}
-          >
+          <FormSection step={3} title={t('step3')}>
             <textarea
               maxLength={200}
               rows={3}
-              className={cx(
-                'bg-base-100 text-base-content placeholder:text-3 w-full resize-none rounded-[10px] border px-4 py-2.5 text-sm transition-colors duration-150 focus:outline-none',
-                hasAttemptedSubmit && !reason ? 'border-error' : 'border-base-300 focus:border-primary',
-              )}
+              className="bg-base-100 text-base-content placeholder:text-3 border-base-300 focus:border-primary w-full resize-none rounded-[10px] border px-4 py-2.5 text-sm transition-colors duration-150 focus:outline-none"
               placeholder={t('reasonDefault')}
               value={reason}
               onChange={(e) => setReason(e.target.value)}

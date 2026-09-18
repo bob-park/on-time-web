@@ -96,12 +96,13 @@ export default function OvertimeRequestContents() {
       push(t('toast.selectPerson'), 'warning');
       return;
     }
-    if (!contents) {
-      push(t('toast.inputPurpose'), 'warning');
-      return;
-    }
+    // 검증 순서는 섹션 순서(2 근무 시간 → 3 내용)를 따른다.
     if (!date) {
       push(t('toast.selectDate'), 'warning');
+      return;
+    }
+    if (!contents) {
+      push(t('toast.inputPurpose'), 'warning');
       return;
     }
 
@@ -365,7 +366,7 @@ export default function OvertimeRequestContents() {
                           {wt.isDayOff ? (
                             <Badge variant="primary">{t('compApplied')}</Badge>
                           ) : (
-                            <span className="text-3">—</span>
+                            <span className="text-3">{t('empty')}</span>
                           )}
                         </td>
                         <td className="px-4">
@@ -391,8 +392,8 @@ export default function OvertimeRequestContents() {
         <Card className="p-5 lg:sticky lg:top-0">
           <h3 className="text-[15px] font-semibold">{t('summaryTitle')}</h3>
           <div className="border-soft text-2 flex justify-between border-b py-2.5 text-sm">
-            {t('summaryCount')}
-            <b className="text-base-content">{t('listCount', { count: workTimes.length })}</b>
+            {t('summaryCountLabel')}
+            <b className="text-base-content">{t('summaryCount', { count: workTimes.length })}</b>
           </div>
           <div className="border-soft text-2 flex justify-between border-b py-2.5 text-sm">
             {t('summaryWorkers')}

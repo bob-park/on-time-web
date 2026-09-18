@@ -16,8 +16,9 @@ function isOverTimeWorkDocument(doc: Document): doc is OverTimeWorkDocument {
 
 // 문서 한 줄 요약 — 휴가는 사유, 휴일 근무는 첫 근무 내용
 export function documentSummary(doc: Document): string | undefined {
-  if (isVacationDocument(doc)) {
-    return doc.reason;
+  // 사유는 startDate 유무와 무관하게 노출한다 (기간 표기와 게이트를 분리).
+  if (doc.type === 'VACATION') {
+    return (doc as VacationDocument).reason;
   }
 
   return isOverTimeWorkDocument(doc) ? doc.workTimes?.[0]?.contents : undefined;

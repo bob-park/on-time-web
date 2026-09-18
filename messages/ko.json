@@ -158,10 +158,9 @@
       "step3": "사유",
       "usedHint": "✓ {days}일 사용",
       "reasonDefault": "개인 사유",
-      "selectRequired": "선택해 주세요",
-      "inputRequired": "입력해 주세요",
       "compSelectHint": "사용할 보상 휴가를 선택해 주세요.",
-      "compSelected": "보상 휴가 선택 완료 · 다시 누르면 변경할 수 있어요.",
+      "compSelected": "선택한 보상휴가를 바꾸려면 아래 변경 버튼을 누르세요.",
+      "compChange": "변경",
       "summaryTitle": "신청 요약",
       "summaryType": "종류",
       "summaryPeriod": "기간",
@@ -183,8 +182,7 @@
       },
       "toast": {
         "created": "휴가 신청 문서의 초안이 생성되었습니다.",
-        "error": "신청 중 오류가 발생했습니다.",
-        "required": "필수 항목을 입력해주세요"
+        "error": "신청 중 오류가 발생했습니다."
       },
       "comp": {
         "modalTitle": "보상 휴가 선택",
@@ -333,8 +331,10 @@
       "deleteAria": "삭제",
       "emptyTitle": "추가된 항목이 없습니다",
       "emptyDescription": "위 양식을 작성한 후 추가 버튼을 클릭하세요.",
+      "empty": "—",
       "summaryTitle": "신청 요약",
-      "summaryCount": "근무 건수",
+      "summaryCountLabel": "근무 건수",
+      "summaryCount": "{count}건",
       "summaryWorkers": "인원",
       "summaryHours": "총 근무 시간",
       "workerCount": "{count}명",
