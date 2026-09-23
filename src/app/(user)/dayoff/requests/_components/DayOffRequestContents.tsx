@@ -32,27 +32,26 @@ function countBusinessDays(from: Date, to: Date): number {
   return count;
 }
 
-interface VacationChip {
-  key: string;
-  labelKey: string;
-  vacationType: VacationType;
-  vacationSubType: VacationSubType | 'ALL_DAY_OFF';
-}
+// 휴가 종류 × 사용 단위 — 반차는 모든 휴가 종류에서 사용 가능
+const VACATION_TYPES: { labelKey: string; vacationType: VacationType }[] = [
+  { labelKey: 'type.general', vacationType: 'GENERAL' },
+  { labelKey: 'type.compensatory', vacationType: 'COMPENSATORY' },
+  { labelKey: 'type.official', vacationType: 'OFFICIAL' },
+];
 
-// 칩 = 기존 (휴가 구분 × 부가 구분) 조합을 그대로 펼친 것 — 새로운 타입은 없다.
-const VACATION_CHIPS: VacationChip[] = [
-  { key: 'general', labelKey: 'type.general', vacationType: 'GENERAL', vacationSubType: 'ALL_DAY_OFF' },
-  { key: 'amHalf', labelKey: 'subType.amHalf', vacationType: 'GENERAL', vacationSubType: 'AM_HALF_DAY_OFF' },
-  { key: 'pmHalf', labelKey: 'subType.pmHalf', vacationType: 'GENERAL', vacationSubType: 'PM_HALF_DAY_OFF' },
-  { key: 'comp', labelKey: 'type.compensatory', vacationType: 'COMPENSATORY', vacationSubType: 'ALL_DAY_OFF' },
-  { key: 'official', labelKey: 'type.official', vacationType: 'OFFICIAL', vacationSubType: 'ALL_DAY_OFF' },
+const VACATION_UNITS: { labelKey: string; vacationSubType: VacationSubType | 'ALL_DAY_OFF' }[] = [
+  { labelKey: 'subType.allDay', vacationSubType: 'ALL_DAY_OFF' },
+  { labelKey: 'subType.amHalf', vacationSubType: 'AM_HALF_DAY_OFF' },
+  { labelKey: 'subType.pmHalf', vacationSubType: 'PM_HALF_DAY_OFF' },
 ];
 
 export default function DayOffRequestContent() {
   const t = useTranslations('dayoff.request');
 
   const [selectedVacationType, setSelectedVacationType] = useState<VacationType>();
-  const [selectedVacationSubType, setSelectedVacationSubType] = useState<VacationSubType | 'ALL_DAY_OFF'>();
+  const [selectedVacationSubType, setSelectedVacationSubType] = useState<VacationSubType | 'ALL_DAY_OFF'>(
+    'ALL_DAY_OFF',
+  );
   const [reason, setReason] = useState<string>(t('reasonDefault'));
   const [selectedDate, setSelectedDate] = useState<DateRange>(() => ({
     from: dayjs().toDate(),
@@ -106,14 +105,13 @@ export default function DayOffRequestContent() {
   const freeCompLeaveDays = compLeaveEntries.reduce((sum, entry) => sum + (entry.leaveDays - entry.usedDays), 0);
 
   // 칩 설명에 라이브로 붙는 잔여일 (공가는 잔여 개념 없음)
-  const chipRemaining: Partial<Record<string, number>> = {
-    general: freeLeaveDays,
-    comp: freeCompLeaveDays,
+  const chipRemaining: Partial<Record<VacationType, number>> = {
+    GENERAL: freeLeaveDays,
+    COMPENSATORY: freeCompLeaveDays,
   };
 
-  const selectedChip = VACATION_CHIPS.find(
-    (chip) => chip.vacationType === selectedVacationType && chip.vacationSubType === selectedVacationSubType,
-  );
+  const selectedType = VACATION_TYPES.find((item) => item.vacationType === selectedVacationType);
+  const selectedUnit = VACATION_UNITS.find((item) => item.vacationSubType === selectedVacationSubType);
 
   const period =
     selectedDate.from && selectedDate.to && !dayjs(selectedDate.from).isSame(selectedDate.to, 'day')
@@ -129,22 +127,21 @@ export default function DayOffRequestContent() {
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_340px] lg:items-start">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,760px)_340px] lg:items-start">
         <Card>
-          {/* 1 — 휴가 종류 */}
+          {/* 1 — 휴가 종류 · 사용 단위 */}
           <FormSection step={1} title={t('step1')} description={t('step1Desc')}>
             <div role="group" aria-label={t('step1')} className="flex flex-wrap gap-2">
-              {VACATION_CHIPS.map((chip) => {
-                const selected = selectedChip?.key === chip.key;
-                const remaining = chipRemaining[chip.key];
+              {VACATION_TYPES.map((chip) => {
+                const selected = selectedVacationType === chip.vacationType;
+                const remaining = chipRemaining[chip.vacationType];
                 return (
                   <button
-                    key={chip.key}
+                    key={chip.vacationType}
                     type="button"
                     aria-pressed={selected}
                     onClick={() => {
                       setSelectedVacationType(chip.vacationType);
-                      setSelectedVacationSubType(chip.vacationSubType);
                       if (chip.vacationType !== 'COMPENSATORY') {
                         setUsedCompLeaveEntries([]);
                         return;
@@ -187,6 +184,31 @@ export default function DayOffRequestContent() {
                 )}
               </div>
             )}
+
+            <p className="mt-4 text-[13px] font-semibold">{t('step1Unit')}</p>
+            <div
+              role="group"
+              aria-label={t('step1Unit')}
+              className="bg-base-200 mt-2 inline-flex rounded-[10px] p-[3px]"
+            >
+              {VACATION_UNITS.map((unit) => {
+                const selected = selectedVacationSubType === unit.vacationSubType;
+                return (
+                  <button
+                    key={unit.vacationSubType}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => setSelectedVacationSubType(unit.vacationSubType)}
+                    className={cx(
+                      'cursor-pointer rounded-lg px-4 py-1.5 text-[13px] transition-colors duration-150',
+                      selected ? 'bg-base-100 text-primary font-semibold shadow-sm' : 'text-2 hover:text-base-content',
+                    )}
+                  >
+                    {t(unit.labelKey)}
+                  </button>
+                );
+              })}
+            </div>
           </FormSection>
 
           {/* 2 — 기간 */}
@@ -221,7 +243,9 @@ export default function DayOffRequestContent() {
           <h3 className="text-[15px] font-semibold">{t('summaryTitle')}</h3>
           <div className="border-soft text-2 flex justify-between border-b py-2.5 text-sm">
             {t('summaryType')}
-            <b className="text-base-content">{selectedChip ? t(selectedChip.labelKey) : t('empty')}</b>
+            <b className="text-base-content">
+              {selectedType && selectedUnit ? `${t(selectedType.labelKey)} · ${t(selectedUnit.labelKey)}` : t('empty')}
+            </b>
           </div>
           <div className="border-soft text-2 flex justify-between border-b py-2.5 text-sm">
             {t('summaryPeriod')}

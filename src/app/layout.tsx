@@ -43,7 +43,7 @@ export default async function RootLayout({
         <NextIntlClientProvider locale={locale} messages={messages}>
           <RQProvider>
             <ToastProvider limit={5} timeout={5}>
-              <div className="bg-base-200 flex h-screen overflow-hidden">
+              <div className="bg-base-200 flex h-dvh overflow-hidden">
                 <Sidebar />
                 <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
                   <Header theme={theme} />

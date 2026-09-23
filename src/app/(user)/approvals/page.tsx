@@ -8,7 +8,7 @@ export default async function ApprovalsPage() {
   const t = await getTranslations('approvals');
 
   return (
-    <div className="w-full">
+    <div className="w-full max-w-[1380px]">
       {/* eyebrow + title */}
       <PageHeader title={t('title')} description={t('description')} />
 

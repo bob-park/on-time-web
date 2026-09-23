@@ -10,7 +10,7 @@ export default async function OvertimeRequestsPage() {
   const t = await getTranslations('overtime.request');
 
   return (
-    <div className="animate-fade-up flex size-full flex-col">
+    <div className="animate-fade-up flex min-h-full w-full flex-col">
       {/* eyebrow + title + action */}
       <PageHeader
         title={t('title')}

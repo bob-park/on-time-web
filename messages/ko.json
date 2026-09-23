@@ -135,6 +135,7 @@
       "viewHistory": "휴가 내역 보기",
       "step1": "휴가 종류",
       "step1Desc": "잔여 일수가 함께 표시됩니다.",
+      "step1Unit": "사용 단위",
       "step2": "기간",
       "step2Desc": "주말은 사용 일수에서 자동으로 제외됩니다.",
       "step3": "사유",
@@ -159,6 +160,7 @@
         "remaining": "{days}일 남음"
       },
       "subType": {
+        "allDay": "종일",
         "amHalf": "오전 반차",
         "pmHalf": "오후 반차"
       },
