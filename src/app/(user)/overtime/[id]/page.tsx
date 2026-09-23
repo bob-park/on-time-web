@@ -4,7 +4,7 @@ export default async function OvertimeWorkDocumentPage({ params }: { params: Pro
   const id = (await params).id;
 
   return (
-    <div className="animate-fade-up w-full">
+    <div className="animate-fade-up w-full max-w-[1380px]">
       <OvertimeWorkDocumentContents id={id} />
     </div>
   );

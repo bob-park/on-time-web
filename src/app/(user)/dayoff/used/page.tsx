@@ -10,7 +10,7 @@ export default async function DayOffHistoryPage() {
   const t = await getTranslations('dayoff.used');
 
   return (
-    <div className="animate-fade-up flex size-full flex-col gap-4">
+    <div className="animate-fade-up flex size-full max-w-[1380px] flex-col gap-4">
       {/* eyebrow + title + action */}
       <PageHeader
         title={t('title')}

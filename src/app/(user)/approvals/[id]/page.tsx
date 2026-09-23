@@ -23,7 +23,7 @@ export default async function ApprovalDetailPage({ params }: { params: Promise<{
   const title = isVacation ? t('dayoffTitle') : t('overtimeTitle');
 
   return (
-    <div className="animate-fade-up w-full">
+    <div className="animate-fade-up w-full max-w-[1380px]">
       {/* eyebrow + title */}
       <PageHeader
         eyebrow={t('proceedEyebrow')}
@@ -36,7 +36,7 @@ export default async function ApprovalDetailPage({ params }: { params: Promise<{
       />
 
       {/* A4 문서 · 결재 패널 */}
-      <div className="grid grid-cols-1 gap-5 2xl:grid-cols-[1fr_360px] 2xl:items-start">
+      <div className="grid grid-cols-1 gap-5 2xl:grid-cols-[1000px_360px] 2xl:items-start">
         {/* document — 1000px 고정이라 좁은 화면에서는 가로 스크롤 */}
         <div className="overflow-x-auto">
           <div className="aspect-[1/1.414] w-[1000px] shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
