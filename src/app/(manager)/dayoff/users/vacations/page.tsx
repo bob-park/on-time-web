@@ -8,7 +8,7 @@ export default async function DayoffManagePage() {
   const t = await getTranslations('manager.vacations');
 
   return (
-    <div className="flex size-full flex-col">
+    <div className="flex min-h-full w-full flex-col">
       {/* eyebrow + title */}
       <PageHeader title={t('title')} />
 
