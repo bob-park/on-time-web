@@ -38,7 +38,16 @@
     "managerVacations": "임직원 휴가 현황",
     "profile": "내 정보",
     "logout": "로그아웃",
-    "leader": "팀장"
+    "leader": "팀장",
+    "search": "검색",
+    "collapse": "사이드바 접기",
+    "theme": "테마",
+    "themes": {
+      "light": "라이트",
+      "dark": "다크"
+    },
+    "appInstall": "앱 설치 안내",
+    "newRequest": "신청"
   },
   "dashboard": {
     "greeting": "안녕하세요, {name}님 👋",
@@ -487,8 +496,15 @@
       "qrAlt": "{type} QR 코드"
     }
   },
-  "theme": {
-    "toLight": "라이트 테마로 전환",
-    "toDark": "다크 테마로 전환"
+  "palette": {
+    "title": "검색",
+    "placeholder": "메뉴 또는 기안자·문서 종류 검색",
+    "menu": "메뉴",
+    "documents": "결재 문서",
+    "empty": "결과 없음",
+    "loading": "검색 중",
+    "move": "이동",
+    "open": "열기",
+    "hint": "⌘K 로 어디서나 열기"
   }
 }

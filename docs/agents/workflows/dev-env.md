@@ -9,12 +9,12 @@ related:
 
 # Dev Environment & Lint/Format
 
-> Node 버전은 `mise` 로 동기화, 패키지 매니저는 corepack `yarn@4.14.1`. 커밋 전 `yarn lint` 필수, 포매팅은 `yarn prettier`. 테스트 러너는 아직 없음.
+> Node 버전은 `mise` 로 동기화, 패키지 매니저는 corepack `yarn@4.18.0`. 커밋 전 `yarn lint` 필수, 포매팅은 `yarn prettier`. 테스트는 `yarn test` (`node --test`).
 
 ## Environment
 
 - **Node version manager:** `mise`. First-time setup: `mise trust && mise ls`.
-- **Package manager:** `yarn@4.14.1` via corepack (configured in `package.json#packageManager`).
+- **Package manager:** `yarn@4.18.0` via corepack (configured in `package.json#packageManager`).
 
 ## Common scripts
 
@@ -23,8 +23,11 @@ related:
 - `yarn start` — run the production build
 - `yarn lint` — run ESLint against `./src`
 - `yarn prettier` — format all source files
+- `yarn test` — run `src/**/*.test.ts` with Node's built-in `node --test` (Node 24 strips types natively)
 
-A test runner is **not** configured yet. When testing is introduced, update this document and `CLAUDE.md`'s command reference.
+Tests import the module under test with its `.ts` extension (`./foo.ts`), which `tsconfig.json`'s `allowImportingTsExtensions` permits (same as license-web). A tested module may use `@/` paths only in `import type` — runtime path aliases don't resolve under `node --test`.
+
+`.yarnrc.yml` sets `npmMinimalAgeGate: 0` (same as license-web), turning off yarn 4.18's one-day quarantine for newly published versions.
 
 ## Lint & format
 

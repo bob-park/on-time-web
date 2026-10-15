@@ -53,10 +53,10 @@ export async function setTheme(theme: Theme) {
 
 ```tsx
 // src/shared/components/theme/ThemeSwitcher.tsx ('use client')
-export default function ThemeSwitcher({ current }: { current: Theme }) // setTheme 을 useTransition 으로 호출
+export default function ThemeSwitcher({ current }: { current: Theme }) // 라이트 / 다크 segmented radiogroup, 선택 시 setTheme
 ```
 
-- 현재 테마는 context 가 아니라 **prop 으로 내려간다**: root layout 이 cookie 를 읽어 `<Header theme={theme} />` 로 전달하고, `Header` 가 `<ThemeSwitcher current={theme} />` 로 넘긴다.
+- 현재 테마는 context 가 아니라 **prop 으로 내려간다**: root layout 이 cookie 를 읽어 `<Sidebar theme={theme} />` / `<Header theme={theme} />` 로 전달하고, 둘 다 `UserMenu` 를 거쳐 `<ThemeSwitcher current={theme} />` 로 넘긴다.
 - 전환 중에는 `useTransition` 의 `isPending` 으로 버튼을 disable 한다.
 
 ## Reading in root layout

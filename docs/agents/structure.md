@@ -17,7 +17,7 @@ related:
 ```text
 src/
 ├── app/                # Next.js App Router (pages, layouts, api routes)
-│   ├── _layouts/       # Root layout 의 sub-components (Sidebar, Header, MobileDock, ...) — see "App Router `_layouts/`" section below
+│   ├── _layouts/       # Root layout 의 sub-components (Sidebar, Header, CommandPalette, MobileTabBar, ...) — see "App Router `_layouts/`" section below
 │   └── api/            # Route handlers (e.g. /api/health)
 ├── domain/             # Business domains — each domain owns its full slice
 │   └── <domain>/
@@ -59,7 +59,7 @@ Cross-domain reuse moves to `src/shared/`. `src/utils/` is for **pure functions 
 ### Core rule
 
 - 어떤 디렉토리든 `layout.tsx` 가 sub-component 를 필요로 하면, **같은 디렉토리에 `_layouts/` private folder** 를 만들어 그 안에 sub-component 를 둔다. underscore prefix 는 Next.js 가 라우트에서 제외하는 [private folder](https://nextjs.org/docs/app/building-your-application/routing/colocation#private-folders) 규약이다.
-- 파일명은 [File Naming](./conventions/naming.md) 그대로 `PascalCase.tsx`. 예: `Header.tsx`, `Sidebar.tsx`, `MobileDock.tsx`.
+- 파일명은 [File Naming](./conventions/naming.md) 그대로 `PascalCase.tsx`. 예: `Header.tsx`, `Sidebar.tsx`, `MobileTabBar.tsx`.
 - `layout.tsx` 에서 import 할 때는 같은 폴더이므로 **상대경로** (`./_layouts/Header`) 를 사용한다.
 - 다른 layout 의 `_layouts/` 컴포넌트는 import 하지 않는다 — 각 `_layouts/` 은 그 layout 전용이다.
 - Cross-layout 으로 재사용해야 하는 컴포넌트는 `_layouts/` 이 아니라 `src/shared/components/<area>/` 로 승격한다 (see "Directory tree" section above).
@@ -72,20 +72,24 @@ Cross-domain reuse moves to `src/shared/`. `src/utils/` is for **pure functions 
 ```text
 src/app/
 ├── _layouts/
-│   ├── Sidebar.tsx           # 데스크톱 좌측 네비게이션 (NAV_GROUPS 렌더링 + ClockCard)
-│   ├── ClockCard.tsx         # Sidebar 하단 출퇴근 카드
-│   ├── Header.tsx            # breadcrumb + ThemeSwitcher + 알림 + 아바타
-│   ├── MobileDock.tsx        # 모바일 하단 도크
+│   ├── Sidebar.tsx           # 데스크톱 좌측 네비게이션 (접기 토글, ⌘K 검색 버튼, NAV_GROUPS, 하단 UserMenu)
+│   ├── UserMenu.tsx          # 사용자 카드 + 드롭다운 (테마 / 내 정보 / 앱 설치 안내 / 로그아웃). 모바일은 Header 아바타에서 연다
+│   ├── ShellAvatar.tsx       # 셸 전용 아바타 (프로필 이미지 → 실패 시 이니셜)
+│   ├── Header.tsx            # breadcrumb (+ 모바일 전용 UserMenu 아바타)
+│   ├── CommandPalette.tsx    # ⌘K / Ctrl K 팔레트 — 메뉴 이동 + 결재함 문서 검색 (기안자 이름 · 문서 종류)
+│   ├── paletteQuery.ts       # 팔레트 검색어 파서 (pure, paletteQuery.test.ts 로 검증)
+│   ├── MobileTabBar.tsx      # 모바일 하단 바 (홈 · 근무 일정 · ＋ 신청 · 처리 대기 · 검색)
 │   ├── NotificationDialog.tsx
-│   ├── nav.ts                # NAV_GROUPS / NavItem / NavGroup / isActive / findNavItem — 네비게이션 테이블
+│   ├── nav.ts                # NAV_GROUPS / NavItem / NavGroup / isActive / findNavItem / openCommandPalette / useShortcutLabel
 │   └── breadcrumb.ts         # useBreadcrumbTitle — 상세 페이지가 breadcrumb 끝에 제목을 거는 모듈 store
 ├── layout.tsx
 └── page.tsx
 ```
 
-- `src/app/layout.tsx` 는 `./_layouts/Sidebar`, `./_layouts/Header`, `./_layouts/MobileDock` 를 사용한다.
+- `src/app/layout.tsx` 는 `./_layouts/Sidebar`, `./_layouts/Header`, `./_layouts/MobileTabBar`, `./_layouts/CommandPalette` 를 사용한다.
 - `_layouts/` 에는 `.tsx` sub-component 외에 그 layout 전용 데이터/훅 모듈 (`nav.ts`, `breadcrumb.ts`) 도 둘 수 있다. 파일명은 [File Naming](./conventions/naming.md) 대로 컴포넌트는 `PascalCase.tsx`, 모듈은 `camelCase.ts`.
-- 네비게이션 항목을 추가/삭제할 때는 `nav.ts` 의 `NAV_GROUPS` 만 수정한다 — `Sidebar` 가 이 테이블을 렌더링하고, `Header` 는 같은 파일의 `findNavItem` 으로 현재 segment 의 breadcrumb 라벨을 찾는다. `MobileDock` 은 고정 4개 항목 + `ClockCard` 의 `ClockFab` 이라 이 테이블을 쓰지 않는다.
+- 네비게이션 항목을 추가/삭제할 때는 `nav.ts` 의 `NAV_GROUPS` 만 수정한다 — `Sidebar` 가 이 테이블을 렌더링하고, `Header` 는 같은 파일의 `findNavItem` 으로 현재 segment 의 breadcrumb 라벨을, `CommandPalette` 는 메뉴 검색 결과를 만든다. `MobileTabBar` 는 고정 항목이라 이 테이블을 쓰지 않는다.
+- 팔레트 열기는 `nav.ts` 의 `openCommandPalette()` (window `open-command-palette` 이벤트) 를 호출한다.
 - 상세 페이지가 breadcrumb 끝에 문서 제목을 붙이려면 `breadcrumb.ts` 의 `useBreadcrumbTitle(title)` 을 호출한다 (provider 없는 모듈 단위 store, 언마운트 시 자동 해제).
 - Nested layout 도 동일 규칙이다. 예시 — 실제 경로 아님: `src/app/admin/_layouts/Sidebar.tsx` 는 `src/app/admin/layout.tsx` 전용이며, root layout 에서 쓰고 싶다면 먼저 `src/shared/components/` 로 승격한다.
 

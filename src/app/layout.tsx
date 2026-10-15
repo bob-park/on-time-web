@@ -11,8 +11,9 @@ import { Theme } from '@/shared/providers/theme/ThemeProvider';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 
+import CommandPalette from './_layouts/CommandPalette';
 import Header from './_layouts/Header';
-import MobileDock from './_layouts/MobileDock';
+import MobileTabBar from './_layouts/MobileTabBar';
 import Sidebar from './_layouts/Sidebar';
 import './globals.css';
 
@@ -44,14 +45,15 @@ export default async function RootLayout({
           <RQProvider>
             <ToastProvider limit={5} timeout={5}>
               <div className="bg-base-200 flex h-dvh overflow-hidden">
-                <Sidebar />
+                <Sidebar theme={theme} />
                 <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
                   <Header theme={theme} />
                   <main className="flex-1 overflow-y-auto px-4 pb-24 md:px-7 md:pb-10">{children}</main>
                 </div>
               </div>
 
-              <MobileDock />
+              <MobileTabBar />
+              <CommandPalette />
             </ToastProvider>
           </RQProvider>
         </NextIntlClientProvider>

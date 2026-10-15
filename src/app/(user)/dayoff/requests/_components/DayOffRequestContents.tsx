@@ -99,7 +99,6 @@ export default function DayOffRequestContent() {
   const businessDays = selectedDate.from && selectedDate.to ? countBusinessDays(selectedDate.from, selectedDate.to) : 0;
   const usedDays = isHalfDay ? 0.5 : businessDays;
   const freeLeaveDays = (leaveEntry?.totalLeaveDays ?? 0) - (leaveEntry?.usedLeaveDays ?? 0);
-  const remainingAfterUse = freeLeaveDays - usedDays;
 
   // 보상 휴가 잔여 = 보유한 보상 휴가 항목의 (부여일 - 사용일) 합
   const freeCompLeaveDays = compLeaveEntries.reduce((sum, entry) => sum + (entry.leaveDays - entry.usedDays), 0);
@@ -109,6 +108,10 @@ export default function DayOffRequestContent() {
     GENERAL: freeLeaveDays,
     COMPENSATORY: freeCompLeaveDays,
   };
+
+  // 선택한 휴가 종류의 잔여에서 차감한다. 공가는 차감 대상이 없다.
+  const selectedRemaining = selectedVacationType ? chipRemaining[selectedVacationType] : undefined;
+  const remainingAfterUse = selectedRemaining !== undefined ? selectedRemaining - usedDays : undefined;
 
   const selectedType = VACATION_TYPES.find((item) => item.vacationType === selectedVacationType);
   const selectedUnit = VACATION_UNITS.find((item) => item.vacationSubType === selectedVacationSubType);
@@ -255,12 +258,14 @@ export default function DayOffRequestContent() {
             {t('summaryUsed')}
             <b className="text-base-content">{t('days', { days: usedDays.toFixed(1) })}</b>
           </div>
-          <div className="text-2 flex items-baseline justify-between pt-3.5 pb-1 text-sm">
-            {t('summaryRemaining')}
-            <b className={cx('text-[22px] font-bold', remainingAfterUse < 0 ? 'text-error' : 'text-primary')}>
-              {t('days', { days: remainingAfterUse.toFixed(1) })}
-            </b>
-          </div>
+          {remainingAfterUse !== undefined && (
+            <div className="text-2 flex items-baseline justify-between pt-3.5 pb-1 text-sm">
+              {t('summaryRemaining')}
+              <b className={cx('text-[22px] font-bold', remainingAfterUse < 0 ? 'text-error' : 'text-primary')}>
+                {t('days', { days: remainingAfterUse.toFixed(1) })}
+              </b>
+            </div>
+          )}
           <button
             type="button"
             className="btn btn-primary mt-3.5 w-full"
