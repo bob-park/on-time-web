@@ -19,6 +19,7 @@ related:
 - **Date / Utility:** dayjs, classnames, lodash, uuid, immer, overlay-kit
 - **UI Utilities:** react-icons, timeago-react (+ timeago.js), lottie-react, react-day-picker
 - **PDF / QR:** html2canvas-pro, jspdf, qrcode, qr-code-styling
+- **Test:** Node built-in `node:test` (`yarn test`)
 - **Lint / Format:** `@bob-park/eslint-config-bobpark`, `@bob-park/prettier-config-bobpark`
 
 Refer to `package.json` for exact pinned versions.

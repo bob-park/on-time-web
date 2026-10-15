@@ -15,11 +15,10 @@
 - `yarn start` — production 빌드 실행
 - `yarn lint` — ESLint 실행 (커밋 전 필수)
 - `yarn prettier` — 전체 소스 포매팅
+- `yarn test` — `node --test` 로 `src/**/*.test.ts` 실행
 - `mise trust && mise ls` — Node 버전 동기화
 
-테스트 스크립트는 현재 `package.json` 에 정의되어 있지 않다. 테스트가
-도입되면 본 섹션과 `docs/agents/tech-stack.md`,
-`docs/agents/workflows/dev-env.md` 를 함께 업데이트한다.
+테스트 작성 규칙은 `docs/agents/workflows/dev-env.md` 의 "Common scripts" 를 따른다.
 
 ### Design Prompt 템플릿 위치
 - 재사용 가능한 시스템 디자인 / UI 디자인 prompt 템플릿은 `./docs/design/`
