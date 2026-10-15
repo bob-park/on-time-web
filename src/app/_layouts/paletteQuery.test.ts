@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { matchesDrafter, matchesLabel, parsePaletteQuery } from './paletteQuery.ts';
+import { canSelectOnEnter, matchesDrafter, matchesLabel, parsePaletteQuery } from './paletteQuery.ts';
 
 void test('parsePaletteQuery splits type and name', () => {
   assert.deepEqual(parsePaletteQuery('홍길동 연장'), { type: 'OVERTIME_WORK', nameTokens: ['홍길동'] });
@@ -28,4 +28,13 @@ void test('matchesDrafter', () => {
 void test('matchesLabel', () => {
   assert.equal(matchesLabel('휴가 사용 내역', '휴가'), true);
   assert.equal(matchesLabel('근무 일정', ''), false);
+});
+
+void test('canSelectOnEnter blocks IME commit and stale debounced query', () => {
+  assert.equal(canSelectOnEnter({ isComposing: false, keyCode: 13, input: '휴가 ', q: '휴가' }), true);
+  assert.equal(canSelectOnEnter({ isComposing: true, keyCode: 13, input: '휴가', q: '휴가' }), false);
+  // Safari: 한글 조합을 끝내는 Enter 는 isComposing=false, keyCode=229
+  assert.equal(canSelectOnEnter({ isComposing: false, keyCode: 229, input: '홍길동', q: '홍길동' }), false);
+  // 250ms debounce 가 아직 반영되지 않은 입력
+  assert.equal(canSelectOnEnter({ isComposing: false, keyCode: 13, input: '휴가 홍', q: '휴가' }), false);
 });

@@ -48,3 +48,19 @@ export function matchesLabel(label: string, input: string): boolean {
 
   return !!query && label.toLowerCase().includes(query);
 }
+
+// Enter 로 항목을 열어도 되는지. IME 조합 중(Safari 는 keyCode 229)이거나 debounce 가 아직
+// 입력을 반영하지 않았다면 목록이 낡았으므로 열지 않는다.
+export function canSelectOnEnter({
+  isComposing,
+  keyCode,
+  input,
+  q,
+}: {
+  isComposing: boolean;
+  keyCode: number;
+  input: string;
+  q: string;
+}): boolean {
+  return !isComposing && keyCode !== 229 && input.trim() === q;
+}

@@ -17,7 +17,7 @@ import dayjs from 'dayjs';
 import { useTranslations } from 'next-intl';
 
 import { MANAGER_ROLES, NAV_GROUPS } from './nav';
-import { matchesDrafter, matchesLabel, parsePaletteQuery } from './paletteQuery';
+import { canSelectOnEnter, matchesDrafter, matchesLabel, parsePaletteQuery } from './paletteQuery';
 
 const RESULT_SIZE = 5;
 // ponytail: 최근 결재 50건 안에서만 기안자 이름을 찾는다. 오래된 문서까지 필요하면 서버에 기안자 이름 필터 추가.
@@ -163,9 +163,16 @@ export default function CommandPalette() {
     } else if (e.key === 'ArrowUp' && items.length) {
       e.preventDefault();
       setActive((activeIndex - 1 + items.length) % items.length);
-    } else if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
+    } else if (e.key === 'Enter') {
       e.preventDefault();
-      handleSelect(items[activeIndex]);
+      const { isComposing, keyCode } = e.nativeEvent;
+
+      if (canSelectOnEnter({ isComposing, keyCode, input, q })) {
+        handleSelect(items[activeIndex]);
+      } else {
+        // 조합/debounce 가 끝난 결과로 다시 Enter 를 누르게 한다.
+        setQ(input.trim());
+      }
     } else if (e.key === 'Escape') {
       e.preventDefault();
       handleClose();
