@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+import Link from 'next/link';
 import { useSelectedLayoutSegments } from 'next/navigation';
 
 import UserMenu from '@/app/_layouts/UserMenu';
@@ -29,6 +31,11 @@ export default function Header({ theme }: HeaderProps) {
 
   return (
     <header className="flex h-11 w-full flex-none items-center gap-3 px-4 md:h-10 md:px-7">
+      {/* 모바일에는 사이드바가 없으므로 로고를 여기에 둔다 */}
+      <Link href="/dashboard" aria-label="OnTime" className="flex-none md:hidden">
+        <Image src="/icon.svg" alt="" width={24} height={24} />
+      </Link>
+
       {/* breadcrumb */}
       <div className="text-3 flex min-w-0 items-center gap-1.5 text-[13px]">
         {group?.key && (
