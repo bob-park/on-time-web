@@ -44,7 +44,7 @@ export default async function RootLayout({
           <RQProvider>
             <ToastProvider limit={5} timeout={5}>
               <div className="bg-base-200 flex h-dvh overflow-hidden">
-                <Sidebar />
+                <Sidebar theme={theme} />
                 <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
                   <Header theme={theme} />
                   <main className="flex-1 overflow-y-auto px-4 pb-24 md:px-7 md:pb-10">{children}</main>

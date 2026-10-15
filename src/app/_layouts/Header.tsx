@@ -1,20 +1,13 @@
 'use client';
 
-import { CgProfile } from 'react-icons/cg';
-import { IoLogOutOutline, IoNotificationsOutline } from 'react-icons/io5';
-
-import Link from 'next/link';
 import { useSelectedLayoutSegments } from 'next/navigation';
 
-import NotificationDialog from '@/app/_layouts/NotificationDialog';
+import UserMenu from '@/app/_layouts/UserMenu';
 import { useBreadcrumbTitleValue } from '@/app/_layouts/breadcrumb';
-import { useUser } from '@/domain/users/queries/user';
-import ThemeSwitcher from '@/shared/components/theme/ThemeSwitcher';
 import { Theme } from '@/shared/providers/theme/ThemeProvider';
 
 import cx from 'classnames';
 import { useTranslations } from 'next-intl';
-import { overlay } from 'overlay-kit';
 
 import { findNavItem } from './nav';
 
@@ -29,19 +22,15 @@ export default function Header({ theme }: HeaderProps) {
   // i18n
   const t = useTranslations('nav');
 
-  // query
-  const { user } = useUser();
-
   // 상세 페이지가 걸어둔 문서 제목
   const detailTitle = useBreadcrumbTitleValue();
 
   const { group, item } = findNavItem(segments);
-  const initial = user?.username?.substring(0, 1)?.toUpperCase() || '';
 
   return (
-    <header className="flex h-14 w-full flex-none items-center gap-3 px-4 md:px-7">
+    <header className="flex h-11 w-full flex-none items-center gap-3 px-4 md:h-10 md:px-7">
       {/* breadcrumb */}
-      <div className="text-3 flex items-center gap-1.5 text-[13px]">
+      <div className="text-3 flex min-w-0 items-center gap-1.5 text-[13px]">
         {group?.key && (
           <>
             <span>{t(group.key)}</span>
@@ -52,53 +41,16 @@ export default function Header({ theme }: HeaderProps) {
         {detailTitle && (
           <>
             {item && <span>›</span>}
-            <span className="text-base-content font-semibold">{detailTitle}</span>
+            <span className="text-base-content truncate font-semibold">{detailTitle}</span>
           </>
         )}
       </div>
 
       <span className="flex-1" />
 
-      {/* notification */}
-      <button
-        type="button"
-        aria-label="알림"
-        className="bg-base-100 border-base-300 text-2 hover:text-base-content relative flex size-9 items-center justify-center rounded-full border transition-colors"
-        onClick={() => {
-          overlay.open(({ isOpen, close }) => <NotificationDialog open={isOpen} onClose={close} />);
-        }}
-      >
-        <IoNotificationsOutline className="size-[18px]" />
-      </button>
-
-      <ThemeSwitcher current={theme} />
-
-      {/* avatar dropdown */}
-      <div className="dropdown dropdown-end">
-        <div
-          tabIndex={0}
-          role="button"
-          className="from-primary to-secondary text-primary-content flex size-9 cursor-pointer items-center justify-center rounded-full bg-gradient-to-br text-[13px] font-bold select-none"
-        >
-          {initial}
-        </div>
-        <ul
-          tabIndex={0}
-          className="menu dropdown-content bg-base-100 border-base-300 rounded-box shadow-whisper z-[1] mt-2 w-40 border p-2"
-        >
-          <li>
-            <Link href="/profile">
-              <CgProfile className="size-4" />
-              {t('profile')}
-            </Link>
-          </li>
-          <li>
-            <a href="/logout">
-              <IoLogOutOutline className="size-4" />
-              {t('logout')}
-            </a>
-          </li>
-        </ul>
+      {/* 모바일에는 사이드바가 없으므로 사용자 메뉴를 여기서 연다 */}
+      <div className="md:hidden">
+        <UserMenu theme={theme} placement="bottom-end" />
       </div>
     </header>
   );

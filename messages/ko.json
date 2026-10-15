@@ -38,7 +38,16 @@
     "managerVacations": "임직원 휴가 현황",
     "profile": "내 정보",
     "logout": "로그아웃",
-    "leader": "팀장"
+    "leader": "팀장",
+    "search": "검색",
+    "collapse": "사이드바 접기",
+    "theme": "테마",
+    "themes": {
+      "light": "라이트",
+      "dark": "다크"
+    },
+    "appInstall": "앱 설치 안내",
+    "newRequest": "신청"
   },
   "dashboard": {
     "greeting": "안녕하세요, {name}님 👋",
@@ -486,9 +495,5 @@
       "caption": "스캔하면 {type} 처리 페이지로 이동합니다",
       "qrAlt": "{type} QR 코드"
     }
-  },
-  "theme": {
-    "toLight": "라이트 테마로 전환",
-    "toDark": "다크 테마로 전환"
   }
 }

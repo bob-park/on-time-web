@@ -25,7 +25,7 @@ related:
 - `yarn prettier` — format all source files
 - `yarn test` — run `src/**/*.test.ts` with Node's built-in `node --test` (Node 24 strips types natively)
 
-Tests import the module under test with its `.ts` extension (`./foo.ts`), so `*.test.ts` is excluded from `tsconfig.json`. A tested module may use `@/` paths only in `import type` — runtime path aliases don't resolve under `node --test`.
+Tests import the module under test with its `.ts` extension (`./foo.ts`), which `tsconfig.json`'s `allowImportingTsExtensions` permits (same as license-web). A tested module may use `@/` paths only in `import type` — runtime path aliases don't resolve under `node --test`.
 
 `.yarnrc.yml` sets `npmMinimalAgeGate: 0` (same as license-web), turning off yarn 4.18's one-day quarantine for newly published versions.
 

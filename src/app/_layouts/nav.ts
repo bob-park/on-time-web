@@ -1,9 +1,16 @@
-import { AiOutlineSchedule } from 'react-icons/ai';
-import { FaUsersViewfinder } from 'react-icons/fa6';
-import { HiDocumentPlus } from 'react-icons/hi2';
-import { LuHistory } from 'react-icons/lu';
-import { MdManageAccounts, MdOutlineInbox } from 'react-icons/md';
-import { RiDashboardFill } from 'react-icons/ri';
+import { useSyncExternalStore } from 'react';
+
+import {
+  LuCalendar,
+  LuClockAlert,
+  LuFileText,
+  LuHistory,
+  LuHouse,
+  LuInbox,
+  LuPlane,
+  LuUserCog,
+  LuUsers,
+} from 'react-icons/lu';
 
 import type { IconType } from 'react-icons';
 
@@ -24,32 +31,38 @@ export interface NavGroup {
 }
 
 export const NAV_GROUPS: NavGroup[] = [
-  { items: [{ key: 'home', href: '/dashboard', segments: ['dashboard'], icon: RiDashboardFill }] },
+  { items: [{ key: 'home', href: '/dashboard', segments: ['dashboard'], icon: LuHouse }] },
   {
     key: 'groupAttendance',
-    items: [{ key: 'schedule', href: '/schedule', segments: ['schedule'], icon: AiOutlineSchedule }],
+    items: [{ key: 'schedule', href: '/schedule', segments: ['schedule'], icon: LuCalendar }],
   },
   {
     key: 'groupApproval',
     header: 'requestGroup',
     items: [
-      { key: 'dayoffRequest', href: '/dayoff/requests', segments: ['dayoff', 'requests'], sub: true },
-      { key: 'overtimeRequest', href: '/overtime/requests', segments: ['overtime', 'requests'], sub: true },
+      { key: 'dayoffRequest', href: '/dayoff/requests', segments: ['dayoff', 'requests'], icon: LuPlane, sub: true },
+      {
+        key: 'overtimeRequest',
+        href: '/overtime/requests',
+        segments: ['overtime', 'requests'],
+        icon: LuClockAlert,
+        sub: true,
+      },
       { key: 'dayoffUsed', href: '/dayoff/used', segments: ['dayoff', 'used'], icon: LuHistory },
-      { key: 'documents', href: '/documents', segments: ['documents'], icon: HiDocumentPlus },
-      { key: 'approvals', href: '/approvals', segments: ['approvals'], icon: MdOutlineInbox, badge: 'proceeding' },
+      { key: 'documents', href: '/documents', segments: ['documents'], icon: LuFileText },
+      { key: 'approvals', href: '/approvals', segments: ['approvals'], icon: LuInbox, badge: 'proceeding' },
     ],
   },
   {
     key: 'groupManage',
     manager: true,
     items: [
-      { key: 'managerAttendance', href: '/attendance/view', segments: ['attendance', 'view'], icon: FaUsersViewfinder },
+      { key: 'managerAttendance', href: '/attendance/view', segments: ['attendance', 'view'], icon: LuUsers },
       {
         key: 'managerVacations',
         href: '/dayoff/users/vacations',
         segments: ['dayoff', 'users', 'vacations'],
-        icon: MdManageAccounts,
+        icon: LuUserCog,
       },
     ],
   },
@@ -74,4 +87,18 @@ export function findNavItem(segments: string[]): { group?: NavGroup; item?: NavI
   }
 
   return { group: best.group, item: best.item };
+}
+
+// CommandPalette 가 이 이벤트를 듣는다.
+export const openCommandPalette = () => window.dispatchEvent(new Event('open-command-palette'));
+
+const noopSubscribe = () => () => {};
+
+// Apple 기기는 ⌘K, 그 외는 Ctrl K. 서버는 ⌘K 로 렌더하고 hydration 후 클라이언트가 보정한다.
+export function useShortcutLabel() {
+  return useSyncExternalStore(
+    noopSubscribe,
+    () => (/Mac|iPhone|iPad/.test(navigator.platform) ? '⌘K' : 'Ctrl K'),
+    () => '⌘K',
+  );
 }
