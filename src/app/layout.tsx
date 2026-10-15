@@ -11,6 +11,7 @@ import { Theme } from '@/shared/providers/theme/ThemeProvider';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 
+import CommandPalette from './_layouts/CommandPalette';
 import Header from './_layouts/Header';
 import MobileDock from './_layouts/MobileDock';
 import Sidebar from './_layouts/Sidebar';
@@ -52,6 +53,7 @@ export default async function RootLayout({
               </div>
 
               <MobileDock />
+              <CommandPalette />
             </ToastProvider>
           </RQProvider>
         </NextIntlClientProvider>

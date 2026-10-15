@@ -495,5 +495,16 @@
       "caption": "스캔하면 {type} 처리 페이지로 이동합니다",
       "qrAlt": "{type} QR 코드"
     }
+  },
+  "palette": {
+    "title": "검색",
+    "placeholder": "메뉴 또는 기안자·문서 종류 검색",
+    "menu": "메뉴",
+    "documents": "결재 문서",
+    "empty": "결과 없음",
+    "loading": "검색 중",
+    "move": "이동",
+    "open": "열기",
+    "hint": "⌘K 로 어디서나 열기"
   }
 }
