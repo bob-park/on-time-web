@@ -20,7 +20,7 @@ COPY package.json yarn.lock* .yarnrc.yml ./
 COPY ./public ./public
 # .yarnrc.yml pins yarnPath to .yarn/releases — the release file must exist before install
 COPY .yarn .yarn
-RUN corepack prepare yarn@4.17.0 --activate
+RUN corepack prepare yarn@4.18.0 --activate
 RUN yarn install --immutable
 
 
@@ -32,7 +32,7 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN corepack prepare yarn@4.17.0 --activate
+RUN corepack prepare yarn@4.18.0 --activate
 RUN yarn build
 
 # Production image, copy all the files and run next
