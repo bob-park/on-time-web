@@ -12,13 +12,18 @@ export async function GET(req: NextRequest) {
 
     const page = await serverApi.get('api/v1/documents/approval', { searchParams }).json<Page<ApprovalHistory>>();
 
-    const content = await Promise.all(
-      page.content.map(async (item) => {
-        const user = await serverApi.get(`api/v1/users/${item.document.userUniqueId}/summary`).json<User>();
-
-        return { ...item, document: { ...item.document, user } };
-      }),
+    // 같은 기안자의 문서가 여러 건이어도 사용자 요약은 한 번만 조회한다.
+    const userIds = [...new Set(page.content.map((item) => item.document.userUniqueId).filter((id) => !!id))];
+    const users = new Map(
+      await Promise.all(
+        userIds.map(async (id) => [id, await serverApi.get(`api/v1/users/${id}/summary`).json<User>()] as const),
+      ),
     );
+
+    const content = page.content.map((item) => ({
+      ...item,
+      document: { ...item.document, user: users.get(item.document.userUniqueId ?? '') },
+    }));
 
     return { ...page, content };
   });
