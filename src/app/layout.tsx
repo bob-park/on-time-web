@@ -13,7 +13,7 @@ import { getMessages, getTranslations } from 'next-intl/server';
 
 import CommandPalette from './_layouts/CommandPalette';
 import Header from './_layouts/Header';
-import MobileDock from './_layouts/MobileDock';
+import MobileTabBar from './_layouts/MobileTabBar';
 import Sidebar from './_layouts/Sidebar';
 import './globals.css';
 
@@ -52,7 +52,7 @@ export default async function RootLayout({
                 </div>
               </div>
 
-              <MobileDock />
+              <MobileTabBar />
               <CommandPalette />
             </ToastProvider>
           </RQProvider>
