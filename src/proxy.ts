@@ -27,5 +27,6 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  // 아이콘 / manifest 는 로그인 전에도 내려가야 한다.
+  matcher: ['/((?!api|_next/static|_next/image|icon.svg|apple-icon.png|icons/|manifest.webmanifest).*)'],
 };
