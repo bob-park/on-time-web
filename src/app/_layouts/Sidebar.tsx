@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { LuPanelLeft, LuSearch } from 'react-icons/lu';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useSelectedLayoutSegments } from 'next/navigation';
 
@@ -82,10 +83,7 @@ export default function Sidebar({ theme }: Readonly<{ theme: Theme }>) {
     >
       <div className={cx('flex items-center gap-2 px-1.5 pt-1 pb-3', collapsed && 'flex-col')}>
         <Link href="/dashboard" aria-label="OnTime" className="flex flex-1 items-center gap-2.5">
-          <span
-            className="bg-primary m-1 size-3 flex-none rounded-full"
-            style={{ boxShadow: '0 0 0 4px var(--primary-subtle)' }}
-          />
+          <Image src="/icon.svg" alt="" width={24} height={24} className="flex-none" />
           {!collapsed && <span className="text-sm font-bold tracking-[-0.3px]">OnTime</span>}
         </Link>
         <button
